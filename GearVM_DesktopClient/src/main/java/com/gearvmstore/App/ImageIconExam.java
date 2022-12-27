@@ -52,7 +52,6 @@ public class ImageIconExam {
     }
 
     private void showImageIconDemo() throws IOException {
-        String bucketName = "gearvm";
         ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
         Region region = Region.AP_SOUTHEAST_1;
         S3Client s3 = S3Client.builder()
