@@ -1,4 +1,4 @@
-package com.gearvmstore.UI;
+package com.gearvmstore.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

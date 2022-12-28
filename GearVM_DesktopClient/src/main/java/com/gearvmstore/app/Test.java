@@ -1,4 +1,4 @@
-package com.gearvmstore.App;
+package com.gearvmstore.app;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;

@@ -1,4 +1,4 @@
-package com.gearvmstore.UI;
+package com.gearvmstore.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,8 +8,6 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +25,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
