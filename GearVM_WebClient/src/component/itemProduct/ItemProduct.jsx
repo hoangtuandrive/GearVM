@@ -5,7 +5,7 @@ import { Image } from 'antd';
 
 const cx= classNames.bind(styles);
 const ItemProduct = (props) => {
-  console.log(props.laptop.id)
+ 
   return (
     <div className={cx('wrapItemProduct')}>
         <div  className={cx('imgProduct')}>

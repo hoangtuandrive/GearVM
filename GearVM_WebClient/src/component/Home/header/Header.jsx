@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "./Header.modulo.scss";
 import classNames from "classnames/bind";   
 import { Image,Input } from 'antd';
@@ -8,12 +8,32 @@ import Nav from '../nav/nav';
 const { Search } = Input;
 const cx = classNames.bind(styles);
 const Header = () => {
+    const productUrl='http://localhost:8080/api/products';
+    const fetchProduct=()=>{
+        fetch(productUrl)
+                    .then((data) =>data.json())
+                    .then((data)=>console.log(data))
+    }
+    useEffect(()=>{
+        fetchProduct()
+    },[])
+
+   document.addEventListener('scroll',()=>{
+    const top=document.documentElement.scrollTop;
+    if(top!=0){
+        document.querySelector('.wrapnav_about').classList.add('sticky')
+        // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
+    }else{
+        document.querySelector('.wrapnav_about').classList.remove('sticky')
+
+    }
+   })
   return (
     <div className={cx('wrap')}>
         <div className={cx('commercial')}>
             <Image src={require('../../../assets/commercial.png')}/>
         </div>
-        
+        <div className="wrapnav_about">
         <div className={cx('wrapNavbar')}> 
 
         <div className={cx('navbar')}>
@@ -45,8 +65,9 @@ const Header = () => {
             <Nav></Nav>
         
         </div>
-
+        </div>
     </div>
+   
   )
 }
 

@@ -48,3 +48,6 @@
 button.slick-next::before,button.slick-prev::before{
     color: black;
 }
+.slick-dots{
+    display: none !important;
+}

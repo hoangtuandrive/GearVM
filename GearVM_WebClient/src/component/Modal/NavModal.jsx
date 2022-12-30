@@ -13,7 +13,7 @@ const NavModal = () => {
     const [openFilter,setopenFilter] =useState(false)
     navContent.forEach((nav,index) => {
         nav.onclick=()=>{
-            console.log(1);
+           
             setopenFilter(!openFilter);
         }
     });
