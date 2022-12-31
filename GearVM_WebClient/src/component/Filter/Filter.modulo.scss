@@ -1,0 +1,11 @@
+.wrapFilter{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 10px;
+    background-color: aliceblue;
+    width: 980px;
+    max-height: 320px;
+    border-radius: 5px;
+    z-index: 3;
+}

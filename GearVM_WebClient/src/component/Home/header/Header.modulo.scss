@@ -1,0 +1,90 @@
+
+.wrap{
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+.wrapnav_about{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top:80px;   
+    z-index: 3;
+    background-color: white;
+    padding-bottom: 15px;
+    transition: all 1s ease-in-out;
+}
+.wrapnav_about.sticky{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top:0;   
+    z-index: 3;
+    background-color: white;
+   
+}
+.wrapNavbar{ 
+    margin: 0 auto;
+   width: 78%;
+   
+}
+.navbar{
+    // background-color: red;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    
+}
+.Logo{
+    width: 170px;
+    height: 90px;
+}
+.sale{
+    width: 30px;
+    height: 80px;
+}
+.SearchInput{
+    width: 40%; 
+}
+.textAccess{
+    display: flex;
+    flex-direction: column;
+}
+.iconAccess{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around; 
+}
+.iconAccess:hover{
+    color: rgb(35, 69, 222);
+    cursor: pointer;
+}
+.sale{
+    // width: 80px;  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around; 
+}
+.sale:hover{
+    color: rgb(35, 69, 222);
+    cursor: pointer;
+}
+.cart{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around; 
+}
+
+.cart:hover{
+    color: rgb(35, 69, 222);
+    cursor: pointer;
+}
+.saleLogo{
+    width: 80px;
+    height: 30px;
+}
