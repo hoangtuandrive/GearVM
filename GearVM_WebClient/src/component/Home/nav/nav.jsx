@@ -2,15 +2,20 @@ import React from 'react'
 import styles from './nav.modulo.scss'
 import classNames from 'classnames/bind'
 import {MenuOutlined  } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 const cx= classNames.bind(styles);
-const nav = () => {
+const Nav = () => {
+    const navigate = useNavigate();
+    const PageProduct= ()=>{
+        navigate("/catalog", { replace: true });
+    }
   return (
     <div className='navwrap'>
         <div className={cx('ListProduct')}>
             <MenuOutlined  />
             <h4 className={cx('textItemProduct')}>Danh Mục Sản Phẩm</h4>
         </div>
-        <div className={cx('itemProduct')}>
+        <div className={cx('itemProduct')} onClick={PageProduct}>
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Hướng dẫn Thanh Toán</h4>
         </div>
@@ -30,4 +35,4 @@ const nav = () => {
   )
 }
 
-export default nav
+export default Nav

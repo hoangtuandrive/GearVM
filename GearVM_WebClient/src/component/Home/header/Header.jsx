@@ -3,7 +3,7 @@ import styles from "./Header.modulo.scss";
 import classNames from "classnames/bind";   
 import { Image,Input } from 'antd';
 import {UserOutlined,ShoppingCartOutlined } from "@ant-design/icons";
-import Nav from '../nav/nav';
+import Nav from '../nav/Nav';
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
 const cx = classNames.bind(styles);

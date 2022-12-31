@@ -51,7 +51,8 @@ const NavModal = () => {
                 </div>
             
             </div>
-            {openFilter && <Filter></Filter>}
+            {/* {openFilter && <Filter></Filter>} */}
+            {/* <Filter></Filter> */}
             
     </div>
   )
