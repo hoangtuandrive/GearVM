@@ -242,7 +242,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		}
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new FrmDangNhap().setVisible(true);
+				try {
+					new GUI().setVisible(true);
+				} catch (RemoteException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		});
 	}
