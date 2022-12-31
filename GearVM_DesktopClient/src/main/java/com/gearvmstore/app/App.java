@@ -13,6 +13,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+//import org.apache.http.client.ClientProtocolException;
+//import org.json.JSONArray;
+//import org.json.JSONObject;
+//import org.springframework.web.client.RestTemplate;
+
 public class App {
     public static void main(String[] args) throws IOException {
         HttpClient client = new DefaultHttpClient();
