@@ -5,7 +5,7 @@ import Header from '../../component/Home/header/Header'
 
 import SlideShow from '../../component/Home/slideShow/SlideShow'
 import NavModal from '../../component/Modal/NavModal'
-import ListProduct from '../../component/ListProduct/ListProduct'
+import ListProductHome from '../../component/Home/listProductofHome/ListProductHome'
 import Footer from '../../component/Home/footer/Footer'
 const cx=classNames.bind(styles)
 const Home = () => {
@@ -14,7 +14,8 @@ const Home = () => {
       <Header></Header>
       {/* <NavModal/> */}
       <SlideShow />
-      <ListProduct />
+      <ListProductHome />
+      {/* <ListProduct /> */}
       <Footer />
     </div>
   )

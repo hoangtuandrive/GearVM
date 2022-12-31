@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 const cx= classNames.bind(styles)
-const ListProduct = () => {
+const ListProduct = (props) => {
   const Laptop=[{
     id:1,
     img:'https://betanews.com/wp-content/uploads/2014/11/front.jpg',
@@ -48,6 +48,7 @@ const ListProduct = () => {
     price:'12.000.000',
     discount:'4'
   }]
+  console.log(props)
   // const settings = {
   //   dots: true,
   //   infinite: false,
@@ -94,25 +95,19 @@ const ListProduct = () => {
   };
   // console.log(Laptop);
   return (
-   <div className={cx('WrapListProduct')} >
-      <h1>Laptop</h1>
-   {/* <div className={cx('listProduct_thumb')}>  */}
           <Slider {...settings}  >        
-            {Laptop.map((item,index)=>(
+            {props.data.map((item,index)=>(
               <div 
               className={cx('listProduct_thumb_item')}
            
               key={item.id}>       
               <ItemProduct 
-                  laptop={item}
+                  data={item}
                   />                  
               </div>       
             ))
-            } 
-         
-      </Slider>
-         </div>
-    //  </div> 
+            }         
+      </Slider>    
   )
 }
 export default ListProduct

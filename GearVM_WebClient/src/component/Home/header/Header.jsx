@@ -8,15 +8,15 @@ import Nav from '../nav/nav';
 const { Search } = Input;
 const cx = classNames.bind(styles);
 const Header = () => {
-    const productUrl='http://localhost:8080/api/products';
-    const fetchProduct=()=>{
-        fetch(productUrl)
-                    .then((data) =>data.json())
-                    .then((data)=>console.log(data))
-    }
-    useEffect(()=>{
-        fetchProduct()
-    },[])
+    // const productUrl='http://localhost:8080/api/products';
+    // const fetchProduct=()=>{
+    //     fetch(productUrl)
+    //                 .then((data) =>data.json())
+    //                 .then((data)=>console.log(data))
+    // }
+    // useEffect(()=>{
+    //     fetchProduct()
+    // },[])
 
    document.addEventListener('scroll',()=>{
     const top=document.documentElement.scrollTop;
