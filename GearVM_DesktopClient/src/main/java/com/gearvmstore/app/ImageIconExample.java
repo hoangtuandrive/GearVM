@@ -15,19 +15,19 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class ImageIconExam {
+public class ImageIconExample {
 
     private JFrame mainFrame;
     private JLabel headerLabel;
     private JLabel statusLabel;
     private JPanel controlPanel;
 
-    public ImageIconExam(){
+    public ImageIconExample(){
         prepareGUI();
     }
 
     public static void main(String[] args) throws IOException {
-        ImageIconExam swingControlDemo = new ImageIconExam();
+        ImageIconExample swingControlDemo = new ImageIconExample();
         swingControlDemo.showImageIconDemo();
     }
 
