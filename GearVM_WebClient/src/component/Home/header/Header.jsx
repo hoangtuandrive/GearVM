@@ -9,14 +9,14 @@ const { Search } = Input;
 const cx = classNames.bind(styles);
 const Header = () => {
   const productUrl = "http://localhost:8080/api/products";
-  const fetchProduct = () => {
-    fetch(productUrl)
-      .then((data) => data.json())
-      .then((data) => console.log(data));
-  };
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  // const fetchProduct = () => {
+  //   fetch(productUrl)
+  //     .then((data) => data.json())
+  //     .then((data) => console.log(data));
+  // };
+  // useEffect(() => {
+  //   fetchProduct();
+  // }, []);
 
   document.addEventListener("scroll", () => {
     const top = document.documentElement.scrollTop;
@@ -42,10 +42,10 @@ const Header = () => {
               <Search placeholder="input search text" enterButton />
             </div>
             <div className={cx("iconAccess")}>
-              <UserOutlined style={{ fontSize: 35 }} />
+              <UserOutlined style={{ fontSize: 30}} />
               <div className={cx("textAccess")}>
-                <h5>Đăng Nhập</h5>
-                <h5>Đăng Ký</h5>
+                <h5 className={cx("lblAccess")} >Đăng Nhập</h5>
+                <h5 className={cx("lblAccess")}>Đăng Ký</h5>
               </div>
             </div>
             <div className={cx("sale")}>
@@ -53,11 +53,11 @@ const Header = () => {
                 src={require("../../../assets/iconSale.jpg")}
                 className={cx("saleLogo")}
               />
-              <h5>Khuyến Mãi</h5>
+              <h5 className={cx("lblAccess")}>Khuyến Mãi</h5>
             </div>
             <div className={cx("cart")}>
               <ShoppingCartOutlined style={{ fontSize: 35 }} />
-              <h5>Giỏ Hàng</h5>
+              <h5 className={cx("lblAccess")}>Giỏ hàng </h5>
             </div>
           </div>
 

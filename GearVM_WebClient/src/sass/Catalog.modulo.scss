@@ -1,5 +1,33 @@
 .wrapCatalog{
     display: flex;
     flex-direction: column;
-    
+    background-color: rgba(244, 242, 239, 0.7);
+}
+.txtWrap{
+    color: rgb(19, 32, 213);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 2px;
+    cursor: pointer;
+}
+.txtWrap_Head{
+    color: rgb(19, 32, 213);
+    font-weight: 500;
+    font-size: 18px;
+    padding: 2px;
+}
+.wrapCatalogProduct_fillter_Price{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.gach{
+    border-style: none;
+    border-width: 1px;
+    border-color: unset;
+    opacity: 1;
+    --divider-gap: 2px;
+    display: flex;
+    padding-top: var(--divider-gap);
+    padding-bottom: var(--divider-gap)
 }

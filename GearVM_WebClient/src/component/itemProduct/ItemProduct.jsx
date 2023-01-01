@@ -14,12 +14,14 @@ const ItemProduct = (props) => {
             />
         </div>   
         <div className={cx('textProduct')}>
-            <h5>{props.data.name}</h5>
+            <h5  className={cx('txtNameProduct')}>{props.data.name}</h5>
           <div className={cx('content_dis_price')}> 
-            <h5 className={cx('Price')}>{props.data.price}đ</h5>
-            <h5>{props.data.discount}%</h5>
+            <h5 className={cx('txtPrice')}>{props.data.price}đ</h5>
+            <div className={cx('contentDiscount')}>
+            <h5 className={cx('txtDiscount')}>{props.data.discount}%</h5>
+            </div>
           </div>
-          <h5>Giá Thật</h5>
+          <h5 className={cx('txt_pricereal')}>Giá Thật</h5>
         </div>   
     </div>
   )

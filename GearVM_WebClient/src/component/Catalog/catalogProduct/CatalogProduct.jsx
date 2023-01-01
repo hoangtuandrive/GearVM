@@ -1,10 +1,11 @@
 import React from 'react'
-import styles from'./CatalogProduct.modulo.scss'
+import styles from'./CatalogProduct.module.scss'
 import classNames from 'classnames/bind'
 import ItemProduct from '../../itemProduct/ItemProduct'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
 const cx=classNames.bind(styles)
 const CatalogProduct = () => {
     const Laptop=[{
@@ -55,18 +56,42 @@ const CatalogProduct = () => {
   return (
     <div className={cx('wrapCatalogProduct')}>
         <div className={cx('wrapCatalogProduct_fillter')}>
-                <h2>  Danh mục sản phẩm</h2>
+               <div  className={cx('wrapCatalogProduct_fillter_Price')}>
+                  <h6 className={cx('txtWrap_Head')}>Khoảng giá</h6>
+                  <div className={cx('wrapCatalogProduct_fillter_Price_about')}>
+                    <h5 className={cx('txtWrap')}>Dưới 10 triệu</h5>
+                    <h5 className={cx('txtWrap')}>10-15 triệu</h5>
+                    <h5 className={cx('txtWrap')}>15-20 triệu</h5>
+                    <h5 className={cx('txtWrap')}>Trên 20 triệu</h5>
+                  </div>
+               </div>
+               <div className='gach'>
+                {/* <CheckBox /> */}
+               </div>
+               <div  className={cx('wrapCatalogProduct_fillter_Price')}>
+                  <h6 className={cx('txtWrap_Head')}>Màu Sắc</h6>
+                  <div className={cx('wrapCatalogProduct_fillter_Price_about')}>
+                    <h5 className={cx('txtWrap')}>Xanh</h5>
+                    <h5 className={cx('txtWrap')}>Đỏ</h5>
+                    <h5 className={cx('txtWrap')}>Tím</h5>
+                    <h5 className={cx('txtWrap')}>Vàng</h5>
+                  </div>
+               </div>
+
+
         </div>
         <div className={cx('wrapCatalogProduct_content')}> 
         <Container>
-            <Row md={3}>     
+            <Row md={4}>     
                 {
                     Laptop.map((item, index) => (
-                      <Col >
+                      <Col key={item.id}>
+                      
                         <ItemProduct
-                        key={item.id}
+                      
                           data={item}
                         />
+                      
                         </Col> 
                     ))
                 }

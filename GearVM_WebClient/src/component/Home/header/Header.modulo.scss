@@ -52,12 +52,14 @@
 .textAccess{
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
 }
 .iconAccess{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around; 
+    color: rgb(130, 134, 158);
 }
 .iconAccess:hover{
     color: rgb(35, 69, 222);
@@ -69,6 +71,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around; 
+    color: rgb(130, 134, 158);
+
 }
 .sale:hover{
     color: rgb(35, 69, 222);
@@ -79,6 +83,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around; 
+    color: rgb(130, 134, 158);
+
 }
 
 .cart:hover{
@@ -88,4 +94,11 @@
 .saleLogo{
     width: 80px;
     height: 30px;
+}
+.lblAccess{
+    font-size: 15px;
+    line-height: 20px;
+    opacity: 1;
+  
+    font-weight: 500;
 }
