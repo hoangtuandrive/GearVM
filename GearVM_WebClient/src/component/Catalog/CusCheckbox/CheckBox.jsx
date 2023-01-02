@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styles from './CustomCheckBox.module.scss'
+import classNames from 'classnames/bind'
+import {CheckOutlined } from "@ant-design/icons";
 
-
+const cx= classNames.bind(styles)
 const CheckBox = props => {
 
     const inputRef = React.useRef(null)
@@ -13,10 +16,10 @@ const CheckBox = props => {
     }
 
     return (
-        <label className="custom-checkbox">
+        <label className= {cx("custom-checkbox")}>
             <input type="checkbox" ref={inputRef} onChange={onChange} checked={props.checked}/>
-            <span className="custom-checkbox__checkmark">
-                <i className="bx bx-check"></i>
+            <span className={cx("custom-checkbox__checkmark")}>
+                <p className={cx("CheckoutLine")}><CheckOutlined /></p> 
             </span>
             {props.label}
         </label>

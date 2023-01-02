@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import styles from "./Header.modulo.scss";
 import classNames from "classnames/bind";   
-import { Image,Input } from 'antd';
+import { Card, Image,Input } from 'antd';
 import {UserOutlined,ShoppingCartOutlined } from "@ant-design/icons";
+
 import Nav from '../nav/Nav';
+import Tippy from '@tippyjs/react/headless';
+import MenuCard from "../../card/Card";
+
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
 const cx = classNames.bind(styles);
@@ -55,12 +59,25 @@ const Header = () => {
               />
               <h5 className={cx("lblAccess")}>Khuyến Mãi</h5>
             </div>
+            <Tippy
+              interactive
+          
+              placement="top-end"
+              render={attrs => (
+              <div className="box" tabIndex="-1" {...attrs}>
+                <MenuCard />
+                {/* <ItemCard /> */}
+              </div>
+            )}
+            >      
             <div className={cx("cart")}>
               <ShoppingCartOutlined style={{ fontSize: 35 }} />
               <h5 className={cx("lblAccess")}>Giỏ hàng </h5>
-            </div>
+            </div>                       
+              </Tippy>
+          
           </div>
-
+          
           <Nav></Nav>
         </div>
       </div>

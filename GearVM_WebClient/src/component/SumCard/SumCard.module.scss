@@ -1,0 +1,17 @@
+.wrapSumCard{
+    display: flex;
+    flex-direction: column;
+  
+}
+.wrapSumCard_Content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.wrapSumCard_Button{
+    margin: 15px;
+    background-color: rgb(20, 53, 195);
+    border-color: rgb(20, 53, 195);
+    border-radius: 4px;
+    color: white;
+}

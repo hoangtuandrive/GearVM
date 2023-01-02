@@ -1,0 +1,41 @@
+.ItemCard_Img{
+    padding: 15px;
+    width: 30%;
+    height: 25%;    
+}
+.wrapItemCard{
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-around;
+    align-items: center;
+}
+.txt_ItemCard_Content_Name{
+    font-size: 20px;
+    line-height: 20px;
+    // text-align: center;
+    font-weight: 500;
+    overflow: hidden;
+    color: rgb(67, 70, 87);
+    
+}
+.txt_ItemCard_Content_quantity{
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    overflow: hidden;
+    font-weight: 300;
+    color: rgb(67, 70, 87);
+}
+.txt_ItemCard_Content_price{
+    font-size: 20px;
+    line-height: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: rgba(7, 0, 0, 0.973);
+}
+.wrapItemCard{
+    margin-top: 10px;
+}
+.ItemCard_Content{
+    margin-left: 10px;
+}

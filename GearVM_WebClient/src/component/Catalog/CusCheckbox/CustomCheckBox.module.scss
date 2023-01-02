@@ -1,6 +1,12 @@
+$main-color: #4267b2;
+$txt-second-color: #8d8d8d;
+$txt-white: #fff;
+
 .custom-checkbox {
     // @include flex(center, flex-start);
-
+    display:  flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 
     &:hover {
@@ -22,6 +28,7 @@
         border: 1px solid $txt-second-color;
 
         i {
+            margin-bottom: 4px;
             transform: scale(0);
             transition: transform 0.3s ease;
         }
@@ -36,4 +43,8 @@
     input:checked ~ &__checkmark > i {
         transform: scale(1);
     }
+}
+.CheckoutLine{
+   display: flex;
+   color: #fff;
 }
