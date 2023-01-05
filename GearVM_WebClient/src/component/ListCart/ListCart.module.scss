@@ -1,0 +1,109 @@
+.wrapListCart{
+    width: 78%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    
+    min-height: 36vh;
+    margin-bottom: 5px;
+}
+.wrapListCart_Content{
+    background-color: white;
+}
+.wrapListCart_Content_tr_text{
+    align-items: center;
+    margin-bottom: 0px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.wrapListCart_Content_Name{
+    color: rgb(67, 70, 87);
+    font-weight: 400;
+    text-decoration: unset;
+    font-size: 18px;
+}
+.wrapListCart_Content_noice{
+    color: rgb(247, 130, 18);
+    font-weight: 400;
+    text-decoration: unset;
+    font-size: 15px;
+}
+.wrapListCart_Content_Price{
+    text-decoration: line-through;
+    color: rgb(130, 134, 158);
+    font-size: 0.75rem;
+}
+.wrapListCart_Content_quantity{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    background-color: rgb(248, 248, 252);
+    border: 1px solid rgb(228, 229, 240);
+
+}
+.wrapListCart_Content_quantity_text{
+    width: 5vh;
+    border-width: 0;
+    background-color: rgb(248, 248, 252);
+    text-align: center;
+    
+}
+.wrapListCart_Content_quantity_btnsub{
+    border-width: 0;
+}
+.wrapListCart_Content_quantity_btnadd{
+    border-width: 0;
+}
+.wrapListCart_Content_quantity_remove{
+    color: rgb(25, 144, 255);
+    cursor: pointer;
+    font-size: 13px;
+    align-items: center;
+    border-width: 0;
+    background-color: white;
+}
+.wrapListCart_Content_NameProduct{
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+
+}
+.wrapListCart_Content_img{
+    width:  20%;
+    height: 50%;
+}
+.listCart_Pay{
+    width: 30%;
+    background-color: white;
+    margin-left: 15px;  
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+.listCart_Pay_content{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+.listCart_Pay_content_text_blue{
+    color: blue;
+    font-weight: 700;
+}
+.listCart_Pay_content_text{
+    
+    font-weight: 700;
+}
+.listCart_Pay_content_btn{
+    width: 100%;
+    height: 5vh;
+   
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+}
+
