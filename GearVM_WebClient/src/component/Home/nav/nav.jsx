@@ -15,6 +15,9 @@ const Nav = () => {
     const Pagecart= ()=>{
         navigate("/cart", { replace: true });
     }
+    const PagePay= ()=>{
+        navigate("/pay", { replace: true });
+    }
   return (
     <div className='navwrap'>
         <div className={cx('ListProduct')}>
@@ -33,7 +36,7 @@ const Nav = () => {
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Chính sách bảo hành</h4>
         </div>
-        <div className={cx('itemProduct')}>
+        <div className={cx('itemProduct')}  onClick={PagePay}>
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Chính sách vận chuyển</h4>
         </div>

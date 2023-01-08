@@ -1,9 +1,13 @@
 import React from 'react'
-import  styles  from './ProductView.modole.scss'
+import  styles  from './ProductView.module.scss'
 import classNames from 'classnames/bind'
 import CustomDiscount from '../customDiscount/CustomDiscount'
+import { useNavigate,useLocation} from 'react-router-dom'
 const cx= classNames.bind(styles)
 const ProductView = () => {
+  let location=useLocation();
+  let query=new URLSearchParams(location.search)
+  console.log(query.get("name"))
   return (
     <div className={cx('wrapProductView')}>
         <div className={cx('ProductView_Img')}>
