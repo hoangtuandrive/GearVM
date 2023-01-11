@@ -1,0 +1,30 @@
+.wrapAcount{
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 90px;
+    padding: 0.365rem 0.75rem;
+    font-size: 13px;
+    position: relative;
+    cursor: pointer;
+    font-weight: 500;
+    color: rgb(130, 134, 158);
+}
+.wrapAcount_thumb{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 50px;
+}
+.wrapAcount_img{
+    width: 36px;
+    height: 36px;
+    margin: 5px 0px 4px;
+    border-radius: 50%;
+}
+.wrapAcount_thumb_txt{
+    margin: 0;
+}

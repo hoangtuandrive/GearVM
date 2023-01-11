@@ -45,6 +45,7 @@
 .Logo{
     width: 170px;
     height: 90px;
+    cursor: pointer;
 }
 .sale{
     width: 30px;
@@ -105,4 +106,10 @@
     opacity: 1;
   
     font-weight: 500;
+}
+.box_acount{
+    // margin-top: -15px;
+    display: flex;
+    justify-content: flex-end;
+    
 }

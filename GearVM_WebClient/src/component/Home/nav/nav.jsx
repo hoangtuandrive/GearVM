@@ -9,6 +9,15 @@ const Nav = () => {
     const PageProduct= ()=>{
         navigate("/catalog", { replace: true });
     }
+    const PageProductDetail= ()=>{
+        navigate("/productdetail", { replace: true });
+    }
+    const Pagecart= ()=>{
+        navigate("/cart", { replace: true });
+    }
+    const PagePay= ()=>{
+        navigate("/pay", { replace: true });
+    }
   return (
     <div className='navwrap'>
         <div className={cx('ListProduct')}>
@@ -17,17 +26,17 @@ const Nav = () => {
         </div>
         <div className={cx('itemProduct')} onClick={PageProduct}>
             <MenuOutlined />
-            <h4 className={cx('textItemProduct')}>Hướng dẫn Thanh Toán</h4>
+            <h4 className={cx('textItemProduct')} >Hướng dẫn Thanh Toán</h4>
         </div>
-        <div className={cx('itemProduct')}>
+        <div className={cx('itemProduct')} onClick={PageProductDetail}>
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Hướng dẫn trả góp</h4>
         </div>
-        <div className={cx('itemProduct')}>
+        <div className={cx('itemProduct')} onClick={Pagecart}>
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Chính sách bảo hành</h4>
         </div>
-        <div className={cx('itemProduct')}>
+        <div className={cx('itemProduct')}  onClick={PagePay}>
             <MenuOutlined />
             <h4 className={cx('textItemProduct')}>Chính sách vận chuyển</h4>
         </div>

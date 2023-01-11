@@ -1,0 +1,31 @@
+.wrapCustomDiscount{
+    padding: 12px;
+    margin-right: 25vh;
+    border-radius: 8px;
+    background-color: rgb(243, 245, 252);
+    border: 1px solid rgb(20, 53, 195);
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+}
+.wrapCustomDiscount_img{
+    min-width: 64px;
+    height: 64px;
+    width: 64px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-right: 12px;
+    border-radius: 4px;
+    background-color: rgb(232, 235, 249);
+}
+.wrapCustomDiscount_content{
+    margin-left: 5vh;
+}
+.wrapCustomDiscount_content_txt{
+    font-size: 15px;
+    line-height: 16px;
+    color: rgb(132, 135, 136);
+}

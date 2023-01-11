@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useContext} from "react";
 import styles from "./Header.modulo.scss";
 import classNames from "classnames/bind";   
 import { Card, Image,Input } from 'antd';
 import {UserOutlined,ShoppingCartOutlined } from "@ant-design/icons";
-
+import { Link, useNavigate } from "react-router-dom";
 import Nav from '../nav/Nav';
 import Tippy from '@tippyjs/react/headless';
 import MenuCard from "../../card/Card";
-
+import MenuAcount from "../../MenuAcount/MenuAcount";
+import Acount from "../../Custom/Acount/Acount";
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
 const cx = classNames.bind(styles);
@@ -31,7 +32,13 @@ const Header = () => {
       document.querySelector(".wrapnav_about").classList.remove("sticky");
     }
   });
+  const navigate = useNavigate();
+  const handleShow = () => { navigate("/login", { replace: true });}
+  const handleHome=() => { navigate("/", { replace: true });}
   return (
+
+    
+
     <div className={cx("wrap")}>
       <div className={cx("commercial")}>
         <Image src={require("../../../assets/commercial.png")} />
@@ -39,19 +46,32 @@ const Header = () => {
       <div className="wrapnav_about">
         <div className={cx("wrapNavbar")}>
           <div className={cx("navbar")}>
-            <div className={cx("Logo")}>
-              <Image src={require("../../../assets/logoGear.jpg")} />
+            <div className={cx("Logo")} onClick={handleHome}>
+              <img src={require("../../../assets/logoGear.jpg")} 
+              className={cx("Logo")}
+              />
             </div>
             <div className={cx("SearchInput")}>
               <Search placeholder="input search text" enterButton />
             </div>
-            <div className={cx("iconAccess")}>
-              <UserOutlined style={{ fontSize: 30}} />
+            <Tippy 
+              interactive
+              placement="top"
+              render={attrs => (
+              <div className="box" tabIndex="-1" {...attrs}>
+                <MenuAcount/>
+              </div>
+            )}
+            >
+            <div className={cx("iconAccess")} onClick={handleShow}>
+              {/* <UserOutlined style={{ fontSize: 30}} />
               <div className={cx("textAccess")}>
                 <h5 className={cx("lblAccess")} >Đăng Nhập</h5>
                 <h5 className={cx("lblAccess")}>Đăng Ký</h5>
-              </div>
+              </div> */}
+              <Acount />
             </div>
+            </Tippy>
             <div className={cx("sale")}>
               <img
                 src={require("../../../assets/iconSale.jpg")}
@@ -59,6 +79,7 @@ const Header = () => {
               />
               <h5 className={cx("lblAccess")}>Khuyến Mãi</h5>
             </div>
+          
             <Tippy
               interactive
           
@@ -81,6 +102,7 @@ const Header = () => {
           <Nav></Nav>
         </div>
       </div>
+     
     </div>
   );
 };
