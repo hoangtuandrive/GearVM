@@ -40,13 +40,13 @@ public class ApiExceptionHandler implements ResponseHandler {
         return responseFrom(exception);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
-    Map<String, List<String>> handle(MethodArgumentNotValidException exception) {
-        var errorsExtractor = new MethodArgumentNotValidExceptionMapper();
-        return errorsExtractor.extractErrorsFrom(exception);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    @ResponseStatus(BAD_REQUEST)
+//    @ResponseBody
+//    Map<String, List<String>> handle(MethodArgumentNotValidException exception) {
+//        var errorsExtractor = new MethodArgumentNotValidExceptionMapper();
+//        return errorsExtractor.extractErrorsFrom(exception);
+//    }
 
     private ErrorResponse responseFrom(RuntimeException exception) {
         return ErrorResponse.withMessage(exception.getMessage());

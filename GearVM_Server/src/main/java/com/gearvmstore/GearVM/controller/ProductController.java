@@ -23,7 +23,6 @@ public class ProductController {
         return productService.getProducts();
     }
 
-
     @RequestMapping(value="/products/{productId}", method=RequestMethod.GET)
     public Product findProduct(@PathVariable(value = "productId") Long id){
         return productService.getProduct(id);
@@ -38,4 +37,5 @@ public class ProductController {
     public void deleteProduct(@PathVariable(value = "productId") Long id){
         productService.deleteProduct(id);
     }
+
 }

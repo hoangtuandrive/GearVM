@@ -8,16 +8,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@ToString
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "review")
 public class Review {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "review_id")
     private Long id;
 
     @Column(name = "author")
@@ -32,6 +31,10 @@ public class Review {
     @Column(name = "date")
     private LocalDate date;
 
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private Product productId;
+
     public Review() {
         this.date = LocalDate.now();
     }
@@ -41,7 +44,7 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return Objects.equals(id, review.id);
+        return id.equals(review.id);
     }
 
     @Override

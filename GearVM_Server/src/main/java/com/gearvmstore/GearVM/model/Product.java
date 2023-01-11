@@ -8,9 +8,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@ToString
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "product")
 public class Product {
@@ -18,16 +18,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
-
-    @Column(name = "product_name")
     private String name;
-
-    @Column(name = "product_price")
     private double price;
 
-    @OneToMany
+    @OneToMany(mappedBy = "productId")
     @ToString.Exclude
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "productId")
+    @ToString.Exclude
+    private List<OrderDetail> orderDetails;
+
+    public Product() {
+    }
 
     @Override
     public boolean equals(Object o) {
