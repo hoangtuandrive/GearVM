@@ -29,6 +29,9 @@ public class Customer{
 	private String address;
 	@Column(columnDefinition = "nchar(20)")
 	private String email;
+	@Column(columnDefinition = "nchar(20)")
+	private String password;
+	private String salt;
 	private boolean isCart;
 	
 	@OneToMany(mappedBy = "customerId")

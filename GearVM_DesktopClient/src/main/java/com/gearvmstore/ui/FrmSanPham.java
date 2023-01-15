@@ -8,7 +8,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,21 +33,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gearvmstore.model.Product;
+import com.gearvmstore.service.ApiService;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
-
-/**
- * @author ACER
- */
-public class FrmSanPham extends javax.swing.JFrame {
-
+public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
+    private static final String tableName = "products";
     private JComboBox<String> cmbChon;
     private static JComboBox<String> cmbTim;
     private JButton btnTim;
 
-    public JPanel createPanelSanPham() throws RemoteException {
+    public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
         pntblHangHoa = new javax.swing.JScrollPane();
         tableHangHoa = new JTable();
@@ -323,6 +333,8 @@ public class FrmSanPham extends javax.swing.JFrame {
         tableHangHoa.setDefaultEditor(Object.class, null);
         tableHangHoa.getTableHeader().setReorderingAllowed(false);
 
+        readDatabaseToTable();
+
         return panel;
     }// </editor-fold>//GEN-END:initComponents
 
@@ -470,5 +482,47 @@ public class FrmSanPham extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    public void readDatabaseToTable() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        BufferedReader rd = ApiService.getAll(tableName);
+        List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+        listProduct.forEach(System.out::println);
+        DecimalFormat df = new DecimalFormat("#,##0");
+        for (Product p : listProduct) {
+            modelSanPham.addRow(new Object[] { p.getId(), p.getName().trim(), p.getType().trim(),
+                    p.getBrand().trim(), df.format(p.getPrice()), p.getQuantity() });
+        }
     }
 }

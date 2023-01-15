@@ -18,8 +18,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
+    @Column(columnDefinition = "nvarchar(100)")
     private String name;
+    @Column(columnDefinition = "nvarchar(255)")
+    private String brand;
+    @Column(columnDefinition = "nvarchar(255)")
+    private String type;
+    @Column(columnDefinition = "LONGTEXT")
+    private String description;
     private double price;
+    private int quantity;
 
     @OneToMany(mappedBy = "productId")
     @ToString.Exclude

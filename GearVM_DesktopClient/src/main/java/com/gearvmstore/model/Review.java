@@ -19,16 +19,14 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
-    @Column(name = "author")
+    @Column(columnDefinition = "nvarchar(100)")
     private String author;
 
-    @Column(name = "message")
+    @Column(columnDefinition = "LONGTEXT")
     private String message;
 
-    @Column(name = "rating")
-    private Integer rating;
+    private int rating;
 
-    @Column(name = "date")
     private LocalDate date;
 
     @ManyToOne

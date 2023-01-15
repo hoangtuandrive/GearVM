@@ -31,6 +31,5 @@ public class PostRequestExample {
         se.setContentType("application/json");
         post.setEntity(se);
         HttpResponse response = client.execute(post);
-        System.out.println(response);
     }
 }

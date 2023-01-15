@@ -32,8 +32,10 @@ public class Employee {
 	private String address;
 	@Column(columnDefinition = "nchar(20)")
 	private String email;
-	@Column(name = "work_status")
 	private boolean workStatus;
+	@Column(columnDefinition = "nchar(20)")
+	private String password;
+	private String salt;
 
 	@Enumerated(EnumType.ORDINAL)
 	private Role role;
