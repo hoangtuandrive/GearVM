@@ -1,4 +1,4 @@
-package com.gearvmstore.GearVM.model;
+package com.gearvmstore.model;
 
 public enum OrderStatus {
     PENDING, REJECTED, SHIPPING, SHIPPED, COMPLETED, CANCELLED
