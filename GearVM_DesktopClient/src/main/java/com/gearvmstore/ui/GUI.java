@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -53,7 +52,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	/**
 	 * create a JTabbedPane contain tabs
-	 * @throws RemoteException 
 	 */
 	public JTabbedPane createTabbedPane() throws IOException {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
@@ -97,7 +95,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		return tabbedPane;
 	}
 
-	public JPanel createPanelTrangChu() throws RemoteException{
+	public JPanel createPanelTrangChu() {
 		
 		JPanel pnlContentPane = new JPanel();
 

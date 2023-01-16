@@ -40,6 +40,14 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, String brand, String type, double price, int quantity) {
+        this.name = name;
+        this.brand = brand;
+        this.type = type;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

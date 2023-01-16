@@ -14,9 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,10 +31,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gearvmstore.model.Product;
-import com.gearvmstore.service.ApiService;
+import com.gearvmstore.service.ProductService;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -333,6 +330,12 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         tableHangHoa.setDefaultEditor(Object.class, null);
         tableHangHoa.getTableHeader().setReorderingAllowed(false);
 
+        btnThem.addActionListener(this);
+        btnSua.addActionListener(this);
+        btnXoa.addActionListener(this);
+        btnTim.addActionListener(this);
+        tableHangHoa.addMouseListener(this);
+
         readDatabaseToTable();
 
         return panel;
@@ -408,7 +411,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     // End of variables declaration//GEN-END:variables
 
-    public static void xoaHetDL() {
+    public static void emptyTable() {
         DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
         dm.setRowCount(0);
     }
@@ -486,12 +489,37 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        Object o = e.getSource();
+        if (o.equals(btnThem)) {
+            try {
+                if(postRequest()){
+                    JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    readDatabaseToTable();
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        int row = tableHangHoa.getSelectedRow();
+        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString());
+        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString());
+        txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString());
+        txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString());
+        String tien[] = modelSanPham.getValueAt(row, 4).toString().split(",");
+        String donGia = "";
+        for (int i = 0; i < tien.length; i++)
+            donGia += tien[i];
+        txtDonGia.setText(donGia);
+        txtSoLuong.setText(modelSanPham.getValueAt(row, 5).toString());
     }
 
     @Override
@@ -515,14 +543,33 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     public void readDatabaseToTable() throws IOException {
+        emptyTable();
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ApiService.getAll(tableName);
+        BufferedReader rd = ProductService.getAllRequest(tableName);
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
-        listProduct.forEach(System.out::println);
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {
-            modelSanPham.addRow(new Object[] { p.getId(), p.getName().trim(), p.getType().trim(),
-                    p.getBrand().trim(), df.format(p.getPrice()), p.getQuantity() });
+            modelSanPham.addRow(new Object[] { p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity() });
         }
+    }
+
+    private void emptyTextField() {
+        txtMaHangHoa.setText(null);
+        txtTenHangHoa.setText(null);
+        txtDonGia.setText(null);
+        txtSoLuong.setText(null);
+        txtNhaCungCap.setText(null);
+        txtLoaiHang.setText(null);
+    }
+
+    public boolean postRequest() throws IOException {
+        String tensp = txtTenHangHoa.getText();
+        String loaiHang = txtLoaiHang.getText();
+        String nhaCungCap = txtNhaCungCap.getText();
+        int soLuong = Integer.parseInt(txtSoLuong.getText());
+        double donGia = Double.parseDouble(txtDonGia.getText());
+        Product p = new Product(tensp,nhaCungCap,loaiHang,donGia,soLuong);
+        return ProductService.postRequest(p);
     }
 }
