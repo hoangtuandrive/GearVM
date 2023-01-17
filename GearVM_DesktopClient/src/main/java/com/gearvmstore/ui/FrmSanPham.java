@@ -492,13 +492,26 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         Object o = e.getSource();
         if (o.equals(btnThem)) {
             try {
-                if(postRequest()){
+                if (postRequest()) {
                     JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
                             JOptionPane.INFORMATION_MESSAGE);
                     readDatabaseToTable();
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if (o.equals(btnSua)) {
+            try {
+                if (putRequest()) {
+                    JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    readDatabaseToTable();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " +  txtMaHangHoa.getText() + " thất bại!", "Thất bại",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
@@ -549,8 +562,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {
-            modelSanPham.addRow(new Object[] { p.getId(), p.getName(), p.getType(),
-                    p.getBrand(), df.format(p.getPrice()), p.getQuantity() });
+            modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
         }
     }
 
@@ -564,12 +577,23 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     public boolean postRequest() throws IOException {
-        String tensp = txtTenHangHoa.getText();
+        String tenSp = txtTenHangHoa.getText();
         String loaiHang = txtLoaiHang.getText();
         String nhaCungCap = txtNhaCungCap.getText();
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         double donGia = Double.parseDouble(txtDonGia.getText());
-        Product p = new Product(tensp,nhaCungCap,loaiHang,donGia,soLuong);
+        Product p = new Product(tenSp, nhaCungCap, loaiHang, donGia, soLuong);
         return ProductService.postRequest(p);
+    }
+
+    public boolean putRequest() throws IOException {
+        long maSp = Long.parseLong(txtMaHangHoa.getText());
+        String tenSp = txtTenHangHoa.getText();
+        String loaiHang = txtLoaiHang.getText();
+        String nhaCungCap = txtNhaCungCap.getText();
+        int soLuong = Integer.parseInt(txtSoLuong.getText());
+        double donGia = Double.parseDouble(txtDonGia.getText());
+        Product p = new Product(maSp, tenSp, nhaCungCap, loaiHang, donGia, soLuong);
+        return ProductService.putRequest(p);
     }
 }

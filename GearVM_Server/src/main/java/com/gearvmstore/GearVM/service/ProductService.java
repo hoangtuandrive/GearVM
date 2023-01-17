@@ -28,8 +28,10 @@ public class ProductService {
     public Product updateProduct(Long productId, Product productDetails){
         Product p = productRepository.findById(productId).get();
         p.setName(productDetails.getName());
+        p.setBrand(productDetails.getBrand());
+        p.setType(productDetails.getType());
         p.setPrice(productDetails.getPrice());
-
+        p.setQuantity(productDetails.getQuantity());
         return productRepository.save(p);
     }
 }
