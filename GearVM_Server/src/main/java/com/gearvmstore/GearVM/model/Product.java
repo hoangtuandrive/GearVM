@@ -24,6 +24,10 @@ public class Product {
     private String brand;
     @Column(columnDefinition = "nvarchar(255)")
     private String type;
+
+    @Column(columnDefinition = "nvarchar(255)")
+    private String imageUri;
+
     @Column(columnDefinition = "LONGTEXT")
     private String description;
     private double price;
