@@ -67,6 +67,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnThem = new JButton();
         btnSua = new JButton();
         btnXoa = new JButton();
+        btnChiTiet = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -196,6 +197,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnThem.setText("THÊM");
         btnSua.setText("SỬA");
         btnXoa.setText("XÓA");
+        btnChiTiet.setText("CHI TIẾT");
 
         btnThem.setBackground(new Color(0, 148, 224));
         btnThem.setForeground(Color.WHITE);
@@ -206,6 +208,9 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnXoa.setBackground(new Color(0, 148, 224));
         btnXoa.setForeground(Color.WHITE);
         btnXoa.setFocusPainted(false);
+        btnChiTiet.setBackground(new Color(0, 148, 224));
+        btnChiTiet.setForeground(Color.WHITE);
+        btnChiTiet.setFocusPainted(false);
 
         javax.swing.GroupLayout pnChucNangLayout = new javax.swing.GroupLayout(pnChucNang);
         pnChucNang.setLayout(pnChucNangLayout);
@@ -214,25 +219,39 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnThem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSua)
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnChiTiet)
+                        .addGap(48, 48, 48))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
+//                        .addGap(40)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChiTiet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
                         .addGap(48, 48, 48)));
+
         pnChucNangLayout.setVerticalGroup(pnChucNangLayout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnChucNangLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnThem).addComponent(btnSua).addComponent(btnXoa))
+                                .addComponent(btnThem).addComponent(btnSua))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnChiTiet).addComponent(btnXoa))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         pnThongTin.setBackground(new Color(219, 243, 255));
         pnChucNang.setBackground(new Color(219, 243, 255));
-        btnThem.setBackground(new Color(0, 148, 224));
-        btnThem.setForeground(Color.WHITE);
-        btnThem.setFocusPainted(false);
-        btnSua.setBackground(new Color(0, 148, 224));
-        btnSua.setForeground(Color.WHITE);
-        btnSua.setFocusPainted(false);
-        btnXoa.setBackground(new Color(0, 148, 224));
-        btnXoa.setForeground(Color.WHITE);
-        btnXoa.setFocusPainted(false);
+//        btnThem.setBackground(new Color(0, 148, 224));
+//        btnThem.setForeground(Color.WHITE);
+//        btnThem.setForeground(Color.WHITE);
+//        btnThem.setFocusPainted(false);
+//        btnSua.setBackground(new Color(0, 148, 224));
+//        btnSua.setForeground(Color.WHITE);
+//        btnSua.setFocusPainted(false);
+//        btnXoa.setBackground(new Color(0, 148, 224));
+//        btnXoa.setForeground(Color.WHITE);
+//        btnXoa.setFocusPainted(false);
+//        btnChiTiet.setBackground(new Color(0, 148, 224));
+//        btnChiTiet.setForeground(Color.WHITE);
+//        btnChiTiet.setFocusPainted(false);
 
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
@@ -316,6 +335,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnThem.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnSua.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnChiTiet.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -334,6 +354,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnSua.addActionListener(this);
         btnXoa.addActionListener(this);
         btnTim.addActionListener(this);
+        btnChiTiet.addActionListener(this);
         tableHangHoa.addMouseListener(this);
 
         readDatabaseToTable();
@@ -390,6 +411,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private JButton btnSua;
     private JButton btnThem;
     private JButton btnXoa;
+    private JButton btnChiTiet;
     private java.awt.Label lblDonGia;
     private java.awt.Label lblNhaCungCap;
     private java.awt.Label lblSoLuong;
@@ -511,7 +533,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                             JOptionPane.INFORMATION_MESSAGE);
                     readDatabaseToTable();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " +  txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                    JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
