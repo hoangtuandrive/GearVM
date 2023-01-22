@@ -45,7 +45,6 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        System.out.println(response);
         return !response.toString().isEmpty();
     }
 }
