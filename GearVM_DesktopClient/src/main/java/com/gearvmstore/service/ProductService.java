@@ -3,6 +3,7 @@ package com.gearvmstore.service;
 import com.gearvmstore.model.Product;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -24,7 +25,7 @@ public class ProductService extends ApiService {
         json.put("type", p.getType());
         json.put("price", p.getPrice());
         json.put("quantity", p.getQuantity());
-        StringEntity se = new StringEntity( json.toString(), StandardCharsets.UTF_8);
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
@@ -41,7 +42,27 @@ public class ProductService extends ApiService {
         json.put("type", p.getType());
         json.put("price", p.getPrice());
         json.put("quantity", p.getQuantity());
-        StringEntity se = new StringEntity( json.toString(), StandardCharsets.UTF_8);
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return !response.toString().isEmpty();
+    }
+
+    public static boolean patchDescriptionRequest(String description, String id) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + id);
+        StringEntity se = new StringEntity(description, StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return !response.toString().isEmpty();
+    }
+
+    public static boolean patchImageUriRequest(String uri, String id) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + "image/" + id);
+        StringEntity se = new StringEntity(uri, StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);

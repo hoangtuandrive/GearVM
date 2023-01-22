@@ -13,29 +13,38 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @RequestMapping(value="/products", method= RequestMethod.POST)
+    @RequestMapping(value = "/products", method = RequestMethod.POST)
     public Product createProduct(@RequestBody Product p) {
         return productService.createProduct(p);
     }
 
-    @RequestMapping(value="/products", method=RequestMethod.GET)
-    public List<Product> readProducts(){
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public List<Product> readProducts() {
         return productService.getProducts();
     }
 
-    @RequestMapping(value="/products/{productId}", method=RequestMethod.GET)
-    public Product findProduct(@PathVariable(value = "productId") Long id){
+    @RequestMapping(value = "/products/{productId}", method = RequestMethod.GET)
+    public Product findProduct(@PathVariable(value = "productId") Long id) {
         return productService.getProduct(id);
     }
 
-    @RequestMapping(value="/products/{productId}", method=RequestMethod.PUT)
-    public Product updateProduct(@PathVariable(value = "productId") Long id, @RequestBody Product productDetails){
+    @RequestMapping(value = "/products/{productId}", method = RequestMethod.PUT)
+    public Product updateProduct(@PathVariable(value = "productId") Long id, @RequestBody Product productDetails) {
         return productService.updateProduct(id, productDetails);
     }
 
-    @RequestMapping(value="products/{productId}", method=RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable(value = "productId") Long id){
-        productService.deleteProduct(id);
+    @RequestMapping(value = "products/{productId}", method = RequestMethod.PATCH)
+    public Product updateImageUri(@PathVariable(value = "productId") Long id, @RequestBody String description) {
+        return productService.updateDescription(id, description);
     }
 
+    @RequestMapping(value = "products/image/{productId}", method = RequestMethod.PATCH)
+    public Product updateDescription(@PathVariable(value = "productId") Long id, @RequestBody String uri) {
+        return productService.updateImageUri(id, uri);
+    }
+
+    @RequestMapping(value = "products/{productId}", method = RequestMethod.DELETE)
+    public void deleteProduct(@PathVariable(value = "productId") Long id) {
+        productService.deleteProduct(id);
+    }
 }

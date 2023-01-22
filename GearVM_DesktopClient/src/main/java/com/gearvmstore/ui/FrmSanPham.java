@@ -540,6 +540,13 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 throw new RuntimeException(ex);
             }
         }
+        if(o.equals(btnChiTiet)){
+            try {
+                new FrmChiTietSanPham(getProductRequest());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -596,6 +603,12 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         txtSoLuong.setText(null);
         txtNhaCungCap.setText(null);
         txtLoaiHang.setText(null);
+    }
+
+    public Product getProductRequest() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        BufferedReader rd = ProductService.getRequest(tableName, txtMaHangHoa.getText());
+        return mapper.readValue(rd, Product.class);
     }
 
     public boolean postRequest() throws IOException {

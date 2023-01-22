@@ -4,6 +4,7 @@ import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.List;
 
@@ -32,6 +33,18 @@ public class ProductService {
         p.setType(productDetails.getType());
         p.setPrice(productDetails.getPrice());
         p.setQuantity(productDetails.getQuantity());
+        return productRepository.save(p);
+    }
+
+    public Product updateImageUri(Long productId, String uri){
+        Product p = productRepository.findById(productId).get();
+        p.setImageUri(uri);
+        return productRepository.save(p);
+    }
+
+    public Product updateDescription(Long productId, String description){
+        Product p = productRepository.findById(productId).get();
+        p.setDescription(description);
         return productRepository.save(p);
     }
 }

@@ -2,41 +2,52 @@ package com.gearvmstore.ui;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmstore.model.Product;
+import com.gearvmstore.service.ProductService;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import sun.misc.Unsafe;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 public class FrmChiTietSanPham extends JFrame implements ActionListener {
-
-    //    private JFrame mainFrame;
-//    private JLabel headerLabel;
-//    private JLabel statusLabel;
-//    private JPanel controlPanel;
     private JButton browseButton;
     private JButton saveButton;
     private JButton cancelButton;
     private JLabel imageLbl;
     private JTextArea idTxt;
     private JTextArea nameTxt;
-    private JTextArea detailTxt;
+    private JTextArea descriptionTxt;
     private JScrollPane scrollPane;
-//    private JTextField idTxt;
-//    private JTextField nameTxt;
-    
+    private File selectedFile = null;
+    private String productId = null;
 
-    public FrmChiTietSanPham(Product product) {
+    public FrmChiTietSanPham(Product product) throws IOException {
 //        prepareGUI();
         super("Chi tiết sản phẩm");
+        productId = product.getId().toString();
+        disableWarning();
+        FlatLightLaf.setup();
         setSize(1000, 600);
         this.setLocationRelativeTo(null);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         browseButton = new JButton("Chọn ảnh");
         browseButton.setBounds(200, 480, 100, 40);
@@ -59,10 +70,14 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         nameTxt.setBackground(Color.WHITE);
         nameTxt.setEditable(false);
 
-        detailTxt = new JTextArea();
-        scrollPane = new JScrollPane(detailTxt);
+        Border border = BorderFactory.createTitledBorder("Mô tả sản phẩm: ");
+        descriptionTxt = new JTextArea(product.getDescription());
+        descriptionTxt.setLineWrap(true);
+        scrollPane = new JScrollPane(descriptionTxt);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(650, 100, 300, 360);
-
+        scrollPane.setBorder(border);
 
         add(browseButton);
         add(saveButton);
@@ -72,73 +87,76 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         add(nameTxt);
         add(scrollPane);
 
+        if(product.getImageUri() != null)
+            imageLbl.setIcon(getImage(product.getImageUri()));
         browseButton.addActionListener(this);
+        saveButton.addActionListener(this);
+        cancelButton.addActionListener(this);
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-//        FrmChiTietSanPham swingControlDemo = new FrmChiTietSanPham();
-//        swingControlDemo.showImageIconDemo();
-            disableWarning();
-            FlatLightLaf.setup();
-            Product p = new Product();
-            p.setId(1L);
-            p.setName("Product 11111111111111111111111111111111111111111111111111111111111111111111111111111111");
-            new FrmChiTietSanPham(p);
+    private ImageIcon getImage(String imageUri) throws IOException {
+        ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+        Region region = Region.AP_SOUTHEAST_1;
+        S3Client s3 = S3Client.builder()
+                .region(region)
+                .credentialsProvider(credentialsProvider)
+                .build();
+
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket("gearvm")
+                .key(imageUri)
+                .build();
+
+        ResponseInputStream<GetObjectResponse> input = s3.getObject(getObjectRequest);
+        BufferedImage br = ImageIO.read(input);
+        ImageIcon imageIcon = new ImageIcon(br);
+        Image tempImg = imageIcon.getImage();
+        Image newImg = tempImg.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
+        return new ImageIcon(newImg);
     }
 
-//    private void prepareGUI() {
-//        mainFrame = new JFrame("Vi du ImageIcon - Java Swing");
-//        mainFrame.setSize(700, 400);
-//        mainFrame.setLayout(new GridLayout(3, 1));
-//        mainFrame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent windowEvent) {
-//                System.exit(0);
-//            }
-//        });
-//        headerLabel = new JLabel("", JLabel.CENTER);
-//        statusLabel = new JLabel("", JLabel.CENTER);
-//        statusLabel.setSize(300, 100);
-//        controlPanel = new JPanel();
-//        controlPanel.setLayout(new FlowLayout());
-//        mainFrame.add(headerLabel);
-//        mainFrame.add(controlPanel);
-//        mainFrame.add(statusLabel);
-//        mainFrame.setVisible(true);
-//    }
-
-//    private void showImageIconDemo() throws IOException {
-//        ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
-//        Region region = Region.AP_SOUTHEAST_1;
-//        S3Client s3 = S3Client.builder()
-//                .region(region)
-//                .credentialsProvider(credentialsProvider)
-//                .build();
-//
-//        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-//                .bucket("gearvm")
-//                .key("WeWork_PrivateOffice-1440x810.jpg")
-//                .build();
-//
-//        ResponseInputStream<GetObjectResponse> input = s3.getObject(getObjectRequest);
-//        BufferedImage image = ImageIO.read(input);
-//
-////        listBucketObjects(s3, bucketName);
-//        s3.close();
-//
-//        headerLabel.setText("Control in action: ImageIcon");
-//        ImageIcon icon = new ImageIcon(image, "Lock");
-//        JLabel commentlabel = new JLabel("This is lock icon", icon, JLabel.CENTER);
-//        controlPanel.add(commentlabel);
-//        mainFrame.setVisible(true);
-//    }
-
-    //TODO: WORK IN PROGRESS https://1bestcsharp.blogspot.com/2015/04/java-how-to-browse-image-file-and-And-Display-It-Using-JFileChooser-In-Java.html
     public ImageIcon ResizeImage(String ImagePath) {
-        ImageIcon MyImage = new ImageIcon(ImagePath);
-        Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(ImagePath);
+        Image tempImg = imageIcon.getImage();
+        Image newImg = tempImg.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
         return new ImageIcon(newImg);
+    }
+
+    private static void disableWarning() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe) theUnsafe.get(null);
+
+            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    private void putObjectS3() throws IOException {
+        ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+        Region region = Region.AP_SOUTHEAST_1;
+        S3Client s3 = S3Client.builder()
+                .region(region)
+                .credentialsProvider(credentialsProvider)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + ".jpg";
+        PutObjectRequest objectRequest = PutObjectRequest.builder()
+                .bucket("gearvm")
+                .key(fileName)
+                .build();
+        s3.putObject(objectRequest, RequestBody.fromFile(selectedFile));
+        ProductService.patchImageUriRequest(fileName, productId);
+    }
+
+    private boolean patchDescriptionRequest() throws IOException {
+        String description = descriptionTxt.getText();
+        return ProductService.patchDescriptionRequest(description, productId);
     }
 
     @Override
@@ -153,7 +171,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
             int result = file.showSaveDialog(null);
             //if the user click on save in Jfilechooser
             if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = file.getSelectedFile();
+                selectedFile = file.getSelectedFile();
                 String path = selectedFile.getAbsolutePath();
                 imageLbl.setIcon(ResizeImage(path));
             }
@@ -163,18 +181,20 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-    private static void disableWarning() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe) theUnsafe.get(null);
-
-            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception e) {
-            // ignore
+        if (o.equals(saveButton)) {
+            try {
+                if (patchDescriptionRequest()) {
+                    JOptionPane.showMessageDialog(this, "Sửa mô tả sản phẩm thành công!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    if (selectedFile != null)
+                        putObjectS3();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Sửa mô tả sản phẩm thất bại!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	public GUI() throws IOException {
 		FlatLightLaf.setup();
-		setTitle("QUẢN LÝ SIÊU THỊ");
+		setTitle("GearVM");
 		setResizable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
