@@ -46,7 +46,8 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         disableWarning();
         FlatLightLaf.setup();
         setSize(1000, 600);
-        this.setLocationRelativeTo(null);
+        setResizable(false);
+        setLocationRelativeTo(null);
         setLayout(null);
 
         browseButton = new JButton("Chọn ảnh");
@@ -57,6 +58,8 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         cancelButton.setBounds(520, 480, 100, 40);
         imageLbl = new JLabel();
         imageLbl.setBounds(10, 10, 600, 450);
+        Border imageBorder = BorderFactory.createTitledBorder("Hình ảnh sản phẩm: ");
+
 
         idTxt = new JTextArea("Mã sản phẩm: " + product.getId());
         idTxt.setBounds(650, 10, 200, 50);
@@ -70,14 +73,14 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         nameTxt.setBackground(Color.WHITE);
         nameTxt.setEditable(false);
 
-        Border border = BorderFactory.createTitledBorder("Mô tả sản phẩm: ");
         descriptionTxt = new JTextArea(product.getDescription());
         descriptionTxt.setLineWrap(true);
         scrollPane = new JScrollPane(descriptionTxt);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(650, 100, 300, 360);
-        scrollPane.setBorder(border);
+        Border descriptionBorder = BorderFactory.createTitledBorder("Mô tả sản phẩm: ");
+        scrollPane.setBorder(descriptionBorder);
 
         add(browseButton);
         add(saveButton);

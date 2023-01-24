@@ -39,7 +39,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
-    private static final String tableName = "products";
+    private static final String tableName = "products/";
     private JComboBox<String> cmbChon;
     private static JComboBox<String> cmbTim;
     private JButton btnTim;
