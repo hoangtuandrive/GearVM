@@ -13,15 +13,15 @@ import Acount from "../../Custom/Acount/Acount";
 const { Search } = Input;
 const cx = classNames.bind(styles);
 const Header = () => {
-  const productUrl = "http://localhost:8080/api/products";
-  // const fetchProduct = () => {
-  //   fetch(productUrl)
-  //     .then((data) => data.json())
-  //     .then((data) => console.log(data));
-  // };
-  // useEffect(() => {
-  //   fetchProduct();
-  // }, []);
+  const productUrl = "http://localhost:8080/api/products/";
+  const fetchProduct = () => {
+    fetch(productUrl)
+      .then((data) => data.json())
+      .then((data) => console.log(data));
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   document.addEventListener("scroll", () => {
     const top = document.documentElement.scrollTop;
@@ -41,7 +41,10 @@ const Header = () => {
 
     <div className={cx("wrap")}>
       <div className={cx("commercial")}>
-        <Image src={require("../../../assets/commercial.png")} />
+        <Image 
+        src={require("../../../assets/commercial.png")}
+        //  src={'https://bucketname.s3.ap-southeast-1.amazonaws.com/gearvm/80b58a0b-211c-43db-ad2b-f4cdbeb1c007.jpg'}
+        />
       </div>
       <div className="wrapnav_about">
         <div className={cx("wrapNavbar")}>
@@ -75,6 +78,7 @@ const Header = () => {
             <div className={cx("sale")}>
               <img
                 src={require("../../../assets/iconSale.jpg")}
+              // src={'https://bucketname.s3.ap-southeast-1.amazonaws.com/gearvm/80b58a0b-211c-43db-ad2b-f4cdbeb1c007.jpg'}
                 className={cx("saleLogo")}
               />
               <h5 className={cx("lblAccess")}>Khuyến Mãi</h5>

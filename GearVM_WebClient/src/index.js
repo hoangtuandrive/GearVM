@@ -5,11 +5,14 @@ import './index.css';
 import 'antd/dist/reset.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-
+import store from './redux/stores/store';
+import { Provider } from 'react-redux';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

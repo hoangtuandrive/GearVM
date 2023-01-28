@@ -3,8 +3,24 @@ import  styles  from './ProductView.module.scss'
 import classNames from 'classnames/bind'
 import CustomDiscount from '../customDiscount/CustomDiscount'
 import { useNavigate,useLocation} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import CartSlice from '../../redux/slices/CartSlices'
 const cx= classNames.bind(styles)
+
 const ProductView = () => {
+  const product={
+    id:1,
+    img:'https://betanews.com/wp-content/uploads/2014/11/front.jpg',
+    name:'Acer',
+    price:'12.000.000',
+    discount:'4'
+  }
+ 
+  const dispatch=useDispatch();
+  const handleAddToCart = (product) => {
+    dispatch(CartSlice.actions.addTocart(product))
+  };
+
   let location=useLocation();
   let query=new URLSearchParams(location.search)
   console.log(query.get("name"))
@@ -59,7 +75,8 @@ const ProductView = () => {
             <CustomDiscount />
             <div className={cx('ProductView_btn')}>
                 <input type='button' value='Mua Ngay'  className={cx('ProductView_btn_Buy')}/>
-                <input type='button' value='Thêm Vào Giỏ Hàng'  className={cx('ProductView_btn_Addcard')}/>
+                <input type='button' value='Thêm Vào Giỏ Hàng'  className={cx('ProductView_btn_Addcard')} 
+                onClick={() => handleAddToCart(product)}/>
 
             </div>
         </div>

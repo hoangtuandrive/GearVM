@@ -4,10 +4,34 @@ import classNames from 'classnames/bind'
 import Table from 'react-bootstrap/Table';
 import CheckBox from '../Catalog/CusCheckbox/CheckBox';
 import { Checkbox } from 'antd';
-
+import { useDispatch,useSelector } from 'react-redux';
+import CartSlice from '../../redux/slices/CartSlices';
 
 const cx= classNames.bind(styles)
 const ListCart = () => {
+  const product={
+    id:1,
+    img:'https://betanews.com/wp-content/uploads/2014/11/front.jpg',
+    name:'Acer',
+    price:'12.000.000',
+    discount:'4'
+  }
+ 
+  const dispatch=useDispatch();
+  const cart=useSelector((state)=>state.todoCart);
+ 
+  const handleAddToCart = (product) => {
+    dispatch( CartSlice.actions.addTocart(product));
+    console.log(cart);
+  };
+  const handleSubToCart = (product) => {
+    dispatch( CartSlice.actions.subTocart(product));
+    console.log(cart);
+  };
+  const handleRemoveCart = (product) => {
+    dispatch( CartSlice.actions.removeCart(product));
+    console.log(cart);
+  };
   return (
     <div className={cx('wrapListCart')}>
         <div className={cx('wrapListCart_Content')}>
@@ -44,12 +68,18 @@ const ListCart = () => {
             </td>
           <td>
             <div className={cx('wrapListCart_Content_quantity')}>
-            <button className={cx('wrapListCart_Content_quantity_btnsub')}>-</button>
+            <button className={cx('wrapListCart_Content_quantity_btnsub')}
+             onClick={() => handleSubToCart(product)}>-</button>
             <input type='text' defaultValue={1} className={cx('wrapListCart_Content_quantity_text')}/>
-            <button className={cx('wrapListCart_Content_quantity_btnadd')}>+</button>
+            <button className={cx('wrapListCart_Content_quantity_btnadd')} 
+            onClick={() => handleAddToCart(product)}>
+              +
+            </button>
             </div>
             <div >
-                <button className={cx('wrapListCart_Content_quantity_remove')}>Xóa</button>
+                <button className={cx('wrapListCart_Content_quantity_remove')}
+                onClick={() => handleRemoveCart(product)}
+                >Xóa</button>
                 </div>
           </td>
           <td>  <h5>30.889.000đ</h5></td>
