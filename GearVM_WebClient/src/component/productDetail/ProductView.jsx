@@ -2,30 +2,52 @@ import React from 'react'
 import  styles  from './ProductView.module.scss'
 import classNames from 'classnames/bind'
 import CustomDiscount from '../customDiscount/CustomDiscount'
-import { useNavigate,useLocation} from 'react-router-dom'
+import { useNavigate,useLocation, useNavigation} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import CartSlice from '../../redux/slices/CartSlices'
+import { useEffect } from 'react'
+import axios from 'axios'
+import { useState } from 'react'
 const cx= classNames.bind(styles)
 
 const ProductView = () => {
-  const product={
-    id:1,
-    img:'https://betanews.com/wp-content/uploads/2014/11/front.jpg',
-    name:'Acer',
-    price:'12.000.000',
-    discount:'4'
-  }
- 
-  const dispatch=useDispatch();
-  const handleAddToCart = (product) => {
-    dispatch(CartSlice.actions.addTocart(product))
-  };
-
+  const [productDetail,setProductDetail]= useState([]);
+  const navigate= useNavigate();
   let location=useLocation();
   let query=new URLSearchParams(location.search)
-  console.log(query.get("name"))
+  const productId= query.get("id")
+  
+
+  const productUrl = `http://localhost:8080/api/products/${productId}`;
+  
+  useEffect(() => {
+    const fetchProduct =  async () => {
+      try{
+        const rep= await axios.get(productUrl);
+        setProductDetail(rep.data);
+      }
+      catch(error){
+        console.log(error);
+      }     
+    };
+    fetchProduct();
+  }, []);
+
+  const dispatch=useDispatch();
+  const handleAddToCart = (product) => {
+    dispatch(CartSlice.actions.addTocart(product));
+
+
+  };
+  const handleBuyToCart = (product) => {
+    dispatch(CartSlice.actions.addTocart(product));
+    navigate('/cart', { replace: true });
+
+  };
+
   return (
     <div className={cx('wrapProductView')}>
+      {console.log(productDetail)}
         <div className={cx('ProductView_Img')}>
             <img src='https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw'
              className={cx('ProductView_Img_main')} />
@@ -74,9 +96,11 @@ const ProductView = () => {
             </div>
             <CustomDiscount />
             <div className={cx('ProductView_btn')}>
-                <input type='button' value='Mua Ngay'  className={cx('ProductView_btn_Buy')}/>
+                <input type='button' value='Mua Ngay'  className={cx('ProductView_btn_Buy')}
+                  onClick={() => handleBuyToCart(productDetail)}
+                />
                 <input type='button' value='Thêm Vào Giỏ Hàng'  className={cx('ProductView_btn_Addcard')} 
-                onClick={() => handleAddToCart(product)}/>
+                onClick={() => handleAddToCart(productDetail)}/>
 
             </div>
         </div>

@@ -10,7 +10,7 @@ const ItemProduct = (props) => {
     <div className={cx('wrapItemProduct')}>
         <div  className={cx('imgProduct')}>
             <Image       
-            src={props.data.img}
+            src={'https://betanews.com/wp-content/uploads/2014/11/front.jpg'}
             />
         </div>   
         <div className={cx('textProduct')}>
@@ -21,7 +21,7 @@ const ItemProduct = (props) => {
             <h5 className={cx('txtDiscount')}>{props.data.discount}%</h5>
             </div>
           </div>
-          <h5 className={cx('txt_pricereal')}>Giá Thật</h5>
+          <h5 className={cx('txt_pricereal')}>{props.data.price}đ</h5>
         </div>   
     </div>
   )
