@@ -38,7 +38,7 @@ public class ProductController {
         return productService.updateDescription(id, description);
     }
 
-    @RequestMapping(value = "image/{productId}", method = RequestMethod.PATCH)
+        @RequestMapping(value = "image/{productId}", method = RequestMethod.PATCH)
     public Product updateDescription(@PathVariable(value = "productId") Long id, @RequestBody String uri) {
         return productService.updateImageUri(id, uri);
     }

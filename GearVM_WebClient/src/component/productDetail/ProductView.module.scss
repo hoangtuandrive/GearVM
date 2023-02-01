@@ -75,7 +75,8 @@ span.ProductView_txtTrademark_Name{
 }
 .ProductView_btn_Buy{
     width: 100%;
-    line-height: 5vh;
+
+    text-align: center;
     background-color: rgb(20, 53, 195);
     border-color: rgb(20, 53, 195);
     border-radius: 4px;
@@ -83,8 +84,8 @@ span.ProductView_txtTrademark_Name{
 }
 .ProductView_btn_Addcard{
     width: 100%;
-    line-height: 5vh;
-    
+    // line-height: 5vh;
+
     margin: 5px;
     background-color: white;
     border-color: rgb(20, 53, 195);
