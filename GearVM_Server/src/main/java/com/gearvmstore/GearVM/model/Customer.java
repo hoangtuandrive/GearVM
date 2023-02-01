@@ -1,13 +1,13 @@
 package com.gearvmstore.GearVM.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -24,6 +24,7 @@ public class Customer{
 	private Gender gender;
 	@Column(columnDefinition = "nchar(10)", name = "phone_number")
 	private String phoneNumber;
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(columnDefinition = "date", name = "data_of_birth")
 	private Date dateOfBirth;
 	@Column(columnDefinition = "nvarchar(100)")

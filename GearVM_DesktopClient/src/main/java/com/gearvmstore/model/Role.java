@@ -1,5 +1,5 @@
 package com.gearvmstore.model;
 
 public enum Role {
-    MANAGER, EMPLOYEE
+    EMPLOYEE, MANAGER
 }

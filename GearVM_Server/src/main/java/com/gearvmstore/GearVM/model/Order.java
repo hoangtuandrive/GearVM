@@ -1,13 +1,13 @@
 package com.gearvmstore.GearVM.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -24,6 +24,7 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customerId;
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date createdDate;
 	@Column(columnDefinition = "double")
 	private double total;
@@ -31,6 +32,8 @@ public class Order {
 	@OneToMany(mappedBy = "orderId")
 	@ToString.Exclude
 	private List<OrderDetail> orderDetails;
+	@OneToOne(mappedBy = "orderId")
+	private Discount discount;
 
 	public Order() {
 		super();
