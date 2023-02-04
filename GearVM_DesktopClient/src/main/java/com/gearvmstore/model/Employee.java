@@ -1,5 +1,6 @@
 package com.gearvmstore.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,7 +27,8 @@ public class Employee {
 	private double salary;
 	@Column(columnDefinition = "nchar(20)", name = "national_id")
 	private String nationalId;
-	@Column(columnDefinition = "date", name = "data_of_birth")
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	@Column(columnDefinition = "date", name = "date_of_birth")
 	private Date dateOfBirth;
 	@Column(columnDefinition = "nvarchar(100)")
 	private String address;
