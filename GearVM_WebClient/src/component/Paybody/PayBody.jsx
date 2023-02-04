@@ -4,6 +4,7 @@ import classNames from 'classnames/bind'
 import ItemCard from '../itemCard/ItemCard'
 import ModalAddress from '../ModalAddress/ModalAddress'
 import { AppContext } from '../context/AppProvider'
+import { Input } from 'antd'
 const cx= classNames.bind(styles)
 const PayBody = () => {
   const {setShow} = useContext(AppContext);
@@ -18,9 +19,13 @@ const PayBody = () => {
                   <h3>+</h3>
                   <h5  >Thêm Địa chỉ
                   </h5> 
-                  
-                </div>
-              </div>     
+                </div>  
+              </div>    
+              <div className={cx('wrapPayBody_right_address')}>
+                <h5>Mã giảm giá</h5>
+                  <Input placeholder='nhập mã giảm giá' />
+                
+              </div>  
             <div className={cx('wrapPayBody_right_metodpay')}>
                 <h5>Phương thức thanh toán</h5>
                 <div className={cx('wrapPayBody_right_metodpay_wrapbtn')}>

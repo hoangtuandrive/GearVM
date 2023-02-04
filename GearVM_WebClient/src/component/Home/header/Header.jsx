@@ -9,6 +9,7 @@ import Tippy from '@tippyjs/react/headless';
 import MenuCard from "../../card/Card";
 import MenuAcount from "../../MenuAcount/MenuAcount";
 import Acount from "../../Custom/Acount/Acount";
+import { useSelector } from "react-redux";
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
 const cx = classNames.bind(styles);
@@ -26,6 +27,9 @@ const Header = () => {
   const navigate = useNavigate();
   const handleShow = () => { navigate("/login", { replace: true });}
   const handleHome=() => { navigate("/", { replace: true });}
+  const cart=useSelector((state)=>state.todoCart);
+
+
   return (
 
     
@@ -88,7 +92,7 @@ const Header = () => {
             >      
             <div className={cx("cart")}>
               <ShoppingCartOutlined style={{ fontSize: 35 }} />
-              <h5 className={cx("lblAccess")}>Giỏ hàng </h5>
+              <h5 className={cx("lblAccess")}>Giỏ hàng của bạn ({cart.cartItems.length}) sản phẩm</h5>
             </div>                       
               </Tippy>
           

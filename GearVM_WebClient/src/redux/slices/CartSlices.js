@@ -16,7 +16,7 @@ const CartSlice =createSlice({
             const existingIndex = state.cartItems.findIndex(
                 (item) => item.id === action.payload.id
               );
-        
+           
               if (existingIndex >= 0) {
                 state.cartItems[existingIndex] = {
                   ...state.cartItems[existingIndex],
@@ -26,7 +26,7 @@ const CartSlice =createSlice({
                   position: "top-right",
                 });
               } else {
-                let tempProductItem = { ...action.payload, cartQuantity: 1 };
+                let tempProductItem = { ...action.payload, cartQuantity: 1,checkCart:true };
                 state.cartItems.push(tempProductItem);
                 toast.success("Tăng thêm 1 sản phẩm", {
                   position: "top-right",
@@ -38,7 +38,7 @@ const CartSlice =createSlice({
           const itemIndex = state.cartItems.findIndex(
             (item) => item.id === action.payload.id
           );
-    
+            
           if (state.cartItems[itemIndex].cartQuantity > 1) {
             state.cartItems[itemIndex].cartQuantity -= 1;
     
@@ -78,8 +78,11 @@ const CartSlice =createSlice({
           localStorage.setItem("cartItems",JSON.stringify(state.cartItems))
           toast.error("Xóa tất cả sản phẩm khỏi giỏ hàng", { position: "top-right" });
         },
-        totalCart(state,action){
-          let {total,quantity} = state.cartItems.reduce(
+        totalCart(state,action){     
+            const nextCartItems = state.cartItems.filter(
+                 (item) => item.checkCart === true
+               );                       
+          let {total,quantity} = nextCartItems.reduce(
             (cartTotal,cartItem)=>{
                 const {price,cartQuantity} = cartItem;
                 const itemTotal= price*cartQuantity;
@@ -96,6 +99,24 @@ const CartSlice =createSlice({
           total =parseFloat(total.toFixed(2));
           state.cartTotalQuantity=quantity;
           state.cartTotalAmount=total;
+        } ,
+        ChangeCheckCart(state,action){
+          const itemIndex = state.cartItems.findIndex(
+            (item) => item.id === action.payload.id
+          );
+          if (state.cartItems[itemIndex].checkCart === true) {
+            state.cartItems[itemIndex].checkCart = false;
+            toast.success("Đã bỏ chọn sản phẩm", {
+              position: "top-right",
+            });
+          }
+          else{
+            state.cartItems[itemIndex].checkCart = true;
+            toast.success("Đã chọn lại sản phẩm", {
+              position: "top-right",
+            });
+          }
+          localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         }
     }
 });

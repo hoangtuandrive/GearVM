@@ -1,0 +1,19 @@
+.WrapReview{
+    padding: 2rem 10rem;
+
+}
+.reviewComment{
+    display: flex;
+    flex-direction: column;
+}
+
+.reviewCommentTxt{
+    width: 80%;
+    height: 10rem;
+}
+.reviewCommenbtn{
+    max-width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

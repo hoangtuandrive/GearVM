@@ -2,16 +2,16 @@ import React from 'react'
 import  styles  from './ListCart.module.scss'
 import classNames from 'classnames/bind'
 import Table from 'react-bootstrap/Table';
-import CheckBox from '../Catalog/CusCheckbox/CheckBox';
-import { Checkbox, Input } from 'antd';
 import { useDispatch,useSelector } from 'react-redux';
 import CartSlice from '../../redux/slices/CartSlices';
 import { useState } from 'react';
 import { useEffect } from 'react';
-
+import ToggleCheckbox from './ToggleCheckbox';
 const cx= classNames.bind(styles)
 const ListCart = () => {
   const [quantity,setquantity]= useState(1)
+
+
   const dispatch=useDispatch();
 
   const cart=useSelector((state)=>state.todoCart);
@@ -20,6 +20,7 @@ const ListCart = () => {
 
   useEffect(()=>{
     dispatch(CartSlice.actions.totalCart());
+    console.log("cp1");
   },[cart,dispatch]) 
 
   const handleAddToCart = (product) => {
@@ -34,10 +35,10 @@ const ListCart = () => {
     dispatch( CartSlice.actions.removeCart(product));
   
   };
- 
  const  handleChangeQuantity  = (value) => {
     setquantity(value);
   }
+
   return (
     <div className={cx('wrapListCart')}>
         <div className={cx('wrapListCart_Content')}>
@@ -56,7 +57,13 @@ const ListCart = () => {
       {cart.cartItems && cart.cartItems.map((cartItem) => (  
       <tbody key={cartItem.id}>
         <tr  >
-          <td><Checkbox /></td>
+          <td >
+            
+            <ToggleCheckbox
+              cartItem={cartItem}
+            />
+            
+          </td>
           <td>
             <div className={cx('wrapListCart_Content_NameProduct')}>
                 <img  src='https://lh3.googleusercontent.com/skwj0sp9gWzzKtL3cuFtE7kncj6bDcdGfezZpM6WByG8MUAykq_97iN5EzZefQVDPJrrQOaE5yvOsRMKXEup3N7qOoRJpK4p_A=rw'
