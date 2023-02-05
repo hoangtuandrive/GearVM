@@ -38,14 +38,18 @@ public class CustomerController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
-            return ResponseEntity.badRequest().body("Login failed");
-        }
+//        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
+//            return ResponseEntity.badRequest().body("Login failed");
+//        }
         return ResponseEntity.ok().body(customerService.generateToken(loginDTO.getEmail()));
     }
 
-    @GetMapping(value = "info")
-    public Customer getCurrentCustomer() {
-
+    @RequestMapping(value = "email-exist")
+    public ResponseEntity<String> checkEmailExist(@RequestBody String email) {
+        //Tồn tại
+        System.out.println(customerService.checkEmailExist(email));
+        if (customerService.checkEmailExist(email)) return ResponseEntity.ok().body("true");
+            //Chưa tồn tại
+        else return ResponseEntity.ok().body("false");
     }
 }

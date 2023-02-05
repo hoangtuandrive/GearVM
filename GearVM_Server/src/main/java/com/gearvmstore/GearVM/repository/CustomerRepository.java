@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    //    @Query("SELECT count(c)>0 from Customer c where customer.email = ?1")
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 
     Customer findByEmail(String email);
 }

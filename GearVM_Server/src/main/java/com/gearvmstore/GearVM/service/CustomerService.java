@@ -38,6 +38,10 @@ public class CustomerService {
         customerRepository.deleteById(customerId);
     }
 
+    public boolean checkEmailExist(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
     public Customer register(Customer customer) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (!customerRepository.existsByEmail(customer.getEmail())) {
             customer.setPassword(hashPasswordUtil.generatePasswordHash(customer.getPassword()));
