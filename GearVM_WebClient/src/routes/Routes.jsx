@@ -3,8 +3,8 @@ import ProductDetail from "../pages/ProductDetail";
 import Cart from '../pages/Cart'
 import Catalog from "../pages/Catalog";
 import Pay from "../pages/Pay";
-import Login from "../pages/login";
-import Resign from "../pages/resign";
+import Login from "../pages/login/Login";
+import Resign from "../pages/resign/Register";
 import OrderManger from "../pages/OrderManger";
 const publicRoutes = [
   { path: "/", component: Home },

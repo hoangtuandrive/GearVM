@@ -1,118 +1,194 @@
 
-.account-common-page {
-    margin: auto;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    // margin: 2rem 0;
-    height: 100vh;
-    background-image: url('../../assets/Sale2.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-    .account-wrapper {
-        display: flex;
-        flex-direction: row;
-        width: 60%;
-        height: 70%;
-        margin: auto;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    }
-    .account_left {
-        width: 55%;
-        background: rgba(146, 139, 139, 0.723);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    }
-    .account_right {
-        background: #fff;
-        padding-top: 1rem;
-        width: 45%; 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .form-account{
-        width: 100%;
-        margin-left: 45px;
-    }
-    .form-account .box{
-        position: relative;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    .form-account .btnLogin{
-        width: 300px;
-        height: 35px;
-        border-radius: 10px;
-    }
-    input{
-        position: relative;
-        width: 300px;
-        height: 35px;
-        text-indent: 10px;
-        border: 2px solid rgba(0,0,0,0.2);
-        border-radius: 10px;
-        outline: none;
-        font-size: 1.1em;
-        transition: linear 0.2s;
-    }
+// .account-common-page {
+//     margin: auto;
+//     margin: auto;
+//     display: flex;
+//     align-items: center;
+//     // margin: 2rem 0;
+//     height: 100vh;
+//     background-image: url('../../assets/Sale2.jpg');
+//     background-size: cover;
+//     background-repeat: no-repeat;
+// }
+//     .account-wrapper {
+//         display: flex;
+//         flex-direction: row;
+//         width: 60%;
+//         height: 70%;
+//         margin: auto;
+//         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+//     }
+//     .account_left {
+//         width: 55%;
+//         background: rgba(146, 139, 139, 0.723);
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         img {
+//             max-width: 100%;
+//             max-height: 100%;
+//         }
+//     }
+//     .account_right {
+//         background: #fff;
+//         padding-top: 1rem;
+//         width: 45%; 
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: center;
+//     }
+//     .form-account{
+//         width: 100%;
+//         margin-left: 45px;
+//     }
+//     .form-account .box{
+//         position: relative;
+//         width: 100%;
+//         margin-bottom: 10px;
+//     }
+//     .form-account .btnLogin{
+//         width: 300px;
+//         height: 35px;
+//         border-radius: 10px;
+//     }
+//     input{
+//         position: relative;
+//         width: 300px;
+//         height: 35px;
+//         text-indent: 10px;
+//         border: 2px solid rgba(0,0,0,0.2);
+//         border-radius: 10px;
+//         outline: none;
+//         font-size: 1.1em;
+//         transition: linear 0.2s;
+//     }
     
-    .addtional-link {
-        margin-top: 5px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        a{  color: rgb(138, 138, 138);
-            margin-top: 5px;
-        }
-    }
-    .btnLoginFacebook{
-        margin-left: 55px;
-        width: 300px;
-        height: 35px;
-        border-radius: 10px;
-    }
-    .btnLoginGoogle{
-        margin-left: 55px;
-        width: 300px;
-        height: 35px;   
-        border-radius: 10px;
-    }
-@media screen and (max-width: 978px) {
-    .form-account .btnLogin{
-        width: 200px;
-        height: 35px;
-        border-radius: 10px;
-    }
-    input{
-        position: relative;
-        width: 200px;
-        height: 35px;
-        text-indent: 10px;
-        border: 2px solid rgba(0,0,0,0.2);
-        border-radius: 10px;
-        outline: none;
-        font-size: 1.1em;
-        transition: linear 0.2s;
-    }
-    .btnLoginFacebook{
-        margin-left: 55px;
-        width: 200px;
-        height: 35px;
-        border-radius: 10px;
-    }
-    .btnLoginGoogle{
-        margin-left: 55px;
-        width: 200px;
-        height: 35px;   
-        border-radius: 10px;
-    }
+//     .addtional-link {
+//         margin-top: 5px;
+//         text-align: center;
+//         display: flex;
+//         flex-direction: column;
+//         text-align: center;
+//         a{  color: rgb(138, 138, 138);
+//             margin-top: 5px;
+//         }
+//     }
+//     .btnLoginFacebook{
+//         margin-left: 55px;
+//         width: 300px;
+//         height: 35px;
+//         border-radius: 10px;
+//     }
+//     .btnLoginGoogle{
+//         margin-left: 55px;
+//         width: 300px;
+//         height: 35px;   
+//         border-radius: 10px;
+//     }
+// @media screen and (max-width: 978px) {
+//     .form-account .btnLogin{
+//         width: 200px;
+//         height: 35px;
+//         border-radius: 10px;
+//     }
+//     input{
+//         position: relative;
+//         width: 200px;
+//         height: 35px;
+//         text-indent: 10px;
+//         border: 2px solid rgba(0,0,0,0.2);
+//         border-radius: 10px;
+//         outline: none;
+//         font-size: 1.1em;
+//         transition: linear 0.2s;
+//     }
+//     .btnLoginFacebook{
+//         margin-left: 55px;
+//         width: 200px;
+//         height: 35px;
+//         border-radius: 10px;
+//     }
+//     .btnLoginGoogle{
+//         margin-left: 55px;
+//         width: 200px;
+//         height: 35px;   
+//         border-radius: 10px;
+//     }
+// }
+:root{
+    --bg1:#9b59b6;
+    --bg2:#3498db;
 }
+.wrapLogin{
+ 
+    // background-image: url('../../assets/login.jpg');
+    // background-size: cover;
+    background: linear-gradient(to bottom right,var(--bg1),var(--bg2),var(--bg1));
+    // background-position-y: -80px;
+    font-size: 16px;   
+}
+.LoginContent{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#form-login{
+    max-width: 400px;
+    border: 1px solid #f5f5f5;
+    border-radius: 50px 20px;
+    background: white;
+    flex-grow: 1;
+    padding: 30px 30px 40px;
+    // box-shadow: 0px 0px 17px 2px rgba(255, 255, 255, 0.8);
+}
+.logintxt{
+    color: black;
+}
+.form-group{
+    border-bottom: 1px solid black;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    display: flex;
+}
+.form-input{
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: black;
+    flex-grow: 1;
+}
+.form-submit{
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 15px;
+    color: black;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    transition: 0.25s ease-in-out;
+    margin-top: 30px;
+}
+.form-submit:hover{
+    border: 1px solid blue;
 
+}
+.addtional-link {
+            margin-top: 5px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            a{  
+                color: rgb(138, 138, 138);
+                margin-top: 5px;
+            }
+}
+.form-check-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.txtError{
+    color: red;
+}

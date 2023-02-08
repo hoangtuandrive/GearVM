@@ -5,12 +5,27 @@ import IMAGE_ACCOUNT_PAGE from "../../assets/Sale2.jpg";
 import "./login.scss";
 import CustomInput from "../../component/Custom/CustomInput";
 import { Controller, useForm } from "react-hook-form";
-
+import { useState } from "react";
+import { loginUser } from "../../redux/slices/AuthSlices";
+import { useDispatch } from "react-redux";
 const { Text, Title } = Typography;
 function Login() {
-  const navigate = useNavigate();
+  const dispatch= useDispatch();
+  // const navigate = useNavigate();
 
-  const { control, handleSubmit } = useForm();
+  // const { control } = useForm();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  
+ const  handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log(user);
+    dispatch( loginUser(user));
+  };
+
   
   return (
     <div className="account-common-page">
@@ -25,33 +40,36 @@ function Login() {
           <div className="form-account">
             <Row gutter={[0, 8]}>
               <Col span={18}>
-                <CustomInput
+                <input
                   type="text"
                   name="username"
+                  onChange={(e) => setUser({ ...user, email: e.target.value })
+                }
                   placeholder="Email"
-                  control={control}
-                  rules={{ required: "Email is required" }}
-                  maxLength={50}
-                  titleCol={24}
-                  inputCol={18}
+                  // control={control}
+                  // rules={{ required: "Email is required" }}
+                  // maxLength={50}
+                  // titleCol={24}
+                  // inputCol={18}
                 />
               </Col>
               <Col span={18}>
-                <CustomInput
+                <input
                   type="password"
                   name="password"
-                  control={control}
+                  onChange={(e) => setUser({ ...user, password: e.target.value })}
+                  // control={control}
                   placeholder="Password"
-                  rules={{
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password should be minimum 8 characters long",
-                    },
-                  }}
-                  maxLength={200}
-                  titleCol={24}
-                  inputCol={18}
+                  // rules={{
+                  //   required: "Password is required",
+                  //   minLength: {
+                  //     value: 8,
+                  //     message: "Password should be minimum 8 characters long",
+                  //   },
+                  // }}
+                  // maxLength={200}
+                  // titleCol={24}
+                  // inputCol={18}
                 />
               </Col>
               <Col span={18}>
@@ -61,6 +79,7 @@ function Login() {
                   type="primary"
                   htmlType="submit"
                   block
+                  onClick={handleSubmit}
                 >
                   Đăng Nhập
                 </Button>

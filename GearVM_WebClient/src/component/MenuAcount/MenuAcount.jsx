@@ -5,13 +5,18 @@ import classNames from 'classnames/bind'
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppProvider';
 import ModalUser from '../ModalUser/ModalUser';
+import { useDispatch } from 'react-redux';
+import authSlice from '../../redux/slices/AuthSlices';
 const cx=classNames.bind(styles);
 const MenuAcount = () => {
+   const dispatch= useDispatch()
   const {setUserOpen} =useContext(AppContext)
   const navigate= useNavigate();
     const handleOrder= ()=>{ navigate("/orderManager", { replace: true });}
     const handleOpenUser= ()=>{ setUserOpen(true)}
-
+const handleLogout= ()=>{
+   dispatch(authSlice.actions.logoutUser(null));
+}
   return (
     <div className={cx('wrapMenuAcount')}>
        <div className={cx('wrapMenuAcount_thumb')} onClick={handleOpenUser} >
@@ -26,7 +31,7 @@ const MenuAcount = () => {
           <LaptopOutlined />  
           <p className={cx('wrapMenuAcount_thumb_txt')}>Số địa chỉ</p>
        </div>
-       <input type='button' className={cx('wrapMenuAcount_thumb_btn')} value='Đăng xuất'/>
+       <input type='button' className={cx('wrapMenuAcount_thumb_btn')} value='Đăng xuất' onClick={handleLogout}/>
        <ModalUser />
     </div>
   
