@@ -39,11 +39,11 @@ public class CustomerService {
     }
 
     public boolean checkEmailExist(String email) {
-        return customerRepository.existsByEmail(email);
+        return !(customerRepository.findByEmail(email) == null);
     }
 
     public Customer register(Customer customer) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (!customerRepository.existsByEmail(customer.getEmail())) {
+        if (customerRepository.findByEmail(customer.getEmail()) == null) {
             customer.setPassword(hashPasswordUtil.generatePasswordHash(customer.getPassword()));
             return customerRepository.save(customer);
         }

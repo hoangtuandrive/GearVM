@@ -29,7 +29,7 @@ public class Customer {
     private Date dateOfBirth;
     @Column(columnDefinition = "nvarchar(100)")
     private String address;
-    @Column(columnDefinition = "nchar(20)")
+    @Column(columnDefinition = "nchar(50)")
     private String email;
     @Column(columnDefinition = "LONGTEXT")
     private String password;
