@@ -14,11 +14,9 @@ import java.util.List;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
-
     private final HashPasswordUtil hashPasswordUtil;
     private final JwtUtil jwtUtil;
-
-
+    
     @Autowired
     public CustomerService(CustomerRepository customerRepository, HashPasswordUtil hashPasswordUtil, JwtUtil jwtUtil) {
         this.customerRepository = customerRepository;

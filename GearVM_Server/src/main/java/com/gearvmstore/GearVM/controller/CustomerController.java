@@ -14,7 +14,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers/")
+@RequestMapping("/api/customers")
 public class CustomerController {
     private final CustomerService customerService;
     private final ModelMapper modelMapper;
@@ -25,7 +25,7 @@ public class CustomerController {
         this.modelMapper = modelMapper;
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Customer register(@RequestBody RegisterDTO registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = modelMapper.map(registerDTO, Customer.class);
         return customerService.register(customer);
@@ -36,7 +36,7 @@ public class CustomerController {
         return customerService.getCustomers();
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
 //        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
 //            return ResponseEntity.badRequest().body("Login failed");
@@ -44,8 +44,8 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerService.generateToken(loginDTO.getEmail()));
     }
 
-    @RequestMapping(value = "email-exist")
-    public ResponseEntity<String> checkEmailExist(@RequestBody String email) {
+    @GetMapping(value = "/email-exist/{email}")
+    public ResponseEntity<String> checkEmailExist(@PathVariable(value = "email") String email) {
         //Tồn tại
         System.out.println(customerService.checkEmailExist(email));
         if (customerService.checkEmailExist(email)) return ResponseEntity.ok().body("true");
