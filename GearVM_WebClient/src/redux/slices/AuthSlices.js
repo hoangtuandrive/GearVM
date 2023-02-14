@@ -12,6 +12,8 @@ const initialState={
     registerError: "",
     loginStatus: "",
     loginError: "",
+    emailStatus: false,
+    emailError:"",
     userLoaded:false,
 };
 export const registerUser= createAsyncThunk(
@@ -42,6 +44,18 @@ export  const loginUser = createAsyncThunk(
             });
         localStorage.setItem("token", token.data);
         return token.data;
+        } catch (error) {
+            console.log(error.reponse.data);
+            return rejectWithValue(error.reponse.data);
+        }
+    }
+)
+export const exitEmail= createAsyncThunk(
+    "auth/exitEmail",
+    async(values,{rejectWithValue})=>{
+        try {
+            const exit=await axios.get(`${url}/customers/email-exist/${values}`)
+            return exit.data;
         } catch (error) {
             console.log(error.reponse.data);
             return rejectWithValue(error.reponse.data);
@@ -121,6 +135,25 @@ const authSlice= createSlice({
                   loginStatus: "success",
                 };
               } else return state;
+        });
+        builder.addCase(exitEmail.pending,(state,action)=>{
+            return{
+                ...state,
+                emailStatus: false,
+            }
+        });
+        builder.addCase(exitEmail.rejected,(state,action)=>{
+            return{
+                ...state,
+                emailStatus: false,
+                emailError:action.payload
+            }
+        });
+        builder.addCase(exitEmail.fulfilled,(state,action)=>{
+            return{
+                ...state,
+                emailStatus: action.payload,
+            };
         });
     }
 });
