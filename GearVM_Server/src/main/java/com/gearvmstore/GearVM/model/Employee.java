@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -29,7 +29,7 @@ public class Employee {
     private String nationalId;
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(columnDefinition = "date", name = "date_of_birth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     @Column(columnDefinition = "nvarchar(100)")
     private String address;
     @Column(columnDefinition = "nchar(20)")

@@ -47,23 +47,6 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, String brand, String type, double price, int quantity) {
-        this.id = id;
-        this.name = name;
-        this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public Product(String name, String brand, String type, double price, int quantity) {
-        this.name = name;
-        this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

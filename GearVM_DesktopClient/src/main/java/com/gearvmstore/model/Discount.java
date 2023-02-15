@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,8 +19,7 @@ public class Discount {
 
     private int percentageDiscount;
     private double flatDiscount;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expirationDate;
+    private LocalDateTime expirationDate;
     private boolean isUsed;
 
     @OneToOne

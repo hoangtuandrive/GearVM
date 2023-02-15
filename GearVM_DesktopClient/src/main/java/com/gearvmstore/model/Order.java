@@ -1,12 +1,11 @@
 package com.gearvmstore.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,30 +13,30 @@ import java.util.List;
 @ToString
 @Entity(name = "order_customer")
 public class Order {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "order_id")
-	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "employee_id")
-	private Employee employeeId;
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	private Customer customerId;
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date createdDate;
-	@Column(columnDefinition = "double")
-	private double total;
-	
-	@OneToMany(mappedBy = "orderId")
-	@ToString.Exclude
-	private List<OrderDetail> orderDetails;
-	@OneToOne(mappedBy = "orderId")
-	private Discount discount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employeeId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customerId;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime createdDate;
+    @Column(columnDefinition = "double")
+    private double total;
 
-	public Order() {
-		super();
-	}
+    @OneToMany(mappedBy = "orderId")
+    @ToString.Exclude
+    private List<OrderDetail> orderDetails;
+    @OneToOne(mappedBy = "orderId")
+    private Discount discount;
+
+    public Order() {
+        super();
+    }
 
 //	public double tinhTongTien() {
 //		double tongTien = 0;
@@ -46,7 +45,7 @@ public class Order {
 //		}
 //		return tongTien;
 //	}
-	
+
 //	public Order(String id, Employee maNV, Customer maKH, Date ngayLapHoaDon) {
 //		this.id = id;
 //		this.maNV = maNV;
@@ -62,7 +61,7 @@ public class Order {
 //		this.cthd = orderDetail;
 //		this.tongTien = tinhTongTien();
 //	}
-	
+
 //	public Order(String id) {
 //		this.id = id;
 //	}
