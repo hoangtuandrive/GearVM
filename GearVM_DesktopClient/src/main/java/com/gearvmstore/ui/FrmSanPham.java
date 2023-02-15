@@ -493,6 +493,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         }
         if (soLuong.trim().length() > 0) {
             try {
+
                 int x = Integer.parseInt(soLuong);
                 if (x < 0) {
                     JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -603,6 +604,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         txtSoLuong.setText(null);
         txtNhaCungCap.setText(null);
         txtLoaiHang.setText(null);
+
     }
 
     public Product getProductRequest() throws IOException {
@@ -612,23 +614,23 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     public boolean postRequest() throws IOException {
-        String tenSp = txtTenHangHoa.getText();
-        String loaiHang = txtLoaiHang.getText();
-        String nhaCungCap = txtNhaCungCap.getText();
-        int soLuong = Integer.parseInt(txtSoLuong.getText());
-        double donGia = Double.parseDouble(txtDonGia.getText());
-        Product p = new Product(tenSp, nhaCungCap, loaiHang, donGia, soLuong);
+        Product p = new Product();
+        p.setName(txtTenHangHoa.getText());
+        p.setType(txtLoaiHang.getText());
+        p.setBrand(txtNhaCungCap.getText());
+        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
+        p.setPrice(Double.parseDouble(txtDonGia.getText()));
         return ProductService.postRequest(p);
     }
 
     public boolean putRequest() throws IOException {
-        long maSp = Long.parseLong(txtMaHangHoa.getText());
-        String tenSp = txtTenHangHoa.getText();
-        String loaiHang = txtLoaiHang.getText();
-        String nhaCungCap = txtNhaCungCap.getText();
-        int soLuong = Integer.parseInt(txtSoLuong.getText());
-        double donGia = Double.parseDouble(txtDonGia.getText());
-        Product p = new Product(maSp, tenSp, nhaCungCap, loaiHang, donGia, soLuong);
+        Product p = new Product();
+        p.setId(Long.parseLong(txtMaHangHoa.getText()));
+        p.setName(txtTenHangHoa.getText());
+        p.setType(txtLoaiHang.getText());
+        p.setBrand(txtNhaCungCap.getText());
+        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
+        p.setPrice(Double.parseDouble(txtDonGia.getText()));
         return ProductService.putRequest(p);
     }
 }

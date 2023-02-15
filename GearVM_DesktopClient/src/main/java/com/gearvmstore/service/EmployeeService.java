@@ -11,9 +11,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class EmployeeService extends ApiService {
     private static final String url = "http://localhost:8080/api/employees/";
@@ -26,10 +23,16 @@ public class EmployeeService extends ApiService {
         json.put("gender", e.getGender());
         json.put("phoneNumber", e.getPhoneNumber());
         json.put("salary", e.getSalary());
-        json.put("dateOfBirth", e.getDateOfBirth());
+
+        String dateFormat = String.format("%02d",e.getDateOfBirth().getDayOfMonth())
+                + "-" + String.format("%02d",e.getDateOfBirth().getMonthValue())
+                + "-" + e.getDateOfBirth().getYear();
+        json.put("dateOfBirth", dateFormat);
+
         json.put("address", e.getAddress());
         json.put("email", e.getEmail());
         json.put("role", e.getRole());
+        json.put("nationalId", e.getNationalId());
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
@@ -46,10 +49,16 @@ public class EmployeeService extends ApiService {
         json.put("gender", e.getGender());
         json.put("phoneNumber", e.getPhoneNumber());
         json.put("salary", e.getSalary());
-        json.put("dateOfBirth", e.getDateOfBirth());
+
+        String dateFormat = String.format("%02d",e.getDateOfBirth().getDayOfMonth())
+                + "-" + String.format("%02d",e.getDateOfBirth().getMonthValue())
+                + "-" + e.getDateOfBirth().getYear();
+        json.put("dateOfBirth", dateFormat);
+
         json.put("address", e.getAddress());
         json.put("email", e.getEmail());
         json.put("role", e.getRole());
+        json.put("nationalId", e.getNationalId());
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);

@@ -4,39 +4,83 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gearvmstore.model.Employee;
+import com.gearvmstore.model.Gender;
+import com.gearvmstore.model.Role;
+import com.gearvmstore.service.EmployeeService;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.toedter.calendar.JDateChooser;
 
-public class FrmNhanVien extends javax.swing.JFrame {
+public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, MouseListener {
+	private static final String tableName = "employees/";
 	private Boolean isQuanLy;
 	private JComboBox<String> cmbChon;
 	private static JComboBox<String> cmbTim;
 	private JButton btnTim;
+	private JButton btnSua;
+	private JButton btnThem;
+	private JButton btnXoa;
+	private java.awt.Label lblCMND;
+	private java.awt.Label lblChucVu;
+	private java.awt.Label lblGioiTinh;
+	private java.awt.Label lblNgaySinh;
+	private java.awt.Label lblSDT;
+	private java.awt.Label lblTen;
+	private java.awt.Label lblEmail;
+	private java.awt.Label lblDiaChi;
+	private java.awt.Label lblLuong;
+	private java.awt.Label lblmaNhanVien;
+	private java.awt.Label lblTrangThai;
+	private JPanel pnChucNang;
+	private JPanel pnThongTin;
+	private JScrollPane pntblNhanVien;
+	private static JTable tableNhanVien;
+	private JTextField txtCMND;
+	private JComboBox<String> cmbChucVu;
+	private JComboBox<String> cmbGioiTinh;
+	private JTextField txtMaNhanVien;
+	private JDateChooser txtNgaySinh;
+	private JTextField txtSDT;
+	private JTextField txtTen;
+	private JTextField txtLuong;
+	private JTextField txtEmail;
+	private JTextField txtDiaChi;
+	private JTextField txtTrangThai;
+	private JPanel pnlTimKiem;
+	private static DefaultTableModel modelNhanVien;
 
 
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
-	public JPanel createPanelNhanVien() throws RemoteException {
+	public JPanel createPanelNhanVien() throws IOException {
 		FlatLightLaf.setup();
 		pntblNhanVien = new JScrollPane();
 		tableNhanVien = new JTable();
@@ -130,10 +174,10 @@ public class FrmNhanVien extends javax.swing.JFrame {
 		lblLuong.setText("Lương:");
 		lblTrangThai.setText("Trạng Thái:");
 
-		txtNgaySinh.setDateFormatString("yyyy-MM-dd");
+		txtNgaySinh.setDateFormatString("dd-MM-yyyy");
 		txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
 
-		String[] gioitinh = { "Nam", "Nữ" };
+		String[] gioitinh = { "Nam", "Nữ", "Không xác định" };
 		cmbGioiTinh = new JComboBox<String>(gioitinh);
 
 		String[] chucvu = { "Nhân Viên", "Quản Lý" };
@@ -392,43 +436,59 @@ public class FrmNhanVien extends javax.swing.JFrame {
 		tableNhanVien.setDefaultEditor(Object.class, null);
 		tableNhanVien.getTableHeader().setReorderingAllowed(false);
 
+		btnThem.addActionListener(this);
+		btnSua.addActionListener(this);
+		btnXoa.addActionListener(this);
+		btnTim.addActionListener(this);
 
+		readDatabaseToTable();
 
 		return panel;
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private JButton btnSua;
-	private JButton btnThem;
-	private JButton btnXoa;
-	private java.awt.Label lblCMND;
-	private java.awt.Label lblChucVu;
-	private java.awt.Label lblGioiTinh;
-	private java.awt.Label lblNgaySinh;
-	private java.awt.Label lblSDT;
-	private java.awt.Label lblTen;
-	private java.awt.Label lblEmail;
-	private java.awt.Label lblDiaChi;
-	private java.awt.Label lblLuong;
-	private java.awt.Label lblmaNhanVien;
-	private java.awt.Label lblTrangThai;
-	private JPanel pnChucNang;
-	private JPanel pnThongTin;
-	private JScrollPane pntblNhanVien;
-	private static JTable tableNhanVien;
-	private JTextField txtCMND;
-	private JComboBox<String> cmbChucVu;
-	private JComboBox<String> cmbGioiTinh;
-	private JTextField txtMaNhanVien;
-	private JDateChooser txtNgaySinh;
-	private JTextField txtSDT;
-	private JTextField txtTen;
-	private JTextField txtLuong;
-	private JTextField txtEmail;
-	private JTextField txtDiaChi;
-	private JTextField txtTrangThai;
-	private JPanel pnlTimKiem;
-	private static DefaultTableModel modelNhanVien;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if (o.equals(btnThem)) {
+			try {
+				if (postRequest()) {
+					JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thành công",
+							JOptionPane.INFORMATION_MESSAGE);
+					readDatabaseToTable();
+				} else {
+					JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Thất bại",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
 
 	private void emptyTextField() {
 		txtMaNhanVien.setText(null);
@@ -441,5 +501,61 @@ public class FrmNhanVien extends javax.swing.JFrame {
 		txtEmail.setText(null);
 		txtDiaChi.setText(null);
 		txtLuong.setText(null);
+	}
+
+	public Employee getProductRequest() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		BufferedReader rd = EmployeeService.getRequest(tableName, txtMaNhanVien.getText());
+		return mapper.readValue(rd, Employee.class);
+	}
+
+	public boolean postRequest() throws IOException {
+		Employee e = new Employee();
+		e.setName(txtTen.getText());
+		e.setGender(getGenderFromField());
+		e.setNationalId(txtCMND.getText());
+		e.setPhoneNumber(txtSDT.getText());
+		e.setRole(getRoleFromField());
+		e.setAddress(txtDiaChi.getText());
+		e.setEmail(txtEmail.getText());
+		e.setSalary(Double.parseDouble(txtLuong.getText()));
+		Calendar birthdayCalendar = txtNgaySinh.getCalendar();
+		LocalDate birthdayLocalDate = LocalDate.ofInstant(birthdayCalendar.toInstant(), ZoneId.systemDefault());
+		e.setDateOfBirth(birthdayLocalDate);
+		return EmployeeService.postRequest(e);
+	}
+
+	public Gender getGenderFromField() {
+		int index = cmbGioiTinh.getSelectedIndex();
+		if (index == 0) return Gender.MALE;
+		else if (index == 1) return Gender.FEMALE;
+		else return Gender.UNDEFINED;
+	}
+
+	public Role getRoleFromField() {
+		int index = cmbChucVu.getSelectedIndex();
+		if (index == 0 ) return Role.EMPLOYEE;
+		else return Role.MANAGER;
+	}
+
+	public void readDatabaseToTable() throws IOException {
+		emptyTable();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DecimalFormat df = new DecimalFormat("#,##0");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		BufferedReader rd = EmployeeService.getAllRequest(tableName);
+		List<Employee> listEmployee = Arrays.asList(mapper.readValue(rd, Employee[].class));
+		for(Employee e : listEmployee){
+			modelNhanVien.addRow(new Object[] { e.getId(), e.getName().trim(),
+					dateFormat.format(e.getDateOfBirth()), e.getNationalId().trim(), e.getGender().toString(),
+					e.getPhoneNumber().trim(), e.getRole().toString(), e.getEmail().trim(), e.getAddress().trim(),
+					df.format(e.getSalary()), e.isWorkStatus() ? "Đang làm" : "Đã nghỉ việc" });
+		}
+	}
+
+	public static void emptyTable() {
+		DefaultTableModel dm = (DefaultTableModel) tableNhanVien.getModel();
+		dm.setRowCount(0);
 	}
 }
