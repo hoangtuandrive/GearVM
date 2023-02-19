@@ -5,6 +5,8 @@ import com.gearvmstore.GearVM.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -14,7 +16,7 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Employee createEmployee(@RequestBody Employee e) {
+    public Employee createEmployee(@RequestBody Employee e) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return employeeService.createEmployee(e);
     }
 
@@ -36,5 +38,10 @@ public class EmployeeController {
     @RequestMapping(value = "/{employeeId}", method = RequestMethod.DELETE)
     public void deleteEmployee(@PathVariable(value = "employeeId") Long id) {
         employeeService.deleteEmployee(id);
+    }
+
+    @PatchMapping(value = "/work-status/{employeeId}")
+    public Employee updateWorkStatus(@PathVariable(value = "employeeId") Long id, @RequestBody String status) {
+        return employeeService.updateWorkStatus(id, status);
     }
 }

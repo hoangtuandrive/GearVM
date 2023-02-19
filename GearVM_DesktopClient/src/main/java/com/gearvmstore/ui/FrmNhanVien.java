@@ -10,10 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -46,7 +43,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 	private JButton btnTim;
 	private JButton btnSua;
 	private JButton btnThem;
-	private JButton btnXoa;
+	private JButton btnThayDoiTinhTrangLamViec;
 	private java.awt.Label lblCMND;
 	private java.awt.Label lblChucVu;
 	private java.awt.Label lblGioiTinh;
@@ -111,7 +108,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		pnChucNang = new JPanel();
 		btnThem = new JButton();
 		btnSua = new JButton();
-		btnXoa = new JButton();
+		btnThayDoiTinhTrangLamViec = new JButton();
 
 		pnThongTin.setBackground(new Color(219, 243, 255));
 		pnChucNang.setBackground(new Color(219, 243, 255));
@@ -121,9 +118,9 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		btnSua.setBackground(new Color(0, 148, 224));
 		btnSua.setForeground(Color.WHITE);
 		btnSua.setFocusPainted(false);
-		btnXoa.setBackground(new Color(0, 148, 224));
-		btnXoa.setForeground(Color.WHITE);
-		btnXoa.setFocusPainted(false);
+		btnThayDoiTinhTrangLamViec.setBackground(new Color(0, 148, 224));
+		btnThayDoiTinhTrangLamViec.setForeground(Color.WHITE);
+		btnThayDoiTinhTrangLamViec.setFocusPainted(false);
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -312,7 +309,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
 		btnThem.setText("THÊM");
 		btnSua.setText("SỬA");
-		btnXoa.setText("CHO NGHỈ VIỆC");
+		btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
 
 		javax.swing.GroupLayout pnChucNangLayout = new javax.swing.GroupLayout(pnChucNang);
 		pnChucNang.setLayout(pnChucNangLayout);
@@ -321,13 +318,13 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnThem)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSua)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnThayDoiTinhTrangLamViec)
 						.addGap(48, 48, 48)));
 		pnChucNangLayout.setVerticalGroup(pnChucNangLayout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(pnChucNangLayout.createSequentialGroup().addGap(26, 26, 26)
 						.addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(btnThem).addComponent(btnSua).addComponent(btnXoa))
+								.addComponent(btnThem).addComponent(btnSua).addComponent(btnThayDoiTinhTrangLamViec))
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		Box b = Box.createHorizontalBox();
@@ -421,7 +418,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		txtTrangThai.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnThayDoiTinhTrangLamViec.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -438,8 +435,9 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
-		btnXoa.addActionListener(this);
+		btnThayDoiTinhTrangLamViec.addActionListener(this);
 		btnTim.addActionListener(this);
+		tableNhanVien.addMouseListener(this);
 
 		readDatabaseToTable();
 
@@ -463,11 +461,48 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 				throw new RuntimeException(ex);
 			}
 		}
+		if(o.equals(btnSua)){
+			try{
+				if(putRequest()){
+					JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thành công!", "Thành công",
+							JOptionPane.INFORMATION_MESSAGE);
+					readDatabaseToTable();
+				} else {
+					JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thất bại!", "Thất bại",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if (o.equals(btnThayDoiTinhTrangLamViec)){
+
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		int row = tableNhanVien.getSelectedRow();
+		txtMaNhanVien.setText(modelNhanVien.getValueAt(row, 0).toString());
+		txtTen.setText(modelNhanVien.getValueAt(row, 1).toString());
+		String dateString = modelNhanVien.getValueAt(row, 2).toString();
+		String[] a = dateString.split("-");
+		txtNgaySinh
+				.setDate(new Date(Integer.parseInt(a[2]) - 1900, Integer.parseInt(a[1]) - 1,
+						Integer.parseInt(a[0])));
 
+		txtCMND.setText(modelNhanVien.getValueAt(row, 3).toString());
+		cmbGioiTinh.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 4).toString().trim());
+		txtSDT.setText(modelNhanVien.getValueAt(row, 5).toString());
+		cmbChucVu.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 6).toString().trim());
+		txtEmail.setText(modelNhanVien.getValueAt(row, 7).toString());
+		txtDiaChi.setText(modelNhanVien.getValueAt(row, 8).toString());
+		String luong[] = modelNhanVien.getValueAt(row, 9).toString().split(",");
+		String tienLuong = "";
+		for (int i = 0; i < luong.length; i++)
+			tienLuong += luong[i];
+		txtLuong.setText(tienLuong);
+		txtTrangThai.setText(modelNhanVien.getValueAt(row, 10).toString());
 	}
 
 	@Override
@@ -503,19 +538,13 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		txtLuong.setText(null);
 	}
 
-	public Employee getProductRequest() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		BufferedReader rd = EmployeeService.getRequest(tableName, txtMaNhanVien.getText());
-		return mapper.readValue(rd, Employee.class);
-	}
-
 	public boolean postRequest() throws IOException {
 		Employee e = new Employee();
 		e.setName(txtTen.getText());
-		e.setGender(getGenderFromField());
+		e.setGender(getGenderFromCmb());
 		e.setNationalId(txtCMND.getText());
 		e.setPhoneNumber(txtSDT.getText());
-		e.setRole(getRoleFromField());
+		e.setRole(getRoleFromCmb());
 		e.setAddress(txtDiaChi.getText());
 		e.setEmail(txtEmail.getText());
 		e.setSalary(Double.parseDouble(txtLuong.getText()));
@@ -525,14 +554,37 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		return EmployeeService.postRequest(e);
 	}
 
-	public Gender getGenderFromField() {
+	public boolean putRequest() throws IOException {
+		Employee e = new Employee();
+		e.setId(Long.parseLong(txtMaNhanVien.getText()));
+		e.setName(txtTen.getText());
+		e.setGender(getGenderFromCmb());
+		e.setNationalId(txtCMND.getText());
+		e.setPhoneNumber(txtSDT.getText());
+		e.setRole(getRoleFromCmb());
+		e.setAddress(txtDiaChi.getText());
+		e.setEmail(txtEmail.getText());
+		e.setSalary(Double.parseDouble(txtLuong.getText()));
+		Calendar birthdayCalendar = txtNgaySinh.getCalendar();
+		LocalDate birthdayLocalDate = LocalDate.ofInstant(birthdayCalendar.toInstant(), ZoneId.systemDefault());
+		e.setDateOfBirth(birthdayLocalDate);
+		return EmployeeService.putRequest(e);
+	}
+
+	public boolean patchWorkStatusRequest() throws IOException{
+		Employee e = new Employee();
+		e.setId(Long.parseLong(txtMaNhanVien.getText()));
+		return EmployeeService.patchWorkStatusRequest(e);
+	}
+
+	public Gender getGenderFromCmb() {
 		int index = cmbGioiTinh.getSelectedIndex();
 		if (index == 0) return Gender.MALE;
 		else if (index == 1) return Gender.FEMALE;
 		else return Gender.UNDEFINED;
 	}
 
-	public Role getRoleFromField() {
+	public Role getRoleFromCmb() {
 		int index = cmbChucVu.getSelectedIndex();
 		if (index == 0 ) return Role.EMPLOYEE;
 		else return Role.MANAGER;
@@ -547,9 +599,19 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 		BufferedReader rd = EmployeeService.getAllRequest(tableName);
 		List<Employee> listEmployee = Arrays.asList(mapper.readValue(rd, Employee[].class));
 		for(Employee e : listEmployee){
+			String gender;
+			String role;
+
+			if(e.getGender() == Gender.MALE) gender = "Nam";
+			else if(e.getGender() == Gender.FEMALE) gender = "Nữ";
+			else gender = "Không xác định";
+
+			if(e.getRole() == Role.EMPLOYEE) role = "Nhân viên";
+			else role = "Quản lý";
+
 			modelNhanVien.addRow(new Object[] { e.getId(), e.getName().trim(),
-					dateFormat.format(e.getDateOfBirth()), e.getNationalId().trim(), e.getGender().toString(),
-					e.getPhoneNumber().trim(), e.getRole().toString(), e.getEmail().trim(), e.getAddress().trim(),
+					dateFormat.format(e.getDateOfBirth()), e.getNationalId().trim(), gender,
+					e.getPhoneNumber().trim(), role, e.getEmail().trim(), e.getAddress().trim(),
 					df.format(e.getSalary()), e.isWorkStatus() ? "Đang làm" : "Đã nghỉ việc" });
 		}
 	}

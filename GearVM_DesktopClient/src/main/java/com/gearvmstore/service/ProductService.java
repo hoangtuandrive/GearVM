@@ -3,6 +3,7 @@ package com.gearvmstore.service;
 import com.gearvmstore.model.Product;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ProductService extends ApiService {
-    private static final String url = "http://localhost:8080/api/products/";
+    private static final String url = staticUrl + "/products/";
 
     public static boolean postRequest(Product p) throws IOException {
         HttpClient client = new DefaultHttpClient();
@@ -29,7 +30,6 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        System.out.println(response);
         return !response.toString().isEmpty();
     }
 
@@ -45,6 +45,13 @@ public class ProductService extends ApiService {
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return !response.toString().isEmpty();
+    }
+
+    public static boolean deleteRequest(Product p) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpDelete request = new HttpDelete(url + p.getId());
         HttpResponse response = client.execute(request);
         return !response.toString().isEmpty();
     }

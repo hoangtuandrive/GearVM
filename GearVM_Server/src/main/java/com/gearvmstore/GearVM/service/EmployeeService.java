@@ -2,17 +2,27 @@ package com.gearvmstore.GearVM.service;
 
 import com.gearvmstore.GearVM.model.Employee;
 import com.gearvmstore.GearVM.repository.EmployeeRepository;
+import com.gearvmstore.GearVM.utility.HashPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final HashPasswordUtil hashPasswordUtil;
 
-    public Employee createEmployee(Employee e) {
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository, HashPasswordUtil hashPasswordUtil) {
+        this.employeeRepository = employeeRepository;
+        this.hashPasswordUtil = hashPasswordUtil;
+    }
+
+    public Employee createEmployee(Employee e) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        e.setPassword(hashPasswordUtil.generatePasswordHash("12345678a"));
         return employeeRepository.save(e);
     }
 
@@ -40,5 +50,11 @@ public class EmployeeService {
         e.setWorkStatus(employeeDetails.isWorkStatus());
         e.setRole(employeeDetails.getRole());
         return e;
+    }
+
+    public Employee updateWorkStatus(Long employeeId, String status) {
+        Employee e = employeeRepository.findById(employeeId).get();
+        e.setWorkStatus(status.equals("true"));
+        return employeeRepository.save(e);
     }
 }

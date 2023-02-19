@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ApiService {
+    public static final String staticUrl = "http://localhost:8080/api";
     public static BufferedReader getAllRequest(String tableName) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet("http://localhost:8080/api/" + tableName);

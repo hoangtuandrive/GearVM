@@ -43,6 +43,28 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private JComboBox<String> cmbChon;
     private static JComboBox<String> cmbTim;
     private JButton btnTim;
+    private JButton btnSua;
+    private JButton btnThem;
+    private JButton btnXoa;
+    private JButton btnChiTiet;
+    private java.awt.Label lblDonGia;
+    private java.awt.Label lblNhaCungCap;
+    private java.awt.Label lblSoLuong;
+    private java.awt.Label lblTenHangHoa;
+    private java.awt.Label lblLoaiHang;
+    private java.awt.Label lblMaHangHoa;
+    private JPanel pnChucNang;
+    private JPanel pnThongTin;
+    private javax.swing.JScrollPane pntblHangHoa;
+    private static JTable tableHangHoa;
+    private javax.swing.JTextField txtDonGia;
+    private javax.swing.JTextField txtNhaCungCap;
+    private javax.swing.JTextField txtSoLuong;
+    private javax.swing.JTextField txtTenHangHoa;
+    private javax.swing.JTextField txtLoaiHang;
+    private JPanel pnlTimKiem;
+    private javax.swing.JTextField txtMaHangHoa;
+    private static DefaultTableModel modelSanPham;
 
     public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
@@ -407,31 +429,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton btnSua;
-    private JButton btnThem;
-    private JButton btnXoa;
-    private JButton btnChiTiet;
-    private java.awt.Label lblDonGia;
-    private java.awt.Label lblNhaCungCap;
-    private java.awt.Label lblSoLuong;
-    private java.awt.Label lblTenHangHoa;
-    private java.awt.Label lblLoaiHang;
-    private java.awt.Label lblMaHangHoa;
-    private JPanel pnChucNang;
-    private JPanel pnThongTin;
-    private javax.swing.JScrollPane pntblHangHoa;
-    private static JTable tableHangHoa;
-    private javax.swing.JTextField txtDonGia;
-    private javax.swing.JTextField txtNhaCungCap;
-    private javax.swing.JTextField txtSoLuong;
-    private javax.swing.JTextField txtTenHangHoa;
-    private javax.swing.JTextField txtLoaiHang;
-    private JPanel pnlTimKiem;
-    private javax.swing.JTextField txtMaHangHoa;
-    private static DefaultTableModel modelSanPham;
 
-    // End of variables declaration//GEN-END:variables
 
     public static void emptyTable() {
         DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
@@ -541,9 +539,24 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 throw new RuntimeException(ex);
             }
         }
+        if (o.equals(btnXoa)){
+            try {
+                if (deleteRequest()) {
+                    JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    readDatabaseToTable();
+                    emptyTextField();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         if(o.equals(btnChiTiet)){
             try {
-                new FrmChiTietSanPham(getProductRequest());
+                new FrmChiTietSanPham(getRequest());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -607,7 +620,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     }
 
-    public Product getProductRequest() throws IOException {
+    public Product getRequest() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         BufferedReader rd = ProductService.getRequest(tableName, txtMaHangHoa.getText());
         return mapper.readValue(rd, Product.class);
@@ -632,5 +645,11 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
         return ProductService.putRequest(p);
+    }
+
+    public boolean deleteRequest() throws IOException {
+        Product p = new Product();
+        p.setId(Long.parseLong(txtMaHangHoa.getText()));
+        return ProductService.deleteRequest(p);
     }
 }

@@ -3,6 +3,8 @@ package com.gearvmstore.service;
 import com.gearvmstore.model.Employee;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -13,7 +15,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class EmployeeService extends ApiService {
-    private static final String url = "http://localhost:8080/api/employees/";
+    private static final String url = staticUrl + "/employees/";
 
     public static boolean postRequest(Employee e) throws IOException{
         HttpClient client = new DefaultHttpClient();
@@ -33,11 +35,11 @@ public class EmployeeService extends ApiService {
         json.put("email", e.getEmail());
         json.put("role", e.getRole());
         json.put("nationalId", e.getNationalId());
+        json.put("workStatus", "true");
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        System.out.println(response);
         return !response.toString().isEmpty();
     }
 
@@ -63,7 +65,19 @@ public class EmployeeService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        System.out.println(response);
+        return !response.toString().isEmpty();
+    }
+
+    public static boolean patchWorkStatusRequest(Employee e) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + "work-status/" + e.getId());
+        String status;
+        if(e.isWorkStatus()) status = "true";
+        else status = "false";
+        StringEntity se = new StringEntity(status, StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
         return !response.toString().isEmpty();
     }
 }
