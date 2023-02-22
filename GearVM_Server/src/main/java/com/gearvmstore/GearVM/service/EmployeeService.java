@@ -54,7 +54,7 @@ public class EmployeeService {
 
     public Employee updateWorkStatus(Long employeeId, String status) {
         Employee e = employeeRepository.findById(employeeId).get();
-        e.setWorkStatus(status.equals("true"));
+        e.setWorkStatus(status.equalsIgnoreCase("true"));
         return employeeRepository.save(e);
     }
 }

@@ -72,8 +72,8 @@ public class EmployeeService extends ApiService {
         HttpClient client = new DefaultHttpClient();
         HttpPatch request = new HttpPatch(url + "work-status/" + e.getId());
         String status;
-        if(e.isWorkStatus()) status = "true";
-        else status = "false";
+        if(e.isWorkStatus()) status = "false";
+        else status = "true";
         StringEntity se = new StringEntity(status, StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);

@@ -38,9 +38,9 @@ public class CustomerController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
-//        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
-//            return ResponseEntity.badRequest().body("Login failed");
-//        }
+        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
+            return ResponseEntity.badRequest().body("Login failed");
+        }
         return ResponseEntity.ok().body(customerService.generateToken(loginDTO.getEmail()));
     }
 
