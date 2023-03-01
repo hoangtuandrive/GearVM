@@ -20,9 +20,9 @@ public class JwtUtil implements Serializable {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public String generateJwtToken(String email) {
+    public String generateJwtToken(String id, String email) {
         Map<String, Object> claims = new HashMap<>();
-        return Jwts.builder().setClaims(claims).setSubject(email)
+        return Jwts.builder().claim("id", id).claim("email", email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
@@ -37,6 +37,11 @@ public class JwtUtil implements Serializable {
 
     public String getEmailFromToken(String token) {
         final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+        return claims.get("id").toString();
+    }
+
+    public String getIdFromToken(String token) {
+        final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        return claims.get("email").toString();
     }
 }

@@ -42,7 +42,7 @@ public class Product {
 
     @OneToMany(mappedBy = "productId")
     @ToString.Exclude
-    private List<OrderDetail> orderDetails;
+    private List<OrderItem> orderItems;
 
     public Product() {
     }

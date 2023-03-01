@@ -1,4 +1,4 @@
-package com.gearvmstore.GearVM.model.dto;
+package com.gearvmstore.GearVM.model.dto.user;
 
 import lombok.Data;
 

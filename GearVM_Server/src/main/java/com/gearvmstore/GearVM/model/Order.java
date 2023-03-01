@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Entity(name = "order_customer")
+@Entity(name = "`order`")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +26,20 @@ public class Order {
     @Column(columnDefinition = "datetime")
     private LocalDateTime createdDate;
     @Column(columnDefinition = "double")
-    private double total;
+    private double totalPrice;
+    @Enumerated(EnumType.ORDINAL)
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "orderId")
     @ToString.Exclude
-    private List<OrderDetail> orderDetails;
+    private List<OrderItem> orderItems;
     @OneToOne(mappedBy = "orderId")
     private Discount discount;
 
     public Order() {
         super();
     }
+
 
 //	public double tinhTongTien() {
 //		double tongTien = 0;

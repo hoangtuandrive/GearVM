@@ -1,4 +1,4 @@
-package com.gearvmstore.model;
+package com.gearvmstore.GearVM.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,26 +10,28 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
-@IdClass(OrderDetailPK.class)
-public class OrderDetail{
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "orderId")
-	private Order orderId;
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "productId")
-	private Product productId;
-	private int quantity;
-	@Column(columnDefinition = "double")
-	private double price;
+@Entity(name = "order_item")
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    private Order orderId;
+
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private Product productId;
+    private int quantity;
+    @Column(columnDefinition = "double")
+    private double price;
 //	@Column(columnDefinition = "money")
 //	private double thanhTien;
 
-	public OrderDetail() {
-		super();
-	}
+    public OrderItem() {
+        super();
+    }
 
 //	public ChiTietHoaDon(HoaDon maHoaDon, SanPham maSP, int soLuong, double giaTien) {
 //		super();

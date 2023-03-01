@@ -1,8 +1,8 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Customer;
-import com.gearvmstore.GearVM.model.dto.LoginDTO;
-import com.gearvmstore.GearVM.model.dto.RegisterDTO;
+import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
+import com.gearvmstore.GearVM.model.dto.user.RegisterDTO;
 import com.gearvmstore.GearVM.service.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +38,16 @@ public class CustomerController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (!customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword())) {
+        Customer customer = customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword());
+        if (customer == null) {
             return ResponseEntity.badRequest().body("Login failed");
         }
-        return ResponseEntity.ok().body(customerService.generateToken(loginDTO.getEmail()));
+        return ResponseEntity.ok().body(customerService.generateToken(customer.getId().toString(), customer.getEmail()));
     }
 
     @GetMapping(value = "/email-exist/{email}")
     public ResponseEntity<String> checkEmailExist(@PathVariable(value = "email") String email) {
-        //Tồn tại
-        System.out.println(customerService.checkEmailExist(email));
         if (customerService.checkEmailExist(email)) return ResponseEntity.ok().body("true");
-            //Chưa tồn tại
         else return ResponseEntity.ok().body("false");
     }
 }

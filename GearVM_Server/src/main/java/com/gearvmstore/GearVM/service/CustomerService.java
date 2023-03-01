@@ -16,7 +16,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final HashPasswordUtil hashPasswordUtil;
     private final JwtUtil jwtUtil;
-    
+
     @Autowired
     public CustomerService(CustomerRepository customerRepository, HashPasswordUtil hashPasswordUtil, JwtUtil jwtUtil) {
         this.customerRepository = customerRepository;
@@ -48,14 +48,17 @@ public class CustomerService {
         return null;
     }
 
-    public boolean validateLogin(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public Customer validateLogin(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = customerRepository.findByEmail(email);
-        System.out.println(customer.getPassword());
-        if (customer.getEmail() == null) return false;
-        return hashPasswordUtil.generatePasswordHash(password).equals(customer.getPassword());
+
+        if (customer.getEmail() == null) return null;
+
+        if (hashPasswordUtil.generatePasswordHash(password).equals(customer.getPassword()))
+            return customer;
+        return null;
     }
 
-    public String generateToken(String email) {
-        return jwtUtil.generateJwtToken(email);
+    public String generateToken(String id, String email) {
+        return jwtUtil.generateJwtToken(id, email);
     }
 }
