@@ -31,32 +31,42 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
-    public Order placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
-        Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
+    public Boolean placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
+        try {
+            Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
+            if (customer == null)
+                return false;
 
+            Order order = new Order();
+            order.setCustomerId(customer);
+            order.setCreatedDate(LocalDateTime.now());
+            order.setTotalPrice(placeOrderDTO.getTotalPrice());
+            order.setOrderStatus(OrderStatus.PENDING);
+            orderRepository.save(order);
 
-        Order order = new Order();
-        order.setCustomerId(customer);
-        order.setCreatedDate(LocalDateTime.now());
-        order.setTotalPrice(placeOrderDTO.getTotalPrice());
-        order.setOrderStatus(OrderStatus.PENDING);
-        orderRepository.save(order);
+            List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
+            for (OrderItemDto orderItemDto : orderItems) {
+                OrderItem item = new OrderItem();
+                Product product = productService.getProduct(orderItemDto.getProductId());
+                item.setProductId(product);
+                item.setOrderId(order);
+                item.setQuantity(orderItemDto.getQuantity());
+                item.setPrice(orderItemDto.getPrice());
+                orderItemRepository.save(item);
+            }
 
-        List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
-        for (OrderItemDto orderItemDto : orderItems) {
-            OrderItem item = new OrderItem();
-            Product product = productService.getProduct(orderItemDto.getProductId());
-            item.setProductId(product);
-            item.setOrderId(order);
-            item.setQuantity(orderItemDto.getQuantity());
-            item.setPrice(orderItemDto.getPrice());
-            orderItemRepository.save(item);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-
-        return order;
     }
 
     public List<Order> listOrders(Long customerId) {
         return orderRepository.findAllByCustomerIdOrderByCreatedDateDesc(customerId);
+    }
+
+    // Bugged
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
     }
 }

@@ -1,6 +1,5 @@
 package com.gearvmstore.GearVM.utility;
 
-import com.gearvmstore.GearVM.model.Customer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,20 +27,19 @@ public class JwtUtil implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
-    public Boolean validateJwtToken(String token, Customer customer) {
-        String email = getEmailFromToken(token);
+    public Boolean validateJwtToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         boolean isTokenExpired = claims.getExpiration().before(new Date());
-        return (email.equals(customer.getEmail()) && !isTokenExpired);
+        return (!isTokenExpired);
     }
 
     public String getEmailFromToken(String token) {
         final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        return claims.get("id").toString();
+        return claims.get("email").toString();
     }
 
     public String getIdFromToken(String token) {
         final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        return claims.get("email").toString();
+        return claims.get("id").toString();
     }
 }
