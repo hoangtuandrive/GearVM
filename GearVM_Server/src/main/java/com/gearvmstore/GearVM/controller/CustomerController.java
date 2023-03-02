@@ -26,9 +26,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Customer register(@RequestBody RegisterDTO registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = modelMapper.map(registerDTO, Customer.class);
-        return customerService.register(customer);
+        Customer newAccount = customerService.register(customer);
+        if (newAccount == null) {
+            return ResponseEntity.badRequest().body("Email existed");
+        }
+        return ResponseEntity.ok().body(newAccount);
     }
 
     @GetMapping
@@ -39,9 +43,11 @@ public class CustomerController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword());
+
         if (customer == null) {
             return ResponseEntity.badRequest().body("Login failed");
         }
+        
         return ResponseEntity.ok().body(customerService.generateToken(customer.getId().toString(), customer.getEmail()));
     }
 
