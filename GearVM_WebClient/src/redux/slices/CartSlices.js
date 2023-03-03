@@ -117,6 +117,10 @@ const CartSlice =createSlice({
             });
           }
           localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        },
+        OrderCart(state,action){
+          //  const cartItems= localStorage.getItem("cartItems");
+          //  if(cartItems.)
         }
     }
 });

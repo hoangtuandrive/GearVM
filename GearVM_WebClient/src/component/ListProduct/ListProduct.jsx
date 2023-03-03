@@ -10,8 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const cx= classNames.bind(styles)
-const ListProduct = (props) => {
-  
+const   ListProduct = (props) => {
   
   // console.log(props)
   const settings = {
@@ -29,10 +28,9 @@ const ListProduct = (props) => {
 
   const handelItemProduct =(item)=>{
     navigate(`/productdetail?name=${item.name}&id=${item.id}`, 
-    { replace: true });
-    
+    { replace: true }); 
   }
-  // console.log(Laptop);
+  console.log(props.data);
   return (
           <Slider {...settings}  >        
             {props.data.map((item,index)=>(

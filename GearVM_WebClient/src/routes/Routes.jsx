@@ -6,6 +6,10 @@ import Pay from "../pages/Pay";
 import Login from "../pages/login/Login";
 import Resign from "../pages/resign/Register";
 import OrderManger from "../pages/OrderManger";
+import GuidePayment from "../pages/guidePayment/GuidePayment";
+import GuidePolicy from "../pages/guidePolicy/GuidePolicy";
+import GuideDeli from "../pages/guidedeli/GuideDeli";
+import Promotion from "../pages/promotion/Promotion";
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/productdetail", component: ProductDetail },
@@ -15,9 +19,11 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/resign", component: Resign },
   { path: "/orderManager", component: OrderManger },
+  { path: "/guidePayment", component: GuidePayment  },
+  { path: "/guidePolicy", component: GuidePolicy  },
+  { path: "/guideDeli", component: GuideDeli  },
+  { path: "/promotion", component: Promotion  },
   
-
-
 
 ];
 

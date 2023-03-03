@@ -1,0 +1,50 @@
+.Policy-img{
+    background-size: cover;
+    background-attachment: scroll;
+    background-origin: content-box;
+    background-image: url('https://w.ladicdn.com/s1440x290/5bf3dc7edc60303c34e4991f/bg-20201021091601.jpg');
+    background-position: center top;
+    background-repeat: repeat;
+    // opacity: 0.28;
+   margin-bottom: 5px; 
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   border-radius: 15px;
+}
+.Policy-content-txt{
+    font-size: 40px;
+    font-weight: bold;
+    color: red;
+}
+.Policy-content-txtGear{
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+}
+.Policy-content-txtTitle{
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(40, 74, 156, 0.852);
+}
+.Policy-content-txtHoline{
+    font-size: 18px;
+    font-weight: 500;
+    color: red;
+}
+.Policy-step1{
+    margin-top: 10vh;
+    padding: 15px;
+    border: 2px solid;
+    border-radius: 15px;
+    box-shadow: 18px 9px 12px 5px rgba(150, 150, 150, 0.24)
+
+}
+.line{
+    width: 100px;
+    height: 5px;
+    background-color: red;
+}
+.policy-noncondition{
+    margin-top: 50px;
+}

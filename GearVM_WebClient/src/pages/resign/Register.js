@@ -20,8 +20,10 @@ const Register = () => {
     password: "",
   });
   const [errorMessage,setErrorMessage]=useState({
-    id:"",
-    message:"",
+    messageEmail:"",
+    messagePass:"",
+    messagePhone:"",
+    messageName:"",
   })
   // console.log(auth);
 useEffect(()=>{
@@ -40,14 +42,12 @@ useEffect(()=>{
      dispatch(registerUser(user));
     }
     
-     
   };
   const handleName = ()=>{
     const regexName= /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
       if(user.name===''){
           setErrorMessage({...errorMessage,
-          id:"1",
-          message:'Bạn chưa nhập Họ tên'
+          messageName:'Bạn chưa nhập Họ tên'
           })
           return false;
       }  
@@ -55,15 +55,14 @@ useEffect(()=>{
       {
      
         setErrorMessage({...errorMessage,
-          id:"1",
-          message:"Tên người dùng phải có 3-16 ký tự và không được bao gồm bất kỳ ký tự đặc biệt nào!"
+     
+          messageName:"Tên người dùng phải có 3-16 ký tự và không được bao gồm bất kỳ ký tự đặc biệt nào!"
           })
           return false;
       }
       else{
         setErrorMessage({...errorMessage,
-          id:"1",
-          message:''
+          messageName:''
           })
           return true;
       }
@@ -74,8 +73,7 @@ useEffect(()=>{
 
     if(user.email===''){
         setErrorMessage({...errorMessage,
-        id:"2",
-        message:'Bạn chưa nhập Email'
+        messageEmail:'Bạn chưa nhập Email'
         })
         return false;
     } 
@@ -83,23 +81,19 @@ useEffect(()=>{
     {
    
       setErrorMessage({...errorMessage,
-        id:"2",
-        message:"Nhập email sai định dạng"
+        messageEmail:"Nhập email sai định dạng"
         })
         return false;
     }
     else if(auth.emailStatus === true){
-      console.log(123);
       setErrorMessage({...errorMessage,
-        id:"2",
-        message:"Email đã tồn tại vui lòng nhập lại email khác"
+        messageEmail:"Email đã tồn tại vui lòng nhập lại email khác"
         })
         return false;
     }
     else{
       setErrorMessage({...errorMessage,
-        id:"2",
-        message:''
+        messageEmail:''
         })
         return true;
     }
@@ -110,8 +104,7 @@ const handlePhone= ()=>{
   const regexPhone= /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
     if(user.phoneNumber===''){
         setErrorMessage({...errorMessage,
-        id:"3",
-        message:'Bạn chưa nhập số điện thoại'
+        messagePhone:'Bạn chưa nhập số điện thoại'
         })
         return false;
     }
@@ -119,15 +112,13 @@ const handlePhone= ()=>{
     {
    
       setErrorMessage({...errorMessage,
-        id:"3",
-        message:"Nhập số điện thoại sai định dạng"
+        messagePhone:"Nhập số điện thoại sai định dạng"
         })
         return false;
     }
     else{
       setErrorMessage({...errorMessage,
-        id:"3",
-        message:''
+        messagePhone:''
         })
         return true;
     }
@@ -137,8 +128,7 @@ const handlePhone= ()=>{
     const regexPasswrod= /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
     if(user.password===''){
         setErrorMessage({...errorMessage,
-        id:"4",
-        message:'Bạn chưa nhập mật khẩu'
+        messagePass:'Bạn chưa nhập mật khẩu'
         })
         return false;
     }
@@ -146,15 +136,13 @@ const handlePhone= ()=>{
     {
    
       setErrorMessage({...errorMessage,
-        id:"4",
-        message:"Mật khẩu nên có 8-20 ký tự và bao gồm ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!"
+        messagePass:"Mật khẩu nên có 8-20 ký tự và bao gồm ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!"
         })
         return false;
     }
     else{
       setErrorMessage({...errorMessage,
-        id:"4",
-        message:''
+        messagePass:''
         })
         return true;
     }
@@ -174,7 +162,8 @@ const handlePhone= ()=>{
                  />   
                 
             </div>
-            {errorMessage.id==='1'?<span  style={{color:'red'}}>{errorMessage.message}</span>:null}
+            {errorMessage.messageName ==='' ? null:
+            <span  style={{color:'red'}}>{errorMessage.messageName}</span>}
             <div className={cx('form-group')}>
                  <input type='date' placeholder='dateOfBirth' className={cx('form-input')} 
                 onChange={(e) => setUser({ ...user, dateOfBirth: e.target.value })}
@@ -190,14 +179,16 @@ const handlePhone= ()=>{
                  onBlur={handleExitEmail}
                  />   
             </div>
-            {errorMessage.id==='2'?<span  style={{color:'red'}}>{errorMessage.message}</span>:null}
+            {errorMessage.messageEmail===''? null:
+            <span  style={{color:'red'}}>{errorMessage.messageEmail}</span>}
             <div className={cx('form-group')}>
                  <input type='phone' placeholder='Số điện thoại' className={cx('form-input')} 
                 onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })}
                 onBlur={handlePhone}
                  />   
             </div>
-            {errorMessage.id==='3'?<span  style={{color:'red'}}>{errorMessage.message}</span>:null}
+            {errorMessage.messagePhone===''?null:
+            <span  style={{color:'red'}}>{errorMessage.messagePhone}</span>}
             <div className={cx('form-check-group')}>
                 <div className="form-check">
                     <input className="form-check-input" type="radio" name="gioiTinh" id="Nam" 
@@ -238,7 +229,8 @@ const handlePhone= ()=>{
                 autoComplete='on'
                 />    
             </div>
-            {errorMessage.id==='4'?<span style={{color:'red'}}>{errorMessage.message}</span>:null}
+            {errorMessage.messagePass===''?null:
+            <span style={{color:'red'}}>{errorMessage.messagePass}</span>}
                
             <input type="submit" value="Đăng ký"  className={cx('form-submit')}
             onClick={handleSubmit}

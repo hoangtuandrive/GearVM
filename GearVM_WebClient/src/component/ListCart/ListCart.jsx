@@ -20,7 +20,6 @@ const ListCart = () => {
 
   useEffect(()=>{
     dispatch(CartSlice.actions.totalCart());
-    console.log("cp1");
   },[cart,dispatch]) 
 
   const handleAddToCart = (product) => {
@@ -38,7 +37,20 @@ const ListCart = () => {
  const  handleChangeQuantity  = (value) => {
     setquantity(value);
   }
-
+  const handleSubmitToCart = ()=>{
+    const JcartItems = localStorage.getItem("cartItems");
+    const cartItems= JSON.parse(JcartItems)
+    // console.log(cartItems[0].checkCart);
+    let order=[];
+    cartItems.map((item) => {
+      if(item.checkCart === true){
+        dispatch(CartSlice.actions.removeCart(item));
+        order =[...order,item];
+      }
+    })
+    console.log(order);
+    
+  }
   return (
     <div className={cx('wrapListCart')}>
         <div className={cx('wrapListCart_Content')}>
@@ -118,7 +130,7 @@ const ListCart = () => {
                     <span className={cx('listCart_Pay_content_text_blue')}>{cart.cartTotalAmount}₫</span>
                 </div>
             </div>
-            <input type="button" value='Thanh Toán'  className={cx('listCart_Pay_content_btn')}/>
+            <input type="button" value='Thanh Toán'  className={cx('listCart_Pay_content_btn')} onClick={handleSubmitToCart}/>
 
         </div>
     </div>
