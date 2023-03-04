@@ -39,7 +39,6 @@ const ProductView = () => {
   const handleAddToCart = (product) => {
     dispatch(CartSlice.actions.addTocart(product));
 
-
   };
   const handleBuyToCart = (product) => {
     dispatch(CartSlice.actions.addTocart(product));
@@ -77,7 +76,7 @@ const ProductView = () => {
             
         </div>
         <div className={cx('ProductView_Content')}>
-            <h1 className={cx('ProductView_txtName')}>Laptop ASUS Vivobook X515EA-BQ2351W (i3-1115G4/RAM 4GB/512GB SSD/ Windows 11)</h1>
+            <h1 className={cx('ProductView_txtName')}>{productDetail.name}</h1>
             <div className={cx('ProductView_Content_origin')}>
                 <h4 className={cx('ProductView_txtTrademark')}>
                   Thương hiệu
@@ -88,10 +87,10 @@ const ProductView = () => {
                   <span>  141</span>
                 </h4>
             </div>
-            <h5 className={cx('ProductView_txtPrice')} >10.490.000₫</h5>
+            <h5 className={cx('ProductView_txtPrice')} >{productDetail.price}₫</h5>
             <div className={cx('ProductView_Discount')}>
               <h5 className={cx('ProductView_txtPrice_dis')}>
-                13.990.000₫
+              {productDetail.price}₫
               </h5>
               <div className={cx('contentDiscount')}>
                     <h5 className={cx('txtDiscount')}>
