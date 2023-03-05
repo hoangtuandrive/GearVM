@@ -1,6 +1,6 @@
 import Home from "../pages/home/Home";
 import ProductDetail from "../pages/ProductDetail";
-import Cart from '../pages/Cart'
+import Cart from "../pages/Cart";
 import Catalog from "../pages/Catalog";
 import Pay from "../pages/Pay";
 import Login from "../pages/login/Login";
@@ -10,6 +10,8 @@ import GuidePayment from "../pages/guidePayment/GuidePayment";
 import GuidePolicy from "../pages/guidePolicy/GuidePolicy";
 import GuideDeli from "../pages/guidedeli/GuideDeli";
 import Promotion from "../pages/promotion/Promotion";
+import Payment from "../pages/payment/Payment";
+
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/productdetail", component: ProductDetail },
@@ -19,12 +21,11 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/resign", component: Resign },
   { path: "/orderManager", component: OrderManger },
-  { path: "/guidePayment", component: GuidePayment  },
-  { path: "/guidePolicy", component: GuidePolicy  },
-  { path: "/guideDeli", component: GuideDeli  },
-  { path: "/promotion", component: Promotion  },
-  
-
+  { path: "/guidePayment", component: GuidePayment },
+  { path: "/guidePolicy", component: GuidePolicy },
+  { path: "/guideDeli", component: GuideDeli },
+  { path: "/promotion", component: Promotion },
+  { path: "/payment", component: Payment },
 ];
 
 const privateRoutes = [];
