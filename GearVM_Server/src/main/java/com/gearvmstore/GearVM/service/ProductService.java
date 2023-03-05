@@ -4,7 +4,6 @@ import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.List;
 
@@ -12,8 +11,6 @@ import java.util.List;
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
-
-
 
     public Product createProduct(Product p) {
         return productRepository.save(p);
