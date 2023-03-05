@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import './index.css';
-import 'antd/dist/reset.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './App';
-import store from './redux/stores/store';
-import { Provider } from 'react-redux';
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import React from "react";
+import ReactDOM from "react-dom/client";
+import reportWebVitals from "./reportWebVitals";
+import "./index.css";
+import "antd/dist/reset.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import App from "./App";
+import store, { persistor } from "./redux/stores/store";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
       <App />
+      {/* </PersistGate> */}
     </Provider>
   </React.StrictMode>
 );
