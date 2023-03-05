@@ -104,7 +104,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		JPanel pnlTitle = new JPanel();
 		pnlContentPane.add(pnlTitle);
 		
-		JLabel lblTitle = new JLabel("PHẦN MỀM QUẢN LÝ SIÊU THỊ");
+		JLabel lblTitle = new JLabel("PHẦN MỀM QUẢN LÝ GEARVM");
 		lblTitle.setBounds(50, 0, 1000, 50);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 36));
 		lblTitle.setForeground(Color.BLACK);

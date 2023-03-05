@@ -8,6 +8,8 @@ import CartSlice from '../../redux/slices/CartSlices'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { useState } from 'react'
+
+
 const cx= classNames.bind(styles)
 
 const ProductView = () => {
@@ -37,18 +39,18 @@ const ProductView = () => {
   const handleAddToCart = (product) => {
     dispatch(CartSlice.actions.addTocart(product));
 
-
   };
   const handleBuyToCart = (product) => {
     dispatch(CartSlice.actions.addTocart(product));
     navigate('/cart', { replace: true });
-
   };
 
   return (
     <div className={cx('wrapProductView')}>
+     
       {console.log(productDetail)}
         <div className={cx('ProductView_Img')}>
+          
             <img src='https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw'
              className={cx('ProductView_Img_main')} />
             <div className={cx('ProductView_Img_list')}>
@@ -70,9 +72,11 @@ const ProductView = () => {
                 />
                
             </div>         
+       
+            
         </div>
         <div className={cx('ProductView_Content')}>
-            <h1 className={cx('ProductView_txtName')}>Laptop ASUS Vivobook X515EA-BQ2351W (i3-1115G4/RAM 4GB/512GB SSD/ Windows 11)</h1>
+            <h1 className={cx('ProductView_txtName')}>{productDetail.name}</h1>
             <div className={cx('ProductView_Content_origin')}>
                 <h4 className={cx('ProductView_txtTrademark')}>
                   Thương hiệu
@@ -83,10 +87,10 @@ const ProductView = () => {
                   <span>  141</span>
                 </h4>
             </div>
-            <h5 className={cx('ProductView_txtPrice')} >10.490.000₫</h5>
+            <h5 className={cx('ProductView_txtPrice')} >{productDetail.price}₫</h5>
             <div className={cx('ProductView_Discount')}>
               <h5 className={cx('ProductView_txtPrice_dis')}>
-                13.990.000₫
+              {productDetail.price}₫
               </h5>
               <div className={cx('contentDiscount')}>
                     <h5 className={cx('txtDiscount')}>
@@ -94,7 +98,7 @@ const ProductView = () => {
                     </h5>
               </div>
             </div>
-            <CustomDiscount />
+            <CustomDiscount />  
             <div className={cx('ProductView_btn')}>
                 <input type='button' value='Mua Ngay'  className={cx('ProductView_btn_Buy')}
                   onClick={() => handleBuyToCart(productDetail)}

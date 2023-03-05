@@ -2,7 +2,7 @@ import React, { useEffect ,useContext} from "react";
 import styles from "./Header.modulo.scss";
 import classNames from "classnames/bind";   
 import { Card, Image,Input } from 'antd';
-import {UserOutlined,ShoppingCartOutlined } from "@ant-design/icons";
+import {UserOutlined,ShoppingCartOutlined,MenuOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Nav from '../nav/Nav';
 import Tippy from '@tippyjs/react/headless';
@@ -10,6 +10,9 @@ import MenuCard from "../../card/Card";
 import MenuAcount from "../../MenuAcount/MenuAcount";
 import Acount from "../../Custom/Acount/Acount";
 import { useSelector } from "react-redux";
+import { Container, Offcanvas } from "react-bootstrap";
+import { AppContext } from "../../context/AppProvider";
+import OffcanvasMenu from "../../Offcanvas/OffcanvasMenu";
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
 const cx = classNames.bind(styles);
@@ -25,10 +28,15 @@ const Header = () => {
     }
   });
   const navigate = useNavigate();
+  const {openMenu,setOpenMenu} = useContext(AppContext);
   const handleShow = () => { navigate("/login", { replace: true });}
   const handleHome=() => { navigate("/", { replace: true });}
   const cart=useSelector((state)=>state.todoCart);
 
+  const PagePromotion= ()=>{ navigate("/promotion", { replace: true });}
+  const handleOpenMenuBar= ()=>{
+      setOpenMenu(true);
+  }
 
   return (
 
@@ -42,8 +50,14 @@ const Header = () => {
         />
       </div>
       <div className="wrapnav_about">
-        <div className={cx("wrapNavbar")}>
+        {/* <div className={cx("wrapNavbar")}> */}
+          <Container >
+
           <div className={cx("navbar")}>
+
+            <div className={cx("MenuBar")} onClick={handleOpenMenuBar}>
+                <MenuOutlined style={{fontSize:24}} />
+            </div>
             <div className={cx("Logo")} onClick={handleHome}>
               <img src={require("../../../assets/logoGear.jpg")} 
               className={cx("Logo")}
@@ -69,8 +83,8 @@ const Header = () => {
               </div> */}
               <Acount />
             </div>
-            </Tippy>
-            <div className={cx("sale")}>
+            </Tippy> 
+            <div className={cx("sale")} onClick={PagePromotion}>
               <img
                 src={require("../../../assets/iconSale.jpg")}
               // src={'https://bucketname.s3.ap-southeast-1.amazonaws.com/gearvm/80b58a0b-211c-43db-ad2b-f4cdbeb1c007.jpg'}
@@ -99,9 +113,10 @@ const Header = () => {
           </div>
           
           <Nav></Nav>
-        </div>
+          </Container>
+        {/* </div> */}
       </div>
-     
+              <OffcanvasMenu />
     </div>
   );
 };

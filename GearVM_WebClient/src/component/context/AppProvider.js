@@ -4,12 +4,12 @@ export const AppContext = React.createContext();
 function AppProvider({ children }) {
   const [show,setShow] = useState(false);
   const [UserOpen,setUserOpen] = useState(false);
+  const [openMenu,setOpenMenu] = useState(false);
   
-
-
   const clearState = () => {
     setShow(false);
-    setUserOpen(false)
+    setUserOpen(false);
+    setOpenMenu(false);
   
   };
   return (
@@ -19,7 +19,9 @@ function AppProvider({ children }) {
         setShow,
         clearState,
         UserOpen,
-        setUserOpen
+        setUserOpen,
+        openMenu,
+        setOpenMenu
       }}
     >
       {children}

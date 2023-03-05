@@ -42,6 +42,9 @@
     justify-content: space-around;
     
 }
+.MenuBar{
+    display: none;
+}
 .Logo{
     width: 170px;
     height: 90px;
@@ -112,4 +115,33 @@
     display: flex;
     justify-content: flex-end;
     
+}
+@media screen and (min-width: 768px) and (max-width: 999px)
+{
+
+    .sale{
+        display: none;
+    }
+    .MenuBar{
+        display: block;
+    }
+    .container
+    {
+        max-width: 960px;
+    }
+    .Logo{
+        width: 80px;
+        height: 50px;
+        cursor: pointer;
+    }
+    .wrap {
+    //   display: none;
+    margin-bottom: 0px;
+    }
+    .wrapnav_about {
+        top: 40px;
+    }
+    .wrapSlide{
+        margin-top: 80px;
+    }
 }
