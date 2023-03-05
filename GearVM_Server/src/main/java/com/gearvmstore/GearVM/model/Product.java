@@ -1,5 +1,6 @@
 package com.gearvmstore.GearVM.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,6 +42,7 @@ public class Product {
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     @ToString.Exclude
     private List<OrderItem> orderItems;
 

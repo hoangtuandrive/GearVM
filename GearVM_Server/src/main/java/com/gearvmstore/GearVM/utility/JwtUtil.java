@@ -28,9 +28,13 @@ public class JwtUtil implements Serializable {
     }
 
     public Boolean validateJwtToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        boolean isTokenExpired = claims.getExpiration().before(new Date());
-        return (!isTokenExpired);
+        try {
+            Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+            boolean isTokenExpired = claims.getExpiration().before(new Date());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String getEmailFromToken(String token) {

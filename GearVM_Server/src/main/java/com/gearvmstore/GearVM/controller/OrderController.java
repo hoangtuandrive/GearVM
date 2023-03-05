@@ -25,6 +25,7 @@ public class OrderController {
 
     @PostMapping(value = "/place-order")
     public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO, @RequestHeader(name = "Authorization") String header) {
+        
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
 
