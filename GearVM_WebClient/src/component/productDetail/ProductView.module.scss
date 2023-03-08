@@ -1,101 +1,131 @@
-
-.wrapProductView{
-    width: 78%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
+.wrapProductView {
+  //   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
 }
-.ProductView_Img_list{
-    display: flex;
-    flex-direction: row;
-    background-color: white;
-
+.ProductView_Img_list {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  width: 5vh;
+  height: 10vh;
 }
-.ProductView_Img_itemImg{
-    width: 15vh;
-    height: 70px;
-    object-fit: contain;
-    cursor: pointer;
-    
+.ProductView_Img_itemImg {
+  object-fit: contain;
+  cursor: pointer;
 }
-.ProductView_Img_itemImg:hover{
-    border: red solid 2px;
+.ProductView_Img_itemImg:hover {
+  border: red solid 2px;
 }
-.ProductView_Img_main{
-    width: 70%;
-    object-fit: contain;
+.ProductView_Img_main {
+  width: 80%;
+  object-fit: contain;
 }
-.ProductView_Img{
-    background-color: white;
+.ProductView_Img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
 }
-.ProductView_Content{
-    background-color: white;
+.ProductView_Content {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.ProductView_Content_origin {
+  display: flex;
+  flex-direction: row;
+  // justify-content: space-around;
+  font-size: 18px;
+}
+.ProductView_txtName {
+  line-height: 1.33;
+  font-size: 28px;
+  margin: 0px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.ProductView_txtTrademark {
+  color: rgb(130, 134, 158);
+  font-weight: 400;
+  line-height: 16px;
+  font-size: 18px;
+  margin-right: 5px;
+}
+span.ProductView_txtTrademark_Name {
+  color: blue;
+  font-weight: 400;
+  line-height: 16px;
+  font-size: 18px;
+  margin-right: 5px;
+}
+.ProductView_txtPrice {
+  color: rgb(20, 53, 195);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 28px;
+}
+.ProductView_Discount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.ProductView_txtPrice_dis {
+  text-decoration: line-through;
+  font-size: 25px;
+  margin-right: 20px;
+}
+.ProductView_btn_Buy {
+  width: 100%;
+  height: 6vh;
+  text-align: center;
+  background-color: rgb(20, 53, 195);
+  border-color: rgb(20, 53, 195);
+  border-radius: 4px;
+  color: white;
+}
+.ProductView_btn_Addcard {
+  width: 100%;
+  // line-height: 5vh;
+  height: 6vh;
+  margin: 5px;
+  background-color: white;
+  border-color: rgb(20, 53, 195);
+  border-radius: 4px;
+  color: rgb(20, 53, 195);
+}
+.ProductView_btn {
+  display: flex;
+  flex-direction: row;
+  // justify-content: center;
+  align-items: center;
+}
+@media (min-width: 1200px) {
+  .wrapProductView {
+    margin-top: 20px;
+  }
+}
+@media screen and (min-width: 999px) and (max-width: 1200px) {
+  .wrapProductView {
+    margin-top: 50px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 999px) {
+  .wrapProductView {
+    margin-top: 90px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 540px;
+  }
+  .wrapProductView {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-}
-.ProductView_Content_origin{
-    display: flex;
-    flex-direction: row;
-    // justify-content: space-around;
-    font-size: 18px;
-    
-}
-.ProductView_txtName{
-    font-size: 24px;
-    line-height: 1.33;
-}
-.ProductView_txtTrademark{
-    color: rgb(130, 134, 158);
-    font-weight: 400;
-    line-height: 16px;
-    font-size: 18px;
-    margin-right: 5px;
-}
-span.ProductView_txtTrademark_Name{
-    color: blue;
-    font-weight: 400;
-    line-height: 16px;
-    font-size: 18px;
-    margin-right: 5px;
-}
-.ProductView_txtPrice{
-    color: rgb(20, 53, 195);
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 28px;
-}
-.ProductView_Discount{
-    display: flex;
-    flex-direction: row;
     align-items: center;
-}
-.ProductView_txtPrice_dis{
-    text-decoration: line-through;
-    margin-right: 10px;
-}
-.ProductView_btn_Buy{
-    width: 100%;
-
-    text-align: center;
-    background-color: rgb(20, 53, 195);
-    border-color: rgb(20, 53, 195);
-    border-radius: 4px;
-    color: white;
-}
-.ProductView_btn_Addcard{
-    width: 100%;
-    // line-height: 5vh;
-
-    margin: 5px;
-    background-color: white;
-    border-color: rgb(20, 53, 195);
-    border-radius: 4px;
-    color: rgb(20, 53, 195);;
-}
-.ProductView_btn{
-    display: flex;
-    flex-direction: row;
-    // justify-content: center;
-    align-items: center;
+    margin-top: 100px;
+  }
 }

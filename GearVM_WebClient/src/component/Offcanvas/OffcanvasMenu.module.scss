@@ -1,0 +1,36 @@
+.offcanva {
+  width: 280px !important;
+}
+.navTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+}
+.offcanNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #505050;
+}
+.offcanNav_header {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.wrapMenuAcount_thumb_btn {
+  width: 90%;
+  background-color: blue;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 3px;
+  margin-left: 9px;
+}

@@ -1,55 +1,55 @@
-.navwrap{
-    margin-top: 5px;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: space-around;
-    // align-items: center;
-    text-align: center;
+.navwrap {
+  margin-top: 5px;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: space-around;
+  // align-items: center;
+  text-align: center;
 }
-.itemProduct{
-    // width: 30vh;
-    // height: 5vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid black;
-    border-radius: 5px;
-    // margin-left: 7px;
-    padding: 7px 35px;
-
-    
+.itemProduct {
+  // width: 30vh;
+  // height: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 5px;
+  // margin-left: 7px;
+  padding: 7px 35px;
 }
-.itemProduct:hover{
-    background-color: red;
-    cursor: pointer;
+.itemProduct:hover {
+  background-color: red;
+  cursor: pointer;
 }
-.ListProduct{
-    // width: 30vh;
-    // height: 5vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid black;
-    border-radius: 5px;
-    padding: 7px 35px;
-
+.ListProduct {
+  // width: 30vh;
+  // height: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 7px 35px;
 }
-.ListProduct:hover{
-    background-color: gray;
-    cursor: pointer;
+.ListProduct:hover {
+  background-color: gray;
+  cursor: pointer;
 }
-.textItemProduct{
-    // padding: 8px 12px;
-    margin-bottom: 4px;
-    font-size: 14px;
-    // margin-left: 5px;
-
+.textItemProduct {
+  // padding: 8px 12px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  // margin-left: 5px;
 }
-@media screen and (min-width: 768px) and (max-width: 999px)
-{
-    .navwrap{
-        display: none;
-    }
+@media screen and (min-width: 768px) and (max-width: 999px) {
+  .navwrap {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .navwrap {
+    display: none;
+  }
 }
