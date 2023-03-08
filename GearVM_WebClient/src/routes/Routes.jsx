@@ -10,6 +10,7 @@ import GuidePayment from "../pages/guidePayment/GuidePayment";
 import GuidePolicy from "../pages/guidePolicy/GuidePolicy";
 import GuideDeli from "../pages/guidedeli/GuideDeli";
 import Promotion from "../pages/promotion/Promotion";
+import Payment from "../pages/payment/Payment";
 
 const publicRoutes = [
   { path: "/", component: Home },
@@ -24,6 +25,7 @@ const publicRoutes = [
   { path: "/guidePolicy", component: GuidePolicy },
   { path: "/guideDeli", component: GuideDeli },
   { path: "/promotion", component: Promotion },
+  { path: "/payment", component: Payment },
 ];
 
 const privateRoutes = [];
