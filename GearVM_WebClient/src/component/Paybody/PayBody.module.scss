@@ -1,88 +1,126 @@
-.wrapPayBody{
-    width: 78%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
+.wrapPayBody {
+  display: flex;
+  flex-direction: row;
 }
-.wrapPayBody_right_address{
-    background-color: white;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 10px;
- 
+.wrapPayBody_right_address {
+  background-color: white;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
 }
-.wrapPayBody_right_address_btn{
-    border-radius: 4px;
-    display: inline-block;
-    user-select: none;
-    border: 1px solid rgb(20, 53, 195);
-    background-color: rgb(255, 255, 255);
-    padding: 0.5rem 1.25rem;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    color: rgba(108, 103, 103, 0.621);
-    margin-right: 10px;
+.wrapPayBody_right_address_btn {
+  border-radius: 4px;
+  display: inline-block;
+  user-select: none;
+  border: 1px solid rgb(20, 53, 195);
+  background-color: rgb(255, 255, 255);
+  padding: 0.5rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  color: rgba(108, 103, 103, 0.621);
+  margin-right: 10px;
 }
-.wrapPayBody_right_metodpay_wrapbtn{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+.wrapPayBody_right_metodpay_wrapbtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
-.wrapPayBody_right_metodpay{
-    background-color: white;
-    padding-bottom: 15px;
-    border-radius: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
+.wrapPayBody_right_metodpay {
+  background-color: white;
+  padding-bottom: 15px;
+  border-radius: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
-.wrapPayBody_left{
-    margin-left: 15px;
-    width: 30%;
+.wrapPayBody_left {
+  margin-left: 15px;
+  width: 30%;
 }
-.wrapPayBody_right_infoProduct_wrap{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+.wrapPayBody_right_infoProduct_wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
-.wrapPayBody_right_infoProduct{
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
+.wrapPayBody_right_infoProduct {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
 }
-.wrapPayBody_right_Sumpay{
-    margin-top: 15px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    border-radius: 10px;
-    padding: 10px;
+.wrapPayBody_right_Sumpay {
+  margin-top: 15px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 10px;
+  padding: 10px;
 }
-.wrapPayBody_right_Sumpay_content{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
+.wrapPayBody_right_Sumpay_content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-.wrapPayBody_right_Sumpay_btn{
-    background-color: blue;
-    border-radius: 5px;
-    border-color: blue;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
+.wrapPayBody_right_Sumpay_btn {
+  background-color: blue;
+  border-radius: 5px;
+  border-color: blue;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+.wrapPayBody_right_Sumpay_text {
+  font-size: 18px;
+  font-weight: 600;
+}
+.wrapPayBody_right_Sumpay_text_red {
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+}
+.info-order-rep {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .wrapPayBody {
+    margin-top: 100px;
+  }
+  .info-order-rep {
+    display: block;
 
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  .wrapPayBody_left {
+    display: none;
+  }
+  .wrapPayBody_right_Sumpay {
+    margin-top: 10px;
+  }
+  .container {
+    width: 700px;
+  }
 }
-.wrapPayBody_right_Sumpay_text{
-    font-size: 18px;
-    font-weight: 600;
+@media (min-width: 576px) {
+  .container {
+    max-width: 700px;
+  }
 }
-.wrapPayBody_right_Sumpay_text_red{
-    font-size: 18px;
-    font-weight: bold;
-    color: red;
+@media screen and (min-width: 768px) and (max-width: 999px) {
+  .wrapPayBody {
+    margin-top: 100px;
+  }
+  .wrapPayBody_left {
+    width: 60%;
+  }
+}
+@media screen and (min-width: 999px) and (max-width: 1400px) {
+  .wrapPayBody {
+    margin-top: 60px;
+  }
 }

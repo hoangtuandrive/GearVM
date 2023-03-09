@@ -1,31 +1,60 @@
-.wrapNavModal{
-    position: fixed;
-    top: 250px;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: rgba(0,0,0,0.4);
-    transition-delay: 0.1s;
-    display: flex;
-    flex-direction: row;
-    z-index: 3;
-
-    
+.wrapNavModal {
+  position: fixed;
+  top: 260px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition-delay: 0.1s;
+  display: flex;
+  flex-direction: row;
+  z-index: 3;
+  display: none;
+  transition: all 1s ease-in-out;
 }
-.NavContent{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin-top: 10px;
-    margin-left: 170px;
-    background-color: aliceblue;
-    width: 200px;
-    border: 1 solid 0.2;
-    border-radius: 5px;
-    max-height:320px;;
+.wrapNavModal.active {
+  display: block;
 }
-.NavContent_item{
-    margin: 10px;
-    cursor: pointer;
+.wrapNavModal.active.sticky {
+  top: 165px;
 }
-
+.NavContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  //   margin-top: 20px;
+  margin-left: 170px;
+  background-color: aliceblue;
+  width: 200px;
+  border: 1 solid 0.2;
+  border-radius: 5px;
+  max-height: 820px;
+}
+.NavContent_item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 10px;
+  width: 180px;
+  cursor: pointer;
+}
+.tipBox {
+  margin-bottom: 5px;
+}
+@media screen and (min-width: 1200px) and (max-width: 1428px) {
+  .NavContent {
+    margin-left: 50px;
+  }
+  .wrapNavModal {
+    top: 245px;
+  }
+}
+@media screen and (min-width: 999px) and (max-width: 1200px) {
+  .NavContent {
+    margin-left: 100px;
+  }
+  .wrapNavModal {
+    top: 260px;
+  }
+}

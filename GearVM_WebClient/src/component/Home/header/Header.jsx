@@ -8,7 +8,8 @@ import {
   MenuOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import Nav from "../nav/Nav";
+import Nav from "../nav/nav";
+
 import Tippy from "@tippyjs/react/headless";
 import MenuCard from "../../card/Card";
 import MenuAcount from "../../MenuAcount/MenuAcount";

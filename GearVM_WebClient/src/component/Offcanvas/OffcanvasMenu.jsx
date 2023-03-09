@@ -7,7 +7,7 @@ import styles from "./OffcanvasMenu.module.scss";
 import classNames from "classnames/bind";
 import Accordion from "react-bootstrap/Accordion";
 import ListGroup from "react-bootstrap/ListGroup";
-import Nav from "../Home/nav/Nav";
+
 import Acount from "../Custom/Acount/Acount";
 const cx = classNames.bind(styles);
 const OffcanvasMenu = () => {
