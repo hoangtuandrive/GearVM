@@ -26,9 +26,6 @@ public class PaymentController {
     @Value("${STRIPE_SECRET_KEY}")
     private String stripePrivateKey;
 
-    @Value("${STRIPE_PUBLIC_KEY}")
-    private String stripePublicKey;
-
     @PostMapping("/false")
     public ResponseEntity<PaymentStatus> chargeCustomer(@RequestBody CardToken cardToken) throws StripeException {
 
