@@ -8,7 +8,9 @@
   max-height: 320px;
   border-radius: 5px;
   z-index: 3;
+  display: none;
 }
+
 .trademark_txt {
   font-size: 22px;
   color: rgb(61, 113, 197);
@@ -19,6 +21,19 @@
   font-size: 18px;
   color: black;
 }
+.wrapFilter.show {
+  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  //   margin-top: 10px;
+  background-color: aliceblue;
+  width: 900px;
+  max-height: 320px;
+  border-radius: 5px;
+  z-index: 3;
+}
+
 @media screen and (min-width: 1200px) and (max-width: 1428px) {
   .wrapFilter {
     width: 800px;

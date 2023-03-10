@@ -21,7 +21,7 @@ const ListCart = () => {
 
   const cart = useSelector((state) => state.todoCart);
 
-  console.log(cart);
+  // console.log(cart);
 
   useEffect(() => {
     dispatch(CartSlice.actions.totalCart());

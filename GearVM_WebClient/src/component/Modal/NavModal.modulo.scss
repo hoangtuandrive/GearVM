@@ -13,7 +13,9 @@
   transition: all 1s ease-in-out;
 }
 .wrapNavModal.active {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  max-height: 820px;
 }
 .wrapNavModal.active.sticky {
   top: 165px;
@@ -29,7 +31,7 @@
   width: 200px;
   border: 1 solid 0.2;
   border-radius: 5px;
-  max-height: 820px;
+  max-height: 370px;
 }
 .NavContent_item {
   display: flex;

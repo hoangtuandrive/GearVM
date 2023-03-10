@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./PaymentForm.,module.scss";
+
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
