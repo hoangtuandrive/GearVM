@@ -26,9 +26,6 @@ public class PaymentController {
     @Value("${STRIPE_SECRET_KEY}")
     private String stripePrivateKey;
 
-    @Value("${STRIPE_PUBLIC_KEY}")
-    private String stripePublicKey;
-
     @PostMapping("/false")
     public ResponseEntity<PaymentStatus> chargeCustomer(@RequestBody CardToken cardToken) throws StripeException {
 
@@ -76,7 +73,7 @@ public class PaymentController {
         return "result";
     }
 
-    @PostMapping("/true")
+    @PostMapping()
     public ResponseEntity<String> CreatePaymentIntent() throws StripeException {
         Stripe.apiKey = stripePrivateKey;
 
@@ -86,6 +83,8 @@ public class PaymentController {
                         .setAmount(1099L)
                         .setCurrency("usd")
                         .addPaymentMethodType("card")
+                        .setStatementDescriptor("Thanh toán GearVM")
+                        .setSetupFutureUsage(PaymentIntentCreateParams.SetupFutureUsage.OFF_SESSION)
                         .build();
 
         PaymentIntent paymentIntent = PaymentIntent.create(params);

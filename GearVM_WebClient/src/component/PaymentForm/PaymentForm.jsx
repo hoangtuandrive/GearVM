@@ -18,7 +18,7 @@ const PaymentForm = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/payment/true", {
+    fetch("http://localhost:8080/api/payment", {
       method: "POST",
       body: JSON.stringify({}),
     }).then(async (result) => {
