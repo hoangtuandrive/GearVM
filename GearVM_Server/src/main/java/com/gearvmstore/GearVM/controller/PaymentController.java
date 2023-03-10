@@ -73,7 +73,7 @@ public class PaymentController {
         return "result";
     }
 
-    @PostMapping("/true")
+    @PostMapping()
     public ResponseEntity<String> CreatePaymentIntent() throws StripeException {
         Stripe.apiKey = stripePrivateKey;
 
