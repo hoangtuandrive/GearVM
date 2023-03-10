@@ -7,14 +7,19 @@ import { AppContext } from "../context/AppProvider";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
+  const navigate = useNavigate();
   const { setShow } = useContext(AppContext);
   const cart = useSelector((state) => state.todoCart);
 
   const handleShow = () => {
     setShow(true);
+  };
+  const ChangePayment = () => {
+    navigate("/payment", { replace: true });
   };
   return (
     <Container>
@@ -136,6 +141,7 @@ const PayBody = () => {
               type="button"
               value="Thanh Toán"
               className={cx("wrapPayBody_right_Sumpay_btn")}
+              onClick={ChangePayment}
             />
           </div>
         </div>

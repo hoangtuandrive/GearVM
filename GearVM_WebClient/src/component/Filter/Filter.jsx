@@ -4,17 +4,18 @@ import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
 
-const Filter = ({ data }) => {
-  console.log(data);
+const Filter = ({ data, dropdown }) => {
   return (
-    <div className={cx("wrapFilter")}>
+    <div className={cx(`wrapFilter ${dropdown ? "show" : ""}`)}>
+      {console.log(data)}
       <div className={cx("trademark")}>
         <h2 className={cx("trademark_txt")}>{data.thuongHieu}</h2>
-        {data.listTH.map((th, index) => (
-          <h4 key={index} className={cx("trademark_listTxt")}>
-            {th}
-          </h4>
-        ))}
+        {data.listTH &&
+          data.listTH.map((th, index) => (
+            <h4 key={index} className={cx("trademark_listTxt")}>
+              {th}
+            </h4>
+          ))}
       </div>
       <div className={cx("trademark")}>
         <h2 className={cx("trademark_txt")}>{data.cauHinh}</h2>

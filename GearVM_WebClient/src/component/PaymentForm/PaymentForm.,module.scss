@@ -1,11 +1,11 @@
-// @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
 
-// :root {
-//   --light-grey: #f6f9fc;
-//   --dark-terminal-color: #0a2540;
-//   --accent-color: #635bff;
-//   --radius: 3px;
-// }
+:root {
+  --light-grey: #f6f9fc;
+  --dark-terminal-color: #0a2540;
+  --accent-color: #635bff;
+  --radius: 3px;
+}
 
 // body {
 //   padding: 20px;
@@ -79,22 +79,22 @@
 //   border: 1px solid #efefef;
 // }
 
-// #payment-form {
-//   border: #f6f9fc solid 1px;
-//   border-radius: var(--radius);
-//   padding: 20px;
-//   margin: 20px 0;
-//   box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%),
-//     0 30px 60px -30px rgb(0 0 0 / 30%);
-// }
+#payment-form {
+  border: #f6f9fc solid 1px;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%),
+    0 30px 60px -30px rgb(0 0 0 / 30%);
+}
 
-// #messages {
-//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New";
-//   display: none; /* hide initially, then show once the first message arrives */
-//   background-color: #0a253c;
-//   color: #00d924;
-//   padding: 20px;
-//   margin: 20px 0;
-//   border-radius: var(--radius);
-//   font-size: 0.7em;
-// }
+#messages {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New";
+  display: none; /* hide initially, then show once the first message arrives */
+  background-color: #0a253c;
+  color: #00d924;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: var(--radius);
+  font-size: 0.7em;
+}
