@@ -83,6 +83,8 @@ public class PaymentController {
                         .setAmount(1099L)
                         .setCurrency("usd")
                         .addPaymentMethodType("card")
+                        .setStatementDescriptor("Thanh toán GearVM")
+                        .setSetupFutureUsage(PaymentIntentCreateParams.SetupFutureUsage.OFF_SESSION)
                         .build();
 
         PaymentIntent paymentIntent = PaymentIntent.create(params);
