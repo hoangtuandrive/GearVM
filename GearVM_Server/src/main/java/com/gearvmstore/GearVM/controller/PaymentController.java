@@ -1,93 +1,31 @@
 package com.gearvmstore.GearVM.controller;
 
-import com.gearvmstore.GearVM.model.dto.payment.CardToken;
-import com.gearvmstore.GearVM.model.dto.payment.PaymentStatus;
 import com.gearvmstore.GearVM.service.StripeService;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import com.stripe.model.PaymentIntent;
-import com.stripe.param.ChargeCreateParams;
-import com.stripe.param.PaymentIntentCreateParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
 public class PaymentController {
     @Autowired
-    private StripeService paymentsService;
+    private StripeService stripeService;
 
-    @Value("${STRIPE_SECRET_KEY}")
-    private String stripePrivateKey;
-
-    @PostMapping("/false")
-    public ResponseEntity<PaymentStatus> chargeCustomer(@RequestBody CardToken cardToken) throws StripeException {
-
-
-        Stripe.apiKey = stripePrivateKey;
-        Stripe.setMaxNetworkRetries(2);
-
-        Charge charge;
-        PaymentStatus paymentStatus;
-
-        try {
-            ChargeCreateParams params =
-                    ChargeCreateParams.builder()
-                            .setAmount(cardToken.getAmount())
-                            .setCurrency(cardToken.getCurrency())
-                            .setDescription("Shopper Buy")
-                            .setSource(cardToken.getId())
-                            .build();
-
-            charge = Charge.create(params);
-            System.out.println("Charge = " + charge);
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-            paymentStatus = new PaymentStatus(timestamp.getTime(), false,
-                    charge.getId(),
-                    charge.getBalanceTransaction(),
-                    charge.getReceiptUrl()
-            );
-
-        } catch (Exception e) {
-            paymentStatus = new PaymentStatus();
-            paymentStatus.setPayment_failed(true);
-            System.out.println("Something went wrong with Stripe API");
-            System.out.println(e);
-            return ResponseEntity.badRequest().body(paymentStatus);
-        }
-
-        System.out.println("Payment is successful....");
-        return ResponseEntity.ok(paymentStatus);
+    @PostMapping("/create-session")
+    public ResponseEntity<String> CreateSession() throws StripeException {
+        return ResponseEntity.ok().body(stripeService.createStripeSession().getUrl());
     }
 
-    @ExceptionHandler(StripeException.class)
-    public String handleError(Model model, StripeException ex) {
-        model.addAttribute("error", ex.getMessage());
-        return "result";
-    }
-
-    @PostMapping()
+    @PostMapping("/create-payment-intent")
     public ResponseEntity<String> CreatePaymentIntent() throws StripeException {
-        Stripe.apiKey = stripePrivateKey;
+        return ResponseEntity.ok().body(stripeService.createPaymentIntent().getClientSecret());
+    }
 
-        PaymentIntentCreateParams params =
-                PaymentIntentCreateParams
-                        .builder()
-                        .setAmount(1099L)
-                        .setCurrency("usd")
-                        .addPaymentMethodType("card")
-                        .setStatementDescriptor("Thanh toán GearVM")
-                        .setSetupFutureUsage(PaymentIntentCreateParams.SetupFutureUsage.OFF_SESSION)
-                        .build();
-
-        PaymentIntent paymentIntent = PaymentIntent.create(params);
-        return ResponseEntity.ok().body(paymentIntent.getClientSecret());
+    @PostMapping("/create-payment-link")
+    public ResponseEntity<String> CreatePaymentLink() throws StripeException {
+        return ResponseEntity.ok().body(stripeService.createPaymentLink("Hóa đơn mã số #12").getUrl());
     }
 }
