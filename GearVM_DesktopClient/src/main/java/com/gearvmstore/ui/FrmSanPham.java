@@ -652,4 +652,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         p.setId(Long.parseLong(txtMaHangHoa.getText()));
         return ProductService.deleteRequest(p);
     }
+
+
 }

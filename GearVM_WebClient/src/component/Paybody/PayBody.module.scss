@@ -49,7 +49,8 @@
 .wrapPayBody_right_infoProduct {
   background-color: white;
   border-radius: 10px;
-  padding: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
 .wrapPayBody_right_Sumpay {
   margin-top: 15px;
@@ -85,6 +86,9 @@
 .info-order-rep {
   display: none;
 }
+.wrapPayBody_right_infoProduct_wrap_rep {
+  display: none;
+}
 @media screen and (max-width: 768px) {
   .wrapPayBody {
     margin-top: 100px;
@@ -104,6 +108,12 @@
   }
   .container {
     width: 700px;
+  }
+  .wrapPayBody_right_infoProduct_wrap_rep {
+    display: block;
+  }
+  .wrapPayBody_right_infoProduct_wrap {
+    display: none;
   }
 }
 @media (min-width: 576px) {

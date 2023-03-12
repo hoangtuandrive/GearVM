@@ -8,6 +8,7 @@ import { Input } from "antd";
 import { useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import TableCart from "../ListCart/TableCart";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
@@ -25,14 +26,18 @@ const PayBody = () => {
     <Container>
       <div className={cx("wrapPayBody")}>
         <div className={cx("wrapPayBody_right")}>
-          <div className={cx("wrapPayBody_right_address")}>
-            <h5>Thông tin nhận hàng</h5>
-            <div
-              className={cx("wrapPayBody_right_address_btn")}
-              onClick={handleShow}
-            >
-              <h3>+</h3>
-              <h5>Thêm Địa chỉ</h5>
+          <div className={cx("wrapPayBody_right_infoProduct")}>
+            <h5>Thông tin đơn hàng</h5>
+            <div className={cx("wrapPayBody_right_infoProduct_wrap")}>
+              {/* {cart.cartItems.map((item) => (
+                <ItemCard key={item.id} data={item} />
+              ))} */}
+              <TableCart />
+            </div>
+            <div className={cx("wrapPayBody_right_infoProduct_wrap_rep")}>
+              {cart.cartItems.map((item) => (
+                <ItemCard key={item.id} data={item} />
+              ))}
             </div>
           </div>
           <div className={cx("wrapPayBody_right_address")}>
@@ -54,13 +59,14 @@ const PayBody = () => {
             </div>
           </div>
           <div className={cx("info-order-rep")}>
-            <div className={cx("wrapPayBody_right_infoProduct")}>
-              <h5>Thông tin đơn hàng</h5>
-
-              <div className={cx("wrapPayBody_right_infoProduct_wrap")}>
-                {cart.cartItems.map((item) => (
-                  <ItemCard key={item.id} data={item} />
-                ))}
+            <div className={cx("wrapPayBody_right_address")}>
+              <h5>Thông tin nhận hàng</h5>
+              <div
+                className={cx("wrapPayBody_right_address_btn")}
+                onClick={handleShow}
+              >
+                <h3>+</h3>
+                <h5>Thêm Địa chỉ</h5>
               </div>
             </div>
             <div className={cx("wrapPayBody_right_Sumpay")}>
@@ -100,13 +106,14 @@ const PayBody = () => {
           </div>
         </div>
         <div className={cx("wrapPayBody_left")}>
-          <div className={cx("wrapPayBody_right_infoProduct")}>
-            <h5>Thông tin đơn hàng</h5>
-
-            <div className={cx("wrapPayBody_right_infoProduct_wrap")}>
-              {cart.cartItems.map((item) => (
-                <ItemCard key={item.id} data={item} />
-              ))}
+          <div className={cx("wrapPayBody_right_address")}>
+            <h5>Thông tin nhận hàng</h5>
+            <div
+              className={cx("wrapPayBody_right_address_btn")}
+              onClick={handleShow}
+            >
+              <h3>+</h3>
+              <h5>Thêm Địa chỉ</h5>
             </div>
           </div>
           <div className={cx("wrapPayBody_right_Sumpay")}>
