@@ -114,7 +114,7 @@ public class StripeService {
                                         .setRedirect(
                                                 PaymentLinkCreateParams.AfterCompletion.Redirect
                                                         .builder()
-                                                        .setUrl(DOMAIN + "/payment-sucess")
+                                                        .setUrl(DOMAIN + "/payment-success")
                                                         .build()
                                         )
                                         .build()

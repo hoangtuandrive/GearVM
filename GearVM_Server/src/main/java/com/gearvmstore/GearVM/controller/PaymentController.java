@@ -7,11 +7,15 @@ import com.stripe.model.Event;
 import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.StripeObject;
 import com.stripe.net.Webhook;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/payment")
 public class PaymentController {
@@ -30,14 +34,14 @@ public class PaymentController {
 
     @PostMapping("/create-payment-link")
     public ResponseEntity<String> CreatePaymentLink() throws StripeException {
-        return ResponseEntity.ok().body(stripeService.createPaymentLink("Đơn hàng mã số #12").getUrl());
+        return ResponseEntity.ok().body(stripeService.createPaymentLink("Đơn hàng mã số #1000").getUrl());
     }
 
     @PostMapping("/webhook")
-    public ResponseEntity<String> WebHook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
+    public ResponseEntity<String> WebHook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) throws JSONException {
         Event event = null;
         try {
-            event = Webhook.constructEvent(payload, sigHeader, "whsec_rnufepI4MEpDUrZ7pbZbOZsgpy0yL6a5");
+            event = Webhook.constructEvent(payload, sigHeader, "whsec_d3b41c87f134816de2dc0794a10290a22286618974d2bb91576e388e3abe7097");
         } catch (SignatureVerificationException e) {
             System.out.println("Failed signature verification");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -48,6 +52,7 @@ public class PaymentController {
 
         if (dataObjectDeserializer.getObject().isPresent()) {
             stripeObject = dataObjectDeserializer.getObject().get();
+
         } else {
             // Deserialization failed, probably due to an API version mismatch.
             // Refer to the Javadoc documentation on `EventDataObjectDeserializer` for
@@ -55,13 +60,30 @@ public class PaymentController {
         }
 
         switch (event.getType()) {
-            case "payment_intent.succeeded":
-                // ...
+           /* case "payment_intent.succeeded":
+                JSONObject jsonObjectPaymentIntent = new JSONObject(stripeObject.toJson());
+
+                String paymentId = jsonObjectPaymentIntent.getString("id");
+                String customerEmail = jsonObjectPaymentIntent.getString("receipt_email");
+                String totalPrice = jsonObjectPaymentIntent.getString("amount");
+
+                System.out.println(paymentId);
+                System.out.println(customerEmail);
+                System.out.println(totalPrice);
+
+                break;*/
+
+            case "invoice.payment_succeeded":
+                JSONObject jsonObjectInvoice = new JSONObject(stripeObject.toJson());
+                String description = jsonObjectInvoice.getString("description");
+
+                int index = description.indexOf("#"); // get the index of the "#" symbol
+                if (index != -1) {
+                    String result = description.substring(index + 1); // get the substring after the "#" symbol
+                    System.out.println(result);
+                }
                 break;
-            case "payment_method.attached":
-                // ...
-                break;
-            // ... handle other event types
+
             default:
                 // Unexpected event type
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
