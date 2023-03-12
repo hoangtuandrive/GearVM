@@ -88,7 +88,6 @@ public class StripeService {
                                                 PaymentLinkCreateParams.InvoiceCreation.InvoiceData
                                                         .builder()
                                                         .setDescription(productName)
-                                                        .putMetadata("order", "order-xyz")
                                                         .addCustomField(
                                                                 PaymentLinkCreateParams.InvoiceCreation.InvoiceData.CustomField
                                                                         .builder()
@@ -104,7 +103,7 @@ public class StripeService {
                                                                         )
                                                                         .build()
                                                         )
-                                                        .setFooter("GearVM, 100 Cộng Hòa, ")
+                                                        .setFooter("GearVM, 100 Cộng Hòa, 0929471420")
                                                         .build()
                                         )
                                         .build())

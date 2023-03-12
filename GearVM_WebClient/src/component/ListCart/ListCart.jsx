@@ -42,32 +42,32 @@ const ListCart = () => {
   const handleSubmitToCart = (e) => {
     navigate("/pay", { replace: true });
 
-    // e.preventDefault();
-    // const JcartItems = localStorage.getItem("cartItems");
-    // const cartItems = JSON.parse(JcartItems);
-    // // console.log(cartItems);
+    e.preventDefault();
+    const JcartItems = localStorage.getItem("cartItems");
+    const cartItems = JSON.parse(JcartItems);
+    // console.log(cartItems);
 
-    // let orderItems = [];
+    let orderItems = [];
 
-    // cartItems.map((item) => {
-    //   if (item.checkCart === true) {
-    //     // console.log(item);
-    //     let price = item.price;
-    //     let quantity = item.cartQuantity;
-    //     let productId = item.id;
-    //     let orderItemTemp = { price, quantity, productId };
-    //     orderItems.push(orderItemTemp);
-    //     dispatch(CartSlice.actions.removeCart(item));
-    //   }
-    //   // console.log(oderItem);
-    // });
-    // // let totalPrice =;
-    // const cartOrder = {
-    //   totalPrice: cart.cartTotalAmount,
-    //   orderItems,
-    // };
-    // dispatch(OrderCart(cartOrder));
-    // // console.log(test);
+    cartItems.map((item) => {
+      if (item.checkCart === true) {
+        // console.log(item);
+        let price = item.price;
+        let quantity = item.cartQuantity;
+        let productId = item.id;
+        let orderItemTemp = { price, quantity, productId };
+        orderItems.push(orderItemTemp);
+        dispatch(CartSlice.actions.removeCart(item));
+      }
+      // console.log(oderItem);
+    });
+    // let totalPrice =;
+    const cartOrder = {
+      totalPrice: cart.cartTotalAmount,
+      orderItems,
+    };
+    dispatch(OrderCart(cartOrder));
+    // console.log(test);
   };
   return (
     <Container>
@@ -196,7 +196,7 @@ const ListCart = () => {
         </div>
 
         <div className={cx("listCart_Pay")}>
-          <h6>Thanh Toán</h6>
+          <h6>Đơn hàng</h6>
           <div>
             <div className={cx("listCart_Pay_content")}>
               <span className={cx("listCart_Pay_content_text")}>
@@ -217,7 +217,7 @@ const ListCart = () => {
           </div>
           <input
             type="button"
-            value="Thanh Toán"
+            value="Tiếp tục"
             className={cx("listCart_Pay_content_btn")}
             onClick={handleSubmitToCart}
           />
