@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./ItemProduct.modulo.scss";
 import { Image } from "antd";
+import { s3 } from "../../aws";
 
 const cx = classNames.bind(styles);
 const ItemProduct = (props) => {
+  const [imageData, setImageData] = useState(null);
+
+  useEffect(() => {
+    getImage();
+  }, []);
+
+  async function getImage() {
+    try {
+      const response = await s3
+        .getObject({
+          Bucket: "gearvm",
+          Key: props.data.imageUri,
+        })
+        .promise();
+      const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
+        "base64"
+      )}`;
+      setImageData(imageSrc);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className={cx("wrapItemProduct")}>
       <div className={cx("imgProduct")}>
-        <Image
-          src={"https://betanews.com/wp-content/uploads/2014/11/front.jpg"}
-        />
+        <Image src={imageData} />
       </div>
       <div className={cx("textProduct")}>
         <h5 className={cx("txtNameProduct")}>{props.data.name}</h5>

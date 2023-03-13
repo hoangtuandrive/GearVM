@@ -75,13 +75,22 @@ public class PaymentController {
 
             case "invoice.payment_succeeded":
                 JSONObject jsonObjectInvoice = new JSONObject(stripeObject.toJson());
+
                 String description = jsonObjectInvoice.getString("description");
+                String paymentId = jsonObjectInvoice.getString("payment_intent");
 
                 int index = description.indexOf("#"); // get the index of the "#" symbol
                 if (index != -1) {
                     String result = description.substring(index + 1); // get the substring after the "#" symbol
                     System.out.println(result);
                 }
+                System.out.println(paymentId);
+                break;
+
+            case "charge.refunded":
+                // Hoàn tiền --> update trạng thái đơn hàng TODO
+                System.out.println(stripeObject);
+                // ...
                 break;
 
             default:

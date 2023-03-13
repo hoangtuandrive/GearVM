@@ -13,6 +13,7 @@ public class ProductService {
     ProductRepository productRepository;
 
     public Product createProduct(Product p) {
+        p.setImageUri("empty.jpg");
         return productRepository.save(p);
     }
 
