@@ -18,15 +18,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -54,6 +46,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private java.awt.Label lblLoaiHang;
     private java.awt.Label lblMaHangHoa;
     private JPanel pnChucNang;
+    private JPanel pnExcel;
     private JPanel pnThongTin;
     private javax.swing.JScrollPane pntblHangHoa;
     private static JTable tableHangHoa;
@@ -65,6 +58,10 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private JPanel pnlTimKiem;
     private javax.swing.JTextField txtMaHangHoa;
     private static DefaultTableModel modelSanPham;
+    private JButton btnImport;
+    private JButton btnExport;
+    private JButton btnSave;
+    private JButton btnCancel;
 
     public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
@@ -90,6 +87,12 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnSua = new JButton();
         btnXoa = new JButton();
         btnChiTiet = new JButton();
+
+        pnExcel = new JPanel();
+        btnImport = new JButton();
+        btnExport = new JButton();
+        btnSave = new JButton();
+        btnCancel = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -215,12 +218,19 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         .addContainerGap(28, Short.MAX_VALUE)));
 
         pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
+        pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
 
         btnThem.setText("THÊM");
         btnSua.setText("SỬA");
         btnXoa.setText("XÓA");
         btnChiTiet.setText("CHI TIẾT");
+        btnSave.setText("LƯU");
+        btnCancel.setText("HỦY");
+        btnImport.setText("NHẬP FILE");
+        btnExport.setText("XUẤT FILE");
 
+
+        // Chức năng button
         btnThem.setBackground(new Color(0, 148, 224));
         btnThem.setForeground(Color.WHITE);
         btnThem.setFocusPainted(false);
@@ -234,18 +244,31 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnChiTiet.setForeground(Color.WHITE);
         btnChiTiet.setFocusPainted(false);
 
+        // Excel button
+        btnSave.setBackground(new Color(0, 148, 224));
+        btnSave.setForeground(Color.WHITE);
+        btnSave.setFocusPainted(false);
+        btnCancel.setBackground(new Color(0, 148, 224));
+        btnCancel.setForeground(Color.WHITE);
+        btnCancel.setFocusPainted(false);
+        btnImport.setBackground(new Color(0, 148, 224));
+        btnImport.setForeground(Color.WHITE);
+        btnImport.setFocusPainted(false);
+        btnExport.setBackground(new Color(0, 148, 224));
+        btnExport.setForeground(Color.WHITE);
+        btnExport.setFocusPainted(false);
+
         javax.swing.GroupLayout pnChucNangLayout = new javax.swing.GroupLayout(pnChucNang);
         pnChucNang.setLayout(pnChucNangLayout);
         pnChucNangLayout.setHorizontalGroup(pnChucNangLayout
-                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
+                .createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnThem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSua)
-//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
-//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnChiTiet)
                         .addGap(48, 48, 48))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
-//                        .addGap(40)
+                .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChiTiet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
                         .addGap(48, 48, 48)));
@@ -255,25 +278,42 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 .addGroup(pnChucNangLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnThem).addComponent(btnSua))
+                        .addGap(5)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnChiTiet).addComponent(btnXoa))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(15)));
+
+        javax.swing.GroupLayout pnExcelLayout = new javax.swing.GroupLayout(pnExcel);
+        pnExcel.setLayout(pnExcelLayout);
+        pnExcelLayout.setHorizontalGroup(pnExcelLayout
+                .createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+                        .addGap(50)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
+                        .addGap(50))
+                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+                        .addGap(40)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+                        .addGap(70)));
+        pnExcelLayout.setVerticalGroup(pnExcelLayout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
+                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnImport).addComponent(btnExport))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5)
+                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSave).addComponent(btnCancel))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(15)));
+
         pnThongTin.setBackground(new Color(219, 243, 255));
         pnChucNang.setBackground(new Color(219, 243, 255));
-//        btnThem.setBackground(new Color(0, 148, 224));
-//        btnThem.setForeground(Color.WHITE);
-//        btnThem.setForeground(Color.WHITE);
-//        btnThem.setFocusPainted(false);
-//        btnSua.setBackground(new Color(0, 148, 224));
-//        btnSua.setForeground(Color.WHITE);
-//        btnSua.setFocusPainted(false);
-//        btnXoa.setBackground(new Color(0, 148, 224));
-//        btnXoa.setForeground(Color.WHITE);
-//        btnXoa.setFocusPainted(false);
-//        btnChiTiet.setBackground(new Color(0, 148, 224));
-//        btnChiTiet.setForeground(Color.WHITE);
-//        btnChiTiet.setFocusPainted(false);
+        pnExcel.setBackground(new Color(219, 243, 255));
 
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
@@ -305,7 +345,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(pntblHangHoa, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
                                 .addComponent(pnlTimKiem))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap(20, 20)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addGroup(layout
                                         .createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
@@ -314,11 +355,14 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap())
-                                .addGroup(layout.createSequentialGroup().addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup()
                                         .addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))));
+                                        .addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                ))));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout
                                 .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -334,6 +378,9 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 20, 20)
+                                        .addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 27, Short.MAX_VALUE)))
                         .addContainerGap()));
@@ -358,10 +405,17 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnSua.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnChiTiet.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnImport.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnExport.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         tableHangHoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+        btnSave.setEnabled(false);
+        btnCancel.setEnabled(false);
 
         tableHangHoa.getColumnModel().getColumn(0).setPreferredWidth(20);
         tableHangHoa.getColumnModel().getColumn(1).setPreferredWidth(165);
@@ -428,7 +482,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             }
         });
     }
-
 
 
     public static void emptyTable() {
@@ -539,7 +592,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 throw new RuntimeException(ex);
             }
         }
-        if (o.equals(btnXoa)){
+        if (o.equals(btnXoa)) {
             try {
                 if (deleteRequest()) {
                     JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
@@ -554,7 +607,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 throw new RuntimeException(ex);
             }
         }
-        if(o.equals(btnChiTiet)){
+        if (o.equals(btnChiTiet)) {
             try {
                 new FrmChiTietSanPham(getRequest());
             } catch (IOException ex) {

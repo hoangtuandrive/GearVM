@@ -152,6 +152,7 @@ public class FrmHoaDon extends JFrame {
 		cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTim1.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		p.add(tblscroll, BorderLayout.CENTER);
 		p.add(Box.createHorizontalStrut(50), BorderLayout.SOUTH);
@@ -177,6 +178,8 @@ public class FrmHoaDon extends JFrame {
 		lblNgay.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDoanhThu.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtDoanhThu.setFont(new Font("Tahoma", Font.BOLD, 24));
+		btnHoaDon.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnSort.setFont(new Font("Tahoma", Font.BOLD, 14));
 		TableRowSorter<TableModel> sorter1 = new TableRowSorter<TableModel>(tableHoaDon.getModel());
 		tableHoaDon.setRowSorter(sorter1);
 

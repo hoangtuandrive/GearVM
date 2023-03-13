@@ -7,15 +7,7 @@ import java.awt.Font;
 import java.rmi.RemoteException;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -30,6 +22,11 @@ public class FrmKhachHang extends javax.swing.JFrame {
 	private JComboBox<String> cmbChon;
 	private static JComboBox<String> cmbTim;
 	private JButton btnTim;
+	private JPanel pnExcel;
+	private JButton btnImport;
+	private JButton btnExport;
+	private JButton btnSave;
+	private JButton btnCancel;
 
 	public JPanel createPanelKhachHang() throws RemoteException {
 		FlatLightLaf.setup();
@@ -58,6 +55,12 @@ public class FrmKhachHang extends javax.swing.JFrame {
 		btnThem = new JButton();
 		btnSua = new JButton();
 		btnXoa = new JButton();
+
+		pnExcel = new JPanel();
+		btnImport = new JButton();
+		btnExport = new JButton();
+		btnSave = new JButton();
+		btnCancel = new JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		String[] header = { "Mã khách hàng", "Tên khách hàng", "Ngày Sinh", "CMND", "Giới Tính", "SDT", "Email",
@@ -208,11 +211,17 @@ public class FrmKhachHang extends javax.swing.JFrame {
 						.addContainerGap(28, Short.MAX_VALUE)));
 
 		pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
+		pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
 
 		btnThem.setText("THÊM");
 		btnSua.setText("SỬA");
 		btnXoa.setText("XÓA");
-		
+		btnSave.setText("LƯU");
+		btnCancel.setText("HỦY");
+		btnImport.setText("NHẬP FILE");
+		btnExport.setText("XUẤT FILE");
+
+		pnExcel.setBackground(new Color(219, 243, 255));
 		pnThongTin.setBackground(new Color(219, 243, 255));
 		pnChucNang.setBackground(new Color(219, 243, 255));
 		btnThem.setBackground(new Color(0, 148, 224));
@@ -225,21 +234,62 @@ public class FrmKhachHang extends javax.swing.JFrame {
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setFocusPainted(false);
 
+		// Excel button
+		btnSave.setBackground(new Color(0, 148, 224));
+		btnSave.setForeground(Color.WHITE);
+		btnSave.setFocusPainted(false);
+		btnCancel.setBackground(new Color(0, 148, 224));
+		btnCancel.setForeground(Color.WHITE);
+		btnCancel.setFocusPainted(false);
+		btnImport.setBackground(new Color(0, 148, 224));
+		btnImport.setForeground(Color.WHITE);
+		btnImport.setFocusPainted(false);
+		btnExport.setBackground(new Color(0, 148, 224));
+		btnExport.setForeground(Color.WHITE);
+		btnExport.setFocusPainted(false);
+
 		javax.swing.GroupLayout pnChucNangLayout = new javax.swing.GroupLayout(pnChucNang);
 		pnChucNang.setLayout(pnChucNangLayout);
 		pnChucNangLayout.setHorizontalGroup(pnChucNangLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnChucNangLayout.createSequentialGroup()
+				.createParallelGroup(GroupLayout.Alignment.TRAILING)
+				.addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
+						.addGap(50)
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnThem)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSua)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
-						.addGap(48, 48, 48)));
+						.addGap(48)));
 		pnChucNangLayout.setVerticalGroup(pnChucNangLayout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(pnChucNangLayout.createSequentialGroup().addGap(26, 26, 26)
+				.addGroup(pnChucNangLayout.createSequentialGroup().addGap(10, 10, 10)
 						.addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(btnThem).addComponent(btnSua).addComponent(btnXoa))
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+								.addComponent(btnThem).addComponent(btnSua).addComponent(btnXoa)
+								.addGap(35))));
+
+		javax.swing.GroupLayout pnExcelLayout = new javax.swing.GroupLayout(pnExcel);
+		pnExcel.setLayout(pnExcelLayout);
+		pnExcelLayout.setHorizontalGroup(pnExcelLayout
+				.createParallelGroup(GroupLayout.Alignment.TRAILING)
+				.addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+						.addGap(50)
+						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
+						.addGap(60))
+				.addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+						.addGap(40)
+						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+						.addGap(80)));
+		pnExcelLayout.setVerticalGroup(pnExcelLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
+						.addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(btnImport).addComponent(btnExport))
+						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGap(5)
+						.addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(btnSave).addComponent(btnCancel))
+						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGap(15)));
 
 		Box b = Box.createHorizontalBox();
 		String[] tim = { "Mã Khách Hàng", "Tên Khách Hàng", "Giới Tính", "SDT", "CMND", "Ngày Sinh", "Địa Chỉ",
@@ -254,6 +304,9 @@ public class FrmKhachHang extends javax.swing.JFrame {
 		btnTim.setBackground(new Color(0, 148, 224));
 		btnTim.setForeground(Color.WHITE);
 		btnTim.setFocusPainted(false);
+
+		btnSave.setEnabled(false);
+		btnCancel.setEnabled(false);
 
 		b.add(cmbChon);
 		b.add(Box.createHorizontalStrut(10));
@@ -270,34 +323,49 @@ public class FrmKhachHang extends javax.swing.JFrame {
 		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup().addContainerGap()
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(pntblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 950,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(pnlTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 900,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(pnThongTin, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE, 300,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addComponent(pntblKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
+								.addComponent(pnlTimKiem))
+						.addContainerGap(20, 20)
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+								.addGroup(layout
+										.createSequentialGroup()
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(pnThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addContainerGap())
+								.addGroup(layout.createParallelGroup()
+										.addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+								))));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+								.addGroup(layout.createSequentialGroup().addContainerGap()
+										.addComponent(pntblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 670,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addGap(18, 18, 18)
+										.addComponent(pnlTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addGap(2, 2, 2))
+								.addGroup(layout.createSequentialGroup().addGap(14, 14, 14)
+										.addComponent(pnThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addGap(0, 20, 20)
+										.addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addGap(0, 27, Short.MAX_VALUE)))
 						.addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-				.createSequentialGroup().addContainerGap()
-				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(pntblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 720,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(pnlTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(pnThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE, 100,
-										javax.swing.GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap()));
+
+		pack();
 
 		pntblKhachHang.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK),
 				"DANH SÁCH KHÁCH HÀNG: "));
@@ -320,6 +388,10 @@ public class FrmKhachHang extends javax.swing.JFrame {
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnImport.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExport.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
