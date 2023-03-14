@@ -4,11 +4,13 @@ import classNames from "classnames/bind";
 import styles from "./login.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/AuthSlices";
+
 const cx = classNames.bind(styles);
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token");
 
   const [user, setUser] = useState({
     email: "",
@@ -18,12 +20,14 @@ const Login = () => {
     messageEmail: "",
     messagePass: "",
   });
+  console.log(auth);
   useEffect(() => {
     // console.log(auth)
-    if (auth.email) {
+    if (token) {
       navigate("/cart");
+      // navigate(-1);
     }
-  }, [auth.email, navigate]);
+  }, [token, navigate]);
   // console.log(auth);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +58,7 @@ const Login = () => {
       return true;
     }
   };
-  console.log(errorMessage);
+  // console.log(errorMessage);
   const handlePasswrod = () => {
     const regexPasswrod =
       /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;

@@ -54,7 +54,7 @@ const ListProduct = (props) => {
       replace: true,
     });
   };
-  console.log(props.data);
+  // console.log(props.data);
   return (
     <Slider {...settings}>
       {props.data.map((item, index) => (

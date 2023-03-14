@@ -120,7 +120,7 @@ const authSlice = createSlice({
       return {
         ...state,
         loginStatus: "rejected",
-        loginError: action.payload,
+        loginError: "Sai tài khoản hoặc mật khẩu",
       };
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {

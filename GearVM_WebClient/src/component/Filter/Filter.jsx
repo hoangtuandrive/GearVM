@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 const Filter = ({ data, dropdown }) => {
   return (
     <div className={cx(`wrapFilter ${dropdown ? "show" : ""}`)}>
-      {console.log(data)}
+      {/* {console.log(data)} */}
       <div className={cx("trademark")}>
         <h2 className={cx("trademark_txt")}>{data.thuongHieu}</h2>
         {data.listTH &&

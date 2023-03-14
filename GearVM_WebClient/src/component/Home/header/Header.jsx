@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 import { Container, Offcanvas } from "react-bootstrap";
 import { AppContext } from "../../context/AppProvider";
 import OffcanvasMenu from "../../Offcanvas/OffcanvasMenu";
+import { useState } from "react";
+import SearchProduct from "../search/SearchProduct";
 
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
@@ -34,6 +36,7 @@ const Header = () => {
   });
   const navigate = useNavigate();
   const { openMenu, setOpenMenu } = useContext(AppContext);
+
   const handleShow = () => {
     navigate("/login", { replace: true });
   };
@@ -41,6 +44,9 @@ const Header = () => {
     navigate("/", { replace: true });
   };
   const cart = useSelector((state) => state.todoCart);
+  const auth = useSelector((state) => state.auth);
+
+  const token = localStorage.getItem("token");
 
   const PagePromotion = () => {
     navigate("/promotion", { replace: true });
@@ -48,6 +54,10 @@ const Header = () => {
   const handleOpenMenuBar = () => {
     setOpenMenu(true);
   };
+
+  // useEffect(() => {
+  //   setRender(!render);
+  // }, [token]);
 
   return (
     <div className={cx("wrap")}>
@@ -70,9 +80,12 @@ const Header = () => {
                 className={cx("Logo")}
               />
             </div>
+
             <div className={cx("SearchInput")}>
-              <Search placeholder="input search text" enterButton />
+              {/* <Search placeholder="input search text" enterButton /> */}
+              <SearchProduct />
             </div>
+
             <Tippy
               interactive
               placement="top"
@@ -82,14 +95,19 @@ const Header = () => {
                 </div>
               )}
             >
-              <div className={cx("iconAccess")} onClick={handleShow}>
-                {/* <UserOutlined style={{ fontSize: 30}} />
-              <div className={cx("textAccess")}>
-                <h5 className={cx("lblAccess")} >Đăng Nhập</h5>
-                <h5 className={cx("lblAccess")}>Đăng Ký</h5>
-              </div> */}
-                <Acount />
-              </div>
+              {token ? (
+                <div className={cx("iconAccess")}>
+                  <Acount />
+                </div>
+              ) : (
+                <div className={cx("iconAccess")} onClick={handleShow}>
+                  <UserOutlined style={{ fontSize: 30 }} />
+                  <div className={cx("textAccess")}>
+                    <h5 className={cx("lblAccess")}>Đăng Nhập</h5>
+                    <h5 className={cx("lblAccess")}>Đăng Ký</h5>
+                  </div>
+                </div>
+              )}
             </Tippy>
             <div className={cx("sale")} onClick={PagePromotion}>
               <img

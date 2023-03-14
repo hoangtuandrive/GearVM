@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import { url } from "../../API/api";
 
 const initialState = {

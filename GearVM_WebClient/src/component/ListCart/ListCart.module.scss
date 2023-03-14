@@ -131,10 +131,21 @@
     display: block;
     color: red;
   }
+  .listCart_Pay {
+    width: 98%;
+    // margin-right: 15px;
+  }
+  tr {
+    border-style: inherit;
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 999px) {
   .wrapListCart {
     display: block;
     margin-top: 100px;
+  }
+  .listCart_Pay {
+    width: 98%;
+    // margin-right: 15px;
   }
 }

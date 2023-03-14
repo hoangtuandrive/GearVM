@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 
 const cx = classNames.bind(styles);
 
-const TableCart = () => {
+const TableCart = ({ data }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.todoCart);
@@ -26,8 +26,8 @@ const TableCart = () => {
             <th className={cx("listCart_total")}>Thành tiền</th>
           </tr>
         </thead>
-        {cart.cartItems &&
-          cart.cartItems.map((cartItem) => (
+        {data &&
+          data.map((cartItem) => (
             <tbody key={cartItem.id}>
               <tr>
                 <td className={cx("listCart_product_rep")}>

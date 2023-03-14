@@ -252,7 +252,7 @@ const Register = () => {
             onClick={handleSubmit}
           />
           <div className="addtional-link">
-            <Link to="/">Go Back</Link>
+            <Link to="/">Trang chủ</Link>
             <Link to="/login">Đăng Nhập</Link>
             {/* <Link to="/forgotpassword">Forgot Password?</Link> */}
           </div>

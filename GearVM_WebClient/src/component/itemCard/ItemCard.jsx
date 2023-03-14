@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
 const ItemCard = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <div className={cx("wrapItemCard")}>
       <img

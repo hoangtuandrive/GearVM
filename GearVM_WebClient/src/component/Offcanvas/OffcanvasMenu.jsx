@@ -7,15 +7,28 @@ import styles from "./OffcanvasMenu.module.scss";
 import classNames from "classnames/bind";
 import Accordion from "react-bootstrap/Accordion";
 import ListGroup from "react-bootstrap/ListGroup";
-
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import authSlice from "../../redux/slices/AuthSlices";
 import Acount from "../Custom/Acount/Acount";
 const cx = classNames.bind(styles);
 const OffcanvasMenu = () => {
   const { openMenu, setOpenMenu } = useContext(AppContext);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
+  const token = localStorage.getItem("token");
   // const [show, setShow] = useState(false);
   const handleClose = () => setOpenMenu(false);
   // const handleShow = () => setOpenMenu(true);
-  console.log(openMenu);
+  // console.log(openMenu);
+  const handleShow = () => {
+    navigate("/login", { replace: true });
+  };
+  const handleSignOut = () => {
+    dispatch(authSlice.actions.logoutUser(null));
+  };
   return (
     <div>
       {/* <Button variant="primary" onClick={handleShow}>
@@ -31,14 +44,19 @@ const OffcanvasMenu = () => {
           <Offcanvas.Title>GEARVM</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <div className={cx("iconAccess")}>
-            <UserOutlined style={{ fontSize: 30 }} />
-            <div className={cx("textAccess")}>
-              <h5 className={cx("lblAccess")}>Đăng Nhập</h5>
-              <h5 className={cx("lblAccess")}>Đăng Ký</h5>
+          {token ? (
+            <div className={cx("iconAccess")}>
+              <Acount />
             </div>
-            {/* <Acount /> */}
-          </div>
+          ) : (
+            <div className={cx("iconAccess")} onClick={handleShow}>
+              <UserOutlined style={{ fontSize: 30 }} />
+              <div className={cx("textAccess")}>
+                <h5 className={cx("lblAccess")}>Đăng Nhập</h5>
+                <h5 className={cx("lblAccess")}>Đăng Ký</h5>
+              </div>
+            </div>
+          )}
           <div className={cx("offcanNav_header")}>Danh Mục</div>
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
@@ -146,6 +164,7 @@ const OffcanvasMenu = () => {
             type="button"
             className={cx("wrapMenuAcount_thumb_btn")}
             value="Đăng xuất"
+            onClick={handleSignOut}
           />
         </Offcanvas.Body>
       </Offcanvas>
