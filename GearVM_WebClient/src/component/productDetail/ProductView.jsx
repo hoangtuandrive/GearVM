@@ -8,7 +8,9 @@ import CartSlice from "../../redux/slices/CartSlices";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import { Image } from "antd";
 import { Col, Container } from "react-bootstrap";
+import { s3 } from "../../aws";
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +23,8 @@ const ProductView = () => {
 
   const productUrl = `http://localhost:8080/api/products/${productId}`;
 
+  const [imageData, setImageData] = useState(null);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -32,6 +36,28 @@ const ProductView = () => {
     };
     fetchProduct();
   }, []);
+
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        console.log(productDetail.imageUri);
+        const response = await s3
+          .getObject({
+            Bucket: "gearvm",
+            Key: productDetail.imageUri,
+          })
+          .promise();
+        const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
+          "base64"
+        )}`;
+        setImageData(imageSrc);
+        console.log(imageData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getImage();
+  }, [productDetail]);
 
   const dispatch = useDispatch();
   const handleAddToCart = (product) => {
@@ -47,12 +73,13 @@ const ProductView = () => {
       <div className={cx("wrapProductView")}>
         {console.log(productDetail)}
 
-        <div className={cx("ProductView_Img")}>
-          <img
+        {/* <div className={cx("ProductView_Img")}> */}
+        <Image src={imageData} />
+        {/* <img
             src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
             className={cx("ProductView_Img_main")}
-          />
-          {/* <div className={cx("ProductView_Img_list")}>
+          /> */}
+        {/* <div className={cx("ProductView_Img_list")}>
           <img
             src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
             className={cx("ProductView_Img_itemImg")}
@@ -70,7 +97,7 @@ const ProductView = () => {
             className={cx("ProductView_Img_itemImg")}
           />
         </div> */}
-        </div>
+        {/* </div> */}
 
         <div className={cx("ProductView_Content")}>
           <h1 className={cx("ProductView_txtName")}>{productDetail.name}</h1>
