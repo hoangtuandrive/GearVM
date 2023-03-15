@@ -32,8 +32,23 @@ public class CustomerService {
         return customerRepository.findById(customerId).get();
     }
 
+    public Customer updateCustomer(Long customerId, Customer customerDetails) {
+        Customer c = customerRepository.findById(customerId).get();
+        c.setName(customerDetails.getName());
+        c.setGender(customerDetails.getGender());
+        c.setPhoneNumber(customerDetails.getPhoneNumber());
+        c.setDateOfBirth(customerDetails.getDateOfBirth());
+        c.setAddress(customerDetails.getAddress());
+        c.setEmail(customerDetails.getEmail());
+        return customerRepository.save(c);
+    }
+
     public void deleteCustomer(Long customerId) {
         customerRepository.deleteById(customerId);
+    }
+
+    public Customer createCustomer(Customer c) {
+        return customerRepository.save(c);
     }
 
     public boolean checkEmailExist(String email) {
@@ -48,8 +63,10 @@ public class CustomerService {
         return null;
     }
 
-    public Customer validateLogin(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        Customer customer = customerRepository.findByEmail(email);
+    public Customer validateLogin(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Customer customer = customerRepository.findByEmail(username);
+
+        if (customer == null) customer = customerRepository.findByPhoneNumber(username);
 
         if (customer == null) return null;
 

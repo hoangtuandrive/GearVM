@@ -546,7 +546,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
         if (o.equals(btnSua)) {
@@ -560,24 +560,23 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
         if (o.equals(btnThayDoiTinhTrangLamViec)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if(result == JOptionPane.YES_OPTION){
+            if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (patchWorkStatusRequest()) {
                         JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
-                    }
-                    else {
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    ex.printStackTrace();
                 }
             }
         }
@@ -585,27 +584,35 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int row = tableNhanVien.getSelectedRow();
-        txtMaNhanVien.setText(modelNhanVien.getValueAt(row, 0).toString());
-        txtTen.setText(modelNhanVien.getValueAt(row, 1).toString());
-        String dateString = modelNhanVien.getValueAt(row, 2).toString();
-        String[] a = dateString.split("-");
-        txtNgaySinh
-                .setDate(new Date(Integer.parseInt(a[2]) - 1900, Integer.parseInt(a[1]) - 1,
-                        Integer.parseInt(a[0])));
+        try {
+            int row = tableNhanVien.getSelectedRow();
+            txtMaNhanVien.setText(modelNhanVien.getValueAt(row, 0).toString().trim());
+            txtTen.setText(modelNhanVien.getValueAt(row, 1).toString().trim());
+            String dateString = modelNhanVien.getValueAt(row, 2).toString().trim();
+            String[] a = dateString.split("-");
+            txtNgaySinh
+                    .setDate(new Date(Integer.parseInt(a[2]) - 1900, Integer.parseInt(a[1]) - 1,
+                            Integer.parseInt(a[0])));
+            txtCMND.setText(modelNhanVien.getValueAt(row, 3).toString().trim());
+            cmbGioiTinh.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 4).toString().trim());
+            txtSDT.setText(modelNhanVien.getValueAt(row, 5).toString().trim());
+            cmbChucVu.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 6).toString().trim());
+            txtEmail.setText(modelNhanVien.getValueAt(row, 7).toString().trim());
+            txtDiaChi.setText(modelNhanVien.getValueAt(row, 8).toString().trim());
+            String luong[] = modelNhanVien.getValueAt(row, 9).toString().split(",");
+            String tienLuong = "";
+            for (int i = 0; i < luong.length; i++)
+                tienLuong += luong[i];
+            txtLuong.setText(tienLuong);
+            txtTrangThai.setText(modelNhanVien.getValueAt(row, 10).toString().trim());
 
-        txtCMND.setText(modelNhanVien.getValueAt(row, 3).toString());
-        cmbGioiTinh.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 4).toString().trim());
-        txtSDT.setText(modelNhanVien.getValueAt(row, 5).toString());
-        cmbChucVu.setSelectedItem(FrmNhanVien.modelNhanVien.getValueAt(row, 6).toString().trim());
-        txtEmail.setText(modelNhanVien.getValueAt(row, 7).toString());
-        txtDiaChi.setText(modelNhanVien.getValueAt(row, 8).toString());
-        String luong[] = modelNhanVien.getValueAt(row, 9).toString().split(",");
-        String tienLuong = "";
-        for (int i = 0; i < luong.length; i++)
-            tienLuong += luong[i];
-        txtLuong.setText(tienLuong);
-        txtTrangThai.setText(modelNhanVien.getValueAt(row, 10).toString());
+            if(txtTrangThai.getText().equalsIgnoreCase("Đang làm"))
+                btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
+            else btnThayDoiTinhTrangLamViec.setText("CHO LÀM VIỆC");
+        } catch (NullPointerException ex) {
+
+        }
+
     }
 
     @Override
@@ -675,9 +682,19 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
     }
 
     public boolean patchWorkStatusRequest() throws IOException {
+        boolean workStatus = txtTrangThai.getText().equalsIgnoreCase("Đang làm");
+        if(workStatus){
+            txtTrangThai.setText("Đã nghỉ việc");
+            btnThayDoiTinhTrangLamViec.setText("CHO LÀM VIỆC");
+        }
+        else {
+            txtTrangThai.setText("Đang làm");
+            btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
+        }
+
         Employee e = new Employee();
         e.setId(Long.parseLong(txtMaNhanVien.getText()));
-        e.setWorkStatus(txtTrangThai.getText().equalsIgnoreCase("Đang làm"));
+        e.setWorkStatus(workStatus);
         return EmployeeService.patchWorkStatusRequest(e);
     }
 
@@ -701,8 +718,8 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = EmployeeService.getAllRequest(tableName);
-        List<Employee> listEmployee = Arrays.asList(mapper.readValue(rd, Employee[].class));
-        for (Employee e : listEmployee) {
+        List<Employee> employeeList = Arrays.asList(mapper.readValue(rd, Employee[].class));
+        for (Employee e : employeeList) {
             String gender;
             String role;
 
@@ -713,9 +730,9 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
             if (e.getRole() == Role.EMPLOYEE) role = "Nhân viên";
             else role = "Quản lý";
 
-            modelNhanVien.addRow(new Object[]{e.getId(), e.getName().trim(),
-                    dateFormat.format(e.getDateOfBirth()), e.getNationalId().trim(), gender,
-                    e.getPhoneNumber().trim(), role, e.getEmail().trim(), e.getAddress().trim(),
+            modelNhanVien.addRow(new Object[]{e.getId(), e.getName(),
+                    dateFormat.format(e.getDateOfBirth()), e.getNationalId(), gender,
+                    e.getPhoneNumber(), role, e.getEmail(), e.getAddress(),
                     df.format(e.getSalary()), e.isWorkStatus() ? "Đang làm" : "Đã nghỉ việc"});
         }
     }

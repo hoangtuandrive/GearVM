@@ -32,8 +32,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "products/";
-    private JComboBox<String> cmbChon;
     private static JComboBox<String> cmbTim;
+    private static JTable tableHangHoa;
+    private static DefaultTableModel modelSanPham;
+    private JComboBox<String> cmbChon;
     private JButton btnTim;
     private JButton btnSua;
     private JButton btnThem;
@@ -49,7 +51,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private JPanel pnExcel;
     private JPanel pnThongTin;
     private javax.swing.JScrollPane pntblHangHoa;
-    private static JTable tableHangHoa;
     private javax.swing.JTextField txtDonGia;
     private javax.swing.JTextField txtNhaCungCap;
     private javax.swing.JTextField txtSoLuong;
@@ -57,11 +58,60 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private javax.swing.JTextField txtLoaiHang;
     private JPanel pnlTimKiem;
     private javax.swing.JTextField txtMaHangHoa;
-    private static DefaultTableModel modelSanPham;
     private JButton btnImport;
     private JButton btnExport;
     private JButton btnSave;
     private JButton btnCancel;
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel. For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        }
+        // </editor-fold>
+        // </editor-fold>
+        // </editor-fold>
+        // </editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrmDangNhap().setVisible(true);
+            }
+        });
+    }
+
+    public static void emptyTable() {
+        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
+        dm.setRowCount(0);
+    }
 
     public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
@@ -438,57 +488,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         return panel;
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        }
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmDangNhap().setVisible(true);
-            }
-        });
-    }
-
-
-    public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
-        dm.setRowCount(0);
-    }
-
     private boolean validInput() {
         String tenLk = txtTenHangHoa.getText();
         String loaiHang = txtLoaiHang.getText();
@@ -619,16 +618,16 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     @Override
     public void mouseClicked(MouseEvent e) {
         int row = tableHangHoa.getSelectedRow();
-        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString());
-        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString());
-        txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString());
-        txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString());
+        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString().trim());
+        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString().trim());
+        txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString().trim());
+        txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString().trim());
         String tien[] = modelSanPham.getValueAt(row, 4).toString().split(",");
         String donGia = "";
         for (int i = 0; i < tien.length; i++)
             donGia += tien[i];
         txtDonGia.setText(donGia);
-        txtSoLuong.setText(modelSanPham.getValueAt(row, 5).toString());
+        txtSoLuong.setText(modelSanPham.getValueAt(row, 5).toString().trim());
     }
 
     @Override
@@ -705,6 +704,4 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         p.setId(Long.parseLong(txtMaHangHoa.getText()));
         return ProductService.deleteRequest(p);
     }
-
-
 }

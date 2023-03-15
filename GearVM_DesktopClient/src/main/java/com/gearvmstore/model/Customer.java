@@ -1,6 +1,7 @@
 package com.gearvmstore.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -36,6 +37,7 @@ public class Customer {
     private boolean isCart;
 
     @OneToMany(mappedBy = "customerId")
+    @JsonIgnore
     @ToString.Exclude
     private List<Order> orderList;
 

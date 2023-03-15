@@ -1,5 +1,6 @@
 package com.gearvmstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Entity(name = "`order`")
+@Entity(name = "orderTbl")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +26,16 @@ public class Order {
     private Customer customerId;
     @Column(columnDefinition = "datetime")
     private LocalDateTime createdDate;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime updatedDate;
     @Column(columnDefinition = "double")
-    private double total;
+    private double totalPrice;
+    @Enumerated(EnumType.ORDINAL)
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "orderId")
     @ToString.Exclude
+    @JsonIgnore
     private List<OrderItem> orderItems;
     @OneToOne(mappedBy = "orderId")
     private Discount discount;

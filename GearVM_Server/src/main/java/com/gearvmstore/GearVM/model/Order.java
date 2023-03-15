@@ -26,6 +26,8 @@ public class Order {
     private Customer customerId;
     @Column(columnDefinition = "datetime")
     private LocalDateTime createdDate;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime updatedDate;
     @Column(columnDefinition = "double")
     private double totalPrice;
     @Enumerated(EnumType.ORDINAL)

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "review")
 public class Review {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Long id;
 

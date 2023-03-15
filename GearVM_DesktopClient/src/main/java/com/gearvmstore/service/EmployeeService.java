@@ -44,7 +44,7 @@ public class EmployeeService extends ApiService {
 
     public static boolean putRequest(Employee e) throws IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpPut request = new HttpPut(url);
+        HttpPut request = new HttpPut(url + e.getId());
         JSONObject json = new JSONObject();
         json.put("name", e.getName());
         json.put("gender", e.getGender());
@@ -66,6 +66,7 @@ public class EmployeeService extends ApiService {
         HttpResponse response = client.execute(request);
         return !response.toString().isEmpty();
     }
+
 
     public static boolean patchWorkStatusRequest(Employee e) throws IOException {
         HttpClient client = new DefaultHttpClient();

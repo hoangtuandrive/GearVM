@@ -23,9 +23,19 @@ public class OrderController {
         this.customerService = customerService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllOrders() {
+        return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{orderId}")
+    public ResponseEntity<?> findOrder(@PathVariable(value = "orderId") Long id) {
+        return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/place-order")
     public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO, @RequestHeader(name = "Authorization") String header) {
-        
+
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
 

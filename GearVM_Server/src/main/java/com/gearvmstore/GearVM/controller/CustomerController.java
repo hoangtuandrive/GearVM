@@ -32,10 +32,12 @@ public class CustomerController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = modelMapper.map(registerDTO, Customer.class);
+
         Customer newAccount = customerService.register(customer);
         if (newAccount == null) {
-            return ResponseEntity.badRequest().body("Email existed");
+            return ResponseEntity.badRequest().body("Account existed");
         }
+
         return ResponseEntity.ok().body(newAccount);
     }
 
@@ -46,7 +48,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        Customer customer = customerService.validateLogin(loginDTO.getEmail(), loginDTO.getPassword());
+        Customer customer = customerService.validateLogin(loginDTO.getUsername(), loginDTO.getPassword());
 
         if (customer == null) {
             return ResponseEntity.badRequest().body("Login failed");
@@ -59,6 +61,16 @@ public class CustomerController {
     public ResponseEntity<String> checkEmailExist(@PathVariable(value = "email") String email) {
         if (customerService.checkEmailExist(email)) return ResponseEntity.ok().body("true");
         else return ResponseEntity.ok().body("false");
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createCustomer(@RequestBody Customer c) {
+        return new ResponseEntity<Customer>(customerService.createCustomer(c), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{customerId}")
+    public ResponseEntity<?> updateCustomer(@PathVariable(value = "customerId") Long id, @RequestBody Customer customerDetails) {
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, customerDetails));
     }
 
     @GetMapping(value = "/current-user")

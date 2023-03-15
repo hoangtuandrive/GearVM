@@ -3,13 +3,18 @@ package com.gearvmstore.GearVM.service;
 import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDTO;
+import com.gearvmstore.GearVM.model.response.CustomerResponseModel;
+import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
+import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
 import com.gearvmstore.GearVM.repository.OrderRepository;
 import com.gearvmstore.GearVM.utility.JwtUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,15 +25,17 @@ public class OrderService {
     private final CustomerService customerService;
     private final ProductService productService;
     private final JwtUtil jwtUtil;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
         this.customerService = customerService;
         this.productService = productService;
         this.jwtUtil = jwtUtil;
         this.orderItemRepository = orderItemRepository;
+        this.modelMapper = modelMapper;
     }
 
     public Boolean placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
@@ -65,8 +72,18 @@ public class OrderService {
         return orderRepository.findAllByCustomerIdOrderByCreatedDateDesc(customerId);
     }
 
-    // Bugged
-    public List<Order> getOrders() {
-        return orderRepository.findAll();
+    public List<GetOrderListResponse> getOrders() {
+        List<Order> orderList = orderRepository.findAll();
+        List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+        for (Order order : orderList) {
+            GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+            getOrderListResponseList.add(orderListResponse);
+        }
+        return getOrderListResponseList;
+    }
+
+    public GetOrderResponse getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        return modelMapper.map(order, GetOrderResponse.class);
     }
 }

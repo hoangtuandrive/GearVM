@@ -49,7 +49,7 @@ public class EmployeeService {
         e.setSalary(employeeDetails.getSalary());
         e.setWorkStatus(employeeDetails.isWorkStatus());
         e.setRole(employeeDetails.getRole());
-        return e;
+        return employeeRepository.save(e);
     }
 
     public Employee updateWorkStatus(Long employeeId, String status) {
