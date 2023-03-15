@@ -40,7 +40,6 @@ const ProductView = () => {
   useEffect(() => {
     const getImage = async () => {
       try {
-        console.log(productDetail.imageUri);
         const response = await s3
           .getObject({
             Bucket: "gearvm",
@@ -51,7 +50,6 @@ const ProductView = () => {
           "base64"
         )}`;
         setImageData(imageSrc);
-        console.log(imageData);
       } catch (error) {
         console.log(error);
       }
@@ -104,14 +102,20 @@ const ProductView = () => {
           <div className={cx("ProductView_Content_origin")}>
             <h4 className={cx("ProductView_txtTrademark")}>
               Thương hiệu
-              <span className={cx("ProductView_txtTrademark_Name")}> Asus</span>
+              <span className={cx("ProductView_txtTrademark_Name")}>
+                {" "}
+                {productDetail.brand}
+              </span>
             </h4>
             <h4 className={cx("ProductView_txtTrademark")}>
               Mã sản phẩm:
-              <span> 141</span>
+              <span> {productDetail.id}</span>
             </h4>
           </div>
-          <h5 className={cx("ProductView_txtPrice")}>{productDetail.price}₫</h5>
+          <h5 className={cx("ProductView_txtPrice")}>
+            {" "}
+            {productDetail.price}₫
+          </h5>
           <div className={cx("ProductView_Discount")}>
             <h5 className={cx("ProductView_txtPrice_dis")}>
               {productDetail.price}₫

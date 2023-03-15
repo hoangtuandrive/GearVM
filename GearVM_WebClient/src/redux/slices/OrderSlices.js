@@ -6,24 +6,37 @@ const initialState = {
   orderStatus: "",
   orderError: "",
 };
+
 export const OrderCart = createAsyncThunk(
   "orders/place-order",
   async (values, { rejectWithValue }) => {
     try {
-      const order = await axios.post(
-        `${url}/orders/place-order`,
-        {
-          totalPrice: values.totalPrice,
-          orderItems: values.orderItems,
-        },
-        // JSON.stringify(values),
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
+      const order = await axios
+        .post(
+          `${url}/orders/place-order`,
+          {
+            totalPrice: values.totalPrice,
+            orderItems: values.orderItems,
           },
-        }
-      );
+          // JSON.stringify(values),
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(async (response) => {
+          await axios
+            .post(`${url}/payment/create-payment-link/` + response.data.id)
+            .then((res) => {
+              if (res.data) {
+                window.location.href = res.data;
+              }
+              console.log(res.data);
+            })
+            .catch((err) => console.log(err.message));
+        });
       return order.data;
     } catch (error) {
       console.log(error.reponse.data);
@@ -31,6 +44,7 @@ export const OrderCart = createAsyncThunk(
     }
   }
 );
+
 const orderSlices = createSlice({
   name: "order",
   initialState,

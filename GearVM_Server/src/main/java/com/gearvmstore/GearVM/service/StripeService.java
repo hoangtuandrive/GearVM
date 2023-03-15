@@ -54,7 +54,8 @@ public class StripeService {
         return null;
     }
 
-    public PaymentLink createPaymentLink(String productName) throws StripeException {
+    public PaymentLink createPaymentLink(String orderId) throws StripeException {
+        String productName = "Đơn hàng mã số #" + orderId;
         PaymentLinkCreateParams params =
                 PaymentLinkCreateParams
                         .builder()

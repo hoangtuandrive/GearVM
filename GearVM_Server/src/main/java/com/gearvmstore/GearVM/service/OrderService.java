@@ -3,7 +3,6 @@ package com.gearvmstore.GearVM.service;
 import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDTO;
-import com.gearvmstore.GearVM.model.response.CustomerResponseModel;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
@@ -12,7 +11,9 @@ import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,10 @@ public class OrderService {
     private final ProductService productService;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
+    private final EntityManager em;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
         this.customerService = customerService;
@@ -36,20 +38,22 @@ public class OrderService {
         this.jwtUtil = jwtUtil;
         this.orderItemRepository = orderItemRepository;
         this.modelMapper = modelMapper;
+        this.em = em;
     }
 
-    public Boolean placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
+    @Transactional
+    public GetOrderResponse placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
-                return false;
+                return null;
 
             Order order = new Order();
             order.setCustomerId(customer);
             order.setCreatedDate(LocalDateTime.now());
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
             order.setOrderStatus(OrderStatus.PENDING);
-            orderRepository.save(order);
+            Order savedOrder = orderRepository.save(order);
 
             List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
             for (OrderItemDto orderItemDto : orderItems) {
@@ -62,13 +66,14 @@ public class OrderService {
                 orderItemRepository.save(item);
             }
 
-            return true;
+            em.refresh(savedOrder);
+            return getOrder(savedOrder.getId());
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 
-    public List<Order> listOrders(Long customerId) {
+    public List<Order> listOrdersByCustomerId(Long customerId) {
         return orderRepository.findAllByCustomerIdOrderByCreatedDateDesc(customerId);
     }
 

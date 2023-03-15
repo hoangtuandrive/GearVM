@@ -32,9 +32,9 @@ public class PaymentController {
         return ResponseEntity.ok().body(stripeService.createPaymentIntent().getClientSecret());
     }
 
-    @PostMapping("/create-payment-link")
-    public ResponseEntity<String> CreatePaymentLink() throws StripeException {
-        return ResponseEntity.ok().body(stripeService.createPaymentLink("Đơn hàng mã số #1000").getUrl());
+    @PostMapping("/create-payment-link/{orderId}")
+    public ResponseEntity<String> CreatePaymentLink(@PathVariable(value = "orderId") String orderId) throws StripeException {
+        return ResponseEntity.ok().body(stripeService.createPaymentLink(orderId).getUrl());
     }
 
     @PostMapping("/webhook")

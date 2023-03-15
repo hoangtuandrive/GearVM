@@ -65,7 +65,8 @@ public class CustomerService {
 
     public Customer validateLogin(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = customerRepository.findByEmail(username);
-
+        System.out.println(username);
+        System.out.println(customer);
         if (customer == null) customer = customerRepository.findByPhoneNumber(username);
 
         if (customer == null) return null;

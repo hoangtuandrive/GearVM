@@ -54,17 +54,6 @@ const PayBody = () => {
   // };
   // console.log(cartFilter);
   const handlePay = (e) => {
-    axios
-      .post(`${url}/payment/create-payment-link`)
-      .then((response) => {
-        if (response.data) {
-          window.location.href = response.data;
-        }
-        console.log(response.data);
-      })
-      .catch((err) => console.log(err.message));
-    e.preventDefault();
-
     let orderItems = [];
 
     cartItems.map((item) => {
@@ -83,6 +72,7 @@ const PayBody = () => {
       totalPrice: cart.cartTotalAmount,
       orderItems,
     };
+
     dispatch(OrderCart(cartOrder));
     window.addEventListener("unload", function () {
       cartItems.map((item) => {
@@ -91,6 +81,8 @@ const PayBody = () => {
         }
       });
     });
+
+    e.preventDefault();
   };
 
   return (
