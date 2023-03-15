@@ -37,13 +37,13 @@ public class StripeService {
         return Product.create(params);
     }
 
-    public Price createStripePrice(String productName) throws StripeException {
+    public Price createStripePrice(String productName, String price) throws StripeException {
         try {
             PriceCreateParams params =
                     PriceCreateParams
                             .builder()
                             .setCurrency("vnd")
-                            .setUnitAmount(1000000L)
+                            .setUnitAmount(Long.parseLong(price))
                             .setProduct(createStripeProduct(productName).getId())
                             .build();
 
@@ -54,15 +54,16 @@ public class StripeService {
         return null;
     }
 
-    public PaymentLink createPaymentLink(String orderId) throws StripeException {
+    public PaymentLink createPaymentLink(String orderId, String price) throws StripeException {
         String productName = "Đơn hàng mã số #" + orderId;
         PaymentLinkCreateParams params =
                 PaymentLinkCreateParams
                         .builder()
+                        // TODO: allAllLineItem()
                         .addLineItem(
                                 PaymentLinkCreateParams.LineItem
                                         .builder()
-                                        .setPrice(createStripePrice(productName).getId())
+                                        .setPrice(createStripePrice(productName, price).getId())
                                         .setQuantity(1L)
                                         .build()
                         )
@@ -104,7 +105,7 @@ public class StripeService {
                                                                         )
                                                                         .build()
                                                         )
-                                                        .setFooter("GearVM, 100 Cộng Hòa, 0929471420")
+                                                        .setFooter("GearVM, 12 Nguyễn Văn Bảo, 0394758354")
                                                         .build()
                                         )
                                         .build())

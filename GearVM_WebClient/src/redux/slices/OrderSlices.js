@@ -28,7 +28,10 @@ export const OrderCart = createAsyncThunk(
         )
         .then(async (response) => {
           await axios
-            .post(`${url}/payment/create-payment-link/` + response.data.id)
+            .post(`${url}/payment/create-payment-link/`, {
+              id: response.data.id,
+              totalPrice: response.data.totalPrice,
+            })
             .then((res) => {
               if (res.data) {
                 window.location.href = res.data;

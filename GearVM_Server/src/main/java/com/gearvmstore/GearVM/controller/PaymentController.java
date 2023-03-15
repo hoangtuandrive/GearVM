@@ -1,5 +1,6 @@
 package com.gearvmstore.GearVM.controller;
 
+import com.gearvmstore.GearVM.model.dto.payment.CreatePaymentLink;
 import com.gearvmstore.GearVM.service.StripeService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -32,9 +33,9 @@ public class PaymentController {
         return ResponseEntity.ok().body(stripeService.createPaymentIntent().getClientSecret());
     }
 
-    @PostMapping("/create-payment-link/{orderId}")
-    public ResponseEntity<String> CreatePaymentLink(@PathVariable(value = "orderId") String orderId) throws StripeException {
-        return ResponseEntity.ok().body(stripeService.createPaymentLink(orderId).getUrl());
+    @PostMapping("/create-payment-link")
+    public ResponseEntity<String> CreatePaymentLink(@RequestBody CreatePaymentLink createPaymentLink) throws StripeException {
+        return ResponseEntity.ok().body(stripeService.createPaymentLink(createPaymentLink.getId(), createPaymentLink.getTotalPrice()).getUrl());
     }
 
     @PostMapping("/webhook")
