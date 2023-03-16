@@ -27,7 +27,7 @@ const publicRoutes = [
   { path: "/guideDeli", component: GuideDeli },
   { path: "/promotion", component: Promotion },
   { path: "/payment", component: Payment },
-  { path: "/paysucess", component: PaySucess },
+  { path: "/payment-success", component: PaySucess },
 ];
 
 const privateRoutes = [];

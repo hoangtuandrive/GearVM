@@ -189,13 +189,6 @@ const authSlice = createSlice({
       toast.warning("Bạn chưa đăng nhập", {
         position: "top-right",
       });
-      return {
-        ...state,
-        currentStatus: "That bai",
-        currentError: action.payload,
-      };
-    });
-    builder.addCase(currentCustomer.fulfilled, (state, action) => {
       if (action.payload === "token expired") {
         toast.warning("Phiên đăng nhập của bạn đã hết hạn", {
           position: "top-right",
@@ -205,6 +198,13 @@ const authSlice = createSlice({
           currentStatus: "Hết hạn đăng nhập",
         };
       }
+      return {
+        ...state,
+        currentStatus: "That bai",
+        currentError: action.payload,
+      };
+    });
+    builder.addCase(currentCustomer.fulfilled, (state, action) => {
       return {
         ...state,
         user: action.payload,
