@@ -33,10 +33,7 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
-
-    @OneToOne(mappedBy = "productId")
-    private Discount discount;
-
+    private int percentageDiscount;
     @OneToMany(mappedBy = "productId")
     @ToString.Exclude
     private List<Review> reviews;

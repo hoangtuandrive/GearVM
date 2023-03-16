@@ -1,9 +1,20 @@
 package com.gearvmstore.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Customer;
+import com.gearvmstore.model.Gender;
+import com.gearvmstore.service.CustomerService;
+import com.gearvmstore.service.EmployeeService;
+import com.toedter.calendar.JDateChooser;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -17,22 +28,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.gearvmstore.model.Customer;
-import com.gearvmstore.model.Gender;
-import com.gearvmstore.service.CustomerService;
-import com.gearvmstore.service.EmployeeService;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-
-import com.formdev.flatlaf.FlatLightLaf;
-import com.toedter.calendar.JDateChooser;
 
 public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "customers/";
@@ -68,11 +63,6 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
     private javax.swing.JTextField txtDiaChi;
     private JDateChooser txtNgaySinh;
 
-    public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableKhachHang.getModel();
-        dm.setRowCount(0);
-    }
-
     public JPanel createPanelKhachHang() throws IOException {
         FlatLightLaf.setup();
         pntblKhachHang = new JScrollPane();
@@ -106,8 +96,8 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         btnCancel = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        String[] header = {"Mã khách hàng", "Tên khách hàng", "Ngày Sinh", "Giới Tính", "SDT", "Email",
-                "Địa chỉ"};
+        String[] header = {"Mã Khách hàng", "Tên Khách hàng", "Ngày Sinh", "Giới Tính", "SDT", "Email",
+                "Địa Chỉ"};
 
         modelKhachHang = new DefaultTableModel(header, 0);
         tableKhachHang = new JTable(modelKhachHang) {
@@ -121,6 +111,11 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                     coleur = null;
                 }
                 return c;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
         };
         tableKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -587,6 +582,11 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         Customer c = new Customer();
         c.setId(Long.parseLong(txtMaKhachHang.getText()));
         return CustomerService.deleteRequest(c);
+    }
+
+    public static void emptyTable() {
+        DefaultTableModel dm = (DefaultTableModel) tableKhachHang.getModel();
+        dm.setRowCount(0);
     }
 
     public void readDatabaseToTable() throws IOException {

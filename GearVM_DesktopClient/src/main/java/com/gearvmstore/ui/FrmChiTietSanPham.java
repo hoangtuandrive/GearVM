@@ -89,7 +89,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         add(nameTxt);
         add(scrollPane);
 
-        if(product.getImageUri() != null)
+        if (product.getImageUri() != null)
             imageLbl.setIcon(getImage(product.getImageUri()));
         browseButton.addActionListener(this);
         saveButton.addActionListener(this);
@@ -177,7 +177,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
                 String path = selectedFile.getAbsolutePath();
                 imageLbl.setIcon(ResizeImage(path));
             }
-            //if the user click on save in Jfilechooser
+            //if the user click on cancel in Jfilechooser
             else if (result == JFileChooser.CANCEL_OPTION) {
                 JOptionPane.showMessageDialog(this, "Không có ảnh được chọn!", "Thất bại",
                         JOptionPane.ERROR_MESSAGE);

@@ -12,21 +12,14 @@ import java.util.concurrent.Executor;
 @Configuration
 @EnableAsync
 public class SpringAsyncConfig implements AsyncConfigurer {
-    @Bean(name = "threadPoolTaskExecutor")
-    public Executor threadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Async("threadPoolTaskExecutor")
-    public void asyncMethodWithConfiguredExecutor() {
-        System.out.println("Execute method with configured executor - "
-                + Thread.currentThread().getName());
-    }
-
-    @Override
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.initialize();
-        return threadPoolTaskExecutor;
+    @Bean
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("Thread-");
+        executor.initialize();
+        return executor;
     }
 }

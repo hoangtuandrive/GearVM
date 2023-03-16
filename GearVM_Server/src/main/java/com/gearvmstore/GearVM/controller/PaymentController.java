@@ -1,6 +1,7 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.dto.payment.CreatePaymentLink;
+import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.service.StripeService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -20,8 +21,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/payment")
 public class PaymentController {
+
+    private final StripeService stripeService;
+    private final OrderService orderService;
+
     @Autowired
-    private StripeService stripeService;
+    public PaymentController(StripeService stripeService, OrderService orderService) {
+        this.stripeService = stripeService;
+        this.orderService = orderService;
+    }
 
     @PostMapping("/create-session")
     public ResponseEntity<String> CreateSession() throws StripeException {
@@ -82,10 +90,10 @@ public class PaymentController {
 
                 int index = description.indexOf("#"); // get the index of the "#" symbol
                 if (index != -1) {
-                    String result = description.substring(index + 1); // get the substring after the "#" symbol
-                    System.out.println(result);
+                    String orderId = description.substring(index + 1); // get the substring after the "#" symbol
+                    orderService.updateOrderAfterPaymentInvoiceSucceeded(Long.parseLong(orderId), paymentId);
                 }
-                System.out.println(paymentId);
+
                 break;
 
             case "charge.refunded":

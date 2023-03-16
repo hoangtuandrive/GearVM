@@ -42,8 +42,6 @@ public class Customer {
     private List<Order> orderList;
 
     public Customer() {
-        super();
-        // TODO Auto-generated constructor stub
     }
 //
 //

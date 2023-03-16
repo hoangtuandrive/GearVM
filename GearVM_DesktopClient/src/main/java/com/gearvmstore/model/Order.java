@@ -18,6 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
+    private String paymentId;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employeeId;
@@ -41,7 +42,6 @@ public class Order {
     private Discount discount;
 
     public Order() {
-        super();
     }
 
 

@@ -4,10 +4,17 @@
  */
 package com.gearvmstore.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Product;
+import com.gearvmstore.service.ProductService;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -17,18 +24,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gearvmstore.model.Product;
-import com.gearvmstore.service.ProductService;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-
-import com.formdev.flatlaf.FlatLightLaf;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "products/";
@@ -62,56 +57,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private JButton btnExport;
     private JButton btnSave;
     private JButton btnCancel;
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        }
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmDangNhap().setVisible(true);
-            }
-        });
-    }
-
-    public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
-        dm.setRowCount(0);
-    }
 
     public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
@@ -159,6 +104,11 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                     coleur = null;
                 }
                 return c;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
         };
         tableHangHoa.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -703,5 +653,10 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         Product p = new Product();
         p.setId(Long.parseLong(txtMaHangHoa.getText()));
         return ProductService.deleteRequest(p);
+    }
+
+    public static void emptyTable() {
+        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
+        dm.setRowCount(0);
     }
 }

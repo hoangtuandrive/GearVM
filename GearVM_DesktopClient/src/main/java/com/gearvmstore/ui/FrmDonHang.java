@@ -1,6 +1,12 @@
 package com.gearvmstore.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.OrderStatus;
+import com.gearvmstore.model.response.GetOrderListResponse;
+import com.gearvmstore.model.response.GetOrderResponse;
+import com.gearvmstore.service.OrderService;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;
@@ -10,18 +16,30 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 
-public class FrmDonHang extends JFrame implements ActionListener {
+public class FrmDonHang extends JFrame implements ActionListener, MouseListener {
+    private static final String tableName = "orders/";
     private static JTable tableDonHang;
     private static DefaultTableModel modelDonHang;
-    private JButton btnTim ,btnGiao,btnHuy,btnChiTiet;
-    private JComboBox<String> cmbChon,cmbTim;
+    private JButton btnTim, btnReset;
+    private JComboBox<String> cmbChon, cmbTim;
 
-    public JPanel createPanelDonHang() {
+    public static void main(String[] args) throws RemoteException {
+        // TODO Auto-generated method stub
+        new FrmDangNhap().setVisible(true);
+    }
+
+    public JPanel createPanelDonHang() throws IOException {
         FlatLightLaf.setup();
-        // TODO Auto-generated constructor stub
         setTitle("FrmBanHang");
         setSize(1000, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -31,14 +49,13 @@ public class FrmDonHang extends JFrame implements ActionListener {
 
 
         Box b1 = Box.createVerticalBox();
-        Box b2=Box.createVerticalBox();
+        Box b2 = Box.createVerticalBox();
         Box b3 = Box.createHorizontalBox();
         Box btim = Box.createHorizontalBox();
         Box bNut = Box.createHorizontalBox();
 
 
-
-        String[] colHeader = { "Mã Đơn Hàng", "Tên Khách Hàng", "Số điện thoại","Trạng thái", "Ngày Lập Hóa Đơn",  "Thành Tiền" };
+        String[] colHeader = {"Mã Đơn Hàng", "Tên Khách Hàng", "SĐT Khách Hàng", "Trạng Thái", "Ngày Lập Đơn Hàng", "Thành Tiền"};
         modelDonHang = new DefaultTableModel(colHeader, 0);
         tableDonHang = new JTable(modelDonHang) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -50,6 +67,7 @@ public class FrmDonHang extends JFrame implements ActionListener {
                     c.setBackground(coleur);
                     coleur = null;
                 }
+
                 return c;
             }
         };
@@ -69,7 +87,12 @@ public class FrmDonHang extends JFrame implements ActionListener {
         tblscroll.setBorder(
                 BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "DANH SÁCH ĐƠN HÀNG: "));
 
-        String[] tim = { "Mã Hóa Đơn", "Tên Khách Hàng","Số Điện Thoại" , "Ngày Lập Hóa Đơn", "Thành Tiền" };
+        tableDonHang.getColumnModel().getSelectionModel()
+                .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        tableDonHang.setDefaultEditor(Object.class, null);
+
+        String[] tim = {"Mã Hóa Đơn", "Tên Khách Hàng", "Số Điện Thoại", "Thời Gian Lập Hóa Đơn", "Thành Tiền"};
         cmbChon = new JComboBox<String>(tim);
         btim.add(cmbChon);
         btim.add(Box.createHorizontalStrut(10));
@@ -85,29 +108,20 @@ public class FrmDonHang extends JFrame implements ActionListener {
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
 
-        btnGiao = new JButton("GIAO HÀNG THÀNH CÔNG");
-        btnGiao.setBackground(new Color(0, 148, 224));
-        btnGiao.setForeground(Color.WHITE);
-
-        btnHuy = new JButton("HỦY ĐƠN HÀNG");
-        btnHuy.setBackground(new Color(0, 148, 224));
-
-        btnHuy.setForeground(Color.WHITE);
-
-        btnChiTiet = new JButton("CHI TIẾT");
-        btnChiTiet.setBackground(new Color(0, 148, 224));
-        btnChiTiet.setForeground(Color.WHITE);
+        btnReset = new JButton("LOAD LẠI TẠM THỜI");
+        btnReset.setBackground(new Color(0, 148, 224));
+        btnReset.setForeground(Color.WHITE);
 
         btnTim.setFocusPainted(false);
         btim.add(btnTim);
         btim.add(Box.createHorizontalStrut(300));
 
-        bNut.add(btnGiao);
-        bNut.add(btnHuy);
-        bNut.add(btnChiTiet);
+//        bNut.add(btnGiao);
+//        bNut.add(btnHuy);
+        bNut.add(btnReset);
 
-        JPanel p1= new JPanel();
-        JPanel pNorth= new JPanel();
+        JPanel p1 = new JPanel();
+        JPanel pNorth = new JPanel();
 
         add(p);
 
@@ -121,24 +135,97 @@ public class FrmDonHang extends JFrame implements ActionListener {
 
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnChiTiet.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnHuy.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnGiao.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnReset.setFont(new Font("Tahoma", Font.BOLD, 12));
 
+        tableDonHang.addMouseListener(this);
+        btnReset.addActionListener(this);
 
-        btnChiTiet.addActionListener(this);
+        readDatabaseToTable();
         return p;
-    }
-    public static void main(String[] args) throws RemoteException {
-        // TODO Auto-generated method stub
-        new FrmDangNhap().setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if(o.equals(btnChiTiet)){
-            new FrmChiTietDonHang().setVisible(true);
+        if (o.equals(btnReset)) {
+            try {
+                readDatabaseToTable();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
+    }
+
+    public void readDatabaseToTable() throws IOException {
+        emptyTable();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getAllRequest(tableName);
+        List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+
+
+        for (GetOrderListResponse o : getOrderListResponse) {
+            String orderStatusString = "";
+            if (o.getOrderStatus() == OrderStatus.PAYMENT_PENDING) orderStatusString = "Đang chờ thanh toán";
+            else if (o.getOrderStatus() == OrderStatus.PAYMENT_DONE) orderStatusString = "Đang chờ xác nhận";
+            else if (o.getOrderStatus() == OrderStatus.SHIPPING) orderStatusString = "Đang giao hàng";
+            else if (o.getOrderStatus() == OrderStatus.SHIPPED) orderStatusString = "Giao hàng thành công";
+            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị từ chối";
+            else if (o.getOrderStatus() == OrderStatus.CANCELLED) orderStatusString = "Đơn hàng bị hủy";
+
+            modelDonHang.addRow(new Object[]{
+                    o.getId(), o.getCustomerId().getName(), o.getCustomerId().getPhoneNumber(),
+                    orderStatusString, dateFormat.format(o.getCreatedDate()), df.format(o.getTotalPrice())
+            });
+        }
+    }
+
+    public static void emptyTable() {
+        DefaultTableModel dm = (DefaultTableModel) tableDonHang.getModel();
+        dm.setRowCount(0);
+    }
+
+    public GetOrderResponse getRequest(String id) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getRequest(tableName, id);
+        return mapper.readValue(rd, GetOrderResponse.class);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int row = tableDonHang.getSelectedRow();
+        if (e.getClickCount() == 2 && tableDonHang.getSelectedRow() != -1) {
+            try {
+                GetOrderResponse getOrderResponse = getRequest(tableDonHang.getValueAt(row, 0).toString().trim());
+                new FrmChiTietDonHang(getOrderResponse);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

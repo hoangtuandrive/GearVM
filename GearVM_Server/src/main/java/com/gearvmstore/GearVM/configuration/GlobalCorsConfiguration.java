@@ -20,7 +20,6 @@ public class GlobalCorsConfiguration {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        // Don't do this in production, use a proper list  of allowed origins
         config.setAllowedOrigins((List.of("http://localhost:3000")));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("*"));

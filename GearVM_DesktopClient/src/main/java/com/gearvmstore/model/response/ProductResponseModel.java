@@ -1,4 +1,4 @@
-package com.gearvmstore.GearVM.model.response;
+package com.gearvmstore.model.response;
 
 import lombok.Data;
 

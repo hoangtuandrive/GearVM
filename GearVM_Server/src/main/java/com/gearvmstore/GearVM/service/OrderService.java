@@ -41,6 +41,13 @@ public class OrderService {
         this.em = em;
     }
 
+    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentId) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setPaymentId(paymentId);
+        order.setOrderStatus(OrderStatus.PAYMENT_DONE);
+        orderRepository.save(order);
+    }
+
     @Transactional
     public GetOrderResponse placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
         try {
@@ -52,7 +59,7 @@ public class OrderService {
             order.setCustomerId(customer);
             order.setCreatedDate(LocalDateTime.now());
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
-            order.setOrderStatus(OrderStatus.PENDING);
+            order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
             Order savedOrder = orderRepository.save(order);
 
             List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
@@ -80,6 +87,7 @@ public class OrderService {
     public List<GetOrderListResponse> getOrders() {
         List<Order> orderList = orderRepository.findAll();
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+//        List<GetOrderListResponse> getOrderListResponseList = Arrays.asList(modelMapper.map(orderList, GetOrderListResponse[].class));
         for (Order order : orderList) {
             GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
             getOrderListResponseList.add(orderListResponse);

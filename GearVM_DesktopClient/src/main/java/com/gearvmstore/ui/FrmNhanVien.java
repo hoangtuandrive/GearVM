@@ -1,9 +1,20 @@
 package com.gearvmstore.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Employee;
+import com.gearvmstore.model.Gender;
+import com.gearvmstore.model.Role;
+import com.gearvmstore.service.EmployeeService;
+import com.toedter.calendar.JDateChooser;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -18,22 +29,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.gearvmstore.model.Employee;
-import com.gearvmstore.model.Gender;
-import com.gearvmstore.model.Role;
-import com.gearvmstore.service.EmployeeService;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-
-import com.formdev.flatlaf.FlatLightLaf;
-import com.toedter.calendar.JDateChooser;
 
 public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "employees/";
@@ -78,14 +73,6 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
     private JButton btnSave;
     private JButton btnCancel;
 
-    public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableNhanVien.getModel();
-        dm.setRowCount(0);
-    }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
     public JPanel createPanelNhanVien() throws IOException {
         FlatLightLaf.setup();
         pntblNhanVien = new JScrollPane();
@@ -155,7 +142,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         String[] header = {"Mã Nhân Viên", "Tên Nhân Viên", "Ngày Sinh", "CMND", "Giới Tính", "SDT", "Chức Vụ",
-                "Email", "Địa Chỉ", "Lương", "Trạng thái"};
+                "Email", "Địa Chỉ", "Lương", "Trạng Thái"};
         modelNhanVien = new DefaultTableModel(header, 0);
         tableNhanVien = new JTable(modelNhanVien) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -168,6 +155,11 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                     coleur = null;
                 }
                 return c;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
         };
         tableNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -606,7 +598,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
             txtLuong.setText(tienLuong);
             txtTrangThai.setText(modelNhanVien.getValueAt(row, 10).toString().trim());
 
-            if(txtTrangThai.getText().equalsIgnoreCase("Đang làm"))
+            if (txtTrangThai.getText().equalsIgnoreCase("Đang làm"))
                 btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
             else btnThayDoiTinhTrangLamViec.setText("CHO LÀM VIỆC");
         } catch (NullPointerException ex) {
@@ -683,11 +675,10 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
     public boolean patchWorkStatusRequest() throws IOException {
         boolean workStatus = txtTrangThai.getText().equalsIgnoreCase("Đang làm");
-        if(workStatus){
+        if (workStatus) {
             txtTrangThai.setText("Đã nghỉ việc");
             btnThayDoiTinhTrangLamViec.setText("CHO LÀM VIỆC");
-        }
-        else {
+        } else {
             txtTrangThai.setText("Đang làm");
             btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
         }
@@ -735,5 +726,10 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                     e.getPhoneNumber(), role, e.getEmail(), e.getAddress(),
                     df.format(e.getSalary()), e.isWorkStatus() ? "Đang làm" : "Đã nghỉ việc"});
         }
+    }
+
+    public static void emptyTable() {
+        DefaultTableModel dm = (DefaultTableModel) tableNhanVien.getModel();
+        dm.setRowCount(0);
     }
 }
