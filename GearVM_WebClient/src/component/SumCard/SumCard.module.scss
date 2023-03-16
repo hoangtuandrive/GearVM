@@ -1,17 +1,21 @@
-.wrapSumCard{
-    display: flex;
-    flex-direction: column;
-  
+.wrapSumCard {
+  display: flex;
+  flex-direction: column;
+  //   justify-content: center;
+  //   align-items: center;
 }
-.wrapSumCard_Content{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+.wrapSumCard_Content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
-.wrapSumCard_Button{
-    margin: 15px;
-    background-color: rgb(20, 53, 195);
-    border-color: rgb(20, 53, 195);
-    border-radius: 4px;
-    color: white;
+.wrapSumCard_Button {
+  //   margin-left: 20px;
+  //   padding-left: 20px;
+  padding-right: 20px;
+  margin: 15px;
+  background-color: rgb(20, 53, 195);
+  border-color: rgb(20, 53, 195);
+  border-radius: 4px;
+  color: white;
 }

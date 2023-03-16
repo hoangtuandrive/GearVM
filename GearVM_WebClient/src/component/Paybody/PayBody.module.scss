@@ -62,9 +62,13 @@
   padding: 10px;
 }
 .wrapPayBody_right_Sumpay_content {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .wrapPayBody_right_Sumpay_btn {
   background-color: blue;

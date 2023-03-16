@@ -44,9 +44,18 @@ const TableCart = ({ data }) => {
                   </div>
                 </td>
                 <td>
-                  <h5>30.889.000đ</h5>
+                  <h5>
+                    {" "}
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(cartItem.price)}
+                  </h5>
                   <h4 className={cx("wrapListCart_Content_Price")}>
-                    {cartItem.price}đ
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(cartItem.price)}
                   </h4>
 
                   <h5 className={cx("listCart_total_txt")}>
@@ -60,7 +69,13 @@ const TableCart = ({ data }) => {
                 </td>
                 {/* Thành Tiền */}
                 <td className={cx("listCart_total")}>
-                  <h5>{cartItem.price * cartItem.cartQuantity}đ</h5>
+                  <h5>
+                    {" "}
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(cartItem.price * cartItem.cartQuantity)}
+                  </h5>
                 </td>
               </tr>
             </tbody>

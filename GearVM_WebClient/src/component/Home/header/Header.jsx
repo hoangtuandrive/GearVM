@@ -86,29 +86,30 @@ const Header = () => {
               <SearchProduct />
             </div>
 
-            <Tippy
-              interactive
-              placement="top"
-              render={(attrs) => (
-                <div className="box" tabIndex="-1" {...attrs}>
-                  <MenuAcount />
-                </div>
-              )}
-            >
-              {token ? (
+            {token ? (
+              <Tippy
+                interactive
+                placement="top"
+                render={(attrs) => (
+                  <div className="box" tabIndex="-1" {...attrs}>
+                    <MenuAcount />
+                  </div>
+                )}
+              >
                 <div className={cx("iconAccess")}>
                   <Acount />
                 </div>
-              ) : (
-                <div className={cx("iconAccess")} onClick={handleShow}>
-                  <UserOutlined style={{ fontSize: 30 }} />
-                  <div className={cx("textAccess")}>
-                    <h5 className={cx("lblAccess")}>Đăng Nhập</h5>
-                    <h5 className={cx("lblAccess")}>Đăng Ký</h5>
-                  </div>
+              </Tippy>
+            ) : (
+              <div className={cx("iconAccess")} onClick={handleShow}>
+                <UserOutlined style={{ fontSize: 30 }} />
+                <div className={cx("textAccess")}>
+                  <h5 className={cx("lblAccess")}>Đăng Nhập</h5>
+                  <h5 className={cx("lblAccess")}>Đăng Ký</h5>
                 </div>
-              )}
-            </Tippy>
+              </div>
+            )}
+
             <div className={cx("sale")} onClick={PagePromotion}>
               <img
                 src={require("../../../assets/iconSale.jpg")}

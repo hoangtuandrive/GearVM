@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import styles from "./login.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/AuthSlices";
+import Header from "../../component/Home/header/Header";
 
 const cx = classNames.bind(styles);
 const Login = () => {
@@ -82,6 +83,7 @@ const Login = () => {
   };
   return (
     <div className={cx("wrapLogin")}>
+      {/* <Header /> */}
       <div className={cx("LoginContent")}>
         <form action="" id="form-login">
           <h1 className={cx("logintxt")}>Đăng Nhập</h1>
@@ -121,8 +123,12 @@ const Login = () => {
             <p className={cx("txtError")}>{auth.loginError}</p>
           ) : null}
           <div className="addtional-link">
-            <Link to="/">Go Back</Link>
-            <Link to="/resign">Đăng ký</Link>
+            <Link to="/" className={cx("txtLogin")}>
+              Trang chủ
+            </Link>
+            <Link to="/resign" className={cx("txtLogin")}>
+              Đăng ký
+            </Link>
             {/* <Link to="/forgotpassword">Forgot Password?</Link> */}
           </div>
         </form>

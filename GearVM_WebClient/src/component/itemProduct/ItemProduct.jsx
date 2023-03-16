@@ -5,6 +5,7 @@ import { Image } from "antd";
 import { s3 } from "../../aws";
 
 const cx = classNames.bind(styles);
+
 const ItemProduct = (props) => {
   const [imageData, setImageData] = useState(null);
 
@@ -37,12 +38,23 @@ const ItemProduct = (props) => {
       <div className={cx("textProduct")}>
         <h5 className={cx("txtNameProduct")}>{props.data.name}</h5>
         <div className={cx("content_dis_price")}>
-          <h5 className={cx("txtPrice")}>{props.data.price}đ</h5>
+          <h5 className={cx("txtPrice")}>
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(props.data.price)}
+          </h5>
           <div className={cx("contentDiscount")}>
             <h5 className={cx("txtDiscount")}>{props.data.discount}%</h5>
           </div>
         </div>
-        <h5 className={cx("txt_pricereal")}>{props.data.price}đ</h5>
+        <h5 className={cx("txt_pricereal")}>
+          {" "}
+          {new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "VND",
+          }).format(props.data.price)}
+        </h5>
       </div>
     </div>
   );

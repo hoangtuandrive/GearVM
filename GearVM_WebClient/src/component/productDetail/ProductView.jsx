@@ -69,33 +69,11 @@ const ProductView = () => {
   return (
     <Container>
       <div className={cx("wrapProductView")}>
-        {console.log(productDetail)}
+        {/* {console.log(productDetail)} */}
 
-        {/* <div className={cx("ProductView_Img")}> */}
-        <Image src={imageData} />
-        {/* <img
-            src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
-            className={cx("ProductView_Img_main")}
-          /> */}
-        {/* <div className={cx("ProductView_Img_list")}>
-          <img
-            src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
-            className={cx("ProductView_Img_itemImg")}
-          />
-          <img
-            src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
-            className={cx("ProductView_Img_itemImg")}
-          />
-          <img
-            src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
-            className={cx("ProductView_Img_itemImg")}
-          />
-          <img
-            src="https://lh3.googleusercontent.com/n3SmM0qTA-hYAcUnll-AQZR84ICPNF7fMPrVezf6O6uNloFGE5MTMs1JknYjarchgumi-ZVxzPRfjEjLVcT89a62nA096vbIzA=rw"
-            className={cx("ProductView_Img_itemImg")}
-          />
-        </div> */}
-        {/* </div> */}
+        <div className={cx("ProductView_Img")}>
+          <Image src={imageData} className={cx("ProductView_Img")} />
+        </div>
 
         <div className={cx("ProductView_Content")}>
           <h1 className={cx("ProductView_txtName")}>{productDetail.name}</h1>
@@ -114,11 +92,17 @@ const ProductView = () => {
           </div>
           <h5 className={cx("ProductView_txtPrice")}>
             {" "}
-            {productDetail.price}₫
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(productDetail.price)}
           </h5>
           <div className={cx("ProductView_Discount")}>
             <h5 className={cx("ProductView_txtPrice_dis")}>
-              {productDetail.price}₫
+              {new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "VND",
+              }).format(productDetail.price)}
             </h5>
             <div className={cx("contentDiscount")}>
               <h5 className={cx("txtDiscount")}>4%</h5>

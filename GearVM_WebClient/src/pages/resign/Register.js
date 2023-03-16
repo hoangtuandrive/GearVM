@@ -9,6 +9,8 @@ import {
   exitEmail,
 } from "../../redux/slices/AuthSlices";
 import { useEffect } from "react";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 const cx = classNames.bind(styles);
 
 const Register = () => {
@@ -130,6 +132,8 @@ const Register = () => {
       return true;
     }
   };
+  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
+  console.log(user.dateOfBirth);
   return (
     <div className={cx("wrapLogin")}>
       <div className={cx("LoginContent")}>
@@ -149,9 +153,27 @@ const Register = () => {
             <span style={{ color: "red" }}>{errorMessage.messageName}</span>
           )}
           <div className={cx("form-group")}>
+            {/* <DatePicker
+              format={dateFormatList}
+              defaultValue={dateFormatList[0]}
+              className={cx("form-input")}
+              // value={dayjs}
+              onChange={(value) => {
+                console.log(dayjs().date());
+                if (value !== null) {
+                  const date = `${value.$y}-${value.$M}-${value.$d.date()}`;
+                  setUser({ ...user, dateOfBirth: date });
+                }
+              }}
+            /> */}
+
             <input
               type="date"
-              placeholder="dateOfBirth"
+              // placeholder="YYYY-MM-DD"
+              // data-date-format="DD MMMM YYYY"
+              // placeholder="dateOfBirth"
+              defaultValue={dateFormatList[0]}
+              format={dateFormatList}
               className={cx("form-input")}
               onChange={(e) =>
                 setUser({ ...user, dateOfBirth: e.target.value })
@@ -252,8 +274,12 @@ const Register = () => {
             onClick={handleSubmit}
           />
           <div className="addtional-link">
-            <Link to="/">Trang chủ</Link>
-            <Link to="/login">Đăng Nhập</Link>
+            <Link to="/" className={cx("txtLogin")}>
+              Trang chủ
+            </Link>
+            <Link to="/login" className={cx("txtLogin")}>
+              Đăng Nhập
+            </Link>
             {/* <Link to="/forgotpassword">Forgot Password?</Link> */}
           </div>
         </form>

@@ -14,6 +14,7 @@ import CartSlice from "../../redux/slices/CartSlices";
 import { OrderCart } from "../../redux/slices/OrderSlices";
 import axios from "axios";
 import { url } from "../../API/api";
+import { currentCustomer } from "../../redux/slices/AuthSlices";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
@@ -54,6 +55,7 @@ const PayBody = () => {
   // };
   // console.log(cartFilter);
   const handlePay = (e) => {
+    dispatch(currentCustomer());
     let orderItems = [];
 
     cartItems.map((item) => {
@@ -108,6 +110,17 @@ const PayBody = () => {
             <h5>Mã giảm giá</h5>
             <Input placeholder="nhập mã giảm giá" />
           </div> */}
+          <div className={cx("wrapPayBody_right_Sumpay_content")}>
+            <span className={cx("wrapPayBody_right_Sumpay_text")}>
+              Tổng tiền:
+            </span>
+            <span className={cx("wrapPayBody_right_Sumpay_text_red")}>
+              {new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "VND",
+              }).format(cart.cartTotalAmount)}
+            </span>
+          </div>
           <div className={cx("wrapPayBody_right_metodpay")}>
             <h5>Phương thức thanh toán</h5>
             <div className={cx("wrapPayBody_right_metodpay_wrapbtn")}>
@@ -125,7 +138,8 @@ const PayBody = () => {
               </div>
             </div>
           </div>
-          <div className={cx("info-order-rep")}>
+
+          {/* <div className={cx("info-order-rep")}>
             <div className={cx("wrapPayBody_right_address")}>
               <h5>Thông tin nhận hàng</h5>
               <div
@@ -136,7 +150,7 @@ const PayBody = () => {
                 <h5>Thêm Địa chỉ</h5>
               </div>
             </div>
-            {/* <div className={cx("wrapPayBody_right_Sumpay")}>
+            <div className={cx("wrapPayBody_right_Sumpay")}>
               <h5>Thanh toán</h5>
               <div>
                 <div className={cx("wrapPayBody_right_Sumpay_content")}>
@@ -169,8 +183,8 @@ const PayBody = () => {
                 value="Thanh Toán"
                 className={cx("wrapPayBody_right_Sumpay_btn")}
               />
-            </div> */}
-          </div>
+            </div>
+          </div> */}
         </div>
         {/* <div className={cx("wrapPayBody_left")}>
           <div className={cx("wrapPayBody_right_address")}>

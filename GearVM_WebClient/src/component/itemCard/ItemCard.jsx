@@ -17,7 +17,10 @@ const ItemCard = ({ data }) => {
           số lượng: {data.cartQuantity}
         </h6>
         <h6 className={cx("txt_ItemCard_Content_price")}>
-          {data.price * data.cartQuantity}đ
+          {new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "VND",
+          }).format(data.price * data.cartQuantity)}
         </h6>
       </div>
     </div>

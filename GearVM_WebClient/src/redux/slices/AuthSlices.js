@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-toastify";
 import { url } from "../../API/api";
 
 const initialState = {
@@ -11,8 +12,11 @@ const initialState = {
   registerError: "",
   loginStatus: "",
   loginError: "",
+  currentStatus: "",
+  currentError: "",
   emailStatus: false,
   emailError: "",
+  user: [],
   userLoaded: false,
 };
 export const registerUser = createAsyncThunk(
@@ -62,6 +66,28 @@ export const exitEmail = createAsyncThunk(
     }
   }
 );
+
+export const currentCustomer = createAsyncThunk(
+  "customers/current-user",
+  async (values, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const currentuser = await axios.get(`${url}/customers/current-user`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return currentuser.data;
+    } catch (error) {
+      console.log(error.reponse.data);
+
+      return rejectWithValue(error.reponse.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -151,6 +177,38 @@ const authSlice = createSlice({
       return {
         ...state,
         emailStatus: action.payload,
+      };
+    });
+    builder.addCase(currentCustomer.pending, (state, action) => {
+      return {
+        ...state,
+        currentStatus: "Cho",
+      };
+    });
+    builder.addCase(currentCustomer.rejected, (state, action) => {
+      toast.warning("Bạn chưa đăng nhập", {
+        position: "top-right",
+      });
+      return {
+        ...state,
+        currentStatus: "That bai",
+        currentError: action.payload,
+      };
+    });
+    builder.addCase(currentCustomer.fulfilled, (state, action) => {
+      if (action.payload === "token expired") {
+        toast.warning("Phiên đăng nhập của bạn đã hết hạn", {
+          position: "top-right",
+        });
+        return {
+          ...state,
+          currentStatus: "Hết hạn đăng nhập",
+        };
+      }
+      return {
+        ...state,
+        user: action.payload,
+        currentStatus: "Thanh cong",
       };
     });
   },

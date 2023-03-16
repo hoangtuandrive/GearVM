@@ -23,14 +23,22 @@ const SumCard = () => {
     <div className={cx("wrapSumCard")}>
       <div className={cx("wrapSumCard_Content")}>
         <h5>Tổng tiền({cart.cartItems.length}) sản phẩm</h5>
-        <h5>{cart.cartTotalAmount}đ</h5>
+        <h5>
+          {" "}
+          {new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "VND",
+          }).format(cart.cartTotalAmount)}
+        </h5>
       </div>
-      <input
-        type="button"
-        value="Xem Giỏ Hàng"
-        className={cx("wrapSumCard_Button")}
-        onClick={handelPageCart}
-      />
+      <div className={cx("wrapSumCard_Content")}>
+        <input
+          type="button"
+          value="Xem Giỏ Hàng"
+          className={cx("wrapSumCard_Button")}
+          onClick={handelPageCart}
+        />
+      </div>
     </div>
   );
 };
