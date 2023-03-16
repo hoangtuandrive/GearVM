@@ -89,7 +89,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         add(nameTxt);
         add(scrollPane);
 
-        if (product.getImageUri() != null)
+        if (!product.getImageUri().equalsIgnoreCase("empty-product.jpg"))
             imageLbl.setIcon(getImage(product.getImageUri()));
         browseButton.addActionListener(this);
         saveButton.addActionListener(this);
