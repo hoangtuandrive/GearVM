@@ -25,19 +25,13 @@ public class Product {
     private String brand;
     @Column(columnDefinition = "nvarchar(255)")
     private String type;
-
     @Column(columnDefinition = "nvarchar(255)")
     private String imageUri;
-
     @Column(columnDefinition = "LONGTEXT")
     private String description;
     private double price;
     private int quantity;
     private int percentageDiscount;
-    @OneToMany(mappedBy = "productId")
-    @ToString.Exclude
-    private List<Review> reviews;
-
     @OneToMany(mappedBy = "productId")
     @JsonIgnore
     @ToString.Exclude

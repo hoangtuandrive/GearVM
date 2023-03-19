@@ -377,10 +377,4 @@ public class FrmBanHang extends JFrame {
 
 		return p;
 	}
-	
-	public static void main(String[] args) throws RemoteException {
-		// TODO Auto-generated method stub
-		new FrmDangNhap().setVisible(true);
-	}
-
 }

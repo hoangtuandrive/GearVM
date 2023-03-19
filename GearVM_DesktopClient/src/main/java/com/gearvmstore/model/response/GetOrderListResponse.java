@@ -1,6 +1,5 @@
 package com.gearvmstore.model.response;
 
-
 import com.gearvmstore.model.OrderStatus;
 import lombok.Data;
 

@@ -92,7 +92,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
 
         tableDonHang.setDefaultEditor(Object.class, null);
 
-        String[] tim = {"Mã Hóa Đơn", "Tên Khách Hàng", "Số Điện Thoại", "Thời Gian Lập Hóa Đơn", "Thành Tiền"};
+        String[] tim = {"Mã Đơn Hàng", "Tên Khách Hàng", "SĐT Khách Hàng", "Trạng Thái", "Ngày Lập Đơn Hàng", "Thành Tiền"};
         cmbChon = new JComboBox<String>(tim);
         btim.add(cmbChon);
         btim.add(Box.createHorizontalStrut(10));

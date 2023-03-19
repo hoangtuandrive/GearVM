@@ -15,15 +15,13 @@ public class ApiService {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet("http://localhost:8080/api/" + tableName);
         HttpResponse response = client.execute(request);
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        return rd;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
     public static BufferedReader getRequest(String tableName, String id) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet("http://localhost:8080/api/" + tableName + "/" + id);
         HttpResponse response = client.execute(request);
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        return rd;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 }

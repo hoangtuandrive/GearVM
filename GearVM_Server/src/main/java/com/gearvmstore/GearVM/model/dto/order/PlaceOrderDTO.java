@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PlaceOrderDTO {
+public class PlaceOrderDto {
     private double totalPrice;
     private List<OrderItemDto> orderItems;
 }

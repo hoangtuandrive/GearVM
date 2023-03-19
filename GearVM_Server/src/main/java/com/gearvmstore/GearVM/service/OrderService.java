@@ -2,7 +2,7 @@ package com.gearvmstore.GearVM.service;
 
 import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
-import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDTO;
+import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
@@ -49,7 +49,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrder(PlaceOrderDTO placeOrderDTO, String token) {
+    public GetOrderResponse placeNewOrder(PlaceOrderDto placeOrderDTO, String token) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)

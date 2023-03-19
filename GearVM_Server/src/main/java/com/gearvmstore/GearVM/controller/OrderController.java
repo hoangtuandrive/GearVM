@@ -1,6 +1,6 @@
 package com.gearvmstore.GearVM.controller;
 
-import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDTO;
+import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
 import com.gearvmstore.GearVM.service.CustomerService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/place-order")
-    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO, @RequestHeader(name = "Authorization") String header) {
+    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDto placeOrderDTO, @RequestHeader(name = "Authorization") String header) {
 
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
