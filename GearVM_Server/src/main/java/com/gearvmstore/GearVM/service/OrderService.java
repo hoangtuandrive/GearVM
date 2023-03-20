@@ -56,8 +56,11 @@ public class OrderService {
                 return null;
 
             Order order = new Order();
+            LocalDateTime localDateTime = LocalDateTime.now();
+
             order.setCustomerId(customer);
-            order.setCreatedDate(LocalDateTime.now());
+            order.setCreatedDate(localDateTime);
+            order.setUpdatedDate(localDateTime);
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
             Order savedOrder = orderRepository.save(order);
@@ -98,5 +101,10 @@ public class OrderService {
     public GetOrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).get();
         return modelMapper.map(order, GetOrderResponse.class);
+    }
+
+    public void addPaymentLinkToOrder(String paymentLink, Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setPaymentLink(paymentLink);
     }
 }

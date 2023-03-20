@@ -173,8 +173,8 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
             if (o.getOrderStatus() == OrderStatus.PAYMENT_PENDING) orderStatusString = "Đang chờ thanh toán";
             else if (o.getOrderStatus() == OrderStatus.PAYMENT_DONE) orderStatusString = "Đang chờ xác nhận";
             else if (o.getOrderStatus() == OrderStatus.SHIPPING) orderStatusString = "Đang giao hàng";
-            else if (o.getOrderStatus() == OrderStatus.SHIPPED) orderStatusString = "Giao hàng thành công";
-            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị từ chối";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_SUCCESS) orderStatusString = "Giao hàng thành công";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_FAIL) orderStatusString = "Giao hàng thất bại";
             else if (o.getOrderStatus() == OrderStatus.CANCELLED) orderStatusString = "Đơn hàng bị hủy";
 
             modelDonHang.addRow(new Object[]{

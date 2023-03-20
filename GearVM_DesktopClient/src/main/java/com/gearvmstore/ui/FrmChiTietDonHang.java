@@ -2,6 +2,7 @@ package com.gearvmstore.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.OrderStatus;
 import com.gearvmstore.model.Product;
 import com.gearvmstore.model.response.GetOrderResponse;
 import com.gearvmstore.model.response.OrderItemResponseModel;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -160,7 +162,7 @@ public class FrmChiTietDonHang extends JFrame {
         b12.add(txtTongTien = new JTextField());
         b3.add(b12);
 
-        String[] trangThai = {"Đang chờ thanh toán", "Đang chờ xác nhận", "Đang giao hàng", "Giao hàng thành công", "Đơn hàng bị từ chối", "Đơn hàng bị hủy"};
+        String[] trangThai = {"Đang chờ thanh toán", "Đang chờ xác nhận", "Đang giao hàng", "Giao hàng thành công", "Giao hàng thất bại", "Đơn hàng bị hủy"};
         cmbTrangThai = new JComboBox<String>(trangThai);
         b13.add(lblTrangThai = new JLabel("Trạng Thái Đơn Hàng:"));
         b13.add(Box.createHorizontalStrut(10));
@@ -219,6 +221,7 @@ public class FrmChiTietDonHang extends JFrame {
         b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         readDatabaseToTable(getOrderResponse);
+        getDataToTextField(getOrderResponse);
 
         setVisible(true);
     }
@@ -247,5 +250,29 @@ public class FrmChiTietDonHang extends JFrame {
         ObjectMapper mapper = new ObjectMapper();
         BufferedReader rd = ProductService.getRequest(tableName, productId);
         return mapper.readValue(rd, Product.class);
+    }
+
+    public void getDataToTextField(GetOrderResponse order){
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+
+        if (order.getOrderStatus() == OrderStatus.PAYMENT_PENDING) cmbTrangThai.setSelectedIndex(0);
+        else if (order.getOrderStatus() == OrderStatus.PAYMENT_DONE) cmbTrangThai.setSelectedIndex(1);
+        else if (order.getOrderStatus() == OrderStatus.SHIPPING) cmbTrangThai.setSelectedIndex(2);
+        else if (order.getOrderStatus() == OrderStatus.SHIP_SUCCESS) cmbTrangThai.setSelectedIndex(3);
+        else if (order.getOrderStatus() == OrderStatus.SHIP_FAIL) cmbTrangThai.setSelectedIndex(4);
+        else if (order.getOrderStatus() == OrderStatus.CANCELLED) cmbTrangThai.setSelectedIndex(5);
+
+        txtMaDonHang.setText(order.getId().toString());
+        txtTenKhachHang.setText(order.getCustomerId().getName());
+        txtSdtKhachHang.setText(order.getCustomerId().getPhoneNumber());
+        txtMaThanhToan.setText(order.getPaymentId());
+        txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
+        txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
+        if(order.getEmployeeId() != null){
+            txtMaNhanVien.setText(order.getEmployeeId().getId().toString());
+            txtTenNhanVien.setText(order.getEmployeeId().getName());
+        }
+        txtTongTien.setText(df.format(order.getTotalPrice()));
     }
 }
