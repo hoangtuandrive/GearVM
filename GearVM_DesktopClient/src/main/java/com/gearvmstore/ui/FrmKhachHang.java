@@ -449,31 +449,37 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o.equals(btnThem)) {
-            try {
-                if (postRequest()) {
-                    JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!", "Thành công",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    readDatabaseToTable();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại!", "Thất bại",
-                            JOptionPane.ERROR_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if (postRequest()) {
+                        JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        readDatabaseToTable();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại!", "Thất bại",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         }
         if (o.equals(btnSua)) {
-            try {
-                if (putRequest()) {
-                    JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thành công!", "Thành công",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    readDatabaseToTable();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thất bại!", "Thất bại",
-                            JOptionPane.ERROR_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if (putRequest()) {
+                        JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        readDatabaseToTable();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         }
         if (o.equals(btnXoa)) {

@@ -99,7 +99,7 @@ public class PaymentController {
                 break;
 
             case "charge.refunded":
-                // Hoàn tiền --> update trạng thái đơn hàng TODO
+                // TODO Hoàn tiền --> update trạng thái đơn hàng
                 System.out.println(stripeObject);
                 // ...
                 break;

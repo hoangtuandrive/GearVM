@@ -1,12 +1,16 @@
 package com.gearvmstore.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmstore.model.OrderStatus;
 import com.gearvmstore.model.Product;
+import com.gearvmstore.model.dto.order.UpdateOrderStatusAndEmployee;
+import com.gearvmstore.model.response.EmployeeResponseModel;
 import com.gearvmstore.model.response.GetOrderResponse;
 import com.gearvmstore.model.response.OrderItemResponseModel;
 import com.gearvmstore.model.response.ProductResponseModel;
+import com.gearvmstore.service.OrderService;
 import com.gearvmstore.service.ProductService;
 
 import javax.swing.*;
@@ -15,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -22,8 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-public class FrmChiTietDonHang extends JFrame {
-    private static final String tableName = "products/";
+public class FrmChiTietDonHang extends JFrame implements ActionListener {
+    private static final String tableNameProduct = "products/";
+    private static final String tableNameOrder = "orders/";
     private static JTable tableSanPham;
     private static DefaultTableModel modelSanPham;
     private final JTextField txtMaDonHang;
@@ -51,6 +58,7 @@ public class FrmChiTietDonHang extends JFrame {
     private final JButton btnThanhCong;
     private final JButton btnThatBai;
     private final JButton btnXemThanhToan;
+    private final JButton btnThayDoiTrangThai;
 
     public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
@@ -185,9 +193,10 @@ public class FrmChiTietDonHang extends JFrame {
         b15.add(btnThatBai = new JButton("GIAO HÀNG THẤT BẠI"));
         b3.add(b15);
 
+        b16.add(btnThayDoiTrangThai = new JButton("THAY ĐỔI TRẠNG THÁI ĐƠN HÀNG"));
+        b16.add(Box.createHorizontalStrut(15));
         b16.add(btnXemThanhToan = new JButton("XEM CHI TIẾT THANH TOÁN"));
         b3.add(b16);
-
 
         b2.add(Box.createHorizontalStrut(50));
         b.add(Box.createHorizontalStrut(20));
@@ -223,7 +232,32 @@ public class FrmChiTietDonHang extends JFrame {
         readDatabaseToTable(getOrderResponse);
         getDataToTextField(getOrderResponse);
 
+        btnThayDoiTrangThai.addActionListener(this);
+
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object o = e.getSource();
+        if(o.equals(btnThayDoiTrangThai)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if(patchOrderStatusAndEmployee()){
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshTextField();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 
     public void readDatabaseToTable(GetOrderResponse getOrderResponse) throws IOException {
@@ -248,8 +282,21 @@ public class FrmChiTietDonHang extends JFrame {
 
     public Product getRequest(String productId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ProductService.getRequest(tableName, productId);
+        BufferedReader rd = ProductService.getRequest(tableNameProduct, productId);
         return mapper.readValue(rd, Product.class);
+    }
+
+    public void refreshTextField() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        BufferedReader rd = OrderService.getRequest(tableNameOrder, txtMaDonHang.getText());
+        GetOrderResponse order = mapper.readValue(rd, GetOrderResponse.class);
+
+        if(order.getEmployeeId() != null) {
+            txtMaNhanVien.setText(order.getEmployeeId().getId().toString());
+            txtTenNhanVien.setText(order.getEmployeeId().getName());
+        }
     }
 
     public void getDataToTextField(GetOrderResponse order){
@@ -274,5 +321,31 @@ public class FrmChiTietDonHang extends JFrame {
             txtTenNhanVien.setText(order.getEmployeeId().getName());
         }
         txtTongTien.setText(df.format(order.getTotalPrice()));
+    }
+
+    // TODO
+    public boolean patchOrderStatus(){
+        return true;
+    }
+
+    public boolean patchOrderStatusAndEmployee() throws IOException {
+        String orderId = txtMaDonHang.getText();
+        String employeeId = txtMaNhanVien.getText();
+        UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee = new UpdateOrderStatusAndEmployee();
+
+        if(cmbTrangThai.getSelectedIndex() == 0) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+        else if(cmbTrangThai.getSelectedIndex() == 1) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_DONE);
+        else if(cmbTrangThai.getSelectedIndex() == 2) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIPPING);
+        else if(cmbTrangThai.getSelectedIndex() == 3) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_SUCCESS);
+        else if(cmbTrangThai.getSelectedIndex() == 4) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_FAIL);
+        else if(cmbTrangThai.getSelectedIndex() == 5) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.CANCELLED);
+
+        if(!employeeId.equals("")){
+            EmployeeResponseModel employeeResponseModel = new EmployeeResponseModel();
+            employeeResponseModel.setId(Long.parseLong(employeeId));
+            employeeResponseModel.setName(txtTenNhanVien.getText());
+            updateOrderStatusAndEmployee.setEmployeeId(employeeResponseModel);
+        }
+        return OrderService.patchOrderStatusAndEmployee(orderId, updateOrderStatusAndEmployee);
     }
 }

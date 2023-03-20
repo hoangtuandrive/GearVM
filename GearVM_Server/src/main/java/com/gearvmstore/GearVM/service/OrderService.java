@@ -3,6 +3,7 @@ package com.gearvmstore.GearVM.service;
 import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
@@ -25,16 +26,18 @@ public class OrderService {
     private final OrderItemService orderItemService;
     private final CustomerService customerService;
     private final ProductService productService;
+    private final EmployeeService employeeService;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final EntityManager em;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
         this.customerService = customerService;
         this.productService = productService;
+        this.employeeService = employeeService;
         this.jwtUtil = jwtUtil;
         this.orderItemRepository = orderItemRepository;
         this.modelMapper = modelMapper;
@@ -106,5 +109,18 @@ public class OrderService {
     public void addPaymentLinkToOrder(String paymentLink, Long orderId) {
         Order order = orderRepository.findById(orderId).get();
         order.setPaymentLink(paymentLink);
+    }
+
+    public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
+        Order order = orderRepository.findById(orderId).get();
+
+        if (updateOrderStatusAndEmployee.getEmployeeId() != null) {
+            Employee employee = employeeService.getEmployee(updateOrderStatusAndEmployee.getEmployeeId().getId());
+            order.setEmployeeId(employee);
+        }
+
+        order.setOrderStatus(updateOrderStatusAndEmployee.getOrderStatus());
+        Order orderDb = orderRepository.save(order);
+        return modelMapper.map(orderDb, GetOrderResponse.class);
     }
 }
