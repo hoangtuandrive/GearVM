@@ -1,69 +1,73 @@
-.imgProduct{
-    width: 60%;
-    height: 20vh;
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-.wrapItemProduct{
-   background-color: rgb(255, 255, 255);
-   border: 1px solid #fff;
-   box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
-   margin-bottom: 30px;
-}
-.wrapItemProduct:hover{
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgba(200, 143, 20, 0.56);
-    box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
-    margin-bottom: 30px;
-}
-.textProduct{
-    height: 23vh;
-    // margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 15px;
-    padding-right: 15px;
+.imgProduct {
+  width: 60%;
+  height: 20vh;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 
+  background-image: url("../../assets/nenItemProduct.jpg");
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-size: auto;
 }
-.txtNameProduct{
-    height: 35px;
-    font-size: 20px;
-    color: #333
-    
-}
-.txtPrice{
-    text-decoration: line-through;
-    color: #888;
-    font-size: 15px;
-    font-weight: 500;
-    height: 20px;
 
+.wrapItemProduct {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  margin-bottom: 30px;
 }
-.txt_pricereal{
-    color: red;
-    height: 35px;
-    font-size: 24px;
+.wrapItemProduct:hover {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgba(200, 143, 20, 0.56);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  margin-bottom: 30px;
 }
-.content_dis_price{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.textProduct {
+  height: 23vh;
+  // margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
 }
-.contentDiscount{
-    background-image: url('../../assets/discount.jpg');
-    background-repeat: no-repeat;
-    width: 48px;
-    height: 51px;
-    text-align: center;
-    padding-top: 10px;
+.txtNameProduct {
+  height: 35px;
+  font-size: 20px;
+  color: #333;
 }
-.txtDiscount{
-    font-size: 20px;
-    font-weight: 500;
-    // height: 20px;
+.txtPrice {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 15px;
+  font-weight: 500;
+  height: 20px;
+}
+.txt_pricereal {
+  color: red;
+  height: 35px;
+  font-size: 24px;
+}
+.content_dis_price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.contentDiscount {
+  background-image: url("../../assets/discount.jpg");
+  background-repeat: no-repeat;
+  width: 48px;
+  height: 51px;
+  text-align: center;
+  padding-top: 10px;
+}
+.txtDiscount {
+  font-size: 20px;
+  font-weight: 500;
+  // height: 20px;
 }

@@ -21,5 +21,4 @@ public class GearVmApplication {
         return new ModelMapper();
     }
 
-
 }

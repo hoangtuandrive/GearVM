@@ -1,12 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { s3 } from "../../aws";
 const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
+  ImgAnh: [],
 };
+
+export const ChangeImg = createAsyncThunk(
+  "Cart/ChangeImg",
+  async (values, { rejectWithValue }) => {
+    try {
+      const response = await s3
+        .getObject({
+          Bucket: "gearvm",
+          Key: values.imageUri,
+        })
+        .promise();
+      const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
+        "base64"
+      )}`;
+
+      return imageSrc;
+    } catch (error) {
+      // console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const CartSlice = createSlice({
   name: "cart",
@@ -122,10 +146,63 @@ const CartSlice = createSlice({
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
-    OrderCart(state, action) {
-      //  const cartItems= localStorage.getItem("cartItems");
-      //  if(cartItems.)
+    ChangeImgUri(state, action) {
+      let cartTemp = [];
+
+      // async function getImage(item) {
+      //   try {
+      //     const response = await s3
+      //       .getObject({
+      //         Bucket: "gearvm",
+      //         Key: item.imageUri,
+      //       })
+      //       .promise();
+      //     const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
+      //       "base64"
+      //     )}`;
+
+      //     return imageSrc;
+      //   } catch (error) {
+      //     // console.log(error);
+      //     return error;
+      //   }
+      // }
+
+      // state.cartItems.map((item) => {
+      //   getImage(item)
+      //     .then((data) => {
+      //       console.log(item);
+      //       let ChangeImg = {
+      //         // ...item,
+      //         imageUri: data,
+      //       };
+      //       return ChangeImg;
+      //     })
+      //     .then((ChangeImg) => {
+      //       cartTemp.push(ChangeImg);
+      //     });
+      // });
+      // console.log(cartTemp);
+      // localStorage.setItem("cartItems", ChangeImg);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(ChangeImg.fulfilled, (state, action) => {
+      state.ImgAnh = action.payload;
+      // console.log(action.payload);
+      // state.cartItems = [
+      //   ...state.cartItems,
+      //   {
+      //     imageUri: action.payload,
+      //   },
+      //   //
+      // ];
+      // return {
+      //   // ...state,
+      //   // ImgAnh: action.payload,
+      //   // ImgAnh: [...state.ImgAnh, action.payload],
+      // };
+    });
   },
 });
 
