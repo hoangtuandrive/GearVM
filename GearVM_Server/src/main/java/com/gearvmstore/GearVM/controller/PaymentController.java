@@ -43,7 +43,9 @@ public class PaymentController {
 
     @PostMapping("/create-payment-link")
     public ResponseEntity<String> CreatePaymentLink(@RequestBody CreatePaymentLink createPaymentLink) throws StripeException {
-        return ResponseEntity.ok().body(stripeService.createPaymentLink(createPaymentLink.getId(), createPaymentLink.getTotalPrice()).getUrl());
+        String paymentLink = stripeService.createPaymentLink(createPaymentLink.getId(), createPaymentLink.getTotalPrice()).getUrl();
+        orderService.addPaymentLinkToOrder(paymentLink, Long.parseLong(createPaymentLink.getId()));
+        return ResponseEntity.ok().body(paymentLink);
     }
 
     @PostMapping("/webhook")
