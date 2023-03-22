@@ -21,10 +21,10 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNo,
+    public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
                                           @RequestParam(defaultValue = "20") Integer pageSize,
                                           @RequestParam(defaultValue = "id") String sortBy) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNo, pageSize, sortBy));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNumber, pageSize, sortBy));
     }
 
     @GetMapping(value = "get-all")
