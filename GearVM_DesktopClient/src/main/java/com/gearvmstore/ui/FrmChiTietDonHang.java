@@ -170,7 +170,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b12.add(txtTongTien = new JTextField());
         b3.add(b12);
 
-        String[] trangThai = {"Đang chờ thanh toán", "Đang chờ xác nhận", "Đang giao hàng", "Giao hàng thành công", "Giao hàng thất bại", "Đơn hàng bị hủy"};
+        String[] trangThai = {"Đang chờ thanh toán", "Đang chờ xác nhận", "Đang giao hàng", "Giao hàng thành công", "Giao hàng thất bại", "Đơn hàng bị từ chối"};
         cmbTrangThai = new JComboBox<String>(trangThai);
         b13.add(lblTrangThai = new JLabel("Trạng Thái Đơn Hàng:"));
         b13.add(Box.createHorizontalStrut(10));
@@ -232,6 +232,11 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         readDatabaseToTable(getOrderResponse);
         getDataToTextField(getOrderResponse);
 
+        btnThanhCong.addActionListener(this);
+        btnThatBai.addActionListener(this);
+        btnXacNhan.addActionListener(this);
+        btnTuChoi.addActionListener(this);
+        btnXemThanhToan.addActionListener(this);
         btnThayDoiTrangThai.addActionListener(this);
 
         setVisible(true);
@@ -257,6 +262,81 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
                     throw new RuntimeException(ex);
                 }
             }
+        }
+        if(o.equals(btnXacNhan)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if(patchOrderStatus(0)){
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshTextField();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if(o.equals(btnTuChoi)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if(patchOrderStatus(1)){
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshTextField();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if(o.equals(btnThanhCong)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if(patchOrderStatus(2)){
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshTextField();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if(o.equals(btnThatBai)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    if(patchOrderStatus(3)){
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshTextField();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if(o.equals(btnXemThanhToan)){
+            openPaymentDetailOnStripe();
         }
     }
 
@@ -293,13 +373,6 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         BufferedReader rd = OrderService.getRequest(tableNameOrder, txtMaDonHang.getText());
         GetOrderResponse order = mapper.readValue(rd, GetOrderResponse.class);
 
-        if(order.getEmployeeId() != null) {
-            txtMaNhanVien.setText(order.getEmployeeId().getId().toString());
-            txtTenNhanVien.setText(order.getEmployeeId().getName());
-        }
-    }
-
-    public void getDataToTextField(GetOrderResponse order){
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
         DecimalFormat df = new DecimalFormat("#,##0");
 
@@ -308,7 +381,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if (order.getOrderStatus() == OrderStatus.SHIPPING) cmbTrangThai.setSelectedIndex(2);
         else if (order.getOrderStatus() == OrderStatus.SHIP_SUCCESS) cmbTrangThai.setSelectedIndex(3);
         else if (order.getOrderStatus() == OrderStatus.SHIP_FAIL) cmbTrangThai.setSelectedIndex(4);
-        else if (order.getOrderStatus() == OrderStatus.CANCELLED) cmbTrangThai.setSelectedIndex(5);
+        else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
 
         txtMaDonHang.setText(order.getId().toString());
         txtTenKhachHang.setText(order.getCustomerId().getName());
@@ -323,9 +396,37 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtTongTien.setText(df.format(order.getTotalPrice()));
     }
 
-    // TODO
-    public boolean patchOrderStatus(){
-        return true;
+    public void getDataToTextField(GetOrderResponse order){
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+
+        if (order.getOrderStatus() == OrderStatus.PAYMENT_PENDING) cmbTrangThai.setSelectedIndex(0);
+        else if (order.getOrderStatus() == OrderStatus.PAYMENT_DONE) cmbTrangThai.setSelectedIndex(1);
+        else if (order.getOrderStatus() == OrderStatus.SHIPPING) cmbTrangThai.setSelectedIndex(2);
+        else if (order.getOrderStatus() == OrderStatus.SHIP_SUCCESS) cmbTrangThai.setSelectedIndex(3);
+        else if (order.getOrderStatus() == OrderStatus.SHIP_FAIL) cmbTrangThai.setSelectedIndex(4);
+        else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
+
+        txtMaDonHang.setText(order.getId().toString());
+        txtTenKhachHang.setText(order.getCustomerId().getName());
+        txtSdtKhachHang.setText(order.getCustomerId().getPhoneNumber());
+        txtMaThanhToan.setText(order.getPaymentId());
+        txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
+        txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
+        if(order.getEmployeeId() != null){
+            txtMaNhanVien.setText(order.getEmployeeId().getId().toString());
+            txtTenNhanVien.setText(order.getEmployeeId().getName());
+        }
+        txtTongTien.setText(df.format(order.getTotalPrice()));
+    }
+
+    public boolean patchOrderStatus(int i) throws IOException {
+        OrderStatus orderStatus = null;
+        if(i==0) orderStatus = OrderStatus.SHIPPING;
+        if(i==1) orderStatus = OrderStatus.REJECTED;
+        if(i==2) orderStatus = OrderStatus.SHIP_SUCCESS;
+        if(i==3) orderStatus = OrderStatus.SHIP_FAIL;
+        return OrderService.patchOrderStatus(txtMaDonHang.getText(), orderStatus);
     }
 
     public boolean patchOrderStatusAndEmployee() throws IOException {
@@ -338,7 +439,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if(cmbTrangThai.getSelectedIndex() == 2) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIPPING);
         else if(cmbTrangThai.getSelectedIndex() == 3) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_SUCCESS);
         else if(cmbTrangThai.getSelectedIndex() == 4) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_FAIL);
-        else if(cmbTrangThai.getSelectedIndex() == 5) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.CANCELLED);
+        else if(cmbTrangThai.getSelectedIndex() == 5) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.REJECTED);
 
         if(!employeeId.equals("")){
             EmployeeResponseModel employeeResponseModel = new EmployeeResponseModel();
@@ -347,5 +448,9 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             updateOrderStatusAndEmployee.setEmployeeId(employeeResponseModel);
         }
         return OrderService.patchOrderStatusAndEmployee(orderId, updateOrderStatusAndEmployee);
+    }
+
+    public void openPaymentDetailOnStripe(){
+        OrderService.openPaymentDetailOnStripe(txtMaThanhToan.getText());
     }
 }

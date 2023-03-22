@@ -111,6 +111,14 @@ public class OrderService {
         order.setPaymentLink(paymentLink);
     }
 
+    public GetOrderResponse updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setOrderStatus(orderStatus);
+        order.setUpdatedDate(LocalDateTime.now());
+        Order orderDb = orderRepository.save(order);
+        return modelMapper.map(orderDb, GetOrderResponse.class);
+    }
+
     public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
         Order order = orderRepository.findById(orderId).get();
 
@@ -120,6 +128,7 @@ public class OrderService {
         }
 
         order.setOrderStatus(updateOrderStatusAndEmployee.getOrderStatus());
+        order.setUpdatedDate(LocalDateTime.now());
         Order orderDb = orderRepository.save(order);
         return modelMapper.map(orderDb, GetOrderResponse.class);
     }

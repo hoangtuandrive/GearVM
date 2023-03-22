@@ -3,6 +3,8 @@ package com.gearvmstore.GearVM.controller;
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +21,19 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Product> readProducts(@RequestParam(defaultValue = "0") Integer pageNo,
-                                      @RequestParam(defaultValue = "20") Integer pageSize,
-                                      @RequestParam(defaultValue = "id") String sortBy) {
-        return productService.getProducts(pageNo, pageSize, sortBy);
+    public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNo,
+                                          @RequestParam(defaultValue = "20") Integer pageSize,
+                                          @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNo, pageSize, sortBy));
     }
 
     @GetMapping(value = "get-all")
-    public List<Product> readAllProducts() {
+    public List<Product> readAllProducts(@RequestParam(required = false) Long id,
+                                         @RequestParam(required = false) String name,
+                                         @RequestParam(required = false) String type,
+                                         @RequestParam(required = false) String brand,
+                                         @RequestParam(required = false) double price,
+                                         @RequestParam(required = false) int quantity) {
         return productService.getAllProducts();
     }
 

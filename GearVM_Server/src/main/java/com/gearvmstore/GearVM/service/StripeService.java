@@ -71,17 +71,17 @@ public class StripeService {
                         .setBillingAddressCollection(
                                 PaymentLinkCreateParams.BillingAddressCollection.REQUIRED
                         )
-                        .setShippingAddressCollection(
-                                PaymentLinkCreateParams.ShippingAddressCollection
-                                        .builder()
-                                        .addAllowedCountry(
-                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.VN
-                                        )
-                                        .addAllowedCountry(
-                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.SG
-                                        )
-                                        .build()
-                        )
+//                        .setShippingAddressCollection(
+//                                PaymentLinkCreateParams.ShippingAddressCollection
+//                                        .builder()
+//                                        .addAllowedCountry(
+//                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.VN
+//                                        )
+//                                        .addAllowedCountry(
+//                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.SG
+//                                        )
+//                                        .build()
+//                        )
                         .setInvoiceCreation(
                                 PaymentLinkCreateParams.InvoiceCreation
                                         .builder()

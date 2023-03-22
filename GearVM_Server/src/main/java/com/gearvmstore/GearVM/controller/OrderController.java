@@ -1,5 +1,6 @@
 package com.gearvmstore.GearVM.controller;
 
+import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.service.CustomerService;
@@ -45,6 +46,12 @@ public class OrderController {
         if (jwtUtil.validateJwtToken(token))
             return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrderDTO, token));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PatchMapping(value = "/update-orderStatus/{orderId}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable(value = "orderId") Long id,
+                                               @RequestBody OrderStatus orderStatus) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatus(id, orderStatus));
     }
 
     @PatchMapping(value = "/update-orderStatus-employee/{orderId}")
