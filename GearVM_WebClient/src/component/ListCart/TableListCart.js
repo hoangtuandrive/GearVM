@@ -58,125 +58,118 @@ const TableListCart = ({ cartItem }) => {
     }
   }
   return (
-    <div>
-      <Table>
-        <tbody key={cartItem.id}>
-          <tr>
-            <td>
-              <ToggleCheckbox cartItem={cartItem} />
-            </td>
-            <td className={cx("listCart_product_rep")}>
-              <div className={cx("wrapListCart_Content_NameProduct")}>
-                <div className=".k"></div>
-                {/* <img
+    <tbody key={cartItem.id}>
+      <tr>
+        <td>
+          <ToggleCheckbox cartItem={cartItem} />
+        </td>
+        <td className={cx("listCart_product_rep")}>
+          <div className={cx("wrapListCart_Content_NameProduct")}>
+            <div className=".k"></div>
+            {/* <img
                   src="https://lh3.googleusercontent.com/skwj0sp9gWzzKtL3cuFtE7kncj6bDcdGfezZpM6WByG8MUAykq_97iN5EzZefQVDPJrrQOaE5yvOsRMKXEup3N7qOoRJpK4p_A=rw"
                   className={cx("wrapListCart_Content_img")}
                 /> */}
-                <img
-                  src={imgProduct}
-                  className={cx("wrapListCart_Content_img")}
-                />
-                <div className={cx(" .listCart_product_rep")}>
-                  <h5 className={cx("wrapListCart_Content_Name")}>
-                    {cartItem.name}
-                  </h5>
-                  {/* <h4 className={cx('wrapListCart_Content_noice')}>Chỉ còn 2 sản phẩm</h4> */}
-                </div>
-              </div>
-              <div className={cx("listCart_rep")}>
-                <div className={cx("wrapListCart_Content_quantity")}>
-                  <button
-                    className={cx("wrapListCart_Content_quantity_btnsub")}
-                    onClick={() => handleSubToCart(cartItem)}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="text"
-                    value={cartItem.cartQuantity}
-                    onChange={handleChangeQuantity}
-                    className={cx("wrapListCart_Content_quantity_text")}
-                  />
-                  <button
-                    className={cx("wrapListCart_Content_quantity_btnadd")}
-                    onClick={() => handleAddToCart(cartItem)}
-                  >
-                    +
-                  </button>
-                </div>
-                <div>
-                  <button
-                    className={cx("wrapListCart_Content_quantity_remove")}
-                    onClick={() => handleRemoveCart(cartItem)}
-                  >
-                    Xóa
-                  </button>
-                </div>
-              </div>
-            </td>
-            <td>
-              <h5>
-                {" "}
-                {new Intl.NumberFormat("de-DE", {
-                  style: "currency",
-                  currency: "VND",
-                }).format(cartItem.price)}
+            <img src={imgProduct} className={cx("wrapListCart_Content_img")} />
+            <div className={cx(" .listCart_product_rep")}>
+              <h5 className={cx("wrapListCart_Content_Name")}>
+                {cartItem.name}
               </h5>
-              <h4 className={cx("wrapListCart_Content_Price")}>
-                {new Intl.NumberFormat("de-DE", {
-                  style: "currency",
-                  currency: "VND",
-                }).format(cartItem.price)}
-              </h4>
+              {/* <h4 className={cx('wrapListCart_Content_noice')}>Chỉ còn 2 sản phẩm</h4> */}
+            </div>
+          </div>
+          <div className={cx("listCart_rep")}>
+            <div className={cx("wrapListCart_Content_quantity")}>
+              <button
+                className={cx("wrapListCart_Content_quantity_btnsub")}
+                onClick={() => handleSubToCart(cartItem)}
+              >
+                -
+              </button>
+              <input
+                type="text"
+                value={cartItem.cartQuantity}
+                onChange={handleChangeQuantity}
+                className={cx("wrapListCart_Content_quantity_text")}
+              />
+              <button
+                className={cx("wrapListCart_Content_quantity_btnadd")}
+                onClick={() => handleAddToCart(cartItem)}
+              >
+                +
+              </button>
+            </div>
+            <div>
+              <button
+                className={cx("wrapListCart_Content_quantity_remove")}
+                onClick={() => handleRemoveCart(cartItem)}
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+        </td>
+        <td>
+          <h5>
+            {" "}
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(cartItem.price)}
+          </h5>
+          <h4 className={cx("wrapListCart_Content_Price")}>
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(cartItem.price)}
+          </h4>
 
-              <h5 className={cx("listCart_total_txt")}>
-                {cartItem.price * cartItem.cartQuantity}đ
-              </h5>
-            </td>
-            <td className={cx("listCart_total")}>
-              <div className={cx("wrapListCart_Content_quantity")}>
-                <button
-                  className={cx("wrapListCart_Content_quantity_btnsub")}
-                  onClick={() => handleSubToCart(cartItem)}
-                >
-                  -
-                </button>
-                <input
-                  type="text"
-                  value={cartItem.cartQuantity}
-                  onChange={handleChangeQuantity}
-                  className={cx("wrapListCart_Content_quantity_text")}
-                />
-                <button
-                  className={cx("wrapListCart_Content_quantity_btnadd")}
-                  onClick={() => handleAddToCart(cartItem)}
-                >
-                  +
-                </button>
-              </div>
-              <div>
-                <button
-                  className={cx("wrapListCart_Content_quantity_remove")}
-                  onClick={() => handleRemoveCart(cartItem)}
-                >
-                  Xóa
-                </button>
-              </div>
-            </td>
-            {/* Thành Tiền */}
-            <td className={cx("listCart_total")}>
-              <h5>
-                {new Intl.NumberFormat("de-DE", {
-                  style: "currency",
-                  currency: "VND",
-                }).format(cartItem.price * cartItem.cartQuantity)}
-              </h5>
-            </td>
-          </tr>
-          <tr className={cx("listCart_rep")}></tr>
-        </tbody>
-      </Table>
-    </div>
+          <h5 className={cx("listCart_total_txt")}>
+            {cartItem.price * cartItem.cartQuantity}đ
+          </h5>
+        </td>
+        <td className={cx("listCart_total")}>
+          <div className={cx("wrapListCart_Content_quantity")}>
+            <button
+              className={cx("wrapListCart_Content_quantity_btnsub")}
+              onClick={() => handleSubToCart(cartItem)}
+            >
+              -
+            </button>
+            <input
+              type="text"
+              value={cartItem.cartQuantity}
+              onChange={handleChangeQuantity}
+              className={cx("wrapListCart_Content_quantity_text")}
+            />
+            <button
+              className={cx("wrapListCart_Content_quantity_btnadd")}
+              onClick={() => handleAddToCart(cartItem)}
+            >
+              +
+            </button>
+          </div>
+          <div>
+            <button
+              className={cx("wrapListCart_Content_quantity_remove")}
+              onClick={() => handleRemoveCart(cartItem)}
+            >
+              Xóa
+            </button>
+          </div>
+        </td>
+        {/* Thành Tiền */}
+        <td className={cx("listCart_total")}>
+          <h5>
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(cartItem.price * cartItem.cartQuantity)}
+          </h5>
+        </td>
+      </tr>
+      <tr className={cx("listCart_rep")}></tr>
+    </tbody>
   );
 };
 

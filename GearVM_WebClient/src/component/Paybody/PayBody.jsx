@@ -15,6 +15,7 @@ import { OrderCart } from "../../redux/slices/OrderSlices";
 import axios from "axios";
 import { url } from "../../API/api";
 import { currentCustomer } from "../../redux/slices/AuthSlices";
+import Table from "react-bootstrap/Table";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
@@ -97,8 +98,25 @@ const PayBody = () => {
               {/* {cart.cartItems.map((item) => (
                 <ItemCard key={item.id} data={item} />
               ))} */}
+              <Table>
+                <thead>
+                  <tr>
+                    <th>
+                      <h5 className={cx("wrapListCart_Content_tr_text")}>
+                        Tên sản phẩm
+                      </h5>
+                    </th>
 
-              <TableCart data={cartFilter} />
+                    <th>Đơn giá</th>
+                    <th className={cx("listCart_total")}>Số lượng</th>
+                    <th className={cx("listCart_total")}>Thành tiền</th>
+                  </tr>
+                </thead>
+                {console.log(cartFilter)}
+                {cartFilter.map((cartItem) => (
+                  <TableCart key={cartItem.id} cartItem={cartItem} />
+                ))}
+              </Table>
             </div>
             <div className={cx("wrapPayBody_right_infoProduct_wrap_rep")}>
               {cartFilter.map((item) => (

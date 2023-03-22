@@ -8,6 +8,7 @@ import NavModal from "../../component/Modal/NavModal";
 import ListProductHome from "../../component/Home/listProductofHome/ListProductHome";
 import Footer from "../../component/Home/footer/Footer";
 import Content from "../../component/Home/content/Content";
+import ScrolltoTop from "../../component/Home/ScrolltoTop/ScrolltoTop";
 const cx = classNames.bind(styles);
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <SlideShow />
       <Content></Content>
       <ListProductHome />
+      <ScrolltoTop />
       {/* <ListProduct /> */}
       <Footer />
     </div>

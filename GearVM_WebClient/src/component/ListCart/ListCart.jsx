@@ -56,16 +56,17 @@ const ListCart = () => {
                     Tên sản phẩm
                   </h5>
                 </th>
+
                 <th>Đơn giá</th>
                 <th className={cx("listCart_total")}>Số lượng</th>
                 <th className={cx("listCart_total")}>Thành tiền</th>
               </tr>
             </thead>
+            {cart.cartItems &&
+              cart.cartItems.map((cartItem, index) => (
+                <TableListCart key={cartItem.id} cartItem={cartItem} />
+              ))}
           </Table>
-          {cart.cartItems &&
-            cart.cartItems.map((cartItem, index) => (
-              <TableListCart key={cartItem.id} cartItem={cartItem} />
-            ))}
         </div>
 
         <div className={cx("listCart_Pay")}>
