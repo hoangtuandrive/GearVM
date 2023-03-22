@@ -612,7 +612,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     public void readDatabaseToTable() throws IOException {
         emptyTable();
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ProductService.getAllRequest(tableName);
+        // Get all products
+        BufferedReader rd = ProductService.getAllRequest(tableName + "/get-all");
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {

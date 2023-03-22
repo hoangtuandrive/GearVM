@@ -19,8 +19,15 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Product> readProducts() {
-        return productService.getProducts();
+    public List<Product> readProducts(@RequestParam(defaultValue = "0") Integer pageNo,
+                                      @RequestParam(defaultValue = "20") Integer pageSize,
+                                      @RequestParam(defaultValue = "id") String sortBy) {
+        return productService.getProducts(pageNo, pageSize, sortBy);
+    }
+
+    @GetMapping(value = "get-all")
+    public List<Product> readAllProducts() {
+        return productService.getAllProducts();
     }
 
     // api/products/2 GET
