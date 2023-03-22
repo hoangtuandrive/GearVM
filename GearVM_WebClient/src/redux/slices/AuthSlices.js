@@ -50,7 +50,7 @@ export const loginUser = createAsyncThunk(
       return token.data;
     } catch (error) {
       console.log(error.reponse.data);
-      return rejectWithValue(error.reponse.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -62,7 +62,7 @@ export const exitEmail = createAsyncThunk(
       return exit.data;
     } catch (error) {
       console.log(error.reponse.data);
-      return rejectWithValue(error.reponse.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -81,9 +81,9 @@ export const currentCustomer = createAsyncThunk(
       });
       return currentuser.data;
     } catch (error) {
-      console.log(error.reponse.data);
-
-      return rejectWithValue(error.reponse.data);
+      // console.log(error.response.data);
+      // console.log(rejectWithValue(error));
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -186,10 +186,12 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(currentCustomer.rejected, (state, action) => {
-      toast.warning("Bạn chưa đăng nhập", {
-        position: "top-right",
-      });
-      if (action.payload === "token expired") {
+      // toast.warning("Bạn chưa đăng nhập", {
+      //   position: "top-right",
+      // });
+
+      if (action.payload === "Token expired") {
+        localStorage.removeItem("token");
         toast.warning("Phiên đăng nhập của bạn đã hết hạn", {
           position: "top-right",
         });

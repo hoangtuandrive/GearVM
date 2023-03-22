@@ -24,6 +24,7 @@ const ItemProduct = (props) => {
       const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
         "base64"
       )}`;
+
       setImageData(imageSrc);
     } catch (error) {
       console.log(error);

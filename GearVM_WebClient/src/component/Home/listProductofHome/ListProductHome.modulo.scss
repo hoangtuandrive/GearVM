@@ -1,25 +1,25 @@
-.WrapListProduct_Laptop{
-    background-image: url(../../../assets/Latopbackground.jpg) ;
-    width: 78%;
-    margin: 0 auto;
-    // margin-top: 50px;
-    margin-bottom: 5px;
+.WrapListProduct_Laptop {
+  background-image: url(../../../assets/promote.jpg);
+  width: 78%;
+  margin: 0 auto;
+  // margin-top: 50px;
+  margin-bottom: 5px;
 }
-.WrapListProduct_BanPhim{
-    background-image: url(../../../assets/Latopbackground.jpg) ;
-    width: 78%;
-    margin: 0 auto;
-    margin-bottom: 5px;
-    // margin-top: 50px;
+// .WrapListProduct_BanPhim{
+//     background-image: url(../../../assets/Latopbackground.jpg) ;
+//     width: 78%;
+//     margin: 0 auto;
+//     margin-bottom: 5px;
+//     // margin-top: 50px;
+// }
+.wrapListHome {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
-.wrapListHome{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-.lblwraplistproduct{
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-    margin-left: 10px;
+.lblwraplistproduct {
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  margin-left: 10px;
 }

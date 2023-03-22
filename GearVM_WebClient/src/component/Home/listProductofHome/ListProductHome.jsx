@@ -25,11 +25,7 @@ const ListProductHome = () => {
   return (
     <div className={cx("wrapListHome")}>
       <div className={cx("WrapListProduct_Laptop")}>
-        <h1 className={cx("lblwraplistproduct")}>Laptop</h1>
-        <ListProduct data={product} />
-      </div>
-      <div className={cx("WrapListProduct_BanPhim")}>
-        <h1 className={cx("lblwraplistproduct")}>Bàn Phím</h1>
+        <h1 className={cx("lblwraplistproduct")}>SẢN PHẨM BÁN CHẠY</h1>
         <ListProduct data={product} />
       </div>
     </div>

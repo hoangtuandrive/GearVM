@@ -49,6 +49,7 @@ const ProductView = () => {
         const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
           "base64"
         )}`;
+        // console.log(imageSrc);
         setImageData(imageSrc);
       } catch (error) {
         console.log(error);

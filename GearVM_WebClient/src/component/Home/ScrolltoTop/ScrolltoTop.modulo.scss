@@ -1,0 +1,26 @@
+.btnTop {
+  // padding: 10px;
+  // padding-top: 10px;
+  // padding-bottom: 10px;
+  border-radius: 50%;
+  // text-align: center;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333333;
+}
+.Scroll {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+
+  z-index: 1030;
+  right: 2.5rem;
+  bottom: 5.6rem;
+  margin-top: -2rem;
+}
