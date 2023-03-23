@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class GetProductPagination {
-    private int pagedNumber;
+    private int totalPage;
     private List<Product> productList;
 }

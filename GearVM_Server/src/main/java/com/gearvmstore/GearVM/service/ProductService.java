@@ -29,7 +29,7 @@ public class ProductService {
 
         if (pagedResult.hasContent()) {
             GetProductPagination getProductPagination = new GetProductPagination();
-            getProductPagination.setPagedNumber(pagedResult.getTotalPages());
+            getProductPagination.setTotalPage(pagedResult.getTotalPages());
             getProductPagination.setProductList(pagedResult.getContent());
             return getProductPagination;
         } else {
