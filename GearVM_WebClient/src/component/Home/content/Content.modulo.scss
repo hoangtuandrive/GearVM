@@ -10,7 +10,7 @@
   flex-direction: row;
   //   justify-content: space-between;
 }
-.Product_Img_scroll {
+.Product_scroll {
   padding: 0px 30px;
   margin-top: 5px;
   display: flex;
@@ -21,7 +21,7 @@
   transition-property: opacity, transform;
   //   justify-content: space-between;
 }
-.Product_Img_scroll.animate {
+.Product_scroll.animate {
   opacity: 1;
   transform: translate(0) scale(1);
   transition-duration: 0.8s;

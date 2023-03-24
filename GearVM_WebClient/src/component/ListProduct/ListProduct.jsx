@@ -57,7 +57,7 @@ const ListProduct = (props) => {
   // console.log(props.data);
   return (
     <Slider {...settings}>
-      {props.data.map((item, index) => (
+      {props.data?.map((item, index) => (
         <div
           onClick={() => {
             handelItemProduct(item);
