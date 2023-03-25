@@ -56,8 +56,8 @@ const Header = () => {
   };
 
   // useEffect(() => {
-  //   setRender(!render);
-  // }, [token]);
+  //   // setRender(!render);
+  // }, []);
 
   return (
     <div className={cx("wrap")}>

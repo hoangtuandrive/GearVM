@@ -40,3 +40,8 @@ input {
 .search-inner {
   display: flex;
 }
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

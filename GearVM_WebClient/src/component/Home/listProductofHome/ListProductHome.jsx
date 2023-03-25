@@ -8,7 +8,8 @@ const cx = classNames.bind(styles);
 const ListProductHome = () => {
   const [product, setProduct] = useState([]);
 
-  const productUrl = "http://localhost:8080/api/products/";
+  const productUrl =
+    "http://localhost:8080/api/products?pageNumber=0&pageSize=20&sortBy=id";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,12 +22,12 @@ const ListProductHome = () => {
     };
     fetchProduct();
   }, []);
-
+  // console.log(product.productList);
   return (
     <div className={cx("wrapListHome")}>
       <div className={cx("WrapListProduct_Laptop")}>
         <h1 className={cx("lblwraplistproduct")}>SẢN PHẨM BÁN CHẠY</h1>
-        <ListProduct data={product} />
+        <ListProduct data={product.productList} />
       </div>
     </div>
   );

@@ -10,24 +10,24 @@ const Content = () => {
     const top = document.documentElement.scrollTop;
 
     if (top >= 800) {
-      document.querySelector(".Product_Img_scroll").classList.add("animate");
+      document.querySelector(".Product_scroll")?.classList.add("animate");
 
       // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
     } else {
-      document.querySelector(".Product_Img_scroll").classList.remove("animate");
-      document.querySelector(".GoodAbout").classList.remove("animate");
+      document.querySelector(".Product_scroll")?.classList.remove("animate");
+      document.querySelector(".GoodAbout")?.classList.remove("animate");
     }
     if (top >= 1200) {
-      document.querySelector(".GoodAbout").classList.add("animate");
-      document.querySelector(".GoodAbout_bot").classList.add("animate");
+      document.querySelector(".GoodAbout")?.classList.add("animate");
+      document.querySelector(".GoodAbout_bot")?.classList.add("animate");
     } else {
-      document.querySelector(".GoodAbout").classList.remove("animate");
-      document.querySelector(".GoodAbout_bot").classList.add("animate");
+      document.querySelector(".GoodAbout")?.classList.remove("animate");
+      document.querySelector(".GoodAbout_bot")?.classList.add("animate");
     }
     if (top >= 2180) {
-      document.querySelector(".Content_mid").classList.add("animate");
+      document.querySelector(".Content_mid")?.classList.add("animate");
     } else {
-      document.querySelector(".Content_mid").classList.remove("animate");
+      document.querySelector(".Content_mid")?.classList.remove("animate");
     }
   });
   return (
@@ -49,7 +49,7 @@ const Content = () => {
           />
         </div>
       </div>
-      <div className={cx("Product_Img_scroll")}>
+      <div className={cx("Product_scroll")}>
         <img
           src={require("../../../assets/tainghe3.jpg")}
           className={cx("img")}

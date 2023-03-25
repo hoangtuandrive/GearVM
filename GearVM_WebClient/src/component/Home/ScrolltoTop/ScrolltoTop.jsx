@@ -4,12 +4,23 @@ import classNames from "classnames/bind";
 import { UpOutlined } from "@ant-design/icons";
 const cx = classNames.bind(styles);
 const ScrolltoTop = () => {
+  document.addEventListener("scroll", () => {
+    const add = document.documentElement.scrollTop;
+    const top = document.documentElement.clientHeight;
+    if (add >= top) {
+      document.querySelector(".btnTop")?.classList.add("show");
+
+      // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
+    } else {
+      document.querySelector(".btnTop")?.classList.remove("show");
+    }
+  });
   const top = () => {
     window.scrollTo(0, 0);
   };
   const message = () => {
     window.location.assign(
-      "https://business.facebook.com/latest/inbox/messenger?asset_id=117090754650837&bpn_id=6031765276914164&nav_ref=redirect_biz_inbox&mailbox_id=&selected_item_id=100009761532540"
+      "https://www.facebook.com/messages/t/117090754650837"
     );
   };
   return (

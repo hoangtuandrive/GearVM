@@ -10,6 +10,21 @@
   justify-content: center;
   align-items: center;
   background-color: #333333;
+  visibility: hidden;
+}
+.btnTop.show {
+  // padding: 10px;
+  // padding-top: 10px;
+  // padding-bottom: 10px;
+  border-radius: 50%;
+  // text-align: center;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333333;
+  visibility: visible;
 }
 .Scroll {
   cursor: pointer;

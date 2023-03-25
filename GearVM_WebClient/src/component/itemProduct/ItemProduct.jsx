@@ -7,7 +7,7 @@ import { s3 } from "../../aws";
 const cx = classNames.bind(styles);
 
 const ItemProduct = (props) => {
-  const [imageData, setImageData] = useState(null);
+  const [imageData, setImageData] = useState();
 
   useEffect(() => {
     getImage();
@@ -27,14 +27,14 @@ const ItemProduct = (props) => {
 
       setImageData(imageSrc);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 
   return (
     <div className={cx("wrapItemProduct")}>
       <div className={cx("imgProduct")}>
-        <Image src={imageData} />
+        <Image src={imageData ? imageData : ""} />
       </div>
       <div className={cx("textProduct")}>
         <h5 className={cx("txtNameProduct")}>{props.data.name}</h5>

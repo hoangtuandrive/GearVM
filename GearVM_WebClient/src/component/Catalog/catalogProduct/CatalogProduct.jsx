@@ -6,78 +6,81 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CheckBox from "../CusCheckbox/CheckBox";
-import Pagination from "../Pagination";
+
 import Form from "react-bootstrap/Form";
+import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
+import CustomPagination from "../CustomPagination";
 
 const cx = classNames.bind(styles);
 const CatalogProduct = () => {
-  const productList = [
-    {
-      id: 1,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 1",
-      price: 8000000,
-      discount: "4",
-      colors: ["Trắng", "Đen", "Xanh Dương"],
-      brand: "Asus",
-    },
-    {
-      id: 2,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 2",
-      price: 15000000,
-      discount: "4",
-      brand: "Del",
-      colors: ["Trắng", "Đỏ", "Xanh Dương"],
-    },
-    {
-      id: 3,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 3",
-      price: 20000000,
-      discount: "4",
-      brand: "MSI",
-      colors: ["Trắng", "Đỏ", "Cam"],
-    },
-    {
-      id: 4,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 4",
-      price: 12000000,
-      discount: "4",
-      brand: "Asus",
-      colors: ["Trắng", "Đỏ", "Xanh Dương"],
-    },
-    {
-      id: 5,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 5",
-      price: 12000000,
-      discount: "4",
-      brand: "Del",
+  // const productList = [
+  //   {
+  //     id: 1,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 1",
+  //     price: 8000000,
+  //     discount: "4",
+  //     colors: ["Trắng", "Đen", "Xanh Dương"],
+  //     brand: "Asus",
+  //   },
+  //   {
+  //     id: 2,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 2",
+  //     price: 15000000,
+  //     discount: "4",
+  //     brand: "Del",
+  //     colors: ["Trắng", "Đỏ", "Xanh Dương"],
+  //   },
+  //   {
+  //     id: 3,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 3",
+  //     price: 20000000,
+  //     discount: "4",
+  //     brand: "MSI",
+  //     colors: ["Trắng", "Đỏ", "Cam"],
+  //   },
+  //   {
+  //     id: 4,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 4",
+  //     price: 12000000,
+  //     discount: "4",
+  //     brand: "Asus",
+  //     colors: ["Trắng", "Đỏ", "Xanh Dương"],
+  //   },
+  //   {
+  //     id: 5,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 5",
+  //     price: 12000000,
+  //     discount: "4",
+  //     brand: "Del",
 
-      colors: ["Trắng", "Vàng", "Xanh Dương"],
-    },
-    ,
-    {
-      id: 6,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 6",
-      price: 12000000,
-      discount: "4",
-      brand: "HP",
-      colors: ["Trắng", "Đen", "Xanh Dương"],
-    },
-    {
-      id: 7,
-      img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
-      name: "Acer 7",
-      price: 12000000,
-      discount: "4",
-      brand: "HP",
-      colors: ["Trắng", "Hồng", "Xanh Dương"],
-    },
-  ];
+  //     colors: ["Trắng", "Vàng", "Xanh Dương"],
+  //   },
+  //   ,
+  //   {
+  //     id: 6,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 6",
+  //     price: 12000000,
+  //     discount: "4",
+  //     brand: "HP",
+  //     colors: ["Trắng", "Đen", "Xanh Dương"],
+  //   },
+  //   {
+  //     id: 7,
+  //     img: "https://betanews.com/wp-content/uploads/2014/11/front.jpg",
+  //     name: "Acer 7",
+  //     price: 12000000,
+  //     discount: "4",
+  //     brand: "HP",
+  //     colors: ["Trắng", "Hồng", "Xanh Dương"],
+  //   },
+  // ];
   const colors = [
     {
       color: "Trắng",
@@ -117,8 +120,14 @@ const CatalogProduct = () => {
     brand: [],
     price: "",
   };
+  const navigate = useNavigate();
+  let location = useLocation();
+  let query = new URLSearchParams(location.search);
+  const page = query.get("page");
 
+  const [productList, setProductList] = useState([]);
   const [products, setProducts] = useState(productList);
+  const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -230,15 +239,37 @@ const CatalogProduct = () => {
     // if (filter.price === "tren10") {
     //   // console.log(1);
     // }
+
     if (filter.price.length > 0 && filter.price !== "tren10") {
       temp = data;
     }
 
     setProducts(temp);
   }, [filter, productList]);
-
-  console.log(products);
+  const fetchProduct = async (productUrl) => {
+    try {
+      const rep = await axios.get(productUrl);
+      setProductList(rep.data.productList);
+      setProducts(rep.data.productList);
+      setTotalPage(rep.data.totalPage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
+    if (page) {
+      const productUrl = `http://localhost:8080/api/products?pageNumber=${
+        page - 1
+      }&pageSize=25`;
+
+      fetchProduct(productUrl);
+    } else {
+      const productUrl =
+        "http://localhost:8080/api/products?pageNumber=0&pageSize=25";
+
+      fetchProduct(productUrl);
+    }
+
     updateProducts();
   }, [filter]);
 
@@ -248,7 +279,23 @@ const CatalogProduct = () => {
   const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    navigate(`/catalog?page=${pageNumber}`);
+    const fetchProduct = async () => {
+      const productUrl = `http://localhost:8080/api/products?pageNumber=${
+        pageNumber - 1
+      }&pageSize=25`;
+      try {
+        const rep = await axios.get(productUrl);
+        setProducts(rep.data.productList);
+        setTotalPage(rep.data.totalPage);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProduct();
+    setCurrentPage(pageNumber);
+  };
 
   //handleGia
 
@@ -291,32 +338,11 @@ const CatalogProduct = () => {
             </div>
           </div>
           <div className="gach"></div>
-
-          <div className={cx("wrapCatalogProduct_fillter_Price")}>
-            <h6 className={cx("txtWrap_Head")}>Màu Sắc</h6>
-            <div className={cx("wrapCatalogProduct_fillter_Price_about")}>
-              {colors.map((item, index) => (
-                <div
-                  key={index}
-                  className={cx("catalog__filter__widget__content__item")}
-                >
-                  <CheckBox
-                    label={item.color}
-                    onChange={(input) =>
-                      filterSelect("COLOR", input.checked, item)
-                    }
-                    checked={filter.color.includes(item.color)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="gach"></div>
         </div>
         <div className={cx("wrapCatalogProduct_content")}>
           <Container>
             <Row lg={4} md={3} sm={2}>
-              {currentPosts.map((item, index) => (
+              {products.map((item, index) => (
                 <Col key={item.id}>
                   <ItemProduct data={item} />
                 </Col>
@@ -326,10 +352,11 @@ const CatalogProduct = () => {
         </div>
       </div>
       <div className={cx("pagination")}>
-        <Pagination
+        <CustomPagination
           postsPerPage={postsPerPage}
-          totalPosts={products.length}
+          totalPosts={totalPage}
           paginate={paginate}
+          pagequery={page}
         />
       </div>
     </Container>

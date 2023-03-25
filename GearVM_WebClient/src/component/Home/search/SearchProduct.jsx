@@ -4,7 +4,10 @@ import styles from "./SearchProduct.module.scss";
 import { Input } from "antd";
 
 import dataSearch from "../../../dataUI/dataSearch";
-
+import InputGroup from "react-bootstrap/InputGroup";
+import Form from "react-bootstrap/Form";
+import { SearchOutlined } from "@ant-design/icons";
+import Button from "react-bootstrap/Button";
 const cx = classNames.bind(styles);
 export default function SearchProduct() {
   const { Search } = Input;
@@ -28,13 +31,32 @@ export default function SearchProduct() {
         <div className={cx("search-inner")}>
           {/* <input type="text" value={value} onChange={onChange} /> */}
           {/* <button onClick={() => onSearch(value)}> Search </button> */}
-          <Search
+          {/* <Search
             placeholder="input search text"
             enterButton
             value={value}
             onChange={onChange}
             onClick={() => onSearch(value)}
-          />
+          /> */}
+          <InputGroup>
+            <Form.Control
+              value={value}
+              onChange={onChange}
+              placeholder="input search text"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+            />
+            {/* <InputGroup.Text id="basic-addon2"> */}
+            <Button
+              variant="primary"
+              id="button-addon2"
+              className={cx("search")}
+            >
+              <SearchOutlined />
+            </Button>
+
+            {/* </InputGroup.Text> */}
+          </InputGroup>
         </div>
         <div className={cx("dropdown")}>
           {dataSearch

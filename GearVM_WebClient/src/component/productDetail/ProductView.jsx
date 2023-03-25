@@ -52,7 +52,7 @@ const ProductView = () => {
         // console.log(imageSrc);
         setImageData(imageSrc);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getImage();
@@ -73,7 +73,10 @@ const ProductView = () => {
         {/* {console.log(productDetail)} */}
 
         <div className={cx("ProductView_Img")}>
-          <Image src={imageData} className={cx("ProductView_Img")} />
+          <Image
+            src={imageData ? imageData : ""}
+            className={cx("ProductView_Img")}
+          />
         </div>
 
         <div className={cx("ProductView_Content")}>
