@@ -3,6 +3,7 @@ package com.gearvmstore.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Employee;
 import com.gearvmstore.model.OrderStatus;
 import com.gearvmstore.model.Product;
 import com.gearvmstore.model.dto.order.UpdateOrderStatusAndEmployee;
@@ -60,7 +61,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JButton btnXemThanhToan;
     private final JButton btnThayDoiTrangThai;
 
-    public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
+    public FrmChiTietDonHang(GetOrderResponse getOrderResponse, EmployeeResponseModel e) throws IOException {
         super("Chi Tiết Đơn Hàng");
 
         FlatLightLaf.setup();
@@ -249,7 +250,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatusAndEmployee()){
+                    if(patchOrderStatusAndEmployee(GUI.getEmployeeInfo())){
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -267,7 +268,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(0)){
+                    if(patchOrderStatus(0, GUI.getEmployeeInfo())){
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -285,7 +286,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(1)){
+                    if(patchOrderStatus(1, GUI.getEmployeeInfo())){
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -303,7 +304,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(2)){
+                    if(patchOrderStatus(2, GUI.getEmployeeInfo())){
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -321,7 +322,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(3)){
+                    if(patchOrderStatus(3, GUI.getEmployeeInfo())){
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -420,18 +421,22 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtTongTien.setText(df.format(order.getTotalPrice()));
     }
 
-    public boolean patchOrderStatus(int i) throws IOException {
+    public boolean patchOrderStatus(int i, EmployeeResponseModel e) throws IOException {
         OrderStatus orderStatus = null;
         if(i==0) orderStatus = OrderStatus.SHIPPING;
         if(i==1) orderStatus = OrderStatus.REJECTED;
         if(i==2) orderStatus = OrderStatus.SHIP_SUCCESS;
         if(i==3) orderStatus = OrderStatus.SHIP_FAIL;
-        return OrderService.patchOrderStatus(txtMaDonHang.getText(), orderStatus);
+
+        UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee = new UpdateOrderStatusAndEmployee();
+        updateOrderStatusAndEmployee.setEmployeeId(e);
+        updateOrderStatusAndEmployee.setOrderStatus(orderStatus);
+
+        return OrderService.patchOrderStatus(txtMaDonHang.getText(), updateOrderStatusAndEmployee);
     }
 
-    public boolean patchOrderStatusAndEmployee() throws IOException {
+    public boolean patchOrderStatusAndEmployee(EmployeeResponseModel e) throws IOException {
         String orderId = txtMaDonHang.getText();
-        String employeeId = txtMaNhanVien.getText();
         UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee = new UpdateOrderStatusAndEmployee();
 
         if(cmbTrangThai.getSelectedIndex() == 0) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_PENDING);
@@ -441,12 +446,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if(cmbTrangThai.getSelectedIndex() == 4) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_FAIL);
         else if(cmbTrangThai.getSelectedIndex() == 5) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.REJECTED);
 
-        if(!employeeId.equals("")){
-            EmployeeResponseModel employeeResponseModel = new EmployeeResponseModel();
-            employeeResponseModel.setId(Long.parseLong(employeeId));
-            employeeResponseModel.setName(txtTenNhanVien.getText());
-            updateOrderStatusAndEmployee.setEmployeeId(employeeResponseModel);
-        }
+        updateOrderStatusAndEmployee.setEmployeeId(e);
+
         return OrderService.patchOrderStatusAndEmployee(orderId, updateOrderStatusAndEmployee);
     }
 

@@ -22,7 +22,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                          @RequestParam(defaultValue = "20") Integer pageSize,
+                                          @RequestParam(defaultValue = "25") Integer pageSize,
                                           @RequestParam(defaultValue = "id") String sortBy) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNumber, pageSize, sortBy));
     }
@@ -32,8 +32,8 @@ public class ProductController {
                                          @RequestParam(required = false) String name,
                                          @RequestParam(required = false) String type,
                                          @RequestParam(required = false) String brand,
-                                         @RequestParam(required = false) double price,
-                                         @RequestParam(required = false) int quantity) {
+                                         @RequestParam(required = false) String price,
+                                         @RequestParam(required = false) String quantity) {
         return productService.getAllProducts();
     }
 

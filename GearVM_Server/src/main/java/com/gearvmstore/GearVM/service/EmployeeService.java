@@ -4,7 +4,6 @@ import com.gearvmstore.GearVM.model.Employee;
 import com.gearvmstore.GearVM.repository.EmployeeRepository;
 import com.gearvmstore.GearVM.utility.HashPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -23,8 +22,15 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee e) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        e.setPassword(hashPasswordUtil.generatePasswordHash("12345678a"));
-        return employeeRepository.save(e);
+        if (!checkEmailExist(e.getEmail())) {
+            e.setPassword(hashPasswordUtil.generatePasswordHash("abc12345"));
+            return employeeRepository.save(e);
+        }
+        return null;
+    }
+
+    public boolean checkEmailExist(String email) {
+        return !(employeeRepository.findByEmail(email) == null);
     }
 
     public List<Employee> getEmployees() {
@@ -57,5 +63,15 @@ public class EmployeeService {
         Employee e = employeeRepository.findById(employeeId).get();
         e.setWorkStatus(status.equalsIgnoreCase("true"));
         return employeeRepository.save(e);
+    }
+
+    public Employee validateLogin(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Employee employee = employeeRepository.findByEmail(username);
+
+        if (employee == null) return null;
+
+        if (hashPasswordUtil.validatePassword(password, employee.getPassword()))
+            return employee;
+        return null;
     }
 }

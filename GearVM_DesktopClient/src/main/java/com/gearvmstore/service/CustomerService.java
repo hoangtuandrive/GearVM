@@ -17,7 +17,6 @@ public class CustomerService extends ApiService {
     private static final String url = staticUrl + "/customers/";
 
     public static boolean postRequest(Customer c) throws IOException {
-        System.out.println(c);
         HttpClient client = new DefaultHttpClient();
         HttpPost request = new HttpPost(url);
         JSONObject json = new JSONObject();
@@ -35,7 +34,7 @@ public class CustomerService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean putRequest(Customer c) throws IOException {
@@ -56,13 +55,13 @@ public class CustomerService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean deleteRequest(Customer c) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpDelete request = new HttpDelete(url + c.getId());
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 }

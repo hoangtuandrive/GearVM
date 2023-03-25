@@ -3,7 +3,9 @@ package com.gearvmstore.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Employee;
 import com.gearvmstore.model.OrderStatus;
+import com.gearvmstore.model.response.EmployeeResponseModel;
 import com.gearvmstore.model.response.GetOrderListResponse;
 import com.gearvmstore.model.response.GetOrderResponse;
 import com.gearvmstore.service.OrderService;
@@ -32,6 +34,8 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
     private static DefaultTableModel modelDonHang;
     private JButton btnTim, btnReset;
     private JComboBox<String> cmbChon, cmbTim;
+    private JLabel lblHiddenId;
+    private JLabel lblHiddenName;
 
     public static void main(String[] args) throws RemoteException {
         // TODO Auto-generated method stub
@@ -175,7 +179,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
             else if (o.getOrderStatus() == OrderStatus.SHIPPING) orderStatusString = "Đang giao hàng";
             else if (o.getOrderStatus() == OrderStatus.SHIP_SUCCESS) orderStatusString = "Giao hàng thành công";
             else if (o.getOrderStatus() == OrderStatus.SHIP_FAIL) orderStatusString = "Giao hàng thất bại";
-            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị hủy";
+            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị từ chối";
 
             modelDonHang.addRow(new Object[]{
                     o.getId(), o.getCustomerId().getName(), o.getCustomerId().getPhoneNumber(),
@@ -202,7 +206,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         if (e.getClickCount() == 2 && tableDonHang.getSelectedRow() != -1) {
             try {
                 GetOrderResponse getOrderResponse = getRequest(tableDonHang.getValueAt(row, 0).toString().trim());
-                new FrmChiTietDonHang(getOrderResponse);
+                new FrmChiTietDonHang(getOrderResponse, GUI.getEmployeeInfo());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

@@ -1,8 +1,11 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Employee;
+import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
 import com.gearvmstore.GearVM.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -15,9 +18,11 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Employee createEmployee(@RequestBody Employee e) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return employeeService.createEmployee(e);
+    @PostMapping
+    public ResponseEntity<?> createEmployee(@RequestBody Employee e) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Employee em = employeeService.createEmployee(e);
+        if (em == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email exist");
+        return ResponseEntity.status(HttpStatus.OK).body(em);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -43,5 +48,16 @@ public class EmployeeController {
     @PatchMapping(value = "/work-status/{employeeId}")
     public Employee updateWorkStatus(@PathVariable(value = "employeeId") Long id, @RequestBody String status) {
         return employeeService.updateWorkStatus(id, status);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Employee employee = employeeService.validateLogin(loginDTO.getUsername(), loginDTO.getPassword());
+
+        if (employee == null) {
+            return ResponseEntity.badRequest().body("Login failed");
+        }
+
+        return ResponseEntity.ok().body(employee);
     }
 }
