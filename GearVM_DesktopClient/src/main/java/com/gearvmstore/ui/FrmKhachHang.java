@@ -8,19 +8,28 @@ import com.gearvmstore.model.Gender;
 import com.gearvmstore.service.CustomerService;
 import com.gearvmstore.service.EmployeeService;
 import com.toedter.calendar.JDateChooser;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -438,11 +447,13 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         btnSua.addActionListener(this);
         btnXoa.addActionListener(this);
         btnTim.addActionListener(this);
+        btnExport.addActionListener(this);
         tableKhachHang.addMouseListener(this);
+
         readDatabaseToTable();
+        GUI.disableWarning();
 
         return panel;
-
     }
 
     @Override
@@ -497,6 +508,28 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+            }
+        }
+        if (o.equals(btnExport)) {
+            JFileChooser fileDialog = new JFileChooser();
+            fileDialog.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            //filter the files
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel(.xls)", ".xls");
+            fileDialog.setAcceptAllFileFilterUsed(false);
+            fileDialog.addChoosableFileFilter(filter);
+            int result = fileDialog.showSaveDialog(null);
+            //if the user click on save in Jfilechooser
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileDialog.getSelectedFile();
+                String filePath = file.getAbsolutePath();
+                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
+                    filePath += ".xls";
+                }
+                if (exportExcel(filePath))
+                    JOptionPane.showMessageDialog(null, "Ghi file thành công!!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -612,6 +645,122 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
             modelKhachHang.addRow(new Object[]{c.getId(), c.getName(),
                     dateFormat.format(c.getDateOfBirth()), gender,
                     c.getPhoneNumber(), c.getEmail(), c.getAddress()});
+        }
+    }
+
+    public boolean exportExcel(String filePath) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet worksheet = workbook.createSheet("DANH SÁCH KHÁCH HÀNG");
+
+            HSSFRow row;
+            HSSFCell cell;
+
+            // Dòng 1 tên
+            cell = worksheet.createRow(1).createCell(1);
+
+            HSSFFont newFont = cell.getSheet().getWorkbook().createFont();
+            newFont.setBold(true);
+            newFont.setFontHeightInPoints((short) 13);
+            CellStyle styleTenDanhSach = worksheet.getWorkbook().createCellStyle();
+            styleTenDanhSach.setAlignment(HorizontalAlignment.CENTER);
+            styleTenDanhSach.setFont(newFont);
+
+            cell.setCellValue("DANH SÁCH KHÁCH HÀNG");
+            cell.setCellStyle(styleTenDanhSach);
+
+            String[] header = {"STT", "Mã Khách hàng", "Tên Khách hàng", "Ngày Sinh", "Giới Tính", "SDT", "Email",
+                    "Địa Chỉ"};
+            worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
+
+            // Dòng 2 người lập
+            row = worksheet.createRow(2);
+
+            cell = row.createCell(1);
+            cell.setCellValue("Người lập:");
+            cell = row.createCell(2);
+
+            cell.setCellValue(GUI.getEmployeeInfo().getName());
+            worksheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
+
+            // Dòng 3 ngày lập
+            row = worksheet.createRow(3);
+            cell = row.createCell(1);
+            cell.setCellValue("Ngày lập:");
+            cell = row.createCell(2);
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            cell.setCellValue(df.format(new Date()));
+            worksheet.addMergedRegion(new CellRangeAddress(3, 3, 2, 3));
+
+            // Dòng 4 tên các cột
+            row = worksheet.createRow(4);
+
+            HSSFFont fontHeader = cell.getSheet().getWorkbook().createFont();
+            fontHeader.setBold(true);
+
+            CellStyle styleHeader = worksheet.getWorkbook().createCellStyle();
+            styleHeader.setFont(fontHeader);
+            styleHeader.setBorderBottom(BorderStyle.THIN);
+            styleHeader.setBorderTop(BorderStyle.THIN);
+            styleHeader.setBorderLeft(BorderStyle.THIN);
+            styleHeader.setBorderRight(BorderStyle.THIN);
+            styleHeader.setAlignment(HorizontalAlignment.CENTER);
+
+            styleHeader.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+            styleHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            for (int i = 0; i < header.length; i++) {
+                cell = row.createCell(i + 1);
+                cell.setCellValue(header[i]);
+                cell.setCellStyle(styleHeader);
+            }
+
+            if (tableKhachHang.getRowCount() == 0) {
+                return false;
+            }
+
+            HSSFFont fontRow = cell.getSheet().getWorkbook().createFont();
+            fontRow.setBold(false);
+
+            CellStyle styleRow = worksheet.getWorkbook().createCellStyle();
+            styleRow.setFont(fontRow);
+            styleRow.setBorderBottom(BorderStyle.THIN);
+            styleRow.setBorderTop(BorderStyle.THIN);
+            styleRow.setBorderLeft(BorderStyle.THIN);
+            styleRow.setBorderRight(BorderStyle.THIN);
+
+            // Ghi dữ liệu vào bảng
+            int STT = 0;
+            for (int i = 0; i < tableKhachHang.getRowCount(); i++) {
+                row = worksheet.createRow(5 + i);
+                for (int j = 0; j < header.length; j++) {
+                    cell = row.createCell(j + 1);
+                    if (STT == i) {
+                        cell.setCellValue(STT + 1);
+                        STT++;
+                    } else {
+                        if (tableKhachHang.getValueAt(i, j - 1) != null) {
+                                cell.setCellValue(tableKhachHang.getValueAt(i, j - 1).toString().trim());
+                        }
+                    }
+                    cell.setCellStyle(styleRow);
+                }
+            }
+
+            for (int i = 1; i < header.length + 1; i++) {
+                worksheet.autoSizeColumn(i);
+            }
+
+            workbook.write(fileOut);
+            workbook.close();
+            fileOut.flush();
+            fileOut.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

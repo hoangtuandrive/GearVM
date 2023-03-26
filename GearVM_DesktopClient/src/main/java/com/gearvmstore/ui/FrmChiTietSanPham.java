@@ -42,7 +42,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
 //        prepareGUI();
         super("Chi tiết sản phẩm");
         productId = product.getId().toString();
-        disableWarning();
+        GUI.disableWarning();
         FlatLightLaf.setup();
         setSize(1000, 600);
         setResizable(false);
@@ -123,20 +123,6 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         Image tempImg = imageIcon.getImage();
         Image newImg = tempImg.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
         return new ImageIcon(newImg);
-    }
-
-    private static void disableWarning() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe) theUnsafe.get(null);
-
-            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception e) {
-            // ignore
-        }
     }
 
     private void putObjectS3() throws IOException {

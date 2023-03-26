@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -28,6 +30,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmstore.model.Employee;
 import com.gearvmstore.model.response.EmployeeResponseModel;
+import sun.misc.Unsafe;
 
 public class GUI extends JFrame implements ActionListener, MouseListener {
     private JLabel lblThoiGian;
@@ -156,7 +159,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         lblTitle.setForeground(Color.BLACK);
         pnlContentPane.add(lblTitle);
 
-        ImageIcon imageIcon = new ImageIcon("image/hinhnen.jpg");
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resourceUrl = classLoader.getResource("assets/hinhnen.jpg");
+        ImageIcon imageIcon = null;
+        if (resourceUrl != null) {
+            imageIcon = new ImageIcon(resourceUrl);
+        }
+
         Image image = imageIcon.getImage();
         Image imageResize = image.getScaledInstance(1450, 550, Image.SCALE_SMOOTH);
         JLabel lblHinhNen = new JLabel(new ImageIcon(imageResize));
@@ -270,4 +279,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         return e;
     }
 
+    public static void disableWarning() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe) theUnsafe.get(null);
+
+            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception e) {
+            // ignore
+        }
+    }
 }

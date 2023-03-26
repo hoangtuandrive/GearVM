@@ -76,8 +76,9 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		p.add(pcenter, BorderLayout.CENTER);
 
 		JPanel pBot = new JPanel();
-		btnDangNhap = new JButton("Đăng Nhập", new ImageIcon("image/trangchu.png"));
-		btnThoat = new JButton("Thoát", new ImageIcon("image/out.png"));
+//		btnDangNhap = new JButton("Đăng Nhập", new ImageIcon("image/trangchu.png"));
+		btnDangNhap = new JButton("Đăng Nhập");
+		btnThoat = new JButton("Thoát");
 		pBot.add(Box.createHorizontalStrut(100));
 		pBot.add(btnDangNhap);
 

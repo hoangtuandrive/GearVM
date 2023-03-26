@@ -447,6 +447,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         tableHangHoa.addMouseListener(this);
 
         readDatabaseToTable();
+        GUI.disableWarning();
 
         return panel;
     }// </editor-fold>//GEN-END:initComponents
