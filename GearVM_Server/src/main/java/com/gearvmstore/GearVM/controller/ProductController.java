@@ -22,7 +22,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                          @RequestParam(defaultValue = "25") Integer pageSize,
+                                          @RequestParam(defaultValue = "24") Integer pageSize,
                                           @RequestParam(defaultValue = "id") String sortBy) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNumber, pageSize, sortBy));
     }

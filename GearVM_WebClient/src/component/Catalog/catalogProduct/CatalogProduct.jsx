@@ -260,12 +260,12 @@ const CatalogProduct = () => {
     if (page) {
       const productUrl = `http://localhost:8080/api/products?pageNumber=${
         page - 1
-      }&pageSize=25`;
+      }&pageSize=24`;
 
       fetchProduct(productUrl);
     } else {
       const productUrl =
-        "http://localhost:8080/api/products?pageNumber=0&pageSize=25";
+        "http://localhost:8080/api/products?pageNumber=0&pageSize=24";
 
       fetchProduct(productUrl);
     }
@@ -284,7 +284,7 @@ const CatalogProduct = () => {
     const fetchProduct = async () => {
       const productUrl = `http://localhost:8080/api/products?pageNumber=${
         pageNumber - 1
-      }&pageSize=25`;
+      }&pageSize=24`;
       try {
         const rep = await axios.get(productUrl);
         setProducts(rep.data.productList);
