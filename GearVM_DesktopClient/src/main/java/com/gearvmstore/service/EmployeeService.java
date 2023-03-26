@@ -1,6 +1,7 @@
 package com.gearvmstore.service;
 
 import com.gearvmstore.model.Employee;
+import com.gearvmstore.model.dto.user.LoginDTO;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
@@ -10,7 +11,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class EmployeeService extends ApiService {
@@ -39,7 +42,7 @@ public class EmployeeService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean putRequest(Employee e) throws IOException {
@@ -64,7 +67,7 @@ public class EmployeeService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
 
@@ -78,6 +81,19 @@ public class EmployeeService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
+    }
+
+    public static BufferedReader login(LoginDTO loginDTO) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost request = new HttpPost(url + "login");
+        JSONObject json = new JSONObject();
+        json.put("username", loginDTO.getUsername());
+        json.put("password", loginDTO.getPassword());
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 }

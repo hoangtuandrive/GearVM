@@ -3,19 +3,24 @@ package com.gearvmstore.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Employee;
+import com.gearvmstore.model.Product;
+import com.gearvmstore.model.dto.user.LoginDTO;
+import com.gearvmstore.service.EmployeeService;
+import com.gearvmstore.service.ProductService;
 
-public class FrmDangNhap extends JFrame {
+public class FrmDangNhap extends JFrame implements ActionListener {
 	private static JTextField txtTenDangNhap;
 	private JTextField txtMatKhau;
 	private JButton btnDangNhap;
@@ -53,8 +58,8 @@ public class FrmDangNhap extends JFrame {
 		b2 = Box.createHorizontalBox();
 
 		txtTenDangNhap = new JTextField(20);
-		b1.add(lblTDN = new JLabel("Tên Đăng Nhập:"));
-		b1.add(Box.createHorizontalStrut(5));
+		b1.add(lblTDN = new JLabel("Email:"));
+		b1.add(Box.createHorizontalStrut(45));
 		b1.add(txtTenDangNhap);
 		b.add(b1);
 
@@ -94,8 +99,13 @@ public class FrmDangNhap extends JFrame {
 		btnThoat.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		txtTenDangNhap.setText("QL1001");
-		txtMatKhau.setText("123");
+		lblTDN.setPreferredSize(lblMK.getPreferredSize());
+		txtTenDangNhap.setPreferredSize(txtMatKhau.getPreferredSize());
+
+		txtTenDangNhap.setText("tuan@gmail.com");
+		txtMatKhau.setText("abc12345");
+
+		btnDangNhap.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
@@ -134,5 +144,39 @@ public class FrmDangNhap extends JFrame {
 		});
 	}
 
+	public Employee login() throws IOException {
+		LoginDTO loginDTO = new LoginDTO();
+		loginDTO.setUsername(txtTenDangNhap.getText());
+		loginDTO.setPassword(txtMatKhau.getText());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		BufferedReader rd = EmployeeService.login(loginDTO);
+		try {
+			return mapper.readValue(rd, Employee.class);
+		}
+		catch(JsonParseException ex) {
+			return null;
+		}
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o.equals(btnDangNhap)){
+			try {
+				Employee employee = login();
+				if(employee != null){
+					GUI gui;
+					gui = new GUI(employee);
+					gui.setVisible(true);
+					gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					gui.setLocationRelativeTo(null);
+					dispose();
+				}
+				else JOptionPane.showMessageDialog(this, "Đăng Nhập Thất Bại!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+	}
 }

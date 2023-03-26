@@ -30,7 +30,7 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean putRequest(Product p) throws IOException {
@@ -46,14 +46,14 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean deleteRequest(Product p) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpDelete request = new HttpDelete(url + p.getId());
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean patchDescriptionRequest(String description, String id) throws IOException {
@@ -63,7 +63,7 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean patchImageUriRequest(String uri, String id) throws IOException {
@@ -73,6 +73,6 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 }

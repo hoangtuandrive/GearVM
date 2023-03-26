@@ -1,6 +1,5 @@
 package com.gearvmstore.GearVM.controller;
 
-import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.service.CustomerService;
@@ -50,8 +49,8 @@ public class OrderController {
 
     @PatchMapping(value = "/update-orderStatus/{orderId}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable(value = "orderId") Long id,
-                                               @RequestBody OrderStatus orderStatus) {
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatus(id, orderStatus));
+                                               @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatusAndEmployee(id, updateOrderStatusAndEmployee));
     }
 
     @PatchMapping(value = "/update-orderStatus-employee/{orderId}")

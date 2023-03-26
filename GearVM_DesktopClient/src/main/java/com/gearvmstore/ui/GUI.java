@@ -26,17 +26,19 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.model.Employee;
+import com.gearvmstore.model.response.EmployeeResponseModel;
 
 public class GUI extends JFrame implements ActionListener, MouseListener {
     private JLabel lblThoiGian;
     private JLabel txtThoiGian;
     private JLabel lblDangXuat;
     private JLabel lblMaNhanVien;
-    private JLabel txtMaNhanVien;
+    private static JLabel txtMaNhanVien;
     private JLabel lblTenNhanVien;
-    private JLabel txtTenNhanVien;
+    private static JLabel txtTenNhanVien;
 
-    public GUI() throws IOException {
+    public GUI(Employee e) throws IOException {
         FlatLightLaf.setup();
         setTitle("GearVM");
         setResizable(true);
@@ -47,18 +49,18 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         setSize(1700, 980);
         setLocationRelativeTo(null);
         UIManager.put("TabbedPane.selected", new Color(50, 190, 255));
-        add(createTabbedPane());
+        add(createTabbedPane(e));
     }
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+    /*public static void main(String args[]) {
+        *//* Set the Nimbus look and feel *//*
         // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
         // (optional) ">
-        /*
+        *//*
          * If Nimbus (introduced in Java SE 6) is not available, stay with the default
          * look and feel. For details see
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+         *//*
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("".equals(info.getName())) {
@@ -89,11 +91,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
             }
         });
     }
+*/
 
     /**
      * create a JTabbedPane contain tabs
      */
-    public JTabbedPane createTabbedPane() throws IOException {
+    public JTabbedPane createTabbedPane(Employee e) throws IOException {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
@@ -118,7 +121,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         FrmDonHang frmDonHang = new FrmDonHang();
 
         /* create JPanel, which is content of tabs */
-        JPanel pnlTrangChu = createPanelTrangChu();
+        JPanel pnlTrangChu = createPanelTrangChu(e);
         JPanel pnlHoaDon = frmHoaDon.createPanelHoaDon();
         JPanel pnlBanHang = frmBanHang.createPanelBanHang();
         JPanel pnlNhanVien = frmNhanVien.createPanelNhanVien();
@@ -138,7 +141,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         return tabbedPane;
     }
 
-    public JPanel createPanelTrangChu() {
+    public JPanel createPanelTrangChu(Employee e) {
 
         JPanel pnlContentPane = new JPanel();
 
@@ -213,8 +216,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
         pnlContentPane.setBackground(new Color(255, 255, 255));
         lblDangXuat.addMouseListener(this);
-        return pnlContentPane;
 
+        getEmployeeInfo(e);
+
+        return pnlContentPane;
+    }
+
+    public void getEmployeeInfo(Employee e){
+        txtMaNhanVien.setText(e.getId().toString());
+        txtTenNhanVien.setText(e.getName());
     }
 
     @Override
@@ -251,6 +261,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    public static EmployeeResponseModel getEmployeeInfo(){
+        EmployeeResponseModel e = new EmployeeResponseModel();
+        e.setId(Long.parseLong(txtMaNhanVien.getText()));
+        e.setName(txtTenNhanVien.getText());
+        return e;
     }
 
 }

@@ -17,18 +17,24 @@ import java.nio.charset.StandardCharsets;
 public class OrderService extends ApiService {
     private static final String url = staticUrl + "/orders/";
 
-    public static boolean patchOrderStatus(String orderId, OrderStatus orderStatus) throws IOException{
+    public static boolean patchOrderStatus(String orderId, UpdateOrderStatusAndEmployee order) throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPatch request = new HttpPatch(url + "update-orderStatus/" + orderId);
 
         JSONObject json = new JSONObject();
-        json.put("orderStatus", orderStatus.toString());
+        json.put("orderStatus", order.getOrderStatus().toString());
+
+        JSONObject employeeId = new JSONObject();
+        employeeId.put("id", order.getEmployeeId().getId());
+        employeeId.put("name", order.getEmployeeId().getName());
+        json.put("employeeId", employeeId);
+
 
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static boolean patchOrderStatusAndEmployee(String orderId, UpdateOrderStatusAndEmployee order) throws IOException {
@@ -49,7 +55,7 @@ public class OrderService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return !response.toString().isEmpty();
+        return response.getStatusLine().getStatusCode() == 200;
     }
 
     public static void openPaymentDetailOnStripe(String paymentId) {
