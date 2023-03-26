@@ -4,6 +4,8 @@ import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import CartSlice from "../../redux/slices/CartSlices";
+import CustomButon from "../Custom/CustomButon/CustomButon";
+
 const cx = classNames.bind(styles);
 
 const SumCard = () => {
@@ -32,12 +34,13 @@ const SumCard = () => {
         </h5>
       </div>
       <div className={cx("wrapSumCard_Content")}>
-        <input
+        {/* <input
           type="button"
           value="Xem Giỏ Hàng"
           className={cx("wrapSumCard_Button")}
           onClick={handelPageCart}
-        />
+        /> */}
+        <CustomButon Click={handelPageCart} name="Xem Giỏ Hàng" />
       </div>
     </div>
   );

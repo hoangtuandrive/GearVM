@@ -4,9 +4,18 @@ import Footer from "../../component/Home/footer/Footer";
 import Header from "../../component/Home/header/Header";
 import styles from "./PaySucess.module.scss";
 import classNames from "classnames/bind";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 const PaySucess = () => {
+  const navigate = useNavigate();
+
+  const handletoHome = () => {
+    navigate("/");
+  };
+  const handletoManager = () => {
+    navigate("/orderManager");
+  };
   return (
     <div className={cx("wrapPaysucess")}>
       <Header />
@@ -22,7 +31,9 @@ const PaySucess = () => {
           </div>
           <div className={cx("InfoPay")}>
             Bạn có thể xem chi tiết trong{" "}
-            <p className={cx("txtPaySucess")}>thông tin đơn hàng</p>
+            <p className={cx("txtPaySucess")} onClick={handletoManager}>
+              thông tin đơn hàng
+            </p>
           </div>
 
           <div className={cx("wrapSumCard_Content")}>
@@ -30,7 +41,7 @@ const PaySucess = () => {
               type="button"
               value="Tiếp tục mua hàng"
               className={cx("wrapSumCard_Button")}
-              //   onClick={handelPageCart}
+              onClick={handletoHome}
             />
           </div>
         </div>

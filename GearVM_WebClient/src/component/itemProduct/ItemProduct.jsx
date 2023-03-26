@@ -3,6 +3,8 @@ import classNames from "classnames/bind";
 import styles from "./ItemProduct.modulo.scss";
 import { Image } from "antd";
 import { s3 } from "../../aws";
+import Customfigure from "../Custom/Customfigure/Customfigure";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -30,11 +32,17 @@ const ItemProduct = (props) => {
       // console.log(error);
     }
   }
-
+  const navigate = useNavigate();
+  const handelItemProduct = () => {
+    navigate(`/productdetail?name=${props.data.name}&id=${props.data.id}`, {
+      replace: true,
+    });
+  };
   return (
-    <div className={cx("wrapItemProduct")}>
+    <div className={cx("wrapItemProduct")} onClick={handelItemProduct}>
       <div className={cx("imgProduct")}>
-        <Image src={imageData ? imageData : ""} />
+        {/* <Image src={imageData ? imageData : ""} /> */}
+        <Customfigure imgUri={imageData} />
       </div>
       <div className={cx("textProduct")}>
         <h5 className={cx("txtNameProduct")}>{props.data.name}</h5>
