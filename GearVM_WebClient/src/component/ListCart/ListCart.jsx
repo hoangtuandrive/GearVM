@@ -13,6 +13,7 @@ import { Container, Col, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { s3 } from "../../aws";
 import TableListCart from "./TableListCart";
+import CustomButon from "../Custom/CustomButon/CustomButon";
 const cx = classNames.bind(styles);
 const ListCart = () => {
   const [quantity, setquantity] = useState(1);
@@ -96,20 +97,36 @@ const ListCart = () => {
             </div>
           </div>
           {token ? (
-            <input
-              disabled={disabled}
-              type="button"
-              value="Tiếp tục"
-              className={cx(`listCart_Pay_content_btn${disabled}`)}
-              onClick={handleSubmitToCart}
-            />
+            <div>
+              {disabled ? (
+                <input
+                  disabled={disabled}
+                  type="button"
+                  value="Tiếp tục"
+                  className={cx(`listCart_Pay_content_btn${disabled}`)}
+                />
+              ) : (
+                <CustomButon Click={handleSubmitToCart} name="Tiếp tục" />
+              )}
+              {/* <input
+                disabled={disabled}
+                type="button"
+                value="Tiếp tục"
+                className={cx(`listCart_Pay_content_btn${disabled}`)}
+                onClick={handleSubmitToCart}
+              /> */}
+            </div>
           ) : (
             <div>
-              <input
+              {/* <input
                 type="button"
                 value="Bạn cần đăng nhập để tiếp tục"
                 className={cx("listCart_Pay_content_btn")}
                 onClick={handleLogin}
+              /> */}
+              <CustomButon
+                Click={handleLogin}
+                name="Bạn cần đăng nhập để tiếp tục"
               />
             </div>
           )}

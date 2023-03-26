@@ -48,20 +48,20 @@ const ListProduct = (props) => {
   };
   const navigate = useNavigate();
   const location = useLocation();
+  // const handelItemProduct = (item) => {
+  //   navigate(`/productdetail?name=${item.name}&id=${item.id}`, {
+  //     replace: true,
+  //   });
+  // };
 
-  const handelItemProduct = (item) => {
-    navigate(`/productdetail?name=${item.name}&id=${item.id}`, {
-      replace: true,
-    });
-  };
   // console.log(props.data);
   return (
     <Slider {...settings}>
       {props.data?.map((item, index) => (
         <div
-          onClick={() => {
-            handelItemProduct(item);
-          }}
+          // onClick={() => {
+          //   handelItemProduct(item);
+          // }}
           className={cx("listProduct_thumb_item")}
           key={item.id}
         >

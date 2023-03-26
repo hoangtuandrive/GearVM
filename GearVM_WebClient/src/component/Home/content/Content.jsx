@@ -35,7 +35,7 @@ const Content = () => {
       <div className={cx("Product_Img")}>
         <img
           src={require("../../../assets/laptop1.jpg")}
-          className={cx("img")}
+          className={cx("imgTop_sepecial")}
         />
         <div className={cx("product-home__image")}>
           <img
@@ -52,7 +52,7 @@ const Content = () => {
       <div className={cx("Product_scroll")}>
         <img
           src={require("../../../assets/tainghe3.jpg")}
-          className={cx("img")}
+          className={cx("img_sepecial")}
         />
         <div className={cx("product-home__image")}>
           <img
@@ -68,7 +68,7 @@ const Content = () => {
       </div>
       <div className={cx("GoodAbout")}>
         <div className={cx("leftGood")}>
-          <h4 className={cx("txtGood_header")}>Laptop</h4>
+          {/* <h4 className={cx("txtGood_header")}>Laptop</h4> */}
           <h2 className={cx("txtGood")}>
             THĂNG HẠNG PHONG CÁCH - NÂNG TẦM PHONG THÁI
           </h2>
@@ -92,20 +92,15 @@ const Content = () => {
         </div>
       </div>
       <Container className={cx("Content_mid")}>
-        <Row>
-          <Col lg={6}>
-            <img
-              src={require("../../../assets/tainghe.jpg")}
-              className={cx("Content_mid_img")}
-            ></img>
-          </Col>
-          <Col lg={6}>
-            <img
-              src={require("../../../assets/tainghe2.jpg")}
-              className={cx("Content_mid_img")}
-            ></img>
-          </Col>
-        </Row>
+        <img
+          src={require("../../../assets/tainghe.jpg")}
+          className={cx("Content_mid_img")}
+        ></img>
+
+        <img
+          src={require("../../../assets/tainghe2.jpg")}
+          className={cx("Content_mid_img")}
+        ></img>
       </Container>
     </div>
   );

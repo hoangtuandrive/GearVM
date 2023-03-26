@@ -16,6 +16,7 @@ import axios from "axios";
 import { url } from "../../API/api";
 import { currentCustomer } from "../../redux/slices/AuthSlices";
 import Table from "react-bootstrap/Table";
+import CustomButon from "../Custom/CustomButon/CustomButon";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
@@ -142,7 +143,7 @@ const PayBody = () => {
           <div className={cx("wrapPayBody_right_metodpay")}>
             <h5>Phương thức thanh toán</h5>
             <div className={cx("wrapPayBody_right_metodpay_wrapbtn")}>
-              <div
+              {/* <div
                 className={cx("wrapPayBody_right_address_btn")}
                 onClick={handlePay}
               >
@@ -150,9 +151,18 @@ const PayBody = () => {
                 <h6>
                   Thanh toán qua Internet Banking, Visa, Master, JCB, VNPAY-QR
                 </h6>
+              </div> */}
+              <div>
+                <CustomButon Click={handlePay} name="Thanh toán qua Internet" />
               </div>
-              <div className={cx("wrapPayBody_right_address_btn")}>
-                <h5 style={{ color: "black" }}>Thanh toán khi nhận hàng</h5>
+
+              <div>
+                <CustomButon
+                  Click={handlePay}
+                  name="Thanh toán khi nhận hàng"
+                />
+
+                {/* <h5 style={{ color: "black" }}>Thanh toán khi nhận hàng</h5> */}
               </div>
             </div>
           </div>

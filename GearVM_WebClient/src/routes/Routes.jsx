@@ -12,7 +12,7 @@ import GuideDeli from "../pages/guidedeli/GuideDeli";
 import Promotion from "../pages/promotion/Promotion";
 import Payment from "../pages/payment/Payment";
 import PaySucess from "../pages/paySucess/PaySucess";
-
+import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/productdetail", component: ProductDetail },
@@ -28,6 +28,7 @@ const publicRoutes = [
   { path: "/promotion", component: Promotion },
   { path: "/payment", component: Payment },
   { path: "/payment-success", component: PaySucess },
+  { path: "/forget", component: ForgetPassword },
 ];
 
 const privateRoutes = [];

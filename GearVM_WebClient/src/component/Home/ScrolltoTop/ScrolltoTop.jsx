@@ -33,7 +33,8 @@ const ScrolltoTop = () => {
         />
       </div>
       <div onClick={message}>
-        <img src={require("../../../assets/scroll.jpg")} />
+        {/* <img src={require("../../../assets/scroll.jpg")} /> */}
+        <div className={cx("ChatEmployeeImg")}></div>
       </div>
     </div>
   );

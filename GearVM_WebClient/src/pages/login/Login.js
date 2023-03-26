@@ -129,7 +129,9 @@ const Login = () => {
             <Link to="/resign" className={cx("txtLogin")}>
               Đăng ký
             </Link>
-            {/* <Link to="/forgotpassword">Forgot Password?</Link> */}
+            <Link to="/forget" className={cx("txtLogin")}>
+              Quên mật khẩu
+            </Link>
           </div>
         </form>
       </div>

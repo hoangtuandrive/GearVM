@@ -39,3 +39,23 @@
   bottom: 5.6rem;
   margin-top: -2rem;
 }
+.ChatEmployeeImg {
+  width: 180px;
+  height: 60px;
+  background-image: url(../../../assets/scroll.jpg);
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 768px) {
+  .btnTop.show {
+    visibility: hidden;
+  }
+  .ChatEmployeeImg {
+    width: 62px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    background-image: url(../../../assets/scrollrep.jpg);
+    background-repeat: no-repeat;
+  }
+}

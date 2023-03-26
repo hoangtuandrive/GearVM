@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Image } from "antd";
 import { Col, Container } from "react-bootstrap";
 import { s3 } from "../../aws";
+import CustomButon from "../Custom/CustomButon/CustomButon";
 
 const cx = classNames.bind(styles);
 
