@@ -102,7 +102,7 @@ const ForgetPassword = () => {
           <div className={cx("form-group")}>
             <input
               type="password"
-              placeholder="Mật khẩu cũ"
+              placeholder="Xác nhận mật khẩu cũ"
               className={cx("form-input")}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
               // onBlur={handlePasswrod}

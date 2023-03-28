@@ -1,6 +1,14 @@
+import {
+  faComputer,
+  faLaptop,
+  faComputerMouse,
+  faKeyboard,
+  faTabletScreenButton,
+} from "@fortawesome/free-solid-svg-icons";
 const dataNavModal = [
   {
     id: 1,
+    icon: faLaptop,
     name: "Laptop",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
@@ -17,6 +25,7 @@ const dataNavModal = [
   },
   {
     id: 2,
+    icon: faComputer,
     name: "LaptopGaming",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
@@ -40,6 +49,7 @@ const dataNavModal = [
   },
   {
     id: 3,
+    icon: faComputer,
     name: "PC special",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
@@ -63,6 +73,8 @@ const dataNavModal = [
   },
   {
     id: 4,
+    icon: faTabletScreenButton,
+
     name: "Màn Hình",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["LG", "Asus", "Gigabity", "Del", "MSI"],
@@ -80,6 +92,7 @@ const dataNavModal = [
   },
   {
     id: 5,
+    icon: faKeyboard,
     name: "Bàn Phím",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Logitech", "Razer", "Crosair", "Asus", "MSI"],
@@ -102,6 +115,7 @@ const dataNavModal = [
   },
   {
     id: 6,
+    icon: faComputer,
     name: "PC Doanh nghiệp",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
@@ -125,6 +139,7 @@ const dataNavModal = [
   },
   {
     id: 7,
+    icon: faComputerMouse,
     name: "Chuột",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Logitech", "Razer", "Crosair", "Asus", "MSI"],

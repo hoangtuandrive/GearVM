@@ -5,7 +5,7 @@ import ListProduct from "../../ListProduct/ListProduct";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const cx = classNames.bind(styles);
-const ListProductHome = () => {
+const ListProductHome = ({ name }) => {
   const [product, setProduct] = useState([]);
 
   const productUrl =
@@ -26,7 +26,7 @@ const ListProductHome = () => {
   return (
     <div className={cx("wrapListHome")}>
       <div className={cx("WrapListProduct_Laptop")}>
-        <h1 className={cx("lblwraplistproduct")}>SẢN PHẨM BÁN CHẠY</h1>
+        <h1 className={cx("lblwraplistproduct")}>{name}</h1>
         <ListProduct data={product.productList} />
       </div>
     </div>

@@ -13,6 +13,8 @@ import Promotion from "../pages/promotion/Promotion";
 import Payment from "../pages/payment/Payment";
 import PaySucess from "../pages/paySucess/PaySucess";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
+import PayOffline from "../pages/PayOffline";
+
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/productdetail", component: ProductDetail },
@@ -29,6 +31,7 @@ const publicRoutes = [
   { path: "/payment", component: Payment },
   { path: "/payment-success", component: PaySucess },
   { path: "/forget", component: ForgetPassword },
+  { path: "/payOffline", component: PayOffline },
 ];
 
 const privateRoutes = [];

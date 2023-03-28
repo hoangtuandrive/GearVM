@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 .wrapNavModal {
   position: fixed;
   top: 260px;
@@ -11,6 +12,13 @@
   z-index: 3;
   display: none;
   transition: all 1s ease-in-out;
+}
+.Navtext {
+  font-size: 18px;
+  margin-bottom: 0px;
+  margin-left: 1rem;
+
+  font-family: "Roboto", sans-serif;
 }
 .wrapNavModal.active {
   display: flex;
@@ -26,21 +34,38 @@
   justify-content: space-around;
   align-items: flex-start;
   //   margin-top: 20px;
+  width: 230px;
+  height: 420px;
+  background-color: #1e2b32;
+  color: #fff;
+  border-radius: 10px 10px;
   margin-left: 170px;
-  background-color: aliceblue;
-  width: 200px;
+  // background-color: #1e2b32;
+  // width: 200px;
   border: 1 solid 0.2;
-  border-radius: 5px;
+  // border-radius: 5px;
   max-height: 370px;
 }
 .NavContent_item {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin: 10px;
-  width: 180px;
+  align-items: center;
+  // margin: 10px;
+  width: 100%;
+  // width: 180px;
+  cursor: pointer;
+  height: 50px;
+}
+.NavContent_item:hover {
+  color: #2f89fc;
+  transition: 1s all;
+  background-color: rgba(42, 56, 65, 0.82);
+  border-top-right-radius: 10px 10px;
+  border-bottom-right-radius: 10px 10px;
   cursor: pointer;
 }
+
 .tipBox {
   margin-bottom: 5px;
 }

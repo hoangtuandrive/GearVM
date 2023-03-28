@@ -4,16 +4,18 @@ import Footer from "../component/Home/footer/Footer";
 import styles from "../sass/Pay.module.scss";
 import classNames from "classnames/bind";
 import PayBody from "../component/Paybody/PayBody";
+import InfoCustomer from "../component/InfoCustomer/InfoCustomer";
 
 const cx = classNames.bind(styles);
-const Pay = () => {
+const PayOffline = () => {
   return (
     <div className={cx("wrapPay")}>
       <Header />
-      <PayBody name="Thanh toán qua Internet" />
+      <InfoCustomer />
+      <PayBody name="Thanh toán chuyển khoản" />
       <Footer />
     </div>
   );
 };
 
-export default Pay;
+export default PayOffline;

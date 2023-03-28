@@ -53,7 +53,6 @@ const ListProduct = (props) => {
   //     replace: true,
   //   });
   // };
-
   // console.log(props.data);
   return (
     <Slider {...settings}>

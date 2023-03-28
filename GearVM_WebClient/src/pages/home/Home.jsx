@@ -17,7 +17,7 @@ const Home = () => {
       {/* <NavModal/> */}
       <SlideShow />
       <Content></Content>
-      <ListProductHome />
+      <ListProductHome name="SẢN PHẨM BÁN CHẠY"/>
       <ScrolltoTop />
       {/* <ListProduct /> */}
       <Footer />

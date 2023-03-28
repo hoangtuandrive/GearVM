@@ -67,7 +67,14 @@ const ProductView = () => {
     dispatch(CartSlice.actions.addTocart(product));
     navigate("/cart", { replace: true });
   };
+  let text = productDetail.description;
 
+  // Thay thế ký tự gạch đầu dòng bằng ký tự xuống dòng
+  // let formattedText = text?.replace(/-/g).trim();
+
+  // Tách chuỗi thành mảng các dòng
+  let lines = text?.split("\n");
+  console.log(lines);
   return (
     <Container>
       <div className={cx("wrapProductView")}>
@@ -78,6 +85,11 @@ const ProductView = () => {
             src={imageData ? imageData : ""}
             className={cx("ProductView_Img")}
           />
+          <div className={cx("ProductView_description")}>
+            {lines?.map((item, index) => (
+              <p key={index}>{item}</p>
+            ))}
+          </div>
         </div>
 
         <div className={cx("ProductView_Content")}>

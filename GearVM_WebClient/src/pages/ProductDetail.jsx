@@ -6,6 +6,7 @@ import styles from "../sass/Productdetail.module.scss";
 import classNames from "classnames/bind";
 import Review from "../component/review/Review";
 import itemReviewComment from "../component/itemReview/itemReview";
+import ListProductHome from "../component/Home/listProductofHome/ListProductHome";
 const cx = classNames.bind(styles);
 const PageProductDetail = () => {
   return (
@@ -13,6 +14,7 @@ const PageProductDetail = () => {
       <Header />
       <ProductView />
       {/* <Review></Review> */}
+      <ListProductHome name="SẢN PHẨM BÁN CHẠY" />
       <Footer />
     </div>
   );

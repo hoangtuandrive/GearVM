@@ -67,7 +67,7 @@ const ListCart = () => {
               cart.cartItems.map((cartItem, index) => (
                 <TableListCart key={cartItem.id} cartItem={cartItem} />
               ))}
-          </Table>
+          </Table>Pay
         </div>
 
         <div className={cx("listCart_Pay")}>

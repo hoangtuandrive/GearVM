@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Slider } from "antd";
 import styles from "./CatalogProduct.module.scss";
 import classNames from "classnames/bind";
 import ItemProduct from "../../itemProduct/ItemProduct";
@@ -11,7 +12,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomPagination from "../CustomPagination";
-
+import MultiRangeSlider from "multi-range-slider-react";
 const cx = classNames.bind(styles);
 const CatalogProduct = () => {
   // const productList = [
@@ -132,6 +133,13 @@ const CatalogProduct = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
+
+  const [minValue, set_minValue] = useState(25);
+  const [maxValue, set_maxValue] = useState(75);
+  const handleInput = (e) => {
+    set_minValue(e.minValue);
+    set_maxValue(e.maxValue);
+  };
 
   const [filter, setFilter] = useState(initFilter);
 
@@ -338,6 +346,14 @@ const CatalogProduct = () => {
             </div>
           </div>
           <div className="gach"></div>
+          <div>
+            <Slider
+              range={{
+                draggableTrack: true,
+              }}
+              defaultValue={[0, 100]}
+            />
+          </div>
         </div>
         <div className={cx("wrapCatalogProduct_content")}>
           <Container>

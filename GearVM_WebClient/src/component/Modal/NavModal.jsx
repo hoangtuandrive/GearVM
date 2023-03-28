@@ -7,9 +7,16 @@ import { useEffect } from "react";
 import Tippy from "@tippyjs/react/headless";
 import dataNavModal from "../../dataUI/dataNavModal";
 import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faComputer,
+  faLaptop,
+  faComputerMouse,
+  faKeyboard,
+  faTabletScreenButton,
+} from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(styles);
-// const $=document.querySelector.bind(document)
+const $ = document.querySelector.bind(document);
 const NavModal = ({ data }) => {
   const [dropdown, setDropdown] = useState(false);
   const [fil, setFil] = useState({
@@ -44,10 +51,10 @@ const NavModal = ({ data }) => {
   document.addEventListener("scroll", () => {
     const top = document.documentElement.scrollTop;
     if (top != 0) {
-      document.querySelector(".wrapNavModal").classList.add("sticky");
+      document.querySelector(".wrapNavModal")?.classList.add("sticky");
       // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
     } else {
-      document.querySelector(".wrapNavModal").classList.remove("sticky");
+      document.querySelector(".wrapNavModal")?.classList.remove("sticky");
     }
   });
 
@@ -58,34 +65,48 @@ const NavModal = ({ data }) => {
   });
   useEffect(() => {
     if (data === true) {
-      document.querySelector(".wrapNavModal").classList.add("active");
+      document.querySelector(".wrapNavModal")?.classList.add("active");
     } else {
-      document.querySelector(".wrapNavModal").classList.remove("active");
+      document.querySelector(".wrapNavModal")?.classList.remove("active");
     }
   }, [!data]);
   const handleFilter = (item) => {
     setFil(item);
-    setDropdown((prev) => !prev);
+    setDropdown(true);
+  };
+
+  const handleChangePage = (item) => {
     navigate("/catalog", { replace: true });
   };
+
   return (
-    <div className={cx("wrapNavModal ")}>
-      <div className={cx("NavContent")}>
-        {dataNavModal.map((item, index) => (
-          <div
-            className={cx("NavContent_item")}
-            key={item.id}
-            aria-expanded={dropdown ? "true" : "false"}
-            onClick={() => handleFilter(item)}
-          >
-            {/* {console.log(fil)} */}
-            <LaptopOutlined style={{ fontSize: 20 }} />
-            <span style={{ fontSize: 18, marginLeft: 15 }}>{item.name}</span>
-          </div>
-          // </Tippy>
-        ))}
+    <div className={cx("wrapNavModal")}>
+      <div
+        style={{ display: "flex", height: 370 }}
+        onMouseLeave={() => {
+          setDropdown(false);
+        }}
+      >
+        <div className={cx("NavContent")}>
+          {dataNavModal.map((item, index) => (
+            <div
+              className={cx("NavContent_item")}
+              key={item.id}
+              aria-expanded={dropdown ? "true" : "false"}
+              onMouseEnter={() => {
+                handleFilter(item);
+              }}
+              onClick={() => handleChangePage(item)}
+            >
+              <FontAwesomeIcon icon={item.icon} className={cx("Navtext")} />
+
+              <h3 className={cx("Navtext")}>{item.name}</h3>
+            </div>
+            // </Tippy>
+          ))}
+        </div>
+        <Filter data={fil} dropdown={dropdown} />
       </div>
-      <Filter data={fil} dropdown={dropdown} />
     </div>
   );
 };

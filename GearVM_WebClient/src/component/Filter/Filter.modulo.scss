@@ -1,5 +1,19 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
 .wrapFilter {
+  @keyframes example {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  animation-name: example;
+  animation-duration: 1s;
+  transition: animation-name 2s;
   display: flex;
+  overflow: hidden;
   flex-direction: row;
   justify-content: space-around;
   //   margin-top: 10px;
@@ -13,13 +27,25 @@
 
 .trademark_txt {
   font-size: 22px;
-  color: rgb(61, 113, 197);
+  font-weight: bolder;
+  color: #2f89fc;
+  font-family: "Roboto", sans-serif;
 }
 .trademark_listTxt {
   font-weight: 400;
   text-align: start;
   font-size: 18px;
-  color: black;
+  color: #fff;
+  // font-weight: 600;
+  font-family: "Roboto", sans-serif;
+}
+.trademark_listTxt:hover {
+  color: #d6cf3d;
+  transition: 1s all;
+  background-color: rgba(42, 56, 65, 0.82);
+  border-top-right-radius: 10px 10px;
+  border-bottom-right-radius: 10px 10px;
+  cursor: pointer;
 }
 .wrapFilter.show {
   display: block;
@@ -27,7 +53,7 @@
   flex-direction: row;
   justify-content: space-around;
   //   margin-top: 10px;
-  background-color: aliceblue;
+  background-color: #1e2b32;
   width: 900px;
   max-height: 320px;
   border-radius: 5px;

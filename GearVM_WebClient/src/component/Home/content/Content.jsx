@@ -33,10 +33,24 @@ const Content = () => {
   return (
     <div>
       <div className={cx("Product_Img")}>
-        <img
-          src={require("../../../assets/laptop1.jpg")}
-          className={cx("imgTop_sepecial")}
-        />
+        <figure className="imgTop">
+          <img
+            src={require("../../../assets/laptop1.jpg")}
+            className={cx("imgTop_sepecial")}
+          />
+          <figcaption>
+            <p>
+              Được thiết kế nhỏ gọn, giúp bạn tiết kiệm nhiều không gian, bạn có
+              thể dễ dàng đặt nó dưới chân bàn để tiết kiệm diện tích. Bên cạnh
+              đó với thiết kế đẹp với tông màu đen, sản phẩm còn giúp căn phòng
+              làm việc của bạn trở nên hoàn hảo, chuyên nghiệp hơn
+            </p>
+            <div className="plus1"></div>
+            <div className="plus2"></div>
+          </figcaption>
+          <a href="#"></a>
+        </figure>
+
         <div className={cx("product-home__image")}>
           <img
             src={require("../../../assets/laptop3.jpg")}
@@ -50,10 +64,24 @@ const Content = () => {
         </div>
       </div>
       <div className={cx("Product_scroll")}>
-        <img
-          src={require("../../../assets/tainghe3.jpg")}
-          className={cx("img_sepecial")}
-        />
+        <figure className="imgTop">
+          <img
+            src={require("../../../assets/tainghe3.jpg")}
+            className={cx("img_sepecial")}
+          />
+          <figcaption>
+            <p>
+              Tai nghe có thiết kế khá đơn giản nhưng khá đẹp mắt. Dù là thế hệ
+              thứ 2 nhưng về cơ bản kiểu dáng cũng không thay đổi nhiều so với
+              version 1 và trọng lượng tai nghe khá nhẹ thuận tiện cho người
+              dùng mang đi muôn nơi, thưởng thức âm nhạc.
+            </p>
+            <div className="plus1"></div>
+            <div className="plus2"></div>
+          </figcaption>
+          <a href="#"></a>
+        </figure>
+
         <div className={cx("product-home__image")}>
           <img
             src={require("../../../assets/tainghe4.jpg")}

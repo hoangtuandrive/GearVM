@@ -11,7 +11,7 @@ const Order = () => {
   const [order, setOder] = useState();
   const options = {
     year: "numeric",
-    month: "numeric",
+    month: "numeric ",
     day: "numeric",
   };
   useEffect(() => {

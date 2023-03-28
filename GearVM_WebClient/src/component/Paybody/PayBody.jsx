@@ -19,7 +19,7 @@ import Table from "react-bootstrap/Table";
 import CustomButon from "../Custom/CustomButon/CustomButon";
 
 const cx = classNames.bind(styles);
-const PayBody = () => {
+const PayBody = ({ name }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -153,7 +153,7 @@ const PayBody = () => {
                 </h6>
               </div> */}
               <div>
-                <CustomButon Click={handlePay} name="Thanh toán qua Internet" />
+                <CustomButon Click={handlePay} name={name} />
               </div>
 
               <div>

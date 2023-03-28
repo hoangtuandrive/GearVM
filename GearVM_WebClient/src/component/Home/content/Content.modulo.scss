@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:200);
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+
 .img {
   padding: 0.5px;
   width: 100%;
@@ -6,7 +9,7 @@
 .img_sepecial {
   padding: 0.5px;
   height: 70vh;
-  width: 50%;
+  // width: 50%;
 }
 .imgTop_sepecial {
   padding: 0.5px;
@@ -192,7 +195,7 @@
     flex-direction: column;
     justify-content: space-around;
   }
-  .imgTop_sepecial {
+  .imgTop {
     object-fit: cover;
 
     padding: 0.5px;
@@ -222,7 +225,7 @@
     transform: translate(0) scale(1);
     transition-duration: 0.8s;
   }
-  .imgTop_sepecial {
+  .imgTop {
     object-fit: cover;
     padding: 0.5px;
     height: 70vh;
@@ -273,3 +276,128 @@
 }
 // @media screen and (max-width: 376px) {
 // }
+
+.imgTop {
+  padding: 0.5px;
+  height: 70vh;
+
+  font-family: "Titillium Web", Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+  // margin: 10px;
+  // min-width: 230px;
+  // max-width: 70vh;
+  width: 100%;
+  color: #ffffff;
+  text-align: left;
+  font-size: 20px;
+  background-color: #0c1116;
+  line-height: 1.6em;
+  font-weight: 200;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.imgTop * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.35s linear;
+  transition: all 0.35s linear;
+}
+.imgTop *:before,
+.imgTop *:after {
+  -webkit-transition: all 0.35s ease;
+  transition: all 0.35s ease;
+}
+.imgTop img {
+  max-width: 100%;
+  backface-visibility: hidden;
+  vertical-align: top;
+}
+.imgTop figcaption {
+  position: absolute;
+  top: 50%;
+  margin: 0 40px;
+  padding: 10px 15px;
+  -webkit-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+}
+.imgTop figcaption div {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.7;
+}
+.imgTop figcaption div:before,
+.imgTop figcaption div:after {
+  position: absolute;
+  content: "";
+  background-color: rgba(255, 255, 255, 0.75);
+  left: 50%;
+  top: 50%;
+}
+.imgTop figcaption div:before {
+  width: 1px;
+  height: 50px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.imgTop figcaption div:after {
+  height: 1px;
+  width: 50px;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.imgTop p {
+  opacity: 0;
+  letter-spacing: 1px;
+  margin: 0;
+}
+.imgTop a {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.imgTop:hover img,
+.imgTop.hover img {
+  zoom: 1;
+  filter: alpha(opacity=15);
+  -webkit-opacity: 0.15;
+  opacity: 0.15;
+}
+.imgTop:hover figcaption p,
+.imgTop.hover figcaption p {
+  -webkit-transition-delay: 0.6s;
+  transition-delay: 0.6s;
+  opacity: 1;
+}
+.imgTop:hover figcaption .plus1,
+.imgTop.hover figcaption .plus1,
+.imgTop:hover figcaption .plus2,
+.imgTop.hover figcaption .plus2 {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
+.imgTop:hover figcaption .plus1:before,
+.imgTop.hover figcaption .plus1:before,
+.imgTop:hover figcaption .plus1:after,
+.imgTop.hover figcaption .plus1:after {
+  top: 0%;
+  left: 0%;
+  -webkit-transition-delay: 0.35s;
+  transition-delay: 0.35s;
+}
+.imgTop:hover figcaption .plus2:before,
+.imgTop.hover figcaption .plus2:before,
+.imgTop:hover figcaption .plus2:after,
+.imgTop.hover figcaption .plus2:after {
+  top: 100%;
+  left: 100%;
+  -webkit-transition-delay: 0.35s;
+  transition-delay: 0.35s;
+}
