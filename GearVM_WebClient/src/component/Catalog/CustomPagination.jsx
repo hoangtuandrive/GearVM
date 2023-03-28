@@ -28,8 +28,8 @@ const CustomPagination = ({
             paginate(page);
             setCurrent(page);
           }}
-          total={totalPosts * 25}
-          pageSize={25}
+          total={totalPosts * 24}
+          pageSize={24}
           showSizeChanger={false}
         />
       </ul>
