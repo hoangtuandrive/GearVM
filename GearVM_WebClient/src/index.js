@@ -4,7 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import "antd/dist/reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "@fortawesome/fontawesome-svg-core/styles.css";
+
 import App from "./App";
 import store, { persistor } from "./redux/stores/store";
 import { Provider } from "react-redux";

@@ -147,6 +147,51 @@ const ForgetPassword = () => {
           </div>
         </form>
       </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
+      <div className={cx("wrapdot")}>
+        <span className={cx("dot")}></span>
+      </div>
     </div>
   );
 };
