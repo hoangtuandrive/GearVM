@@ -1,4 +1,4 @@
-package com.gearvmstore.GearVM.model;
+package com.gearvmdesktop.model;
 
 import lombok.Getter;
 import lombok.Setter;

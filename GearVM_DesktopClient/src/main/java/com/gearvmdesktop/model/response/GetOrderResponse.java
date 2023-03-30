@@ -1,9 +1,9 @@
-package com.gearvmstore.GearVM.model.response;
+package com.gearvmdesktop.model.response;
 
-import com.gearvmstore.GearVM.model.Discount;
-import com.gearvmstore.GearVM.model.OrderStatus;
-import com.gearvmstore.GearVM.model.Payment;
-import com.gearvmstore.GearVM.model.ShippingDetail;
+import com.gearvmdesktop.model.Discount;
+import com.gearvmdesktop.model.OrderStatus;
+import com.gearvmdesktop.model.Payment;
+import com.gearvmdesktop.model.ShippingDetail;
 import lombok.Data;
 
 import java.time.LocalDateTime;

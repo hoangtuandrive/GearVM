@@ -79,7 +79,6 @@ public class OrderService {
 
             order.setCustomer(customer);
             order.setCreatedDate(localDateTime);
-            order.setUpdatedDate(localDateTime);
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
@@ -132,7 +131,8 @@ public class OrderService {
 
     public GetOrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).get();
-        return modelMapper.map(order, GetOrderResponse.class);
+        GetOrderResponse getOrderResponse = modelMapper.map(order, GetOrderResponse.class);
+        return getOrderResponse;
     }
 
     //TODO: test
@@ -157,9 +157,8 @@ public class OrderService {
     public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
         Order order = orderRepository.findById(orderId).get();
 
-        Employee employee = employeeService.getEmployee(updateOrderStatusAndEmployee.getEmployeeId().getId());
+        Employee employee = employeeService.getEmployee(updateOrderStatusAndEmployee.getEmployee().getId());
         order.setEmployee(employee);
-
 
         order.setOrderStatus(updateOrderStatusAndEmployee.getOrderStatus());
         order.setUpdatedDate(LocalDateTime.now());

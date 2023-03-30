@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 public class UpdateOrderStatusAndEmployee {
     private OrderStatus orderStatus;
-    private EmployeeResponseModel employeeId;
+    private EmployeeResponseModel employee;
 }

@@ -38,7 +38,6 @@ public class CustomerService {
         c.setGender(customerDetails.getGender());
         c.setPhoneNumber(customerDetails.getPhoneNumber());
         c.setDateOfBirth(customerDetails.getDateOfBirth());
-        c.setAddress(customerDetails.getAddress());
         c.setEmail(customerDetails.getEmail());
         return customerRepository.save(c);
     }

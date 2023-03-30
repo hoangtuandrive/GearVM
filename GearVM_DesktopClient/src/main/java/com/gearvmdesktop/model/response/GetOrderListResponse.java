@@ -1,6 +1,7 @@
-package com.gearvmstore.GearVM.model.response;
+package com.gearvmdesktop.model.response;
 
-import com.gearvmstore.GearVM.model.OrderStatus;
+
+import com.gearvmdesktop.model.OrderStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
