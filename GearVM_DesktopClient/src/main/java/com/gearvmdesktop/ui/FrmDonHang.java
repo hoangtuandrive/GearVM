@@ -204,7 +204,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         if (e.getClickCount() == 2 && tableDonHang.getSelectedRow() != -1) {
             try {
                 GetOrderResponse getOrderResponse = getRequest(tableDonHang.getValueAt(row, 0).toString().trim());
-                new FrmChiTietDonHang(getOrderResponse, GUI.getEmployeeInfo());
+                new FrmChiTietDonHang(getOrderResponse);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

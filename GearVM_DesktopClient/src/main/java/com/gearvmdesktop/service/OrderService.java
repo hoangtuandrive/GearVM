@@ -26,7 +26,7 @@ public class OrderService extends ApiService {
         JSONObject employeeId = new JSONObject();
         employeeId.put("id", order.getEmployee().getId());
         employeeId.put("name", order.getEmployee().getName());
-        json.put("employeeId", employeeId);
+        json.put("employee", employeeId);
 
 
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
@@ -47,7 +47,7 @@ public class OrderService extends ApiService {
             JSONObject employeeId = new JSONObject();
             employeeId.put("id", order.getEmployee().getId());
             employeeId.put("name", order.getEmployee().getName());
-            json.put("employeeId", employeeId);
+            json.put("employee", employeeId);
         }
 
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);

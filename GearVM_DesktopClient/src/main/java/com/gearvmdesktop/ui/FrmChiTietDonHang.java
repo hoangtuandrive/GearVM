@@ -60,7 +60,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JButton btnXemThanhToan;
     private final JButton btnThayDoiTrangThai;
 
-    public FrmChiTietDonHang(GetOrderResponse getOrderResponse, EmployeeResponseModel e) throws IOException {
+    public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
 
         FlatLightLaf.setup();
