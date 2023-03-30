@@ -6,26 +6,26 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
-@Entity
-public class Discount {
+@Entity(name = "payment")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "discount_id")
+    @Column(name = "payment_id")
     private Long id;
-    private int percentageDiscount;
-    private double flatDiscount;
-    private LocalDateTime expirationDate;
-    private boolean isUsed;
+    private String paymentDescription;
+    private String paymentLink;
 
-    @OneToOne(mappedBy = "discount")
+    @Enumerated(EnumType.ORDINAL)
+    private PaymentMethod paymentMethod;
+
+    @OneToOne(mappedBy = "payment")
     @JsonIgnore
     private Order order;
 
-    public Discount() {
+    public Payment() {
     }
 }

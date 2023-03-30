@@ -26,9 +26,9 @@ const PaySucess = () => {
             style={{ width: 80 }}
           />
           <h5>Thanh toán thành công</h5>
-          <div className={cx("InfoPay")}>
+          {/* <div className={cx("InfoPay")}>
             Mã số đơn hàng là :<p className={cx("txtID")}>12345</p>
-          </div>
+          </div> */}
           <div className={cx("InfoPay")}>
             Bạn có thể xem chi tiết trong{" "}
             <p className={cx("txtPaySucess")} onClick={handletoManager}>

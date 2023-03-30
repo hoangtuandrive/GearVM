@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/payment")
-public class PaymentController {
+public class StripeController {
 
     private final StripeService stripeService;
     private final OrderService orderService;
 
     @Autowired
-    public PaymentController(StripeService stripeService, OrderService orderService) {
+    public StripeController(StripeService stripeService, OrderService orderService) {
         this.stripeService = stripeService;
         this.orderService = orderService;
     }
@@ -71,12 +71,13 @@ public class PaymentController {
         }
 
         switch (event.getType()) {
-           /* case "payment_intent.succeeded":
+            /*case "payment_intent.succeeded":
                 JSONObject jsonObjectPaymentIntent = new JSONObject(stripeObject.toJson());
+                System.out.println(jsonObjectPaymentIntent);
 
                 String paymentId = jsonObjectPaymentIntent.getString("id");
                 String customerEmail = jsonObjectPaymentIntent.getString("receipt_email");
-                String totalPrice = jsonObjectPaymentIntent.getString("amount");
+                String totalPrice = jsonObjectPaymentIntent.getString("amount"); //bug
 
                 System.out.println(paymentId);
                 System.out.println(customerEmail);
@@ -88,12 +89,21 @@ public class PaymentController {
                 JSONObject jsonObjectInvoice = new JSONObject(stripeObject.toJson());
 
                 String description = jsonObjectInvoice.getString("description");
-                String paymentId = jsonObjectInvoice.getString("payment_intent");
+                String paymentDescription = jsonObjectInvoice.getString("payment_intent");
+                String customerName = jsonObjectInvoice.getString("customer_name");
+                String customerEmail = jsonObjectInvoice.getString("customer_email");
 
-                int index = description.indexOf("#"); // get the index of the "#" symbol
+                JSONObject shippingDetailObject = jsonObjectInvoice.getJSONObject("customer_shipping");
+                JSONObject addressObject = shippingDetailObject.getJSONObject("address");
+                String line1 = addressObject.getString("line1");
+                String city = addressObject.getString("city");
+//                String country = addressObject.getString("country");
+                String address = line1 + ", " + city;
+
+                int index = description.indexOf("#");
                 if (index != -1) {
-                    String orderId = description.substring(index + 1); // get the substring after the "#" symbol
-                    orderService.updateOrderAfterPaymentInvoiceSucceeded(Long.parseLong(orderId), paymentId);
+                    String orderId = description.substring(index + 1);
+                    orderService.updateOrderAfterPaymentInvoiceSucceeded(Long.parseLong(orderId), paymentDescription, customerName, address, customerEmail);
                 }
 
                 break;

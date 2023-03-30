@@ -54,7 +54,6 @@ public class EmployeeService {
         e.setNationalId(employeeDetails.getNationalId());
         e.setPhoneNumber(employeeDetails.getPhoneNumber());
         e.setSalary(employeeDetails.getSalary());
-        e.setWorkStatus(employeeDetails.isWorkStatus());
         e.setRole(employeeDetails.getRole());
         return employeeRepository.save(e);
     }

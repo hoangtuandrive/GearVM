@@ -19,7 +19,6 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
     private String paymentId;
-    private String paymentLink;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employeeId;

@@ -18,11 +18,11 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "orderId")
-    private Order orderId;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "productId")
-    private Product productId;
+    private Product product;
     private int quantity;
     @Column(columnDefinition = "double")
     private double price;

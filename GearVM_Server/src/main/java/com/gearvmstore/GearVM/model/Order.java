@@ -18,14 +18,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
-    private String paymentId;
-    private String paymentLink;
+    @OneToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+    @OneToOne
+    @JoinColumn(name = "shipping_detail_id")
+    private ShippingDetail shippingDetail;
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employee;
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customerId;
+    private Customer customer;
     @Column(columnDefinition = "datetime")
     private LocalDateTime createdDate;
     @Column(columnDefinition = "datetime")
@@ -34,54 +41,11 @@ public class Order {
     private double totalPrice;
     @Enumerated(EnumType.ORDINAL)
     private OrderStatus orderStatus;
-
-    @OneToMany(mappedBy = "orderId")
+    @OneToMany(mappedBy = "order")
     @ToString.Exclude
     @JsonIgnore
     private List<OrderItem> orderItems;
-    @OneToOne(mappedBy = "orderId")
-    private Discount discount;
 
     public Order() {
     }
-
-
-//	public double tinhTongTien() {
-//		double tongTien = 0;
-//		for (OrderDetail ct : cthd) {
-//			tongTien += ct.getThanhTien();
-//		}
-//		return tongTien;
-//	}
-
-//	public Order(String id, Employee maNV, Customer maKH, Date ngayLapHoaDon) {
-//		this.id = id;
-//		this.maNV = maNV;
-//		this.maKH = maKH;
-//		this.ngayLapHoaDon = ngayLapHoaDon;
-//	}
-//
-//	public Order(String id, Employee maNV, Customer maKH, Date ngayLapHoaDon, List<OrderDetail> orderDetail) {
-//		this.id = id;
-//		this.maNV = maNV;
-//		this.maKH = maKH;
-//		this.ngayLapHoaDon = ngayLapHoaDon;
-//		this.cthd = orderDetail;
-//		this.tongTien = tinhTongTien();
-//	}
-
-//	public Order(String id) {
-//		this.id = id;
-//	}
-//
-//	public Order(String id, Customer maKH) {
-//		this.id = id;
-//		this.maKH = maKH;
-//	}
-//	public Order(String id, Date ngayLapHoaDon, double tongTien) {
-//		super();
-//		this.id = id;
-//		this.ngayLapHoaDon = ngayLapHoaDon;
-//		this.tongTien = tongTien;
-//	}
 }

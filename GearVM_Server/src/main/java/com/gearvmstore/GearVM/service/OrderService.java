@@ -8,6 +8,8 @@ import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
 import com.gearvmstore.GearVM.repository.OrderRepository;
+import com.gearvmstore.GearVM.repository.PaymentRepository;
+import com.gearvmstore.GearVM.repository.ShippingDetailRepository;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,14 @@ public class OrderService {
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final EntityManager em;
+    private final PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
+    private final ShippingDetailRepository shippingDetailRepository;
+    private final ShippingDetailService shippingDetailService;
+
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository, ShippingDetailRepository shippingDetailRepository, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
         this.customerService = customerService;
@@ -42,11 +49,20 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
         this.modelMapper = modelMapper;
         this.em = em;
+        this.paymentService = paymentService;
+        this.paymentRepository = paymentRepository1;
+        this.shippingDetailRepository = shippingDetailRepository1;
+        this.shippingDetailService = shippingDetailService;
     }
 
-    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentId) {
+    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName, String address, String email) {
         Order order = orderRepository.findById(orderId).get();
-        order.setPaymentId(paymentId);
+
+        Payment payment = paymentService.updateOnlinePayment(order.getPayment(), paymentDescription);
+        ShippingDetail shippingDetail = shippingDetailService.updateOnlineShippingDetail(order.getShippingDetail(), customerName, address, email);
+
+        order.setPayment(payment);
+        order.setShippingDetail(shippingDetail);
         order.setOrderStatus(OrderStatus.PAYMENT_DONE);
         orderRepository.save(order);
     }
@@ -61,19 +77,32 @@ public class OrderService {
             Order order = new Order();
             LocalDateTime localDateTime = LocalDateTime.now();
 
-            order.setCustomerId(customer);
+            order.setCustomer(customer);
             order.setCreatedDate(localDateTime);
             order.setUpdatedDate(localDateTime);
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+
+            Payment payment = new Payment();
+            paymentRepository.save(payment);
+
+            ShippingDetail shippingDetail = new ShippingDetail();
+            // TODO set phone number trước khi tạo link
+//            shippingDetail.setPhoneNumber(placeOrderDTO.getPhoneNumber());
+            shippingDetail.setPhoneNumber("029471420");
+            shippingDetailRepository.save(shippingDetail);
+
+            order.setPayment(payment);
+            order.setShippingDetail(shippingDetail);
+
             Order savedOrder = orderRepository.save(order);
 
             List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
             for (OrderItemDto orderItemDto : orderItems) {
                 OrderItem item = new OrderItem();
                 Product product = productService.getProduct(orderItemDto.getProductId());
-                item.setProductId(product);
-                item.setOrderId(order);
+                item.setProduct(product);
+                item.setOrder(order);
                 item.setQuantity(orderItemDto.getQuantity());
                 item.setPrice(orderItemDto.getPrice());
                 orderItemRepository.save(item);
@@ -106,9 +135,15 @@ public class OrderService {
         return modelMapper.map(order, GetOrderResponse.class);
     }
 
-    public void addPaymentLinkToOrder(String paymentLink, Long orderId) {
+    //TODO: test
+    public Order addPaymentLinkToOrder(String paymentLink, Long orderId) {
         Order order = orderRepository.findById(orderId).get();
-        order.setPaymentLink(paymentLink);
+
+        Payment payment = order.getPayment();
+        payment.setPaymentLink(paymentLink);
+        paymentRepository.save(payment);
+
+        return orderRepository.save(order);
     }
 
 //    public GetOrderResponse updateOrderStatus(Long orderId, OrderStatus orderStatus) {
@@ -123,7 +158,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).get();
 
         Employee employee = employeeService.getEmployee(updateOrderStatusAndEmployee.getEmployeeId().getId());
-        order.setEmployeeId(employee);
+        order.setEmployee(employee);
 
 
         order.setOrderStatus(updateOrderStatusAndEmployee.getOrderStatus());

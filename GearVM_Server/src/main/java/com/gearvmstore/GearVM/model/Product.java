@@ -32,7 +32,7 @@ public class Product {
     private double price;
     private int quantity;
     private int percentageDiscount;
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     @ToString.Exclude
     private List<OrderItem> orderItems;

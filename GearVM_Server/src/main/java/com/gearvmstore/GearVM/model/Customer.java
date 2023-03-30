@@ -36,7 +36,7 @@ public class Customer {
     private String password;
     private boolean isCart;
 
-    @OneToMany(mappedBy = "customerId")
+    @OneToMany(mappedBy = "customer")
     @JsonIgnore
     @ToString.Exclude
     private List<Order> orderList;

@@ -1,6 +1,8 @@
 package com.gearvmstore.GearVM.model.response;
 
-import com.gearvmstore.GearVM.model.*;
+import com.gearvmstore.GearVM.model.Discount;
+import com.gearvmstore.GearVM.model.OrderStatus;
+import com.gearvmstore.GearVM.model.Payment;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ import java.util.List;
 @Data
 public class GetOrderResponse {
     private Long id;
-    private String paymentId;
+    private Payment payment;
     private EmployeeResponseModel employeeId;
     private CustomerResponseModel customerId;
     private LocalDateTime createdDate;

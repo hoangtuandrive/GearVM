@@ -55,15 +55,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         add(createTabbedPane(e));
     }
 
-    /*public static void main(String args[]) {
-//        *//* Set the Nimbus look and feel *//*
-//        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-//        // (optional) ">
-//        *//*
-//         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-//         * look and feel. For details see
-//         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-//         *//*
+    public static void main(String args[]) {
+        // Set the Nimbus look and feel
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+
+        // If Nimbus (introduced in Java SE 6) is not available, stay with the default
+        // look and feel. For details see
+        // http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("".equals(info.getName())) {
@@ -87,14 +87,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new GUI().setVisible(true);
+                    new GUI(null).setVisible(true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
     }
-*/
 
     /**
      * create a JTabbedPane contain tabs
@@ -226,7 +225,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         pnlContentPane.setBackground(new Color(255, 255, 255));
         lblDangXuat.addMouseListener(this);
 
-        getEmployeeInfo(e);
+        if(e != null) getEmployeeInfo(e);
 
         return pnlContentPane;
     }
