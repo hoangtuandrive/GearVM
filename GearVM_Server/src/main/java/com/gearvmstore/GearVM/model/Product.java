@@ -36,6 +36,10 @@ public class Product {
     @JsonIgnore
     @ToString.Exclude
     private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Purchase> purchases;
 
     public Product() {
     }

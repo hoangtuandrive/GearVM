@@ -121,6 +121,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         FrmKhachHang frmKhachHang = new FrmKhachHang();
         FrmSanPham frmHangHoa = new FrmSanPham();
         FrmDonHang frmDonHang = new FrmDonHang();
+        FrmKhoHang frmKhoHang = new FrmKhoHang();
 
         /* create JPanel, which is content of tabs */
         JPanel pnlTrangChu = createPanelTrangChu(e);
@@ -129,6 +130,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         JPanel pnlNhanVien = frmNhanVien.createPanelNhanVien();
         JPanel pnlKhachHang = frmKhachHang.createPanelKhachHang();
         JPanel pnlHangHoa = frmHangHoa.createPanelSanPham();
+        JPanel pnlKhoHang = frmKhoHang.createPanelKhoHang();
         JPanel pnlDonHang = frmDonHang.createPanelDonHang();
 
         /* add tab with JPanel */
@@ -138,6 +140,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         tabbedPane.addTab("NHÂN VIÊN", new ImageIcon("image/nhanvien.png"), pnlNhanVien, "NHÂN VIÊN");
         tabbedPane.addTab("KHÁCH HÀNG", new ImageIcon("image/khachhang.png"), pnlKhachHang, "KHÁCH HÀNG");
         tabbedPane.addTab("SẢN PHẨM", new ImageIcon("image/hanghoa.png"), pnlHangHoa, "SẢN PHẨM");
+        tabbedPane.addTab("KHO HÀNG", new ImageIcon("image/hanghoa.png"), pnlKhoHang, "KHO HÀNG");
         tabbedPane.addTab("HÓA ĐƠN", new ImageIcon("image/hoadon.png"), pnlHoaDon, "HÓA ĐƠN");
 
         return tabbedPane;

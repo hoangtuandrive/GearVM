@@ -1,12 +1,14 @@
 package com.gearvmstore.GearVM.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -39,6 +41,11 @@ public class Employee {
     private String password;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Purchase> purchases;
 
     public Employee() {
     }
