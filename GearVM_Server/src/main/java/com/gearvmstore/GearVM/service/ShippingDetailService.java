@@ -12,10 +12,11 @@ public class ShippingDetailService {
         this.shippingDetailRepository = shippingDetailRepository;
     }
 
-    public ShippingDetail updateOnlineShippingDetail(ShippingDetail shippingDetail, String customerName, String address, String email) {
+    public ShippingDetail updateOnlineShippingDetail(ShippingDetail shippingDetail, String customerName, String address, String email, String phoneNumber) {
         shippingDetail.setName(customerName);
         shippingDetail.setAddress(address);
         shippingDetail.setEmail(email);
+        shippingDetail.setPhoneNumber(phoneNumber);
 
         return shippingDetailRepository.save(shippingDetail);
     }

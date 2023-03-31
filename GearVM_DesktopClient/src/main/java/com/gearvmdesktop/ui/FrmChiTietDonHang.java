@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.model.OrderStatus;
+import com.gearvmdesktop.model.PaymentMethod;
 import com.gearvmdesktop.model.Product;
 import com.gearvmdesktop.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmdesktop.model.response.EmployeeResponseModel;
@@ -59,6 +60,12 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JButton btnThatBai;
     private final JButton btnXemThanhToan;
     private final JButton btnThayDoiTrangThai;
+    private final JLabel lblDiaChi;
+    private final JTextField txtDiaChi;
+    private final JLabel lblEmail;
+    private final JTextField txtEmail;
+    private final JLabel lblPhuongThucThanhToan;
+    private final JTextField txtPhuongThucThanhToan;
 
     public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
@@ -122,6 +129,11 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b12 = Box.createHorizontalBox();
         Box b13 = Box.createHorizontalBox();
 
+        // Box for shipping detail and payment
+        Box b17 = Box.createHorizontalBox();
+        Box b18 = Box.createHorizontalBox();
+        Box b19 = Box.createHorizontalBox();
+
         b2.add(Box.createHorizontalStrut(100));
         b2.add(b3);
 
@@ -130,6 +142,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b4.add(txtMaDonHang = new JTextField());
         b3.add(b4);
 
+        // Shipping detail
         b5.add(lblTenKhachHang = new JLabel("Tên Khách Hàng:"));
         b5.add(Box.createHorizontalStrut(10));
         b5.add(txtTenKhachHang = new JTextField());
@@ -139,6 +152,16 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b6.add(Box.createHorizontalStrut(10));
         b6.add(txtSdtKhachHang = new JTextField());
         b3.add(b6);
+
+        b17.add(lblDiaChi = new JLabel("Địa Chỉ Giao Hàng:"));
+        b17.add(Box.createHorizontalStrut(10));
+        b17.add(txtDiaChi = new JTextField());
+        b3.add(b17);
+
+        b18.add(lblEmail = new JLabel("Email Khách Hàng:"));
+        b18.add(Box.createHorizontalStrut(10));
+        b18.add(txtEmail = new JTextField());
+        b3.add(b18);
 
         b7.add(lblMaThanhToan = new JLabel("Mã Thanh Toán:"));
         b7.add(Box.createHorizontalStrut(10));
@@ -165,6 +188,11 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b11.add(txtTenNhanVien = new JTextField());
         b3.add(b11);
 
+        b19.add(lblPhuongThucThanhToan = new JLabel("Phương Thức Thanh Toán"));
+        b19.add(Box.createHorizontalStrut(10));
+        b19.add(txtPhuongThucThanhToan = new JTextField());
+        b3.add(b19);
+
         b12.add(lblTongTien = new JLabel("Tổng Tiền Thanh Toán:"));
         b12.add(Box.createHorizontalStrut(10));
         b12.add(txtTongTien = new JTextField());
@@ -177,7 +205,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b13.add(cmbTrangThai);
         b3.add(b13);
 
-        b3.add(Box.createVerticalStrut(20));
+        b3.add(Box.createVerticalStrut(15));
 
         Box b14 = Box.createHorizontalBox();
         Box b15 = Box.createHorizontalBox();
@@ -214,6 +242,9 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         lblTenKhachHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblTongTien.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblSdtKhachHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblDiaChi.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblEmail.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblPhuongThucThanhToan.setPreferredSize(lblTenNhanVien.getPreferredSize());
 
         b4.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b5.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
@@ -228,9 +259,12 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b14.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b15.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b17.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b18.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         readDatabaseToTable(getOrderResponse);
-        getDataToTextField(getOrderResponse);
+        LoadDataToTextField(getOrderResponse);
 
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
@@ -373,30 +407,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         BufferedReader rd = OrderService.getRequest(tableNameOrder, txtMaDonHang.getText());
         GetOrderResponse order = mapper.readValue(rd, GetOrderResponse.class);
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
-        DecimalFormat df = new DecimalFormat("#,##0");
-
-        if (order.getOrderStatus() == OrderStatus.PAYMENT_PENDING) cmbTrangThai.setSelectedIndex(0);
-        else if (order.getOrderStatus() == OrderStatus.PAYMENT_DONE) cmbTrangThai.setSelectedIndex(1);
-        else if (order.getOrderStatus() == OrderStatus.SHIPPING) cmbTrangThai.setSelectedIndex(2);
-        else if (order.getOrderStatus() == OrderStatus.SHIP_SUCCESS) cmbTrangThai.setSelectedIndex(3);
-        else if (order.getOrderStatus() == OrderStatus.SHIP_FAIL) cmbTrangThai.setSelectedIndex(4);
-        else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
-
-        txtMaDonHang.setText(order.getId().toString());
-        txtTenKhachHang.setText(order.getCustomer().getName());
-        txtSdtKhachHang.setText(order.getCustomer().getPhoneNumber());
-        txtMaThanhToan.setText(order.getPayment().getPaymentDescription().toString());
-        txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
-        txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
-        if(order.getEmployee() != null){
-            txtMaNhanVien.setText(order.getEmployee().getId().toString());
-            txtTenNhanVien.setText(order.getEmployee().getName());
-        }
-        txtTongTien.setText(df.format(order.getTotalPrice()));
+        LoadDataToTextField(order);
     }
 
-    public void getDataToTextField(GetOrderResponse order){
+    public void LoadDataToTextField(GetOrderResponse order) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
         DecimalFormat df = new DecimalFormat("#,##0");
 
@@ -407,10 +421,18 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if (order.getOrderStatus() == OrderStatus.SHIP_FAIL) cmbTrangThai.setSelectedIndex(4);
         else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
 
+        String paymentMethod = null;
+        if(order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE) paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
+        else if(order.getPayment().getPaymentMethod() == PaymentMethod.BANK) paymentMethod = "Chuyển khoản qua ngân hàng";
+        else if(order.getPayment().getPaymentMethod() == PaymentMethod.COD) paymentMethod = "Trả tiền khi giao hàng";
+
         txtMaDonHang.setText(order.getId().toString());
-        txtTenKhachHang.setText(order.getCustomer().getName());
-        txtSdtKhachHang.setText(order.getCustomer().getPhoneNumber());
-        txtMaThanhToan.setText(order.getPayment().getPaymentDescription().toString());
+        txtTenKhachHang.setText(order.getShippingDetail().getName());
+        txtSdtKhachHang.setText(order.getShippingDetail().getPhoneNumber());
+        txtDiaChi.setText(order.getShippingDetail().getAddress());
+        txtEmail.setText(order.getShippingDetail().getEmail());
+        txtMaThanhToan.setText(order.getPayment().getPaymentDescription());
+        txtPhuongThucThanhToan.setText(paymentMethod);
         txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
         txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
         if(order.getEmployee() != null){

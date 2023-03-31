@@ -55,11 +55,11 @@ public class OrderService {
         this.shippingDetailService = shippingDetailService;
     }
 
-    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName, String address, String email) {
+    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName, String address, String email, String phoneNumber) {
         Order order = orderRepository.findById(orderId).get();
 
         Payment payment = paymentService.updateOnlinePayment(order.getPayment(), paymentDescription);
-        ShippingDetail shippingDetail = shippingDetailService.updateOnlineShippingDetail(order.getShippingDetail(), customerName, address, email);
+        ShippingDetail shippingDetail = shippingDetailService.updateOnlineShippingDetail(order.getShippingDetail(), customerName, address, email, phoneNumber);
 
         order.setPayment(payment);
         order.setShippingDetail(shippingDetail);
@@ -75,10 +75,9 @@ public class OrderService {
                 return null;
 
             Order order = new Order();
-            LocalDateTime localDateTime = LocalDateTime.now();
 
             order.setCustomer(customer);
-            order.setCreatedDate(localDateTime);
+            order.setCreatedDate(LocalDateTime.now());
             order.setTotalPrice(placeOrderDTO.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
@@ -145,14 +144,6 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
-
-//    public GetOrderResponse updateOrderStatus(Long orderId, OrderStatus orderStatus) {
-//        Order order = orderRepository.findById(orderId).get();
-//        order.setOrderStatus(orderStatus);
-//        order.setUpdatedDate(LocalDateTime.now());
-//        Order orderDb = orderRepository.save(order);
-//        return modelMapper.map(orderDb, GetOrderResponse.class);
-//    }
 
     public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
         Order order = orderRepository.findById(orderId).get();

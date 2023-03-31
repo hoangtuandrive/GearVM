@@ -77,9 +77,14 @@ public class StripeService {
                                         .addAllowedCountry(
                                                 PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.VN
                                         )
-//                                        .addAllowedCountry(
-//                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.SG
-//                                        )
+                                        .addAllowedCountry(
+                                                PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.SG
+                                        )
+                                        .build()
+                        )
+                        .setPhoneNumberCollection(
+                                PaymentLinkCreateParams.PhoneNumberCollection.builder()
+                                        .setEnabled(true)
                                         .build()
                         )
                         .setInvoiceCreation(
