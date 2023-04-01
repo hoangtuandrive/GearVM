@@ -49,9 +49,9 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private java.awt.Label lblDonGia;
     private java.awt.Label lblNhaCungCap;
     private java.awt.Label lblSoLuong;
-    private java.awt.Label lblTenHangHoa;
+    private java.awt.Label lblTenSanPham;
     private java.awt.Label lblLoaiHang;
-    private java.awt.Label lblMaHangHoa;
+    private java.awt.Label lblMaSanPham;
     private JPanel pnChucNang;
     private JPanel pnExcel;
     private JPanel pnThongTin;
@@ -59,10 +59,10 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private javax.swing.JTextField txtDonGia;
     private javax.swing.JTextField txtNhaCungCap;
     private javax.swing.JTextField txtSoLuong;
-    private javax.swing.JTextField txtTenHangHoa;
+    private javax.swing.JTextField txtTenSanPham;
     private javax.swing.JTextField txtLoaiHang;
     private JPanel pnlTimKiem;
-    private javax.swing.JTextField txtMaHangHoa;
+    private javax.swing.JTextField txtMaSanPham;
     private JButton btnImport;
     private JButton btnExport;
     private JButton btnSave;
@@ -74,10 +74,10 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         tableHangHoa = new JTable();
         pnlTimKiem = new JPanel();
         pnThongTin = new JPanel();
-        lblMaHangHoa = new java.awt.Label();
-        txtMaHangHoa = new javax.swing.JTextField();
-        lblTenHangHoa = new java.awt.Label();
-        txtTenHangHoa = new javax.swing.JTextField();
+        lblMaSanPham = new java.awt.Label();
+        txtMaSanPham = new javax.swing.JTextField();
+        lblTenSanPham = new java.awt.Label();
+        txtTenSanPham = new javax.swing.JTextField();
         lblLoaiHang = new java.awt.Label();
         txtLoaiHang = new javax.swing.JTextField();
         lblNhaCungCap = new java.awt.Label();
@@ -140,9 +140,9 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         pnThongTin.setBorder(BorderFactory.createTitledBorder("Thông tin chi tiết:"));
         pnThongTin.setToolTipText("Info of selected table object");
 
-        lblMaHangHoa.setText("Mã Sản Phẩm:");
+        lblMaSanPham.setText("Mã Sản Phẩm:");
 
-        lblTenHangHoa.setText("Tên Sản Phẩm:");
+        lblTenSanPham.setText("Tên Sản Phẩm:");
 
         lblLoaiHang.setText("Loại hàng");
 
@@ -162,9 +162,9 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblLoaiHang, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblMaHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblDonGia, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,14 +172,14 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaHangHoa,
+                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaSanPham,
                                         javax.swing.GroupLayout.PREFERRED_SIZE, 169,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtSoLuong, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtDonGia, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtTenHangHoa, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtTenSanPham, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtLoaiHang, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -191,15 +191,15 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 .addGroup(pnThongTinLayout.createSequentialGroup().addContainerGap().addGroup(pnThongTinLayout
                                 .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(pnThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMaHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(txtMaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblMaHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(lblMaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTenHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,10 +399,10 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
         pntblHangHoa.setBorder(
                 BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "DANH SÁCH SẢN PHẨM: "));
-        lblMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
         txtLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblNhaCungCap.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -430,7 +430,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         tableHangHoa.getColumnModel().getColumn(0).setPreferredWidth(20);
         tableHangHoa.getColumnModel().getColumn(1).setPreferredWidth(165);
 
-        txtMaHangHoa.setEditable(false);
+        txtMaSanPham.setEditable(false);
 
         tableHangHoa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableHangHoa.setDefaultEditor(Object.class, null);
@@ -452,7 +452,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }// </editor-fold>//GEN-END:initComponents
 
     private boolean validInput() {
-        String tenLk = txtTenHangHoa.getText();
+        String tenLk = txtTenSanPham.getText();
         String loaiHang = txtLoaiHang.getText();
         String nhaCC = txtNhaCungCap.getText();
         String gialk = txtDonGia.getText();
@@ -548,11 +548,11 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
@@ -565,12 +565,12 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (deleteRequest()) {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
                         emptyTextField();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
@@ -612,8 +612,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     @Override
     public void mouseClicked(MouseEvent e) {
         int row = tableHangHoa.getSelectedRow();
-        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString().trim());
-        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString().trim());
+        txtMaSanPham.setText(modelSanPham.getValueAt(row, 0).toString().trim());
+        txtTenSanPham.setText(modelSanPham.getValueAt(row, 1).toString().trim());
         txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString().trim());
         txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString().trim());
         String tien[] = modelSanPham.getValueAt(row, 4).toString().split(",");
@@ -658,8 +658,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     private void emptyTextField() {
-        txtMaHangHoa.setText(null);
-        txtTenHangHoa.setText(null);
+        txtMaSanPham.setText(null);
+        txtTenSanPham.setText(null);
         txtDonGia.setText(null);
         txtSoLuong.setText(null);
         txtNhaCungCap.setText(null);
@@ -669,13 +669,13 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     public Product getRequest() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ProductService.getRequest(tableName, txtMaHangHoa.getText());
+        BufferedReader rd = ProductService.getRequest(tableName, txtMaSanPham.getText());
         return mapper.readValue(rd, Product.class);
     }
 
     public boolean postRequest() throws IOException {
         Product p = new Product();
-        p.setName(txtTenHangHoa.getText());
+        p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
@@ -685,8 +685,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     public boolean putRequest() throws IOException {
         Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
-        p.setName(txtTenHangHoa.getText());
+        p.setId(Long.parseLong(txtMaSanPham.getText()));
+        p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
@@ -696,7 +696,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     public boolean deleteRequest() throws IOException {
         Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
+        p.setId(Long.parseLong(txtMaSanPham.getText()));
         return ProductService.deleteRequest(p);
     }
 

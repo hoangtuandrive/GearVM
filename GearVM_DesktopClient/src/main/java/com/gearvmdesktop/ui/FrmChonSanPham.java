@@ -8,13 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.model.Product;
 import com.gearvmdesktop.service.ProductService;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -26,20 +22,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class FrmChonSanPham extends JFrame implements ActionListener, MouseListener {
     private static final String tableName = "products/";
     private static JComboBox<String> cmbTim;
-    private static JTable tableHangHoa;
+    private static JTable tableSanPham;
     private static DefaultTableModel modelSanPham;
+    private final JButton btnChonSanPham;
+    private final JPanel pnExcel;
+    private final JButton btnImport;
+    private final JButton btnExport;
+    private final JButton btnSave;
+    private final JButton btnCancel;
     private JComboBox<String> cmbChon;
     private JButton btnTim;
     private JButton btnSua;
@@ -49,35 +47,36 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
     private Label lblDonGia;
     private Label lblNhaCungCap;
     private Label lblSoLuong;
-    private Label lblTenHangHoa;
+    private Label lblTenSanPham;
     private Label lblLoaiHang;
-    private Label lblMaHangHoa;
+    private Label lblMaSanPham;
     private JPanel pnChucNang;
-    private JPanel pnExcel;
     private JPanel pnThongTin;
     private JScrollPane pntblHangHoa;
     private JTextField txtDonGia;
     private JTextField txtNhaCungCap;
     private JTextField txtSoLuong;
-    private JTextField txtTenHangHoa;
+    private JTextField txtTenSanPham;
     private JTextField txtLoaiHang;
     private JPanel pnlTimKiem;
-    private JTextField txtMaHangHoa;
-    private JButton btnImport;
-    private JButton btnExport;
-    private JButton btnSave;
-    private JButton btnCancel;
+    private JTextField txtMaSanPham;
 
-    public JPanel createPanelSanPham() throws IOException {
+    public FrmChonSanPham() throws IOException {
+        super("Chọn Sản Phẩm");
+
         FlatLightLaf.setup();
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        setMaximumSize(DimMax);
+        setExtendedState(MAXIMIZED_BOTH);
+
         pntblHangHoa = new JScrollPane();
-        tableHangHoa = new JTable();
+        tableSanPham = new JTable();
         pnlTimKiem = new JPanel();
         pnThongTin = new JPanel();
-        lblMaHangHoa = new Label();
-        txtMaHangHoa = new JTextField();
-        lblTenHangHoa = new Label();
-        txtTenHangHoa = new JTextField();
+        lblMaSanPham = new Label();
+        txtMaSanPham = new JTextField();
+        lblTenSanPham = new Label();
+        txtTenSanPham = new JTextField();
         lblLoaiHang = new Label();
         txtLoaiHang = new JTextField();
         lblNhaCungCap = new Label();
@@ -103,7 +102,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
         String[] header = {" Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         modelSanPham = new DefaultTableModel(header, 0);
-        tableHangHoa = new JTable(modelSanPham) {
+        tableSanPham = new JTable(modelSanPham) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 Color color1 = new Color(219, 243, 255);
@@ -121,28 +120,28 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                 return false;
             }
         };
-        tableHangHoa.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        tableHangHoa.setGridColor(getBackground());
-        tableHangHoa.setRowHeight(tableHangHoa.getRowHeight() + 20);
-        tableHangHoa.setSelectionBackground(new Color(255, 255, 128));
-        tableHangHoa.setSelectionForeground(Color.BLACK);
-        JTableHeader tableHeader = tableHangHoa.getTableHeader();
+        tableSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tableSanPham.setGridColor(getBackground());
+        tableSanPham.setRowHeight(tableSanPham.getRowHeight() + 20);
+        tableSanPham.setSelectionBackground(new Color(255, 255, 128));
+        tableSanPham.setSelectionForeground(Color.BLACK);
+        JTableHeader tableHeader = tableSanPham.getTableHeader();
         tableHeader.setBackground(new Color(0, 148, 224));
         tableHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
         tableHeader.setForeground(Color.WHITE);
         tableHeader.setPreferredSize(new Dimension(WIDTH, 30));
-        tableHangHoa.setColumnSelectionAllowed(false);
-        tableHangHoa.setName("tblThongTinNhanVien"); // NOI18N
-        pntblHangHoa.setViewportView(tableHangHoa);
-        tableHangHoa.getColumnModel().getSelectionModel()
+        tableSanPham.setColumnSelectionAllowed(false);
+        tableSanPham.setName("tblThongTinNhanVien"); // NOI18N
+        pntblHangHoa.setViewportView(tableSanPham);
+        tableSanPham.getColumnModel().getSelectionModel()
                 .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         pnThongTin.setBorder(BorderFactory.createTitledBorder("Thông tin chi tiết:"));
         pnThongTin.setToolTipText("Info of selected table object");
 
-        lblMaHangHoa.setText("Mã Sản Phẩm:");
+        lblMaSanPham.setText("Mã Sản Phẩm:");
 
-        lblTenHangHoa.setText("Tên Sản Phẩm:");
+        lblTenSanPham.setText("Tên Sản Phẩm:");
 
         lblLoaiHang.setText("Loại hàng");
 
@@ -162,9 +161,9 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblLoaiHang, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblDonGia, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -172,14 +171,14 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaHangHoa,
+                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaSanPham,
                                         GroupLayout.PREFERRED_SIZE, 169,
                                         GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtSoLuong, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtDonGia, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtTenHangHoa, GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtTenSanPham, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtLoaiHang, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -191,15 +190,15 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                 .addGroup(pnThongTinLayout.createSequentialGroup().addContainerGap().addGroup(pnThongTinLayout
                                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                                 .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(txtMaSanPham, GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(lblMaSanPham, GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtTenSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -238,7 +237,6 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnCancel.setText("HỦY");
         btnImport.setText("NHẬP FILE");
         btnExport.setText("XUẤT FILE");
-
 
         // Chức năng button
         btnThem.setBackground(new Color(0, 148, 224));
@@ -295,30 +293,30 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(15)));
 
-        GroupLayout pnExcelLayout = new GroupLayout(pnExcel);
+        javax.swing.GroupLayout pnExcelLayout = new javax.swing.GroupLayout(pnExcel);
         pnExcel.setLayout(pnExcelLayout);
         pnExcelLayout.setHorizontalGroup(pnExcelLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
                         .addGap(50)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
                         .addGap(50))
                 .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
                         .addGap(40)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
                         .addGap(70)));
         pnExcelLayout.setVerticalGroup(pnExcelLayout
-                .createParallelGroup(GroupLayout.Alignment.LEADING)
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
-                        .addGroup(pnExcelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnImport).addComponent(btnExport))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(5)
-                        .addGroup(pnExcelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnSave).addComponent(btnCancel))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(15)));
 
         pnThongTin.setBackground(new Color(219, 243, 255));
@@ -337,12 +335,18 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
+        btnChonSanPham = new JButton("CHỌN SẢN PHẨM", new ImageIcon("image/timkiem.png"));
+        btnChonSanPham.setBackground(new Color(0, 148, 224));
+        btnChonSanPham.setForeground(Color.WHITE);
+        btnChonSanPham.setFocusPainted(false);
 
         b.add(cmbChon);
         b.add(Box.createHorizontalStrut(10));
         b.add(cmbTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
+        b.add(Box.createHorizontalStrut(30));
+        b.add(btnChonSanPham);
         b.add(Box.createHorizontalStrut(30));
         pnlTimKiem.add(b);
 
@@ -369,29 +373,29 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                                         .addComponent(pnChucNang, GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE,
                                                 GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(pnExcel, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                 ))));
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout
-                                .createParallelGroup(GroupLayout.Alignment.TRAILING)
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout
+                                .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup().addContainerGap()
-                                        .addComponent(pntblHangHoa, GroupLayout.PREFERRED_SIZE, 670,
-                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pntblHangHoa, javax.swing.GroupLayout.PREFERRED_SIZE, 670,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(pnlTimKiem, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pnlTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(2, 2, 2))
                                 .addGroup(layout.createSequentialGroup().addGap(14, 14, 14)
-                                        .addComponent(pnThongTin, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(pnChucNang, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pnThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pnChucNang, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 20, 20)
-                                        .addComponent(pnExcel, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pnExcel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 27, Short.MAX_VALUE)))
                         .addContainerGap()));
 
@@ -399,10 +403,10 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
         pntblHangHoa.setBorder(
                 BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "DANH SÁCH SẢN PHẨM: "));
-        lblMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
         txtLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblNhaCungCap.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -422,37 +426,38 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
-        tableHangHoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnChonSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableSanPham.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        tableHangHoa.getColumnModel().getColumn(0).setPreferredWidth(20);
-        tableHangHoa.getColumnModel().getColumn(1).setPreferredWidth(165);
+        tableSanPham.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tableSanPham.getColumnModel().getColumn(1).setPreferredWidth(165);
 
-        txtMaHangHoa.setEditable(false);
+        txtMaSanPham.setEditable(false);
 
-        tableHangHoa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableHangHoa.setDefaultEditor(Object.class, null);
-        tableHangHoa.getTableHeader().setReorderingAllowed(false);
+        tableSanPham.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableSanPham.setDefaultEditor(Object.class, null);
+        tableSanPham.getTableHeader().setReorderingAllowed(false);
 
         btnThem.addActionListener(this);
         btnSua.addActionListener(this);
         btnXoa.addActionListener(this);
         btnTim.addActionListener(this);
         btnChiTiet.addActionListener(this);
-        btnExport.addActionListener(this);
-        btnImport.addActionListener(this);
-        tableHangHoa.addMouseListener(this);
+        btnChonSanPham.addActionListener(this);
+        tableSanPham.addMouseListener(this);
 
         readDatabaseToTable();
         GUI.disableWarning();
 
-        return panel;
-    }// </editor-fold>//GEN-END:initComponents
+        setContentPane(panel);
+        setVisible(true);
+    }
 
     private boolean validInput() {
-        String tenLk = txtTenHangHoa.getText();
+        String tenLk = txtTenSanPham.getText();
         String loaiHang = txtLoaiHang.getText();
         String nhaCC = txtNhaCungCap.getText();
         String gialk = txtDonGia.getText();
@@ -548,11 +553,11 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
@@ -565,12 +570,12 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (deleteRequest()) {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
                         emptyTextField();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
@@ -585,35 +590,19 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                 throw new RuntimeException(ex);
             }
         }
-        if (o.equals(btnExport)) {
-            JFileChooser fileDialog = new JFileChooser();
-            fileDialog.setCurrentDirectory(new File(System.getProperty("user.dir")));
-            //filter the files
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel(.xls)", ".xls");
-            fileDialog.setAcceptAllFileFilterUsed(false);
-            fileDialog.addChoosableFileFilter(filter);
-            int result = fileDialog.showSaveDialog(null);
-            //if the user click on save in Jfilechooser
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File file = fileDialog.getSelectedFile();
-                String filePath = file.getAbsolutePath();
-                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
-                    filePath += ".xls";
-                }
-                if (exportExcel(filePath))
-                    JOptionPane.showMessageDialog(null, "Ghi file thành công!!", "Thành công",
-                            JOptionPane.INFORMATION_MESSAGE);
-                else
-                    JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        if(o.equals(btnChonSanPham)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                selectProduct();
             }
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int row = tableHangHoa.getSelectedRow();
-        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString().trim());
-        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString().trim());
+        int row = tableSanPham.getSelectedRow();
+        txtMaSanPham.setText(modelSanPham.getValueAt(row, 0).toString().trim());
+        txtTenSanPham.setText(modelSanPham.getValueAt(row, 1).toString().trim());
         txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString().trim());
         txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString().trim());
         String tien[] = modelSanPham.getValueAt(row, 4).toString().split(",");
@@ -626,7 +615,12 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if (e.getClickCount() == 2 && tableSanPham.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                selectProduct();
+            }
+        }
     }
 
     @Override
@@ -657,9 +651,19 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         }
     }
 
+    public void selectProduct(){
+        int row = tableSanPham.getSelectedRow();
+        String productId = tableSanPham.getValueAt(row, 0).toString().trim();
+        String productName = tableSanPham.getValueAt(row, 1).toString().trim();
+
+        FrmKhoHang.setTextFieldAfterSelectingProduct(productId, productName);
+        setVisible(false);
+        dispose();
+    }
+
     private void emptyTextField() {
-        txtMaHangHoa.setText(null);
-        txtTenHangHoa.setText(null);
+        txtMaSanPham.setText(null);
+        txtTenSanPham.setText(null);
         txtDonGia.setText(null);
         txtSoLuong.setText(null);
         txtNhaCungCap.setText(null);
@@ -669,13 +673,13 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
     public Product getRequest() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ProductService.getRequest(tableName, txtMaHangHoa.getText());
+        BufferedReader rd = ProductService.getRequest(tableName, txtMaSanPham.getText());
         return mapper.readValue(rd, Product.class);
     }
 
     public boolean postRequest() throws IOException {
         Product p = new Product();
-        p.setName(txtTenHangHoa.getText());
+        p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
@@ -685,8 +689,8 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
     public boolean putRequest() throws IOException {
         Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
-        p.setName(txtTenHangHoa.getText());
+        p.setId(Long.parseLong(txtMaSanPham.getText()));
+        p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
@@ -696,133 +700,12 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
     public boolean deleteRequest() throws IOException {
         Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
+        p.setId(Long.parseLong(txtMaSanPham.getText()));
         return ProductService.deleteRequest(p);
     }
 
     public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
+        DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
         dm.setRowCount(0);
-    }
-    public boolean exportExcel(String filePath) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(filePath);
-
-            HSSFWorkbook workbook = new HSSFWorkbook();
-            HSSFSheet worksheet = workbook.createSheet("DANH SÁCH SẢN PHẨM");
-
-            HSSFRow row;
-            HSSFCell cell;
-
-            // Dòng 1 tên
-            cell = worksheet.createRow(1).createCell(1);
-
-            HSSFFont newFont = cell.getSheet().getWorkbook().createFont();
-            newFont.setBold(true);
-            newFont.setFontHeightInPoints((short) 13);
-            CellStyle styleTenDanhSach = worksheet.getWorkbook().createCellStyle();
-            styleTenDanhSach.setAlignment(HorizontalAlignment.CENTER);
-            styleTenDanhSach.setFont(newFont);
-
-            cell.setCellValue("DANH SÁCH SẢN PHẨM");
-            cell.setCellStyle(styleTenDanhSach);
-
-            String[] header = { "STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn" };
-            worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
-
-            // Dòng 2 người lập
-            row = worksheet.createRow(2);
-
-            cell = row.createCell(1);
-            cell.setCellValue("Người lập:");
-            cell = row.createCell(2);
-
-            cell.setCellValue(GUI.getEmployeeInfo().getName());
-            worksheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
-
-            // Dòng 3 ngày lập
-            row = worksheet.createRow(3);
-            cell = row.createCell(1);
-            cell.setCellValue("Ngày lập:");
-            cell = row.createCell(2);
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            cell.setCellValue(df.format(new Date()));
-            worksheet.addMergedRegion(new CellRangeAddress(3, 3, 2, 3));
-
-            // Dòng 4 tên các cột
-            row = worksheet.createRow(4);
-
-            HSSFFont fontHeader = cell.getSheet().getWorkbook().createFont();
-            fontHeader.setBold(true);
-
-            CellStyle styleHeader = worksheet.getWorkbook().createCellStyle();
-            styleHeader.setFont(fontHeader);
-            styleHeader.setBorderBottom(BorderStyle.THIN);
-            styleHeader.setBorderTop(BorderStyle.THIN);
-            styleHeader.setBorderLeft(BorderStyle.THIN);
-            styleHeader.setBorderRight(BorderStyle.THIN);
-            styleHeader.setAlignment(HorizontalAlignment.CENTER);
-
-            styleHeader.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-            styleHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            for (int i = 0; i < header.length; i++) {
-                cell = row.createCell(i + 1);
-                cell.setCellValue(header[i]);
-                cell.setCellStyle(styleHeader);
-            }
-
-            if (tableHangHoa.getRowCount() == 0) {
-                return false;
-            }
-
-            HSSFFont fontRow = cell.getSheet().getWorkbook().createFont();
-            fontRow.setBold(false);
-
-            CellStyle styleRow = worksheet.getWorkbook().createCellStyle();
-            styleRow.setFont(fontRow);
-            styleRow.setBorderBottom(BorderStyle.THIN);
-            styleRow.setBorderTop(BorderStyle.THIN);
-            styleRow.setBorderLeft(BorderStyle.THIN);
-            styleRow.setBorderRight(BorderStyle.THIN);
-
-            // Ghi dữ liệu vào bảng
-            int STT = 0;
-            for (int i = 0; i < tableHangHoa.getRowCount(); i++) {
-                row = worksheet.createRow(5 + i);
-                for (int j = 0; j < header.length; j++) {
-                    cell = row.createCell(j + 1);
-                    if (STT == i) {
-                        cell.setCellValue(STT + 1);
-                        STT++;
-                    } else {
-                        if (tableHangHoa.getValueAt(i, j - 1) != null) {
-                            if (j == header.length - 2) {
-                                String luong[] = tableHangHoa.getValueAt(i, j - 1).toString().split(",");
-                                String tienLuong = "";
-                                for (int t = 0; t < luong.length; t++)
-                                    tienLuong += luong[t];
-                                cell.setCellValue(Double.parseDouble(tienLuong));
-                            } else
-                                cell.setCellValue(tableHangHoa.getValueAt(i, j - 1).toString().trim());
-                        }
-                    }
-                    cell.setCellStyle(styleRow);
-                }
-            }
-
-            for (int i = 1; i < header.length + 1; i++) {
-                worksheet.autoSizeColumn(i);
-            }
-
-            workbook.write(fileOut);
-            workbook.close();
-            fileOut.flush();
-            fileOut.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }

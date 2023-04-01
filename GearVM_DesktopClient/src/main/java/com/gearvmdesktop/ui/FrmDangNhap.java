@@ -167,13 +167,11 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 				Employee employee = login();
 
 				if(employee != null){
-					GUI gui;
-					gui = new GUI(employee);
+					GUI gui = new GUI(employee);
 					gui.setVisible(true);
 					gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 					gui.setLocationRelativeTo(null);
 					dispose();
-
 				}
 				else JOptionPane.showMessageDialog(this, "Đăng Nhập Thất Bại!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			} catch (IOException ex) {

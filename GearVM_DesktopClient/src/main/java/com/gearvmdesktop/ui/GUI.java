@@ -48,11 +48,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
         setMaximumSize(DimMax);
-        setExtendedState(MAXIMIZED_BOTH);
-        setSize(1700, 980);
         setLocationRelativeTo(null);
         UIManager.put("TabbedPane.selected", new Color(50, 190, 255));
         add(createTabbedPane(e));
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     public static void main(String args[]) {

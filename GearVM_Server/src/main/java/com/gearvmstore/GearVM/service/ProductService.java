@@ -19,6 +19,7 @@ public class ProductService {
 
     public Product createProduct(Product p) {
         p.setImageUri("empty-product.jpg");
+        p.setQuantity(0);
         return productRepository.save(p);
     }
 

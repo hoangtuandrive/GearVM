@@ -71,9 +71,9 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         super("Chi Tiết Đơn Hàng");
 
         FlatLightLaf.setup();
-        setSize(1400, 800);
-        setResizable(true);
-        setLocationRelativeTo(null);
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        setMaximumSize(DimMax);
+        setExtendedState(MAXIMIZED_BOTH);
 
         Box b = Box.createHorizontalBox();
         Box b1 = Box.createVerticalBox();

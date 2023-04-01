@@ -3,6 +3,7 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.model.Product;
+import com.gearvmdesktop.model.response.EmployeeResponseModel;
 import com.gearvmdesktop.service.ProductService;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
@@ -35,60 +36,66 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
     private static final String tableName = "products/";
     private static final String tableNamePurchase = "purchases/";
     private static JComboBox<String> cmbTim;
-    private static JTable tableHangHoa;
+    private static JTable tableKhoHang;
     private static DefaultTableModel modelSanPham;
     private JComboBox<String> cmbChon;
     private JButton btnTim;
-    private JButton btnSua;
-    private JButton btnThem;
     private JButton btnXoa;
-    private JButton btnChiTiet;
-    private Label lblDonGia;
-    private Label lblNhaCungCap;
-    private Label lblSoLuong;
-    private Label lblTenHangHoa;
-    private Label lblLoaiHang;
-    private Label lblMaHangHoa;
+    private JButton btnNhap;
+    private Label lblTenNhanVien;
+    private Label lblMaNhanVien;
+    private Label lblThoiGianNhap;
+    private Label lblMaSanPham;
+    private Label lblTenSanPham;
+    private Label lblMaNhapHang;
     private JPanel pnChucNang;
     private JPanel pnExcel;
     private JPanel pnThongTin;
     private JScrollPane pntblHangHoa;
-    private JTextField txtDonGia;
-    private JTextField txtNhaCungCap;
-    private JTextField txtSoLuong;
-    private JTextField txtTenHangHoa;
-    private JTextField txtLoaiHang;
+    private static JTextField txtTenNhanVien;
+    private static JTextField txtMaNhanVien;
+    private static JTextField txtThoiGianNhap;
+    private static JTextField txtMaSanPham;
+    private static JTextField txtTenSanPham;
     private JPanel pnlTimKiem;
-    private JTextField txtMaHangHoa;
+    private static JTextField txtMaNhapHang;
     private JButton btnImport;
     private JButton btnExport;
     private JButton btnSave;
     private JButton btnCancel;
+    private Label lblSoLuong;
+    private static JTextField txtSoLuong;
+    private Label lblGiaNhap;
+    private static JTextField txtGiaNhap;
+    private JButton btnChon;
 
     public JPanel createPanelKhoHang() throws IOException {
         FlatLightLaf.setup();
         pntblHangHoa = new JScrollPane();
-        tableHangHoa = new JTable();
+        tableKhoHang = new JTable();
         pnlTimKiem = new JPanel();
         pnThongTin = new JPanel();
-        lblMaHangHoa = new Label();
-        txtMaHangHoa = new JTextField();
-        lblTenHangHoa = new Label();
-        txtTenHangHoa = new JTextField();
-        lblLoaiHang = new Label();
-        txtLoaiHang = new JTextField();
-        lblNhaCungCap = new Label();
-        txtNhaCungCap = new JTextField();
-        lblDonGia = new Label();
-        txtDonGia = new JTextField();
+        lblMaNhapHang = new Label();
+        txtMaNhapHang = new JTextField();
+        lblMaSanPham = new Label();
+        txtMaSanPham = new JTextField();
+        lblTenSanPham = new Label();
+        txtTenSanPham = new JTextField();
+        lblMaNhanVien = new Label();
+        txtMaNhanVien = new JTextField();
+        lblTenNhanVien = new Label();
+        txtTenNhanVien = new JTextField();
+        lblThoiGianNhap = new Label();
+        txtThoiGianNhap = new JTextField();
         lblSoLuong = new Label();
         txtSoLuong = new JTextField();
+        lblGiaNhap = new Label();
+        txtGiaNhap = new JTextField();
 
         pnChucNang = new JPanel();
-        btnThem = new JButton();
-        btnSua = new JButton();
+        btnChon = new JButton();
+        btnNhap = new JButton();
         btnXoa = new JButton();
-        btnChiTiet = new JButton();
 
         pnExcel = new JPanel();
         btnImport = new JButton();
@@ -98,9 +105,9 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        String[] header = {"Mã Nhập Hàng", "Mã Đơn Hàng", "Tên Đơn Hàng", "Mã Người Nhập", "Tên Người Nhập", "Thời Gian Nhập", "Giá Nhập"};
+        String[] header = {"Mã Nhập Hàng", "Mã Nhân Viên Nhập", "Tên Người Nhân Viên Nhập", "Thời Gian Nhập", "Mã Sản Phẩm", "Tên Sản Phẩm",  "Giá Nhập", "Số Lượng"};
         modelSanPham = new DefaultTableModel(header, 0);
-        tableHangHoa = new JTable(modelSanPham) {
+        tableKhoHang = new JTable(modelSanPham) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 Color color1 = new Color(219, 243, 255);
@@ -118,36 +125,33 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 return false;
             }
         };
-        tableHangHoa.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        tableHangHoa.setGridColor(getBackground());
-        tableHangHoa.setRowHeight(tableHangHoa.getRowHeight() + 20);
-        tableHangHoa.setSelectionBackground(new Color(255, 255, 128));
-        tableHangHoa.setSelectionForeground(Color.BLACK);
-        JTableHeader tableHeader = tableHangHoa.getTableHeader();
+        tableKhoHang.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tableKhoHang.setGridColor(getBackground());
+        tableKhoHang.setRowHeight(tableKhoHang.getRowHeight() + 20);
+        tableKhoHang.setSelectionBackground(new Color(255, 255, 128));
+        tableKhoHang.setSelectionForeground(Color.BLACK);
+        JTableHeader tableHeader = tableKhoHang.getTableHeader();
         tableHeader.setBackground(new Color(0, 148, 224));
         tableHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
         tableHeader.setForeground(Color.WHITE);
         tableHeader.setPreferredSize(new Dimension(WIDTH, 30));
-        tableHangHoa.setColumnSelectionAllowed(false);
-        tableHangHoa.setName("tblThongTinNhanVien"); // NOI18N
-        pntblHangHoa.setViewportView(tableHangHoa);
-        tableHangHoa.getColumnModel().getSelectionModel()
+        tableKhoHang.setColumnSelectionAllowed(false);
+        tableKhoHang.setName("tblThongTinNhanVien"); // NOI18N
+        pntblHangHoa.setViewportView(tableKhoHang);
+        tableKhoHang.getColumnModel().getSelectionModel()
                 .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         pnThongTin.setBorder(BorderFactory.createTitledBorder("Thông tin chi tiết:"));
         pnThongTin.setToolTipText("Info of selected table object");
 
-        lblMaHangHoa.setText("Mã Sản Phẩm:");
-
-        lblTenHangHoa.setText("Tên Sản Phẩm:");
-
-        lblLoaiHang.setText("Loại hàng");
-
-        lblNhaCungCap.setText("Nhà cung cấp");
-
-        lblDonGia.setText("Đơn giá");
-
-        lblSoLuong.setText("Số lượng");
+        lblMaNhapHang.setText("Mã Nhập Hàng:");
+        lblMaSanPham.setText("Mã Sản Phẩm:");
+        lblTenSanPham.setText("Tên Sản Phẩm:");
+        lblMaNhanVien.setText("Mã Nhân Viên:");
+        lblTenNhanVien.setText("Tên Nhân Viên:");
+        lblThoiGianNhap.setText("Thời Gian Nhập:");
+        lblGiaNhap.setText("Giá Nhập Sản Phẩm:");
+        lblSoLuong.setText("Số Lượng Nhập:");
 
         GroupLayout pnThongTinLayout = new GroupLayout(pnThongTin);
         pnThongTin.setLayout(pnThongTinLayout);
@@ -155,32 +159,40 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 .createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(pnThongTinLayout.createSequentialGroup().addContainerGap()
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNhaCungCap, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblLoaiHang, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaNhapHang, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblDonGia, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblGiaNhap, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblThoiGianNhap, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaHangHoa,
+                                .addGroup(pnThongTinLayout.createSequentialGroup().addComponent(txtMaNhapHang,
                                         GroupLayout.PREFERRED_SIZE, 169,
                                         GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtThoiGianNhap, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtGiaNhap, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtSoLuong, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtDonGia, GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtTenNhanVien, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtTenHangHoa, GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtMaSanPham, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtLoaiHang, GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtTenSanPham, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtNhaCungCap, GroupLayout.DEFAULT_SIZE,
+                                .addComponent(txtMaNhanVien, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap()));
         pnThongTinLayout.setVerticalGroup(pnThongTinLayout
@@ -188,33 +200,45 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 .addGroup(pnThongTinLayout.createSequentialGroup().addContainerGap().addGroup(pnThongTinLayout
                                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                                 .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(txtMaNhapHang, GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblMaHangHoa, GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(lblMaNhapHang, GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtMaNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTenHangHoa, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(txtLoaiHang, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtTenNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblLoaiHang, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblTenNhanVien, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(txtNhaCungCap, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtThoiGianNhap, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblNhaCungCap, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblThoiGianNhap, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(txtDonGia, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(txtMaSanPham, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblDonGia, GroupLayout.PREFERRED_SIZE,
+                                .addComponent(lblMaSanPham, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(txtTenSanPham, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTenSanPham, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(txtGiaNhap, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblGiaNhap, GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnThongTinLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -227,10 +251,9 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
         pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
 
-        btnThem.setText("THÊM");
-        btnSua.setText("SỬA");
+        btnChon.setText("CHỌN SP");
+        btnNhap.setText("NHẬP");
         btnXoa.setText("XÓA");
-        btnChiTiet.setText("CHI TIẾT");
         btnSave.setText("LƯU");
         btnCancel.setText("HỦY");
         btnImport.setText("NHẬP FILE");
@@ -238,18 +261,15 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
 
         // Chức năng button
-        btnThem.setBackground(new Color(0, 148, 224));
-        btnThem.setForeground(Color.WHITE);
-        btnThem.setFocusPainted(false);
-        btnSua.setBackground(new Color(0, 148, 224));
-        btnSua.setForeground(Color.WHITE);
-        btnSua.setFocusPainted(false);
+        btnChon.setBackground(new Color(0, 148, 224));
+        btnChon.setForeground(Color.WHITE);
+        btnChon.setFocusPainted(false);
+        btnNhap.setBackground(new Color(0, 148, 224));
+        btnNhap.setForeground(Color.WHITE);
+        btnNhap.setFocusPainted(false);
         btnXoa.setBackground(new Color(0, 148, 224));
         btnXoa.setForeground(Color.WHITE);
         btnXoa.setFocusPainted(false);
-        btnChiTiet.setBackground(new Color(0, 148, 224));
-        btnChiTiet.setForeground(Color.WHITE);
-        btnChiTiet.setFocusPainted(false);
 
         // Excel button
         btnSave.setBackground(new Color(0, 148, 224));
@@ -271,12 +291,8 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
                         .addGap(48, 48, 48)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnThem)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSua)
-                        .addGap(48, 48, 48))
-                .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChiTiet)
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChon)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnNhap)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
                         .addGap(48, 48, 48)));
 
@@ -284,11 +300,8 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 .createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(pnChucNangLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnChucNangLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnThem).addComponent(btnSua))
+                                .addComponent(btnChon).addComponent(btnNhap).addComponent(btnXoa))
                         .addGap(5)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnChucNangLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnChiTiet).addComponent(btnXoa))
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(15)));
 
@@ -395,23 +408,26 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         pack();
 
         pntblHangHoa.setBorder(
-                BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "DANH SÁCH SẢN PHẨM: "));
-        lblMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtMaHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtTenHangHoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtLoaiHang.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblNhaCungCap.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtNhaCungCap.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblDonGia.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtDonGia.setFont(new Font("Tahoma", Font.BOLD, 12));
+                BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "LỊCH SỬ KHO HÀNG: "));
+        lblMaNhapHang.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtMaNhapHang.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblMaNhanVien.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtMaNhanVien.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblTenNhanVien.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTenNhanVien.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblThoiGianNhap.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtThoiGianNhap.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblSoLuong.setFont(new Font("Tahoma", Font.BOLD, 12));
         txtSoLuong.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnThem.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnSua.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblGiaNhap.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtGiaNhap.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnChon.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnNhap.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnChiTiet.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnImport.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnExport.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -419,28 +435,32 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
-        tableHangHoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        tableKhoHang.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        tableHangHoa.getColumnModel().getColumn(0).setPreferredWidth(20);
-        tableHangHoa.getColumnModel().getColumn(1).setPreferredWidth(165);
+        tableKhoHang.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tableKhoHang.getColumnModel().getColumn(1).setPreferredWidth(165);
 
-        txtMaHangHoa.setEditable(false);
+        txtMaNhapHang.setEditable(false);
+        txtMaNhanVien.setEditable(false);
+        txtTenNhanVien.setEditable(false);
+        txtThoiGianNhap.setEditable(false);
+        txtMaSanPham.setEditable(false);
+        txtTenSanPham.setEditable(false);
 
-        tableHangHoa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableHangHoa.setDefaultEditor(Object.class, null);
-        tableHangHoa.getTableHeader().setReorderingAllowed(false);
+        tableKhoHang.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableKhoHang.setDefaultEditor(Object.class, null);
+        tableKhoHang.getTableHeader().setReorderingAllowed(false);
 
-        btnThem.addActionListener(this);
-        btnSua.addActionListener(this);
+        btnChon.addActionListener(this);
+        btnNhap.addActionListener(this);
         btnXoa.addActionListener(this);
         btnTim.addActionListener(this);
-        btnChiTiet.addActionListener(this);
         btnExport.addActionListener(this);
         btnImport.addActionListener(this);
-        tableHangHoa.addMouseListener(this);
+        tableKhoHang.addMouseListener(this);
 
         readDatabaseToTable();
         GUI.disableWarning();
@@ -448,82 +468,20 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         return panel;
     }// </editor-fold>//GEN-END:initComponents
 
-    private boolean validInput() {
-        String tenLk = txtTenHangHoa.getText();
-        String loaiHang = txtLoaiHang.getText();
-        String nhaCC = txtNhaCungCap.getText();
-        String gialk = txtDonGia.getText();
-        String soLuong = txtSoLuong.getText();
-        if (tenLk.trim().length() > 0) {
-            if (!(tenLk.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
-                JOptionPane.showMessageDialog(this, "Tên Sản Phẩm không chứa ký tự đặc biệt", "Lỗi",
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Tên Sản Phẩm không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (loaiHang.trim().length() > 0) {
-            if (!(tenLk.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
-                JOptionPane.showMessageDialog(this, "Tên loại hàng không chứa ký tự đặc biệt", "Lỗi",
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Tên loại hàng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (nhaCC.trim().length() > 0) {
-            if (!(tenLk.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
-                JOptionPane.showMessageDialog(this, "Tên nhà cung cấp không chứa ký tự đặc biệt", "Lỗi",
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Tên cung cấp không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (gialk.trim().length() > 0) {
-            try {
-                double x = Double.parseDouble(gialk);
-                if (x <= 0) {
-                    JOptionPane.showMessageDialog(this, "Giá Sản Phẩm phải lớn hơn 0", "Lỗi",
-                            JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Error: Giá Sản Phẩm phải nhập số", "Lỗi",
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Giá Sản Phẩm không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (soLuong.trim().length() > 0) {
-            try {
-
-                int x = Integer.parseInt(soLuong);
-                if (x < 0) {
-                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Error: Số lượng phải nhập số", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Số lượng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if (o.equals(btnThem)) {
+        if(o.equals(btnChon)){
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    openFrameSelectProduct();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if (o.equals(btnNhap)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
@@ -540,46 +498,21 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 }
             }
         }
-        if (o.equals(btnSua)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
         if (o.equals(btnXoa)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (deleteRequest()) {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaNhapHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
-                        emptyTextField();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaHangHoa.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaNhapHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-            }
-        }
-        if (o.equals(btnChiTiet)) {
-            try {
-                new FrmChiTietSanPham(getRequest());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
             }
         }
         if (o.equals(btnExport)) {
@@ -608,17 +541,17 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int row = tableHangHoa.getSelectedRow();
-        txtMaHangHoa.setText(modelSanPham.getValueAt(row, 0).toString().trim());
-        txtTenHangHoa.setText(modelSanPham.getValueAt(row, 1).toString().trim());
-        txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString().trim());
-        txtNhaCungCap.setText(modelSanPham.getValueAt(row, 3).toString().trim());
+        int row = tableKhoHang.getSelectedRow();
+        txtMaNhapHang.setText(modelSanPham.getValueAt(row, 0).toString().trim());
+        txtMaSanPham.setText(modelSanPham.getValueAt(row, 1).toString().trim());
+        txtTenSanPham.setText(modelSanPham.getValueAt(row, 2).toString().trim());
+        txtMaNhanVien.setText(modelSanPham.getValueAt(row, 3).toString().trim());
         String tien[] = modelSanPham.getValueAt(row, 4).toString().split(",");
         String donGia = "";
         for (int i = 0; i < tien.length; i++)
             donGia += tien[i];
-        txtDonGia.setText(donGia);
-        txtSoLuong.setText(modelSanPham.getValueAt(row, 5).toString().trim());
+        txtTenNhanVien.setText(donGia);
+        txtThoiGianNhap.setText(modelSanPham.getValueAt(row, 5).toString().trim());
     }
 
     @Override
@@ -654,53 +587,59 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         }
     }
 
-    private void emptyTextField() {
-        txtMaHangHoa.setText(null);
-        txtTenHangHoa.setText(null);
-        txtDonGia.setText(null);
+    private static void emptyTextField() {
+        txtMaNhapHang.setText(null);
+        txtMaNhanVien.setText(null);
+        txtTenNhanVien.setText(null);
+        txtThoiGianNhap.setText(null);
+        txtMaSanPham.setText(null);
+        txtTenSanPham.setText(null);
+        txtGiaNhap.setText(null);
         txtSoLuong.setText(null);
-        txtNhaCungCap.setText(null);
-        txtLoaiHang.setText(null);
-
     }
 
     public Product getRequest() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        BufferedReader rd = ProductService.getRequest(tableName, txtMaHangHoa.getText());
+        BufferedReader rd = ProductService.getRequest(tableName, txtMaNhapHang.getText());
         return mapper.readValue(rd, Product.class);
     }
 
     public boolean postRequest() throws IOException {
-        Product p = new Product();
-        p.setName(txtTenHangHoa.getText());
-        p.setType(txtLoaiHang.getText());
-        p.setBrand(txtNhaCungCap.getText());
-        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
-        p.setPrice(Double.parseDouble(txtDonGia.getText()));
-        return ProductService.postRequest(p);
-    }
-
-    public boolean putRequest() throws IOException {
-        Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
-        p.setName(txtTenHangHoa.getText());
-        p.setType(txtLoaiHang.getText());
-        p.setBrand(txtNhaCungCap.getText());
-        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
-        p.setPrice(Double.parseDouble(txtDonGia.getText()));
-        return ProductService.putRequest(p);
+//        Product p = new Product();
+//        p.setName(txtMaSanPham.getText());
+//        p.setType(txtTenSanPham.getText());
+//        p.setBrand(txtMaNhanVien.getText());
+//        p.setQuantity(Integer.parseInt(txtThoiGianNhap.getText()));
+//        p.setPrice(Double.parseDouble(txtTenNhanVien.getText()));
+//        return ProductService.postRequest(p);
+        return false;
     }
 
     public boolean deleteRequest() throws IOException {
-        Product p = new Product();
-        p.setId(Long.parseLong(txtMaHangHoa.getText()));
-        return ProductService.deleteRequest(p);
+//        Product p = new Product();
+//        p.setId(Long.parseLong(txtMaNhapHang.getText()));
+//        return ProductService.deleteRequest(p);
+        return false;
     }
 
     public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
+        DefaultTableModel dm = (DefaultTableModel) tableKhoHang.getModel();
         dm.setRowCount(0);
     }
+
+    public void openFrameSelectProduct() throws IOException {
+        new FrmChonSanPham();
+    }
+
+    public static void setTextFieldAfterSelectingProduct(String productId, String productName){
+        emptyTextField();
+        EmployeeResponseModel employeeResponseModel = GUI.getEmployeeInfo();
+        txtMaNhanVien.setText(employeeResponseModel.getId().toString());
+        txtTenNhanVien.setText(employeeResponseModel.getName());
+        txtMaSanPham.setText(productId);
+        txtTenSanPham.setText(productName);
+    }
+
     public boolean exportExcel(String filePath) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filePath);
@@ -769,7 +708,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 cell.setCellStyle(styleHeader);
             }
 
-            if (tableHangHoa.getRowCount() == 0) {
+            if (tableKhoHang.getRowCount() == 0) {
                 return false;
             }
 
@@ -785,7 +724,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
             // Ghi dữ liệu vào bảng
             int STT = 0;
-            for (int i = 0; i < tableHangHoa.getRowCount(); i++) {
+            for (int i = 0; i < tableKhoHang.getRowCount(); i++) {
                 row = worksheet.createRow(5 + i);
                 for (int j = 0; j < header.length; j++) {
                     cell = row.createCell(j + 1);
@@ -793,15 +732,15 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                         cell.setCellValue(STT + 1);
                         STT++;
                     } else {
-                        if (tableHangHoa.getValueAt(i, j - 1) != null) {
+                        if (tableKhoHang.getValueAt(i, j - 1) != null) {
                             if (j == header.length - 2) {
-                                String luong[] = tableHangHoa.getValueAt(i, j - 1).toString().split(",");
+                                String luong[] = tableKhoHang.getValueAt(i, j - 1).toString().split(",");
                                 String tienLuong = "";
                                 for (int t = 0; t < luong.length; t++)
                                     tienLuong += luong[t];
                                 cell.setCellValue(Double.parseDouble(tienLuong));
                             } else
-                                cell.setCellValue(tableHangHoa.getValueAt(i, j - 1).toString().trim());
+                                cell.setCellValue(tableKhoHang.getValueAt(i, j - 1).toString().trim());
                         }
                     }
                     cell.setCellStyle(styleRow);
