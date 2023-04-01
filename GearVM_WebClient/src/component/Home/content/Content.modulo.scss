@@ -316,7 +316,8 @@
 .imgTop figcaption {
   position: absolute;
   top: 50%;
-  margin: 0 40px;
+  right: 50%;
+  // margin: 0 40px;
   padding: 10px 15px;
   -webkit-transform: translate(0%, -50%);
   transform: translate(0%, -50%);

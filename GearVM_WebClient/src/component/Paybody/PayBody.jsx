@@ -17,6 +17,7 @@ import { url } from "../../API/api";
 import { currentCustomer } from "../../redux/slices/AuthSlices";
 import Table from "react-bootstrap/Table";
 import CustomButon from "../Custom/CustomButon/CustomButon";
+import { Button } from "antd";
 
 const cx = classNames.bind(styles);
 const PayBody = ({ name }) => {
@@ -94,7 +95,7 @@ const PayBody = ({ name }) => {
       <div className={cx("wrapPayBody")}>
         <div className={cx("wrapPayBody_right")}>
           <div className={cx("wrapPayBody_right_infoProduct")}>
-            <h5>Thông tin đơn hàng</h5>
+            <h5 className={cx("Paytxt")}>Thông tin đơn hàng</h5>
             <div className={cx("wrapPayBody_right_infoProduct_wrap")}>
               {/* {cart.cartItems.map((item) => (
                 <ItemCard key={item.id} data={item} />
@@ -125,10 +126,20 @@ const PayBody = ({ name }) => {
               ))}
             </div>
           </div>
-          {/* <div className={cx("wrapPayBody_right_address")}>
-            <h5>Mã giảm giá</h5>
-            <Input placeholder="nhập mã giảm giá" />
-          </div> */}
+          <div className={cx("wrapPayBody_right_address")}>
+            <h5 className={cx("Paytxt")}>Mã giảm giá</h5>
+            <div className={cx("discout")}>
+              <label className={cx("input")}>
+                <input
+                  className={cx("input__field")}
+                  type="text"
+                  placeholder=" "
+                />
+                <span className={cx("input__label")}>Nhập mã khuyến mãi</span>
+              </label>
+              <div className={cx("btn", "btn_Use")}>Áp Dụng</div>
+            </div>
+          </div>
           <div className={cx("wrapPayBody_right_Sumpay_content")}>
             <span className={cx("wrapPayBody_right_Sumpay_text")}>
               Tổng tiền:
@@ -141,7 +152,7 @@ const PayBody = ({ name }) => {
             </span>
           </div>
           <div className={cx("wrapPayBody_right_metodpay")}>
-            <h5>Phương thức thanh toán</h5>
+            <h5 className={cx("Paytxt")}>Phương thức thanh toán</h5>
             <div className={cx("wrapPayBody_right_metodpay_wrapbtn")}>
               {/* <div
                 className={cx("wrapPayBody_right_address_btn")}

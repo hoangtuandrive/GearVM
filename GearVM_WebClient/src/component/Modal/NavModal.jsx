@@ -99,7 +99,7 @@ const NavModal = ({ data }) => {
               onClick={() => handleChangePage(item)}
             >
               <FontAwesomeIcon icon={item.icon} className={cx("Navtext")} />
-
+ 
               <h3 className={cx("Navtext")}>{item.name}</h3>
             </div>
             // </Tippy>

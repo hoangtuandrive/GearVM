@@ -12,7 +12,6 @@ const OrderManger = () => {
     <div className={cx("wrapOrderManager")}>
       <Header />
       <Order />
-
       <Footer />
     </div>
   );

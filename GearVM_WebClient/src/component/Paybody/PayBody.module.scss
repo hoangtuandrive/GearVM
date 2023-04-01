@@ -90,8 +90,77 @@
 .info-order-rep {
   display: none;
 }
+.wrapListCart_Content_tr_text {
+  font-weight: bold;
+}
+.Paytxt {
+  font-weight: bold;
+}
 .wrapPayBody_right_infoProduct_wrap_rep {
   display: none;
+}
+.discout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn_Use {
+  background-color: red;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: #ee5435;
+  border-color: #ee5435;
+  border-radius: 5px;
+}
+.btn_Use:hover {
+  color: #ffffff;
+  background-color: #ff2b00;
+  border-color: #ff2b00;
+  border-radius: 5px;
+}
+.input {
+  position: relative;
+  margin-top: 15px;
+  width: 90%;
+  &__label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+    margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * 0.5);
+
+    white-space: nowrap;
+    transform: translate(0, 0);
+    transform-origin: 0 0;
+    background: var(--color-background);
+    transition: transform 120ms ease-in;
+    // font-weight: bold;
+    color: gray;
+    line-height: 1.2;
+  }
+  &__field {
+    box-sizing: border-box;
+    display: block;
+    width: 70%;
+    border: 3px solid currentColor;
+    padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+    color: currentColor;
+    background: transparent;
+    border-radius: var(--size-radius);
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      & + .input__label {
+        transform: translate(0.25rem, -65%) scale(0.8);
+        color: var(--color-accent);
+        font-weight: bold;
+      }
+    }
+  }
 }
 @media screen and (max-width: 768px) {
   .wrapPayBody {
