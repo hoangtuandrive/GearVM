@@ -146,12 +146,29 @@ public class OrderService {
 
     public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
         Order order = orderRepository.findById(orderId).get();
+        // Temp orderStatus to compare
+        OrderStatus oldOrderStatus = order.getOrderStatus();
 
         Employee employee = employeeService.getEmployee(updateOrderStatusAndEmployee.getEmployee().getId());
         order.setEmployee(employee);
-
         order.setOrderStatus(updateOrderStatusAndEmployee.getOrderStatus());
         order.setUpdatedDate(LocalDateTime.now());
+
+        // Reduce quantity if order is confirmed
+        OrderStatus newOrderStatus = order.getOrderStatus();
+        if (newOrderStatus == OrderStatus.SHIPPING)
+            for (OrderItem orderItem : order.getOrderItems()) {
+                productService.reduceQuantity(orderItem.getProduct(), orderItem.getQuantity());
+            }
+
+        // Add quantity if order is from confirmed to something else
+        if ((oldOrderStatus == OrderStatus.SHIPPING || oldOrderStatus == OrderStatus.SHIP_SUCCESS)
+                && (newOrderStatus != OrderStatus.SHIPPING || newOrderStatus != OrderStatus.SHIP_SUCCESS)) {
+            for (OrderItem orderItem : order.getOrderItems()) {
+                productService.addQuantity(orderItem.getProduct(), orderItem.getQuantity());
+            }
+        }
+
         Order orderDb = orderRepository.save(order);
         return modelMapper.map(orderDb, GetOrderResponse.class);
     }

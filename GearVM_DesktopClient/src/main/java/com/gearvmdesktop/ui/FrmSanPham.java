@@ -39,7 +39,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     private String newProductId;
     private static final String tableName = "products/";
     private static JComboBox<String> cmbTim;
-    private static JTable tableHangHoa;
+    private static JTable tableSanPham;
     private static DefaultTableModel modelSanPham;
     private JComboBox<String> cmbChon;
     private JButton btnTim;
@@ -72,7 +72,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     public JPanel createPanelSanPham() throws IOException {
         FlatLightLaf.setup();
         pntblHangHoa = new javax.swing.JScrollPane();
-        tableHangHoa = new JTable();
+        tableSanPham = new JTable();
         pnlTimKiem = new JPanel();
         pnThongTin = new JPanel();
         lblMaSanPham = new java.awt.Label();
@@ -104,7 +104,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
         String[] header = {" Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         modelSanPham = new DefaultTableModel(header, 0);
-        tableHangHoa = new JTable(modelSanPham) {
+        tableSanPham = new JTable(modelSanPham) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 Color color1 = new Color(219, 243, 255);
@@ -122,20 +122,21 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 return false;
             }
         };
-        tableHangHoa.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        tableHangHoa.setGridColor(getBackground());
-        tableHangHoa.setRowHeight(tableHangHoa.getRowHeight() + 20);
-        tableHangHoa.setSelectionBackground(new Color(255, 255, 128));
-        tableHangHoa.setSelectionForeground(Color.BLACK);
-        JTableHeader tableHeader = tableHangHoa.getTableHeader();
+
+        tableSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tableSanPham.setGridColor(getBackground());
+        tableSanPham.setRowHeight(tableSanPham.getRowHeight() + 20);
+        tableSanPham.setSelectionBackground(new Color(255, 255, 128));
+        tableSanPham.setSelectionForeground(Color.BLACK);
+        JTableHeader tableHeader = tableSanPham.getTableHeader();
         tableHeader.setBackground(new Color(0, 148, 224));
         tableHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
         tableHeader.setForeground(Color.WHITE);
         tableHeader.setPreferredSize(new Dimension(WIDTH, 30));
-        tableHangHoa.setColumnSelectionAllowed(false);
-        tableHangHoa.setName("tblThongTinNhanVien"); // NOI18N
-        pntblHangHoa.setViewportView(tableHangHoa);
-        tableHangHoa.getColumnModel().getSelectionModel()
+        tableSanPham.setColumnSelectionAllowed(false);
+        tableSanPham.setName("tblThongTinNhanVien"); // NOI18N
+        pntblHangHoa.setViewportView(tableSanPham);
+        tableSanPham.getColumnModel().getSelectionModel()
                 .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         pnThongTin.setBorder(BorderFactory.createTitledBorder("Thông tin chi tiết:"));
@@ -423,19 +424,19 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
-        tableHangHoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        tableSanPham.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        tableHangHoa.getColumnModel().getColumn(0).setPreferredWidth(20);
-        tableHangHoa.getColumnModel().getColumn(1).setPreferredWidth(165);
+        tableSanPham.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tableSanPham.getColumnModel().getColumn(1).setPreferredWidth(165);
 
         txtMaSanPham.setEditable(false);
 
-        tableHangHoa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableHangHoa.setDefaultEditor(Object.class, null);
-        tableHangHoa.getTableHeader().setReorderingAllowed(false);
+        tableSanPham.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableSanPham.setDefaultEditor(Object.class, null);
+        tableSanPham.getTableHeader().setReorderingAllowed(false);
 
         btnThem.addActionListener(this);
         btnSua.addActionListener(this);
@@ -444,7 +445,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnChiTiet.addActionListener(this);
         btnExport.addActionListener(this);
         btnImport.addActionListener(this);
-        tableHangHoa.addMouseListener(this);
+        tableSanPham.addMouseListener(this);
 
         readDatabaseToTable();
         GUI.disableWarning();
@@ -615,7 +616,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int row = tableHangHoa.getSelectedRow();
+        int row = tableSanPham.getSelectedRow();
         txtMaSanPham.setText(modelSanPham.getValueAt(row, 0).toString().trim());
         txtTenSanPham.setText(modelSanPham.getValueAt(row, 1).toString().trim());
         txtLoaiHang.setText(modelSanPham.getValueAt(row, 2).toString().trim());
@@ -710,7 +711,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     public static void emptyTable() {
-        DefaultTableModel dm = (DefaultTableModel) tableHangHoa.getModel();
+        DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
         dm.setRowCount(0);
     }
     public boolean exportExcel(String filePath) {
@@ -781,7 +782,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 cell.setCellStyle(styleHeader);
             }
 
-            if (tableHangHoa.getRowCount() == 0) {
+            if (tableSanPham.getRowCount() == 0) {
                 return false;
             }
 
@@ -797,7 +798,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
             // Ghi dữ liệu vào bảng
             int STT = 0;
-            for (int i = 0; i < tableHangHoa.getRowCount(); i++) {
+            for (int i = 0; i < tableSanPham.getRowCount(); i++) {
                 row = worksheet.createRow(5 + i);
                 for (int j = 0; j < header.length; j++) {
                     cell = row.createCell(j + 1);
@@ -805,15 +806,15 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         cell.setCellValue(STT + 1);
                         STT++;
                     } else {
-                        if (tableHangHoa.getValueAt(i, j - 1) != null) {
+                        if (tableSanPham.getValueAt(i, j - 1) != null) {
                             if (j == header.length - 2) {
-                                String luong[] = tableHangHoa.getValueAt(i, j - 1).toString().split(",");
+                                String luong[] = tableSanPham.getValueAt(i, j - 1).toString().split(",");
                                 String tienLuong = "";
                                 for (int t = 0; t < luong.length; t++)
                                     tienLuong += luong[t];
                                 cell.setCellValue(Double.parseDouble(tienLuong));
                             } else
-                                cell.setCellValue(tableHangHoa.getValueAt(i, j - 1).toString().trim());
+                                cell.setCellValue(tableSanPham.getValueAt(i, j - 1).toString().trim());
                         }
                     }
                     cell.setCellStyle(styleRow);

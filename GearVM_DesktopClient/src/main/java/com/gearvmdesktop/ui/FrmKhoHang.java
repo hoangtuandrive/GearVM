@@ -112,7 +112,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        String[] header = {"Mã Nhập Hàng", "Mã Nhân Viên Nhập", "Tên Người Nhân Viên Nhập", "Thời Gian Nhập", "Mã Sản Phẩm", "Tên Sản Phẩm",  "Giá Nhập", "Số Lượng", "Chi Tiêu"};
+        String[] header = {"Mã Nhập Hàng", "Mã NV", "Tên Nhân Viên Nhập", "Thời Gian Nhập", "Mã SP", "Tên Sản Phẩm",  "Giá Nhập", "Số Lượng", "Chi Tiêu"};
         modelKhoHang = new DefaultTableModel(header, 0);
         tableKhoHang = new JTable(modelKhoHang) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -459,9 +459,6 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
-
-        tableKhoHang.getColumnModel().getColumn(0).setPreferredWidth(20);
-        tableKhoHang.getColumnModel().getColumn(1).setPreferredWidth(165);
 
         txtMaNhapHang.setEditable(false);
         txtMaNhanVien.setEditable(false);
