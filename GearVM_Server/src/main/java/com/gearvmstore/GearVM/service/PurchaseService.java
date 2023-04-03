@@ -4,13 +4,15 @@ import com.gearvmstore.GearVM.model.Employee;
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.model.Purchase;
 import com.gearvmstore.GearVM.model.dto.purchase.CreatePurchase;
+import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import com.gearvmstore.GearVM.model.response.GetPurchaseListResponse;
+import com.gearvmstore.GearVM.model.response.ProductResponseModel;
 import com.gearvmstore.GearVM.repository.PurchaseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,11 +39,22 @@ public class PurchaseService {
         purchase.setCreatedDate(LocalDateTime.now());
         purchase.setPrice(createPurchase.getPrice());
         purchase.setQuantity(createPurchase.getQuantity());
-        return purchaseRepository.save(purchase);
+
+        if (productService.addQuantity(product, createPurchase.getQuantity()) != null)
+            return purchaseRepository.save(purchase);
+        return null;
     }
 
     public List<GetPurchaseListResponse> getPurchases() {
         List<Purchase> purchaseList = purchaseRepository.findAll();
-        return Arrays.asList(modelMapper.map(purchaseList, GetPurchaseListResponse[].class));
+        List<GetPurchaseListResponse> getPurchaseListResponseList = new ArrayList<>();
+
+        for (Purchase purchase : purchaseList) {
+            GetPurchaseListResponse getPurchaseListResponse = modelMapper.map(purchase, GetPurchaseListResponse.class);
+            getPurchaseListResponse.setEmployeeResponseModel(modelMapper.map(purchase.getEmployee(), EmployeeResponseModel.class));
+            getPurchaseListResponse.setProductResponseModel(modelMapper.map(purchase.getProduct(), ProductResponseModel.class));
+            getPurchaseListResponseList.add(getPurchaseListResponse);
+        }
+        return getPurchaseListResponseList;
     }
 }

@@ -120,7 +120,7 @@ public class OrderService {
     public List<GetOrderListResponse> getOrders() {
         List<Order> orderList = orderRepository.findAll();
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
-//        List<GetOrderListResponse> getOrderListResponseList = Arrays.asList(modelMapper.map(orderList, GetOrderListResponse[].class));
+
         for (Order order : orderList) {
             GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
             getOrderListResponseList.add(orderListResponse);
@@ -134,15 +134,14 @@ public class OrderService {
         return getOrderResponse;
     }
 
-    //TODO: test
-    public Order addPaymentLinkToOrder(String paymentLink, Long orderId) {
+    public void addPaymentLinkToOrder(String paymentLink, Long orderId) {
         Order order = orderRepository.findById(orderId).get();
 
         Payment payment = order.getPayment();
         payment.setPaymentLink(paymentLink);
         paymentRepository.save(payment);
 
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 
     public GetOrderResponse updateOrderStatusAndEmployee(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {

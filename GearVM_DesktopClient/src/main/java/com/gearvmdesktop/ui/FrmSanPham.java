@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
+    private String newProductId;
     private static final String tableName = "products/";
     private static JComboBox<String> cmbTim;
     private static JTable tableHangHoa;
@@ -531,9 +532,12 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (postRequest()) {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        String productName = txtTenSanPham.getText();
                         readDatabaseToTable();
+                        int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if(continueResult == JOptionPane.YES_OPTION){
+                            new FrmThemKhoHang(newProductId, productName);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
@@ -644,7 +648,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
     }
 
-    public void readDatabaseToTable() throws IOException {
+    public static void readDatabaseToTable() throws IOException {
         emptyTable();
         ObjectMapper mapper = new ObjectMapper();
         // Get all products
@@ -674,13 +678,18 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     }
 
     public boolean postRequest() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
         Product p = new Product();
         p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
-        return ProductService.postRequest(p);
+        BufferedReader rd = ProductService.postRequest(p);
+        Product product = mapper.readValue(rd, Product.class);
+        newProductId = product.getId().toString();
+        if(newProductId == null) return false;
+        return true;
     }
 
     public boolean putRequest() throws IOException {

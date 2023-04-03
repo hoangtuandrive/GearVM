@@ -741,7 +741,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         else return Role.MANAGER;
     }
 
-    public void readDatabaseToTable() throws IOException {
+    public static void readDatabaseToTable() throws IOException {
         emptyTable();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DecimalFormat df = new DecimalFormat("#,##0");

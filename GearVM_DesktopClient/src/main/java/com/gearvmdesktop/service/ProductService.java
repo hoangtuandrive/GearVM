@@ -11,13 +11,17 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 public class ProductService extends ApiService {
     private static final String url = staticUrl + "/products/";
 
-    public static boolean postRequest(Product p) throws IOException {
+    public static BufferedReader postRequest(Product p) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost request = new HttpPost(url);
         JSONObject json = new JSONObject();
@@ -30,7 +34,7 @@ public class ProductService extends ApiService {
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
         HttpResponse response = client.execute(request);
-        return response.getStatusLine().getStatusCode() == 200;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
     public static boolean putRequest(Product p) throws IOException {

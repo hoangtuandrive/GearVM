@@ -158,7 +158,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         }
     }
 
-    public void readDatabaseToTable() throws IOException {
+    public static void readDatabaseToTable() throws IOException {
         emptyTable();
 
         ObjectMapper mapper = new ObjectMapper();

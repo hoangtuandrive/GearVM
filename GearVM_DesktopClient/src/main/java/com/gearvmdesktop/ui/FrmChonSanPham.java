@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FrmChonSanPham extends JFrame implements ActionListener, MouseListener {
+    private String newProductId;
     private static final String tableName = "products/";
     private static JComboBox<String> cmbTim;
     private static JTable tableSanPham;
@@ -97,8 +98,6 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnExport = new JButton();
         btnSave = new JButton();
         btnCancel = new JButton();
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         String[] header = {" Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         modelSanPham = new DefaultTableModel(header, 0);
@@ -678,13 +677,18 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
     }
 
     public boolean postRequest() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
         Product p = new Product();
         p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
         p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
-        return ProductService.postRequest(p);
+        BufferedReader rd = ProductService.postRequest(p);
+        Product product = mapper.readValue(rd, Product.class);
+        newProductId = product.getId().toString();
+        if(newProductId == null) return false;
+        return true;
     }
 
     public boolean putRequest() throws IOException {

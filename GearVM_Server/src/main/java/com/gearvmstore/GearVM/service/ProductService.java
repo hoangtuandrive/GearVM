@@ -71,4 +71,14 @@ public class ProductService {
         p.setDescription(description);
         return productRepository.save(p);
     }
+
+    public Product addQuantity(Product p, int quantityToAdd) {
+        p.setQuantity(p.getQuantity() + quantityToAdd);
+        return productRepository.save(p);
+    }
+
+    public Product reduceQuantity(Product p, int quantityToReduce) {
+        p.setQuantity(p.getQuantity() - quantityToReduce);
+        return productRepository.save(p);
+    }
 }

@@ -607,7 +607,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         dm.setRowCount(0);
     }
 
-    public void readDatabaseToTable() throws IOException {
+    public static void readDatabaseToTable() throws IOException {
         emptyTable();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         ObjectMapper mapper = new ObjectMapper();

@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class FrmKhoHang extends JFrame implements ActionListener, MouseListener {
+public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListener {
     private static final String tableName = "purchases/";
     private static JComboBox<String> cmbTim;
     private static JTable tableKhoHang;
@@ -74,7 +74,19 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
     private Label lblChiTieu;
     private static JTextField txtChiTieu;
 
-    public JPanel createPanelKhoHang() throws IOException {
+    public FrmThemKhoHang(String productId, String productName) throws IOException {
+        super("Kho Hàng");
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        setMaximumSize(DimMax);
+        setExtendedState(MAXIMIZED_BOTH);
+
+        JPanel panel = createPanelThemKhoHang(productId, productName);
+        setContentPane(panel);
+
+        setVisible(true);
+    }
+
+    public JPanel createPanelThemKhoHang(String productId, String productName) throws IOException {
         FlatLightLaf.setup();
         pntblHangHoa = new JScrollPane();
         tableKhoHang = new JTable();
@@ -109,8 +121,6 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         btnExport = new JButton();
         btnSave = new JButton();
         btnCancel = new JButton();
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         String[] header = {"Mã Nhập Hàng", "Mã Nhân Viên Nhập", "Tên Người Nhân Viên Nhập", "Thời Gian Nhập", "Mã Sản Phẩm", "Tên Sản Phẩm",  "Giá Nhập", "Số Lượng", "Chi Tiêu"};
         modelKhoHang = new DefaultTableModel(header, 0);
@@ -486,6 +496,8 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         readDatabaseToTable();
         GUI.disableWarning();
 
+        setTextFieldAfterSelectingProduct(productId, productName);
+
         return panel;
     }// </editor-fold>//GEN-END:initComponents
 
@@ -509,6 +521,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                     if (postRequest()) {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        readDatabaseToTable();
                         GUI.readAllDatabaseToTable();
                     } else {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
@@ -598,7 +611,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
     }
 
-    public static void readDatabaseToTable() throws IOException {
+    public void readDatabaseToTable() throws IOException {
         emptyTable();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

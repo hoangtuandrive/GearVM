@@ -293,4 +293,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
             // ignore
         }
     }
+
+    public static void readAllDatabaseToTable() throws IOException {
+        FrmDonHang.readDatabaseToTable();
+        FrmKhachHang.readDatabaseToTable();
+        FrmNhanVien.readDatabaseToTable();
+        FrmSanPham.readDatabaseToTable();
+        FrmKhoHang.readDatabaseToTable();
+    }
 }
