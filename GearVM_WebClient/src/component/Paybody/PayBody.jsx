@@ -57,6 +57,11 @@ const PayBody = ({ name }) => {
   //   navigate("/payment", { replace: true });
   // };
   // console.log(cartFilter);
+
+  const handlePayOffline = () => {
+    navigate("/payOffline", { replace: true });
+  };
+
   const handlePay = (e) => {
     dispatch(currentCustomer());
     let orderItems = [];
@@ -169,7 +174,7 @@ const PayBody = ({ name }) => {
 
               <div>
                 <CustomButon
-                  Click={handlePay}
+                  Click={handlePayOffline}
                   name="Thanh toán khi nhận hàng"
                 />
 

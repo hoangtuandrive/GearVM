@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Slider } from "antd";
+import { Slider, Tooltip } from "antd";
 import styles from "./CatalogProduct.module.scss";
 import classNames from "classnames/bind";
 import ItemProduct from "../../itemProduct/ItemProduct";
@@ -134,16 +134,17 @@ const CatalogProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
 
-  const [minValue, set_minValue] = useState(25);
-  const [maxValue, set_maxValue] = useState(75);
-  const handleInput = (e) => {
-    set_minValue(e.minValue);
-    set_maxValue(e.maxValue);
-  };
+  const [minValue, set_minValue] = useState(0);
+  const [maxValue, set_maxValue] = useState(100);
+  // const handleInput = (e) => {
+  //   set_minValue(e.minValue);
+  //   set_maxValue(e.maxValue);
+  // };
 
   const [filter, setFilter] = useState(initFilter);
 
   const filterSelect = (type, checked, item) => {
+    console.log(checked);
     if (checked) {
       switch (type) {
         case "COLOR":
@@ -232,6 +233,11 @@ const CatalogProduct = () => {
     console.log(e.target.value);
   };
 
+  const handleChangePrice = (e) => {
+    set_minValue(e[0]);
+    set_maxValue(e[1]);
+  };
+
   const updateProducts = useCallback(() => {
     let temp = productList;
     if (filter.color.length > 0) {
@@ -273,7 +279,7 @@ const CatalogProduct = () => {
       fetchProduct(productUrl);
     } else {
       const productUrl =
-        "http://localhost:8080/api/products?pageNumber=0&pageSize=24";
+        "http://localhost:8080/api/products?pageNumber=0&pageSize=1";
 
       fetchProduct(productUrl);
     }
@@ -346,26 +352,47 @@ const CatalogProduct = () => {
             </div>
           </div>
           <div className="gach"></div>
-          <div>
+          <div className={cx("wrapCatalogProduct_fillter_Price")}>
+            <h6 className={cx("txtWrap_Head")}>Thương Hiệu</h6>
+            <div className={cx("bodyPrice")}>
+              <p className={cx("bodyPrice_content")}>
+                {" "}
+                {new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(minValue * 1000000)}
+              </p>
+              <div className={cx("bodyPrice_content")}>
+                <p>
+                  {" "}
+                  {new Intl.NumberFormat("de-DE", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(maxValue * 1000000)}
+                </p>
+              </div>
+            </div>
             <Slider
-              range={{
-                draggableTrack: true,
-              }}
+              autoAdjustOverflow={true}
+              tooltip={{ open: false }}
+              range
               defaultValue={[0, 100]}
+              onChange={handleChangePrice}
+              className={cx("changePrice")}
             />
           </div>
         </div>
-        <div className={cx("wrapCatalogProduct_content")}>
-          <Container>
-            <Row lg={4} md={3} sm={2}>
-              {products.map((item, index) => (
-                <Col key={item.id}>
-                  <ItemProduct data={item} />
-                </Col>
-              ))}
-            </Row>
-          </Container>
-        </div>
+        {/* <div className={cx("wrapCatalogProduct_content")}> */}
+        <Container>
+          <Row lg={4 | "auto"} md={3} sm={2}>
+            {products.map((item, index) => (
+              <Col key={item.id}>
+                <ItemProduct data={item} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+        {/* </div> */}
       </div>
       <div className={cx("pagination")}>
         <CustomPagination

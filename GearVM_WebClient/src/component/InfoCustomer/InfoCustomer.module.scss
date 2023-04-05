@@ -24,11 +24,14 @@
 .input {
   position: relative;
   margin-top: 15px;
+  width: 90%;
+
   &__label {
     position: absolute;
     left: 0;
     top: 0;
     padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+
     margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * 0.5);
 
     white-space: nowrap;
@@ -60,7 +63,13 @@
     }
   }
 }
-
+.input__label_improtant {
+  position: absolute;
+  // right: 240px;
+  left: -10px;
+  top: 0;
+  color: red;
+}
 .Wrap_address {
   background-color: white;
   border-radius: 10px;
@@ -73,4 +82,52 @@
   flex-direction: column;
   justify-content: space-around;
   //   align-items: center;
+}
+.Paytxt {
+  font-weight: bold;
+}
+@media screen and (max-width: 768px) {
+  .wrapPayBody {
+    margin-top: 100px;
+  }
+  .info-order-rep {
+    display: block;
+
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  .wrapPayBody_left {
+    display: none;
+  }
+  .wrapPayBody_right_Sumpay {
+    margin-top: 10px;
+  }
+  .container {
+    width: 700px;
+  }
+  .wrapPayBody_right_infoProduct_wrap_rep {
+    display: block;
+  }
+  .wrapPayBody_right_infoProduct_wrap {
+    display: none;
+  }
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: 700px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 999px) {
+  .wrapPayBody {
+    margin-top: 100px;
+  }
+  .wrapPayBody_left {
+    width: 60%;
+  }
+}
+@media screen and (min-width: 999px) and (max-width: 1400px) {
+  .wrapPayBody {
+    margin-top: 60px;
+  }
 }

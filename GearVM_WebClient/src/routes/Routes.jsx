@@ -14,6 +14,9 @@ import Payment from "../pages/payment/Payment";
 import PaySucess from "../pages/paySucess/PaySucess";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 import PayOffline from "../pages/PayOffline";
+import MoMoPage from "../pages/moMoPage/MoMoPage";
+import BankingPage from "../pages/BankingPage/BankingPage";
+import CashPage from "../pages/cashPage/CashPage";
 
 const publicRoutes = [
   { path: "/", component: Home },
@@ -32,6 +35,9 @@ const publicRoutes = [
   { path: "/payment-success", component: PaySucess },
   { path: "/forget", component: ForgetPassword },
   { path: "/payOffline", component: PayOffline },
+  { path: "/moMoPage", component: MoMoPage },
+  { path: "/bankingPage", component: BankingPage },
+  { path: "/cashPage", component: CashPage },
 ];
 
 const privateRoutes = [];

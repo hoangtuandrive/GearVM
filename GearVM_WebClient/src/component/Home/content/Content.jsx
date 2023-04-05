@@ -32,21 +32,40 @@ const Content = () => {
   });
   return (
     <div>
-      <div className={cx("Product_Img")}>
-        <figure className="imgTop">
-          <img
-            src={require("../../../assets/laptop1.jpg")}
-            className={cx("imgTop_sepecial")}
-          />
-          <figcaption>
-            <p>Máy Tính Bàn</p>
-            <div className="plus1"></div>
-            <div className="plus2"></div>
-          </figcaption>
-          {/* <a href="#"></a> */}
-        </figure>
-
-        <div className={cx("product-home__image")}>
+      {/* <div className={cx("Product_Img")}> */}
+      <Container fluid className={cx("Product_Img")}>
+        <Row>
+          <Col lg={6}>
+            <figure className="imgTop">
+              <img
+                src={require("../../../assets/laptop1.jpg")}
+                className={cx("imgTop_sepecial")}
+              />
+              <figcaption>
+                <p>Máy Tính Bàn</p>
+                <div className="plus1"></div>
+                <div className="plus2"></div>
+              </figcaption>
+              {/* <a href="#"></a> */}
+            </figure>
+          </Col>
+          <Col lg={6}>
+            <figure className="imgTop">
+              <img
+                src={require("../../../assets/laptop3.jpg")}
+                className={cx("imgTop_sepecial")}
+              />
+              <figcaption>
+                <p>LapTop</p>
+                <div className="plus1"></div>
+                <div className="plus2"></div>
+              </figcaption>
+              {/* <a href="#"></a> */}
+            </figure>
+          </Col>
+        </Row>
+      </Container>
+      {/* <div className={cx("product-home__image")}>
           <img
             src={require("../../../assets/laptop3.jpg")}
             className={cx("img")}
@@ -56,34 +75,53 @@ const Content = () => {
             src={require("../../../assets/laptop4.jpg")}
             className={cx("img")}
           />
-        </div>
-      </div>
-      <div className={cx("Product_scroll")}>
-        <figure className="imgTop">
-          <img
-            src={require("../../../assets/tainghe3.jpg")}
-            className={cx("img_sepecial")}
-          />
-          <figcaption>
-            <p>Tai Nghe</p>
-            <div className="plus1"></div>
-            <div className="plus2"></div>
-          </figcaption>
-          {/* <a href="#"></a> */}
-        </figure>
+        </div> */}
+      {/* </div> */}
+      <Container fluid className={cx("Product_scroll")}>
+        <Row>
+          {/* <div className={cx("Product_scroll")}> */}
+          <Col lg={6}>
+            <figure className="imgTop">
+              <img
+                src={require("../../../assets/tainghe3.jpg")}
+                className={cx("img_sepecial")}
+              />
+              <figcaption>
+                <p>Tai Nghe</p>
+                <div className="plus1"></div>
+                <div className="plus2"></div>
+              </figcaption>
+              {/* <a href="#"></a> */}
+            </figure>
+          </Col>
+          <Col lg={6}>
+            <figure className="imgTop">
+              <img
+                src={require("../../../assets/chuot1.jpg")}
+                className={cx("img_sepecial")}
+              />
+              <figcaption>
+                <p>Chuột</p>
+                <div className="plus1"></div>
+                <div className="plus2"></div>
+              </figcaption>
+              {/* <a href="#"></a> */}
+            </figure>
+            {/* <div className={cx("product-home__image")}>
+              <img
+                src={require("../../../assets/tainghe4.jpg")}
+                className={cx("img")}
+              />
 
-        <div className={cx("product-home__image")}>
-          <img
-            src={require("../../../assets/tainghe4.jpg")}
-            className={cx("img")}
-          />
-
-          <img
-            src={require("../../../assets/tainghe5.jpg")}
-            className={cx("img")}
-          />
-        </div>
-      </div>
+              <img
+                src={require("../../../assets/tainghe5.jpg")}
+                className={cx("img")}
+              />
+            </div> */}
+            {/* </div> */}
+          </Col>
+        </Row>
+      </Container>
       <div className={cx("GoodAbout")}>
         <div className={cx("leftGood")}>
           {/* <h4 className={cx("txtGood_header")}>Laptop</h4> */}

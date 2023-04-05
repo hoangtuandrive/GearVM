@@ -15,26 +15,25 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import orderSlices, {
+  TrackingOrderSlice,
+} from "../../redux/slices/OrderSlices";
 const cx = classNames.bind(styles);
 const Order = () => {
+  const dispatch = useDispatch();
+  const order = useSelector((state) => state.order.itemTracking);
+  // console.log(order);
   // const [order, setOder] = useState();
-  // const options = {
-  //   year: "numeric",
-  //   month: "numeric ",
-  //   day: "numeric",
-  // };
-  // useEffect(() => {
-  //   const fetchOrder = async () => {
-  //     const productUrl = `http://localhost:8080/api/orders`;
-  //     try {
-  //       const rep = await axios.get(productUrl);
-  //       setOder(rep.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchOrder();
-  // }, []);
+  const options = {
+    year: "numeric",
+    month: "numeric ",
+    day: "numeric",
+  };
+
+  useEffect(() => {
+    dispatch(TrackingOrderSlice());
+  }, []);
 
   return (
     <Container>
@@ -43,11 +42,14 @@ const Order = () => {
           <h5>Lịch Sử Đơn Hàng</h5>
           <Link to="/" className={cx("btn", "btn-warning")}>
             Tiếp tục Mua Hàng
-            <FontAwesomeIcon icon={faChevronRight} />
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              style={{ marginTop: 5, marginLeft: 5 }}
+            />
           </Link>
         </div>
-        <TrackingOrder />
-        <TrackingOrder />
+        <TrackingOrder data={order} />
+        <TrackingOrder data={order} />
       </div>
     </Container>
   );

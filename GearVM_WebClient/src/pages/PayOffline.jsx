@@ -3,8 +3,9 @@ import Header from "../component/Home/header/Header";
 import Footer from "../component/Home/footer/Footer";
 import styles from "../sass/Pay.module.scss";
 import classNames from "classnames/bind";
-import PayBody from "../component/Paybody/PayBody";
+
 import InfoCustomer from "../component/InfoCustomer/InfoCustomer";
+import PaybodyOffline from "../component/PaybodyOffline/PaybodyOffline";
 
 const cx = classNames.bind(styles);
 const PayOffline = () => {
@@ -12,7 +13,7 @@ const PayOffline = () => {
     <div className={cx("wrapPay")}>
       <Header />
       <InfoCustomer />
-      <PayBody name="Thanh toán chuyển khoản" />
+      <PaybodyOffline name="Thanh toán chuyển khoản" />
       <Footer />
     </div>
   );

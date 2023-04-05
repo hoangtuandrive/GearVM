@@ -3,7 +3,7 @@
   flex-direction: row;
 }
 .wrapCatalogProduct_fillter_Price {
-  width: 22vh;
+  width: 25vh;
   background-color: white;
 }
 .catalog__filter__widget__content__item {
@@ -16,6 +16,31 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.bodyPrice {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.bodyPrice_content {
+  border-style: solid;
+  width: 100px;
+  height: 20px;
+  font-size: 14px;
+  // margin: 5px;
+
+  text-align: center;
+  border-color: rgb(203, 206, 208);
+  border-width: 1px;
+  border-radius: 5px;
+}
+.ant-tooltip-inner {
+  color: yellow;
+  background-color: green;
+  width: 200px;
+}
+.changePrice {
+  margin: 10px 10px;
 }
 @media screen and (min-width: 1200px) and (max-width: 1428px) {
   .wrapCatalogProduct {

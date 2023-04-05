@@ -1,0 +1,93 @@
+.wrapMoMoPage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-150deg, #ffccbb, #6eb5c0, #006c84, #e2e8e4);
+}
+.MomoPageContent {
+  background-color: white;
+  width: 50%;
+}
+.MomoPageContentLeft {
+  background-color: #a50064;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.Suptxt {
+  // margin-top: 18px;
+  font-size: 18px;
+  color: rgba(224, 210, 210, 0.788);
+}
+.NameCty {
+  margin-left: 15px;
+  width: 70%;
+  color: rgba(255, 255, 255, 0.77);
+  font-weight: bold;
+}
+.MomoTotal {
+  display: flex;
+  flex-direction: row;
+  //   justify-content: space-around;
+}
+.Totaltxt {
+  color: rgba(255, 255, 255, 0.77);
+  margin-left: 15px;
+  font-size: 22px;
+}
+.MomoPageContentRight {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.imgLogo {
+  width: 100px;
+  height: 100px;
+}
+.Scantxt {
+  color: #d82d8b;
+  font-weight: bold;
+  font-size: 22px;
+  text-align: center;
+}
+.wrapRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.QrCode {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 25px;
+}
+.Momobtn {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.btnComplete {
+  background-color: #a50064;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}
+.Intro {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  // width: 50%;
+  margin-top: 15px;
+  text-align: center;
+}
+.Introtxt {
+  font-weight: 800;
+  width: 80%;
+}

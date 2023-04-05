@@ -15,18 +15,26 @@ import { s3 } from "../../aws";
 
 const cx = classNames.bind(styles);
 const TableListCart = ({ cartItem }) => {
-  const [quantity, setquantity] = useState(1);
+  const [quantity, setquantity] = useState(cartItem.cartQuantity);
 
   const [imgProduct, setImgProduct] = useState();
+  const [disable, setDisable] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.todoCart);
   // console.log(cart);
-
   useEffect(() => {
     getImage();
     dispatch(CartSlice.actions.totalCart());
-  }, [cart, dispatch]);
+
+    setquantity(cartItem.cartQuantity);
+    if (cartItem.cartQuantity === 200) {
+      setDisable(true);
+    } else {
+      setDisable(false);
+    }
+  }, [cart, dispatch, cartItem.cartQuantity]);
 
   const handleAddToCart = (product) => {
     dispatch(CartSlice.actions.addTocart(product));
@@ -37,10 +45,33 @@ const TableListCart = ({ cartItem }) => {
   const handleRemoveCart = (product) => {
     dispatch(CartSlice.actions.removeCart(product));
   };
-  const handleChangeQuantity = (value) => {
-    setquantity(value);
+  const handleChangeQuantity = (e) => {
+    setquantity(e.target.value);
   };
 
+  const handleChangeQuantityBlur = (e) => {
+    if (e.target.value === "") {
+      setquantity(cartItem.cartQuantity);
+      const data = {
+        id: cartItem.id,
+        numberChange: cartItem.cartQuantity,
+      };
+      dispatch(CartSlice.actions.changeCart(data));
+    } else if (e.target.value >= 200) {
+      const data = {
+        id: cartItem.id,
+        numberChange: 200,
+      };
+      setquantity(200);
+      dispatch(CartSlice.actions.changeCart(data));
+    } else {
+      const data = {
+        id: cartItem.id,
+        numberChange: e.target.value,
+      };
+      dispatch(CartSlice.actions.changeCart(data));
+    }
+  };
   async function getImage() {
     try {
       const response = await s3
@@ -88,13 +119,16 @@ const TableListCart = ({ cartItem }) => {
               </button>
               <input
                 type="text"
-                value={cartItem.cartQuantity}
+                onBlur={handleChangeQuantityBlur}
+                value={quantity}
+                // defaultValue={cartItem.cartQuantity}
                 onChange={handleChangeQuantity}
                 className={cx("wrapListCart_Content_quantity_text")}
               />
               <button
                 className={cx("wrapListCart_Content_quantity_btnadd")}
                 onClick={() => handleAddToCart(cartItem)}
+                disabled={disable}
               >
                 +
               </button>
@@ -138,13 +172,17 @@ const TableListCart = ({ cartItem }) => {
             </button>
             <input
               type="text"
-              value={cartItem.cartQuantity}
+              // value={cartItem.cartQuantity}
+              onBlur={handleChangeQuantityBlur}
+              value={quantity}
+              // defaultValue={cartItem.cartQuantity}
               onChange={handleChangeQuantity}
               className={cx("wrapListCart_Content_quantity_text")}
             />
             <button
               className={cx("wrapListCart_Content_quantity_btnadd")}
               onClick={() => handleAddToCart(cartItem)}
+              disabled={disable}
             >
               +
             </button>

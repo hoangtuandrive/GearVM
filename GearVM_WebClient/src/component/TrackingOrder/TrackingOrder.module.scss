@@ -141,3 +141,18 @@ p {
   border-color: #ff2b00;
   border-radius: 1px;
 }
+.ShowItemOrder {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(30, 30, 179, 0.807);
+}
+.ShowitemOrdershow {
+  width: 100%;
+  height: 90px;
+  overflow: hidden;
+}
+.ShowitemOrderhidden {
+  height: 100%;
+}

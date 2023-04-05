@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./TrackingOrder.module.scss";
 import classNames from "classnames/bind";
 import { Container } from "react-bootstrap";
@@ -18,7 +18,55 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const cx = classNames.bind(styles);
-const TrackingOrder = () => {
+const TrackingOrder = ({ data }) => {
+  const [status, setStatus] = useState();
+  const [active, setActive] = useState();
+  function ChangeStatus() {
+    switch (data?.orderStatus) {
+      case "PAYMENT_PENDING":
+        setStatus("Đang chờ thanh toán");
+
+        setActive(1);
+        break;
+      case "PAYMENT_DONE":
+        setStatus("Đang chờ xác nhận");
+        setActive(2);
+        break;
+      case "SHIPPING":
+        setStatus("Đang giao hàng");
+        setActive(3);
+        break;
+      case "SHIP_SUCCESS":
+        setStatus("Giao hàng thành công");
+        setActive(4);
+        break;
+      case "SHIP_FAIL":
+        setStatus("Giao hàng thất bại");
+        setActive(5);
+        break;
+      case "REJECTED":
+        setStatus("Đơn hàng bị từ chối");
+        setActive(6);
+        break;
+
+      default:
+    }
+  }
+  useEffect(() => {
+    ChangeStatus();
+  }, [data.orderStatus]);
+
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  };
+  // console.log(data);
+
+  const [showItem, setShowItem] = useState(true);
+  const handleShowItemOrder = () => {
+    setShowItem(!showItem);
+  };
   const settings = {
     dots: true,
     infinite: false,
@@ -59,32 +107,31 @@ const TrackingOrder = () => {
         <hr />
         {/* <header className={cx("card-header")}> My Orders / Tracking </header> */}
         <div className={cx("card-pad")}>
-          <h6 className={cx("card-txt")}>Order ID: OD45345345435</h6>
+          <h6 className={cx("card-txt")}>Order ID: {data?.id}</h6>
           <article className={cx("card")}>
             <Row className={cx("card-body")}>
               <Col>
                 <strong>Ngày Tạo Đơn Hàng</strong> <br />
-                29-3-2023
+                {new Date(data?.createdDate).toLocaleString("en-US", options)}
               </Col>
-              <Col>
+              {/* <Col>
                 <strong>Nhân Viên Phụ Trách:</strong> <br /> Trần Hoàng Long, |{" "}
                 <FontAwesomeIcon icon={faPhone} /> 0394758354{" "}
-              </Col>
+              </Col> */}
               <Col>
-                <strong>Tráng Thái Đơn Hàng:</strong> <br /> Nhân Viên Đã Xác
-                Nhận{" "}
+                <strong>Trạng Thái Đơn Hàng:</strong> <br /> {status}
               </Col>
               <Col>
                 <strong>Tổng Tiền :</strong> <br />{" "}
                 {new Intl.NumberFormat("de-DE", {
                   style: "currency",
                   currency: "VND",
-                }).format(1000000)}{" "}
+                }).format(data?.totalPrice)}{" "}
               </Col>
             </Row>
           </article>
           <div className={cx("track")}>
-            <div className={cx(`step`, `active`)}>
+            <div className={cx(`step`, `${active >= 1 ? "active" : null}`)}>
               {" "}
               <span className={cx("icon")}>
                 {" "}
@@ -93,32 +140,42 @@ const TrackingOrder = () => {
               </span>{" "}
               <span className={cx("text")}>Tạo Đơn Hàng Thành Công</span>
             </div>
-            <div className={cx(`step`, `active`)}>
+            <div className={cx(`step`, `${active >= 2 ? "active" : null}`)}>
               <span className={cx("icon")}>
                 <FontAwesomeIcon icon={faUser} />
               </span>
               <span className={cx("text")}> Nhân Viên Đã Xác Nhận</span>{" "}
             </div>
-            <div className={cx("step")}>
+            <div className={cx(`step`, `${active >= 3 ? "active" : null}`)}>
               <span className={cx("icon")}>
                 {" "}
                 <FontAwesomeIcon icon={faTruck} />
               </span>{" "}
               <span className={cx("text")}>Tiến Hành Giao Hàng</span>{" "}
             </div>
-            <div className={cx("step")}>
-              {" "}
-              <span className={cx("icon")}>
+            {active === 5 ? (
+              <div className={cx(`step`, `${active >= 5 ? "active" : null}`)}>
                 {" "}
-                <FontAwesomeIcon icon={faBox} />
-              </span>{" "}
-              <span className={cx("text")}>Giao Hàng Thành Công</span>{" "}
-            </div>
+                <span className={cx("icon")}>
+                  {" "}
+                  <FontAwesomeIcon icon={faBox} />
+                </span>{" "}
+                <span className={cx("text")}>Giao Hàng Thất Bại</span>{" "}
+              </div>
+            ) : (
+              <div className={cx(`step`, `${active >= 4 ? "active" : null}`)}>
+                {" "}
+                <span className={cx("icon")}>
+                  {" "}
+                  <FontAwesomeIcon icon={faBox} />
+                </span>{" "}
+                <span className={cx("text")}>Giao Hàng Thành Công</span>{" "}
+              </div>
+            )}
           </div>
           <hr />
-          <ul className={cx("row")}>
-            {/* <li className={cx("col-md-4")}> */}
-            <Slider {...settings}>
+
+          {/* <Slider {...settings}>
               {dataTrackingOrder?.map((item, index) => (
                 <div
                   // onClick={() => {
@@ -130,9 +187,35 @@ const TrackingOrder = () => {
                   <ItemOrder data={item} />
                 </div>
               ))}
-            </Slider>
-            {/* </li> */}
-          </ul>
+            </Slider> */}
+          <Container>
+            <Row
+              lg={4}
+              className={cx(`ShowitemOrder${showItem ? "show" : "hidden"}`)}
+            >
+              {/* <ul className={cx("row")}> */}
+              {data.orderItems?.map((item, index) => (
+                // <div
+                //   // onClick={() => {
+                //   //   handelItemProduct(item);
+                //   // }}
+                //   className={cx("listProduct_thumb_item")}
+                //   key={item.id}
+                // >
+                <Col key={item.id}>
+                  <ItemOrder data={item} />
+                </Col>
+                // </div>
+              ))}
+              {/* </ul> */}
+            </Row>
+          </Container>
+          {data.orderItems?.length > 5 ? (
+            <h6 className={cx("ShowItemOrder")} onClick={handleShowItemOrder}>
+              Xem Thêm
+            </h6>
+          ) : null}
+
           {/* <hr /> */}
         </div>
       </article>
