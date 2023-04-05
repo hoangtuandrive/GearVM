@@ -1,12 +1,13 @@
 package com.gearvmdesktop.ui;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.gearvmstore.GearVM.model.Employee;
+import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
+import sun.misc.Unsafe;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -16,21 +17,6 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
-
-import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Employee;
-import com.gearvmdesktop.model.response.EmployeeResponseModel;
-import sun.misc.Unsafe;
 
 public class GUI extends JFrame implements ActionListener, MouseListener {
     private JLabel lblThoiGian;
@@ -227,12 +213,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         pnlContentPane.setBackground(new Color(255, 255, 255));
         lblDangXuat.addMouseListener(this);
 
-        if(e != null) getEmployeeInfo(e);
+        if (e != null) getEmployeeInfo(e);
 
         return pnlContentPane;
     }
 
-    public void getEmployeeInfo(Employee e){
+    public void getEmployeeInfo(Employee e) {
         txtMaNhanVien.setText(e.getId().toString());
         txtTenNhanVien.setText(e.getName());
     }
@@ -273,7 +259,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public static EmployeeResponseModel getEmployeeInfo(){
+    public static EmployeeResponseModel getEmployeeInfo() {
         EmployeeResponseModel e = new EmployeeResponseModel();
         e.setId(Long.parseLong(txtMaNhanVien.getText()));
         e.setName(txtTenNhanVien.getText());

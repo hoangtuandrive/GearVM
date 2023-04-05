@@ -6,21 +6,22 @@ package com.gearvmdesktop.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Product;
 import com.gearvmdesktop.service.ProductService;
+import com.gearvmstore.GearVM.model.Product;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -536,14 +537,14 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         String productName = txtTenSanPham.getText();
                         readDatabaseToTable();
                         int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if(continueResult == JOptionPane.YES_OPTION){
+                        if (continueResult == JOptionPane.YES_OPTION) {
                             new FrmThemKhoHang(newProductId, productName);
                         }
                     } else {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -560,7 +561,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -602,7 +603,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             if (result == JFileChooser.APPROVE_OPTION) {
                 java.io.File file = fileDialog.getSelectedFile();
                 String filePath = file.getAbsolutePath();
-                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
+                if (!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
                     filePath += ".xls";
                 }
                 if (exportExcel(filePath))
@@ -678,7 +679,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         return mapper.readValue(rd, Product.class);
     }
 
-    public boolean postRequest() throws IOException {
+    public boolean postRequest() throws IOException, JSONException {
         ObjectMapper mapper = new ObjectMapper();
         Product p = new Product();
         p.setName(txtTenSanPham.getText());
@@ -691,7 +692,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         return product != null;
     }
 
-    public boolean putRequest() throws IOException {
+    public boolean putRequest() throws IOException, JSONException {
         Product p = new Product();
         p.setId(Long.parseLong(txtMaSanPham.getText()));
         p.setName(txtTenSanPham.getText());
@@ -736,7 +737,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             cell.setCellValue("DANH SÁCH SẢN PHẨM");
             cell.setCellStyle(styleTenDanhSach);
 
-            String[] header = { "STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn" };
+            String[] header = {"STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
             worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
 
             // Dòng 2 người lập

@@ -130,8 +130,7 @@ public class OrderService {
 
     public GetOrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).get();
-        GetOrderResponse getOrderResponse = modelMapper.map(order, GetOrderResponse.class);
-        return getOrderResponse;
+        return modelMapper.map(order, GetOrderResponse.class);
     }
 
     public void addPaymentLinkToOrder(String paymentLink, Long orderId) {

@@ -1,12 +1,13 @@
 package com.gearvmdesktop.service;
 
-import com.gearvmdesktop.model.dto.order.UpdateOrderStatusAndEmployee;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class OrderService extends ApiService {
     private static final String url = staticUrl + "/orders/";
 
-    public static boolean patchOrderStatus(String orderId, UpdateOrderStatusAndEmployee order) throws IOException{
+    public static boolean patchOrderStatus(String orderId, UpdateOrderStatusAndEmployee order) throws IOException, JSONException {
         HttpClient client = new DefaultHttpClient();
         HttpPatch request = new HttpPatch(url + "update-orderStatus/" + orderId);
 
@@ -37,14 +38,14 @@ public class OrderService extends ApiService {
         return response.getStatusLine().getStatusCode() == 200;
     }
 
-    public static boolean patchOrderStatusAndEmployee(String orderId, UpdateOrderStatusAndEmployee order) throws IOException {
+    public static boolean patchOrderStatusAndEmployee(String orderId, UpdateOrderStatusAndEmployee order) throws IOException, JSONException {
         HttpClient client = new DefaultHttpClient();
         HttpPatch request = new HttpPatch(url + "update-orderStatus-employee/" + orderId);
 
         JSONObject json = new JSONObject();
         json.put("orderStatus", order.getOrderStatus().toString());
 
-        if(order.getEmployee() != null){
+        if (order.getEmployee() != null) {
             JSONObject employeeId = new JSONObject();
             employeeId.put("id", order.getEmployee().getId());
             employeeId.put("name", order.getEmployee().getName());
