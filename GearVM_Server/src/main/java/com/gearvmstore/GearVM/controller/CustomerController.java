@@ -84,4 +84,16 @@ public class CustomerController {
             return ResponseEntity.ok().body(customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token))));
         return new ResponseEntity<String>("Token expired", HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping(value = "/phonenumber/{phoneNumber}")
+    public ResponseEntity<?> getCustomerByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
+        Customer customer = customerService.getCustomerByPhoneNumber(phoneNumber);
+        if (customer == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        return ResponseEntity.status(HttpStatus.OK).body(customer);
+    }
+
+    @GetMapping(value = "/get-all-phoneNumber")
+    public ResponseEntity<?> getAllPhoneNumber() {
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.getAllByPhoneNumber());
+    }
 }

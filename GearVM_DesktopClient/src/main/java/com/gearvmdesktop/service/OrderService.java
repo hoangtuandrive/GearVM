@@ -4,6 +4,7 @@ import com.gearvmdesktop.model.dto.order.UpdateOrderStatusAndEmployee;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
@@ -63,5 +64,12 @@ public class OrderService extends ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean createDirectOrder(String customerId) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost request = new HttpPost(url + "create-directOrder/" + customerId);
+        HttpResponse response = client.execute(request);
+        return response.getStatusLine().getStatusCode() == 200;
     }
 }

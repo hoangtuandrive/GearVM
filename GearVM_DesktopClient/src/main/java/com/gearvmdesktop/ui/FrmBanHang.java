@@ -6,39 +6,40 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Date;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gearvmdesktop.model.Customer;
+import com.gearvmdesktop.model.Gender;
+import com.gearvmdesktop.model.Product;
+import com.gearvmdesktop.service.CustomerService;
+import com.gearvmdesktop.service.OrderService;
+import com.gearvmdesktop.service.ProductService;
+import com.toedter.calendar.JTextFieldDateEditor;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.formdev.flatlaf.FlatLightLaf;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 import com.toedter.calendar.JDateChooser;
 
-public class FrmBanHang extends JFrame {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class FrmBanHang extends JFrame implements ActionListener, MouseListener {
+	private static final String tableName = "products/";
 	private JTextField txtTim;
 	private JButton btnTim;
 	private static DefaultTableModel modelSanPham;
@@ -52,14 +53,9 @@ public class FrmBanHang extends JFrame {
 	private JTextField txtTongTien;
 	private JButton btnHuy;
 	private JButton btnThanhToan;
-	private JTextField txtSDT;
-	private JTextField txtEmail;
-	private JTextField txtDiaChi;
 	private JLabel lblMa;
 	private JLabel lblTen;
 	private JLabel lblSDT;
-	private JLabel lblEmail;
-	private JLabel lblDiaChi;
 	private JLabel lblSoLuong;
 	private JTextField txtTenKhachHang;
 	private JLabel lblGioiTinh;
@@ -67,8 +63,6 @@ public class FrmBanHang extends JFrame {
 	private JLabel lblTongTien;
 	private JDateChooser txtNgaySinh;
 	private JLabel lblNgaySinh;
-	private JLabel lblCMND;
-	private JTextField txtCMND;
 	private static JComboBox<String> cmbDanhSachSdt;
 	private static JComboBox<String> cmbTim;
 	private JButton btnTimKHCu;
@@ -84,7 +78,7 @@ public class FrmBanHang extends JFrame {
 	public static String maHDMoiDat = "";
 	public static String maKHDatGioHang = "";
 
-	public JPanel createPanelBanHang() throws RemoteException {
+	public JPanel createPanelBanHang() throws IOException {
 		FlatLightLaf.setup();
 		// TODO Auto-generated constructor stub
 		setTitle("FrmBanHang");
@@ -101,14 +95,11 @@ public class FrmBanHang extends JFrame {
 		Box b5 = Box.createHorizontalBox();
 		Box b6 = Box.createHorizontalBox();
 		Box b7 = Box.createHorizontalBox();
-		Box b8 = Box.createHorizontalBox();
-		Box b9 = Box.createHorizontalBox();
 		Box b10 = Box.createHorizontalBox();
 		Box b11 = Box.createHorizontalBox();
 		Box b12 = Box.createHorizontalBox();
 		Box b13 = Box.createHorizontalBox();
 		Box b14 = Box.createHorizontalBox();
-		Box b15 = Box.createHorizontalBox();
 		Box b16 = Box.createHorizontalBox();
 		Box b17 = Box.createHorizontalBox();
 
@@ -172,12 +163,9 @@ public class FrmBanHang extends JFrame {
 		b14.add(lblNgaySinh = new JLabel("Ngày Sinh:"));
 		b14.add(Box.createHorizontalStrut(10));
 		b14.add(txtNgaySinh = new JDateChooser());
-		txtNgaySinh.setDateFormatString("yyyy-MM-dd");
+		txtNgaySinh.setDateFormatString("dd-MM-yyyy");
 		txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
-		b15.add(lblCMND = new JLabel("CMND:"));
-		b15.add(Box.createHorizontalStrut(10));
-		b15.add(txtCMND = new JTextField());
-		String[] gioitinh = { "Nam", "Nữ" };
+		String[] gioitinh = { "Nam", "Nữ", "Khác" };
 		cmbGioiTinh = new JComboBox<String>(gioitinh);
 		b13.add(lblGioiTinh = new JLabel("Giới Tính:"));
 		b13.add(Box.createHorizontalStrut(10));
@@ -195,12 +183,6 @@ public class FrmBanHang extends JFrame {
 		btnTimKHCu.setFocusPainted(false);
 		b7.add(Box.createHorizontalStrut(300));
 		b7.add(btnTimKHCu);
-		b8.add(lblEmail = new JLabel("Email:"));
-		b8.add(Box.createHorizontalStrut(10));
-		b8.add(txtEmail = new JTextField());
-		b9.add(lblDiaChi = new JLabel("Địa Chỉ:"));
-		b9.add(Box.createHorizontalStrut(10));
-		b9.add(txtDiaChi = new JTextField());
 
 		b17.add(pTitle1 = new JPanel());
 		pTitle1.add(lblTitle1 = new JLabel("GIỎ HÀNG"));
@@ -221,10 +203,7 @@ public class FrmBanHang extends JFrame {
 		b4.add(b5);
 		b4.add(b6);
 		b4.add(b14);
-		b4.add(b15);
 		b4.add(b13);
-		b4.add(b8);
-		b4.add(b9);
 		b4.add(b17);
 		b4.add(b16);
 		b4.add(b11);
@@ -283,15 +262,14 @@ public class FrmBanHang extends JFrame {
 		btnTru.setBackground(new Color(0, 148, 224));
 		btnTru.setForeground(Color.WHITE);
 		btnTru.setFocusPainted(false);
-		b9.add(Box.createHorizontalStrut(10));
-		b9.add(btnTaoGioHang = new JButton("TẠO GIỎ HÀNG", new ImageIcon("image/them.png")));
+		b13.add(Box.createHorizontalStrut(10));
+		b13.add(btnTaoGioHang = new JButton("TẠO GIỎ HÀNG", new ImageIcon("image/them.png")));
 		btnTaoGioHang.setBackground(new Color(0, 148, 224));
 		btnTaoGioHang.setForeground(Color.WHITE);
 		btnTaoGioHang.setFocusPainted(false);
 		b2.add(tblscroll1);
 		b2.add(b10);
 		JPanel p1 = new JPanel();
-//		p1.setLayout(new BorderLayout());
 		JPanel p2 = new JPanel();
 		p2.add(b12);
 		b2.add(p2);
@@ -301,13 +279,10 @@ public class FrmBanHang extends JFrame {
 
 		lblMa.setPreferredSize(lblTen.getPreferredSize());
 		lblSDT.setPreferredSize(lblTen.getPreferredSize());
-		lblEmail.setPreferredSize(lblTen.getPreferredSize());
-		lblDiaChi.setPreferredSize(lblTen.getPreferredSize());
 		lblSoLuong.setPreferredSize(lblTen.getPreferredSize());
 		lblGioiTinh.setPreferredSize(lblTen.getPreferredSize());
 		lblTongTien.setPreferredSize(lblTen.getPreferredSize());
 		lblNgaySinh.setPreferredSize(lblTen.getPreferredSize());
-		lblCMND.setPreferredSize(lblTen.getPreferredSize());
 		lblGioHang.setPreferredSize(lblTen.getPreferredSize());
 		cmbDanhSachSdt.setPreferredSize(lblTen.getPreferredSize());
 
@@ -316,14 +291,11 @@ public class FrmBanHang extends JFrame {
 		b5.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b6.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b7.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-		b8.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-		b9.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b10.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b11.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b12.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b13.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b14.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-		b15.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 		b17.setBorder(new EmptyBorder(new Insets(10, 10, 0, 10)));
 
@@ -342,14 +314,8 @@ public class FrmBanHang extends JFrame {
 		txtTenKhachHang.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNgaySinh.setFont(new Font("Tahoma", Font.BOLD, 12));
 		txtNgaySinh.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCMND.setFont(new Font("Tahoma", Font.BOLD, 12));
-		txtCMND.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 12));
 		cmbGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 12));
-		txtEmail.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 12));
-		txtDiaChi.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTaoGioHang.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblGioHang.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -375,6 +341,169 @@ public class FrmBanHang extends JFrame {
 		txtTongTien.setBackground(null);
 		txtTongTien.setText(null);
 
+		setCustomerTextFieldEditable(false);
+
+		readDatabaseToTable();
+		getAllPhoneNumber();
+
+		btnTimKHCu.addActionListener(this);
+		btnTaoGioHang.addActionListener(this);
+
 		return p;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o.equals(btnTimKHCu)){
+			try {
+				if(getCustomerByPhoneNumber()){
+					JOptionPane.showMessageDialog(null, "Đây là khách hàng cũ. Welcome back!", "Welcome back",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Đây là khách hàng mới. Welcome!", "Welcome",
+							JOptionPane.INFORMATION_MESSAGE);
+					setCustomerTextFieldEditable(true);
+				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if(o.equals(btnTaoGioHang)){
+			try {
+				if(createCart()){
+					JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
+							JOptionPane.INFORMATION_MESSAGE);
+					clearTextField();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thất bại. Xin vui lòng thử lại!", "Thất bại",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	public static void readDatabaseToTable() throws IOException {
+		emptyTable();
+		ObjectMapper mapper = new ObjectMapper();
+		// Get all products
+		BufferedReader rd = ProductService.getAllRequest(tableName + "/get-all");
+		List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+		DecimalFormat df = new DecimalFormat("#,##0");
+		for (Product p : listProduct) {
+			modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+					p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
+		}
+	}
+
+	public static void emptyTable() {
+		DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
+		dm.setRowCount(0);
+	}
+
+	public boolean getCustomerByPhoneNumber() throws IOException {
+		try{
+			String phoneNumber = cmbDanhSachSdt.getSelectedItem().toString();
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.registerModule(new JavaTimeModule());
+			BufferedReader rd = CustomerService.getCustomerByPhoneNumber(phoneNumber);
+
+			Customer customer = mapper.readValue(rd, Customer.class);
+			if(customer == null) return false;
+			txtMaKhachHang.setText(customer.getId().toString());
+			txtTenKhachHang.setText(customer.getName());
+			txtNgaySinh.setDate(Date.from(customer.getDateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			if(customer.getGender() == Gender.MALE) cmbGioiTinh.setSelectedIndex(0);
+			else if(customer.getGender() == Gender.FEMALE) cmbGioiTinh.setSelectedIndex(1);
+			else if(customer.getGender() == Gender.UNDEFINED) cmbGioiTinh.setSelectedIndex(2);
+
+			return true;
+		}
+		catch (NullPointerException e){
+			return false;
+		}
+	}
+
+	public void getAllPhoneNumber() throws IOException {
+		cmbDanhSachSdt.removeAllItems();
+		ObjectMapper mapper = new ObjectMapper();
+		BufferedReader rd = CustomerService.getAllPhoneNumber();
+
+		String json = rd.readLine();
+		List<String> phoneNumbers = mapper.readValue(json, new TypeReference<>() {
+		});
+		rd.close();
+		for (String phoneNumber : phoneNumbers) {
+			cmbDanhSachSdt.addItem(phoneNumber);
+		}
+	}
+
+	public void setCustomerTextFieldEditable(boolean isEditable){
+		txtTenKhachHang.setEditable(isEditable);
+		JTextFieldDateEditor editor = (JTextFieldDateEditor) txtNgaySinh.getDateEditor();
+		editor.setEditable(isEditable);
+	}
+
+	public void clearTextField() {
+		txtTenKhachHang.setText("");
+		txtSoLuong.setText("");
+//		txtDiaChi.setText("");
+		txtMaKhachHang.setText("");
+		txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
+		cmbGioHang.setSelectedIndex(-1);
+		cmbDanhSachSdt.setSelectedIndex(-1);
+		cmbGioiTinh.setSelectedIndex(0);
+	}
+
+	public boolean createCart() throws IOException {
+		Customer customer = new Customer();
+		customer.setName(txtTenKhachHang.getText());
+		Calendar birthdayCalendar = txtNgaySinh.getCalendar();
+		LocalDate birthdayLocalDate = LocalDate.ofInstant(birthdayCalendar.toInstant(), ZoneId.systemDefault());
+		customer.setDateOfBirth(birthdayLocalDate);
+
+		if(txtMaKhachHang.getText().equals("")){
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.registerModule(new JavaTimeModule());
+			BufferedReader rd = CustomerService.postRequestWithResponse(customer);
+			Customer newCustomer =  mapper.readValue(rd, Customer.class);
+			if(newCustomer == null) return false;
+			customer.setId(newCustomer.getId());
+		}
+		else{
+			customer.setId(Long.parseLong(txtMaKhachHang.getText()));
+		}
+
+		return OrderService.createDirectOrder(customer.getId().toString());
 	}
 }

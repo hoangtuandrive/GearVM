@@ -58,4 +58,9 @@ public class OrderController {
                                                           @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatusAndEmployee(id, updateOrderStatusAndEmployee));
     }
+
+    @PostMapping(value = "/create-directOrder/{customerId}")
+    public ResponseEntity<?> createDirectOrder(@PathVariable(value = "customerId") Long customerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.createDirectOrder(customerId));
+    }
 }

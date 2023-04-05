@@ -686,9 +686,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
         BufferedReader rd = ProductService.postRequest(p);
         Product product = mapper.readValue(rd, Product.class);
-        newProductId = product.getId().toString();
-        if(newProductId == null) return false;
-        return true;
+        return product != null;
     }
 
     public boolean putRequest() throws IOException {

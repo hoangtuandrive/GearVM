@@ -41,6 +41,7 @@ public class Order {
     private double totalPrice;
     @Enumerated(EnumType.ORDINAL)
     private OrderStatus orderStatus;
+    private boolean isDirect;
     @OneToMany(mappedBy = "order")
     @ToString.Exclude
     @JsonIgnore

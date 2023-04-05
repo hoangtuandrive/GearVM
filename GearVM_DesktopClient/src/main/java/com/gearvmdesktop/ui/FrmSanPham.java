@@ -688,9 +688,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
         BufferedReader rd = ProductService.postRequest(p);
         Product product = mapper.readValue(rd, Product.class);
-        newProductId = product.getId().toString();
-        if(newProductId == null) return false;
-        return true;
+        return product != null;
     }
 
     public boolean putRequest() throws IOException {
@@ -714,6 +712,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
         dm.setRowCount(0);
     }
+
     public boolean exportExcel(String filePath) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filePath);

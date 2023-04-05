@@ -172,4 +172,16 @@ public class OrderService {
         Order orderDb = orderRepository.save(order);
         return modelMapper.map(orderDb, GetOrderResponse.class);
     }
+
+    public Order createDirectOrder(Long customerId) {
+        Customer customer = customerService.getCustomer(customerId);
+
+        Order order = new Order();
+        order.setDirect(true);
+        order.setCustomer(customer);
+        order.setCreatedDate(LocalDateTime.now());
+        order.setUpdatedDate(LocalDateTime.now());
+
+        return orderRepository.save(order);
+    }
 }

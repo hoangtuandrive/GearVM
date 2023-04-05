@@ -77,4 +77,12 @@ public class CustomerService {
     public String generateToken(String id, String email) {
         return jwtUtil.generateJwtToken(id, email);
     }
+
+    public Customer getCustomerByPhoneNumber(String phoneNumber) {
+        return customerRepository.findByPhoneNumberStartingWith(phoneNumber);
+    }
+
+    public List<String> getAllByPhoneNumber() {
+        return customerRepository.findAllPhoneNumber();
+    }
 }
