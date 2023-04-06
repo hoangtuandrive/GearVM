@@ -56,7 +56,6 @@ public class ProductService {
         p.setBrand(productDetails.getBrand());
         p.setType(productDetails.getType());
         p.setPrice(productDetails.getPrice());
-        p.setQuantity(productDetails.getQuantity());
         return productRepository.save(p);
     }
 

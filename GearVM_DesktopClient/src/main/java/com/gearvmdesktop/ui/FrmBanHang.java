@@ -10,6 +10,7 @@ import com.gearvmdesktop.service.ProductService;
 import com.gearvmstore.GearVM.model.Customer;
 import com.gearvmstore.GearVM.model.Gender;
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -42,7 +43,6 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private static DefaultTableModel modelSanPham;
     private static JTable tableSanPham;
     private JTextField txtMaKhachHang;
-    private JCheckBox chkNam;
     private JTextField txtSoLuong;
     private JButton btnCong;
     private DefaultTableModel modelGioHang;
@@ -69,11 +69,8 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private JLabel lblTitle1;
     private JButton btnTaoGioHang;
     private JButton btnTru;
-    private Date ngayLapHoaDon;
     private static JComboBox<String> cmbChon;
     private static JComboBox<String> cmbGioHang;
-    public static String maHDMoiDat = "";
-    public static String maKHDatGioHang = "";
 
     public JPanel createPanelBanHang() throws IOException {
         FlatLightLaf.setup();
@@ -341,7 +338,8 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         setCustomerTextFieldEditable(false);
 
         readDatabaseToTable();
-        getAllPhoneNumber();
+        setAllPhoneNumberToCombobox();
+        setPendingDirectOrderToCombobox();
 
         btnTimKHCu.addActionListener(this);
         btnTaoGioHang.addActionListener(this);
@@ -354,7 +352,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         Object o = e.getSource();
         if (o.equals(btnTimKHCu)) {
             try {
-                if (getCustomerByPhoneNumber()) {
+                if (getCustomerByPhoneNumberFromCombobox()) {
                     JOptionPane.showMessageDialog(null, "Đây là khách hàng cũ. Welcome back!", "Welcome back",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -372,6 +370,8 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                     JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
                             JOptionPane.INFORMATION_MESSAGE);
                     clearTextField();
+                    GUI.readAllDatabaseToTable();
+                    cmbDanhSachSdt.setSelectedIndex(1);
                 } else {
                     JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thất bại. Xin vui lòng thử lại!", "Thất bại",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -425,16 +425,16 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         dm.setRowCount(0);
     }
 
-    public boolean getCustomerByPhoneNumber() throws IOException {
+    public boolean getCustomerByPhoneNumberFromCombobox() throws IOException {
         try {
             String phoneNumber = cmbDanhSachSdt.getSelectedItem().toString();
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             BufferedReader rd = CustomerService.getCustomerByPhoneNumber(phoneNumber);
+            if (rd == null) return false;
 
             Customer customer = mapper.readValue(rd, Customer.class);
-            if (customer == null) return false;
             txtMaKhachHang.setText(customer.getId().toString());
             txtTenKhachHang.setText(customer.getName());
             txtNgaySinh.setDate(Date.from(customer.getDateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -443,13 +443,15 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
             else if (customer.getGender() == Gender.UNDEFINED) cmbGioiTinh.setSelectedIndex(2);
 
             return true;
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    public void getAllPhoneNumber() throws IOException {
+    public static void setAllPhoneNumberToCombobox() throws IOException {
         cmbDanhSachSdt.removeAllItems();
+        cmbDanhSachSdt.addItem("");
         ObjectMapper mapper = new ObjectMapper();
         BufferedReader rd = CustomerService.getAllPhoneNumber();
 
@@ -457,6 +459,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         List<String> phoneNumbers = mapper.readValue(json, new TypeReference<>() {
         });
         rd.close();
+
         for (String phoneNumber : phoneNumbers) {
             cmbDanhSachSdt.addItem(phoneNumber);
         }
@@ -485,6 +488,10 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         Calendar birthdayCalendar = txtNgaySinh.getCalendar();
         LocalDate birthdayLocalDate = LocalDate.ofInstant(birthdayCalendar.toInstant(), ZoneId.systemDefault());
         customer.setDateOfBirth(birthdayLocalDate);
+        customer.setPhoneNumber(cmbDanhSachSdt.getSelectedItem().toString());
+        if (cmbGioiTinh.getSelectedIndex() == 0) customer.setGender(Gender.MALE);
+        else if (cmbGioiTinh.getSelectedIndex() == 1) customer.setGender(Gender.FEMALE);
+        else customer.setGender(Gender.UNDEFINED);
 
         if (txtMaKhachHang.getText().equals("")) {
             ObjectMapper mapper = new ObjectMapper();
@@ -496,7 +503,27 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         } else {
             customer.setId(Long.parseLong(txtMaKhachHang.getText()));
         }
-
         return OrderService.createDirectOrder(customer.getId().toString());
+    }
+
+    public static void setPendingDirectOrderToCombobox() throws IOException {
+        cmbGioHang.removeAllItems();
+        cmbGioHang.addItem("");
+        ObjectMapper mapper = new ObjectMapper();
+        BufferedReader rd = OrderService.getPendingDirectOrderList();
+        if (rd != null) {
+            List<GetPendingDirectOrderListResponse> directOrderList = List.of(mapper.readValue(rd, GetPendingDirectOrderListResponse[].class));
+            for (GetPendingDirectOrderListResponse directOrder : directOrderList
+            ) {
+                String row = directOrder.getCustomerName() + ", " + directOrder.getCustomerPhoneNumber();
+                cmbGioHang.addItem(row);
+            }
+        }
+    }
+
+    public static void readDatabase() throws IOException {
+        setAllPhoneNumberToCombobox();
+        setPendingDirectOrderToCombobox();
+        readDatabaseToTable();
     }
 }

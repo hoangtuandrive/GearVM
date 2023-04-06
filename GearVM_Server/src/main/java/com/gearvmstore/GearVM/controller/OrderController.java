@@ -29,6 +29,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/direct-pending")
+    public ResponseEntity<?> getDirectPendingOrderList() {
+        return new ResponseEntity<>(orderService.getDirectPendingOrderList(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{orderId}")
     public ResponseEntity<?> findOrder(@PathVariable(value = "orderId") Long id) {
         return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);

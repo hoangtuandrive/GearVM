@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
-    private String newProductId;
     private static final String tableName = "products/";
     private static JComboBox<String> cmbTim;
     private static JTable tableSanPham;
@@ -434,6 +433,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         tableSanPham.getColumnModel().getColumn(1).setPreferredWidth(165);
 
         txtMaSanPham.setEditable(false);
+        txtSoLuong.setEditable(false);
 
         tableSanPham.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableSanPham.setDefaultEditor(Object.class, null);
@@ -533,12 +533,13 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (postRequest()) {
+                    Product newProduct = postRequest();
+                    if (newProduct != null) {
                         String productName = txtTenSanPham.getText();
                         readDatabaseToTable();
                         int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if (continueResult == JOptionPane.YES_OPTION) {
-                            new FrmThemKhoHang(newProductId, productName);
+                            new FrmThemKhoHang(newProduct.getId().toString(), productName);
                         }
                     } else {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
@@ -679,17 +680,15 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         return mapper.readValue(rd, Product.class);
     }
 
-    public boolean postRequest() throws IOException, JSONException {
+    public Product postRequest() throws IOException, JSONException {
         ObjectMapper mapper = new ObjectMapper();
         Product p = new Product();
         p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
-        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
         BufferedReader rd = ProductService.postRequest(p);
-        Product product = mapper.readValue(rd, Product.class);
-        return product != null;
+        return mapper.readValue(rd, Product.class);
     }
 
     public boolean putRequest() throws IOException, JSONException {
@@ -698,7 +697,6 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         p.setName(txtTenSanPham.getText());
         p.setType(txtLoaiHang.getText());
         p.setBrand(txtNhaCungCap.getText());
-        p.setQuantity(Integer.parseInt(txtSoLuong.getText()));
         p.setPrice(Double.parseDouble(txtDonGia.getText()));
         return ProductService.putRequest(p);
     }

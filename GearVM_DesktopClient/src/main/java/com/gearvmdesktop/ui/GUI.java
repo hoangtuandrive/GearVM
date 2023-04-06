@@ -286,5 +286,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         FrmNhanVien.readDatabaseToTable();
         FrmSanPham.readDatabaseToTable();
         FrmKhoHang.readDatabaseToTable();
+        FrmBanHang.readDatabase();
     }
 }

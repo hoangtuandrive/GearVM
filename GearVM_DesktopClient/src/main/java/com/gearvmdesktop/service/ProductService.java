@@ -28,7 +28,6 @@ public class ProductService extends ApiService {
         json.put("brand", p.getBrand());
         json.put("type", p.getType());
         json.put("price", p.getPrice());
-        json.put("quantity", p.getQuantity());
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);
@@ -44,7 +43,6 @@ public class ProductService extends ApiService {
         json.put("brand", p.getBrand());
         json.put("type", p.getType());
         json.put("price", p.getPrice());
-        json.put("quantity", p.getQuantity());
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");
         request.setEntity(se);

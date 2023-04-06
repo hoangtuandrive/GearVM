@@ -6,6 +6,7 @@ import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
+import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
 import com.gearvmstore.GearVM.repository.OrderRepository;
 import com.gearvmstore.GearVM.repository.PaymentRepository;
@@ -128,6 +129,20 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
+    public List<GetPendingDirectOrderListResponse> getDirectPendingOrderList() {
+        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.DIRECT_PENDING);
+        List<GetPendingDirectOrderListResponse> getOrderListResponseList = new ArrayList<>();
+
+        for (Order order : orderList) {
+            GetPendingDirectOrderListResponse orderResponse = new GetPendingDirectOrderListResponse();
+            orderResponse.setId(order.getId());
+            orderResponse.setCustomerName(order.getCustomer().getName());
+            orderResponse.setCustomerPhoneNumber(order.getCustomer().getPhoneNumber());
+            getOrderListResponseList.add(orderResponse);
+        }
+        return getOrderListResponseList;
+    }
+
     public GetOrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).get();
         return modelMapper.map(order, GetOrderResponse.class);
@@ -180,6 +195,7 @@ public class OrderService {
         order.setCustomer(customer);
         order.setCreatedDate(LocalDateTime.now());
         order.setUpdatedDate(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.DIRECT_PENDING);
 
         return orderRepository.save(order);
     }
