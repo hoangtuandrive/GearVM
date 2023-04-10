@@ -10,7 +10,11 @@ import com.gearvmdesktop.service.ProductService;
 import com.gearvmstore.GearVM.model.Customer;
 import com.gearvmstore.GearVM.model.Gender;
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
+import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
+import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
+import com.gearvmstore.GearVM.model.response.ProductResponseModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -37,7 +41,8 @@ import java.util.Date;
 import java.util.List;
 
 public class FrmBanHang extends JFrame implements ActionListener, MouseListener {
-    private static final String tableName = "products/";
+    private static final String tableNameProduct = "products/";
+    private static final String tableNameOrder = "orders/";
     private JTextField txtTim;
     private JButton btnTim;
     private static DefaultTableModel modelSanPham;
@@ -46,7 +51,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private JTextField txtSoLuong;
     private JButton btnCong;
     private DefaultTableModel modelGioHang;
-    private JTable tableGioHang;
+    private static JTable tableGioHang;
     private JTextField txtTongTien;
     private JButton btnHuy;
     private JButton btnThanhToan;
@@ -252,7 +257,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         btnCong.setForeground(Color.WHITE);
         btnCong.setFocusPainted(false);
         b11.add(Box.createHorizontalStrut(5));
-        b11.add(btnTru = new JButton("XÓA", new ImageIcon("image/xoa.png")));
+        b11.add(btnTru = new JButton("GIẢM", new ImageIcon("image/giam.png")));
         btnTru.setBackground(new Color(0, 148, 224));
         btnTru.setForeground(Color.WHITE);
         btnTru.setFocusPainted(false);
@@ -334,15 +339,19 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         txtTongTien.setBorder(null);
         txtTongTien.setBackground(null);
         txtTongTien.setText(null);
+        txtSoLuong.setText("0");
 
-        setCustomerTextFieldEditable(false);
+        setCustomerTextFieldEditableAndNull(false);
 
-        readDatabaseToTable();
+        readDatabaseToTableProduct();
         setAllPhoneNumberToCombobox();
         setPendingDirectOrderToCombobox();
 
         btnTimKHCu.addActionListener(this);
         btnTaoGioHang.addActionListener(this);
+        btnCong.addActionListener(this);
+        btnTru.addActionListener(this);
+        cmbGioHang.addActionListener(this);
 
         return p;
     }
@@ -358,7 +367,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 } else {
                     JOptionPane.showMessageDialog(null, "Đây là khách hàng mới. Welcome!", "Welcome",
                             JOptionPane.INFORMATION_MESSAGE);
-                    setCustomerTextFieldEditable(true);
+                    setCustomerTextFieldEditableAndNull(true);
                 }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -366,12 +375,18 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         }
         if (o.equals(btnTaoGioHang)) {
             try {
-                if (createCart()) {
+                int result = createCart();
+                if (result == 0) {
                     JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
                             JOptionPane.INFORMATION_MESSAGE);
                     clearTextField();
                     GUI.readAllDatabaseToTable();
-                    cmbDanhSachSdt.setSelectedIndex(1);
+                    emptyTableCart();
+                    cmbDanhSachSdt.setSelectedIndex(cmbDanhSachSdt.getItemCount() - 1);
+                } else if (result == 1) {
+                    JOptionPane.showMessageDialog(null, "Khách hàng đã có giỏ hàng, vui lòng xử lý giỏ hàng này!", "Thất bại",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    setSelectedIndexFromPhoneNumber();
                 } else {
                     JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thất bại. Xin vui lòng thử lại!", "Thất bại",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -380,8 +395,86 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 throw new RuntimeException(ex);
             }
         }
+        if (o.equals(cmbGioHang)) {
+            try {
+                readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if (o.equals(btnCong)) {
+            Object giaTriCmb = cmbGioHang.getSelectedItem();
+            int row = tableSanPham.getSelectedRow();
+            String soLuong = txtSoLuong.getText();
+            if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (soLuong.equals("") && soLuong.equals("0")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần thêm!", "Thất bại",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần thêm", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (Integer.parseInt(modelSanPham.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
+                JOptionPane.showMessageDialog(this, "Không đủ số lượng để thêm sản phẩm", "Thất bại",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                String productId = modelSanPham.getValueAt(row, 0).toString().trim();
+                try {
+                    if (updateAddOrderItem(productId)) {
+                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm vào giỏ hàng thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                        readDatabaseToTableProduct();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm vào giỏ hàng thất bại!", "Thất bại",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (JSONException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        if (o.equals(btnTru)) {
+            Object giaTriCmb = cmbGioHang.getSelectedItem();
+            int row = tableGioHang.getSelectedRow();
+            String soLuong = txtSoLuong.getText();
+            if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (soLuong.equals("") && soLuong.equals("0")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần giảm!", "Thất bại",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần giảm!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (Integer.parseInt(modelGioHang.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
+                JOptionPane.showMessageDialog(this, "Số sản phẩm cần giảm lớn hơn số sản phẩm trong giỏ hàng!", "Thất bại",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                String productId = modelGioHang.getValueAt(row, 0).toString().trim();
+                try {
+                    if (updateReduceOrderItem((productId))) {
+                        JOptionPane.showMessageDialog(null, "Giảm sản phẩm trong giỏ hàng thành công!", "Thành công",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                        readDatabaseToTableProduct();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Giảm sản phẩm trong giỏ hàng thất bại!", "Thất bại",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (JSONException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 
+    //region
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -406,12 +499,13 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     public void mouseExited(MouseEvent e) {
 
     }
+    //endregion
 
-    public static void readDatabaseToTable() throws IOException {
-        emptyTable();
+    public static void readDatabaseToTableProduct() throws IOException {
+        emptyTableProduct();
         ObjectMapper mapper = new ObjectMapper();
         // Get all products
-        BufferedReader rd = ProductService.getAllRequest(tableName + "/get-all");
+        BufferedReader rd = ProductService.getAllRequest(tableNameProduct + "/get-all");
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {
@@ -420,8 +514,13 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         }
     }
 
-    public static void emptyTable() {
+    public static void emptyTableProduct() {
         DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
+        dm.setRowCount(0);
+    }
+
+    public static void emptyTableCart() {
+        DefaultTableModel dm = (DefaultTableModel) tableGioHang.getModel();
         dm.setRowCount(0);
     }
 
@@ -465,10 +564,16 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         }
     }
 
-    public void setCustomerTextFieldEditable(boolean isEditable) {
+    public void setCustomerTextFieldEditableAndNull(boolean isEditable) {
         txtTenKhachHang.setEditable(isEditable);
         JTextFieldDateEditor editor = (JTextFieldDateEditor) txtNgaySinh.getDateEditor();
         editor.setEditable(isEditable);
+        txtTenKhachHang.setText("");
+        txtSoLuong.setText("");
+//		txtDiaChi.setText("");
+        txtMaKhachHang.setText("");
+        txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
+        cmbGioiTinh.setSelectedIndex(0);
     }
 
     public void clearTextField() {
@@ -482,7 +587,10 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         cmbGioiTinh.setSelectedIndex(0);
     }
 
-    public boolean createCart() throws IOException, JSONException {
+    // 0: created
+    // 1: existing cart
+    // 2: error
+    public int createCart() throws IOException, JSONException {
         Customer customer = new Customer();
         customer.setName(txtTenKhachHang.getText());
         Calendar birthdayCalendar = txtNgaySinh.getCalendar();
@@ -498,12 +606,23 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
             mapper.registerModule(new JavaTimeModule());
             BufferedReader rd = CustomerService.postRequestWithResponse(customer);
             Customer newCustomer = mapper.readValue(rd, Customer.class);
-            if (newCustomer == null) return false;
+            if (newCustomer == null) return 2;
             customer.setId(newCustomer.getId());
         } else {
             customer.setId(Long.parseLong(txtMaKhachHang.getText()));
         }
         return OrderService.createDirectOrder(customer.getId().toString());
+    }
+
+    private void setSelectedIndexFromPhoneNumber() {
+        String sdt = cmbDanhSachSdt.getSelectedItem().toString();
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cmbDanhSachSdt.getModel();
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).equals(sdt)) {
+                cmbGioHang.setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
     public static void setPendingDirectOrderToCombobox() throws IOException {
@@ -524,6 +643,72 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     public static void readDatabase() throws IOException {
         setAllPhoneNumberToCombobox();
         setPendingDirectOrderToCombobox();
-        readDatabaseToTable();
+        readDatabaseToTableProduct();
+    }
+
+    public boolean updateAddOrderItem(String productId) throws JSONException, IOException {
+        String cmbGioHangString = cmbGioHang.getSelectedItem().toString();
+        if (cmbGioHangString.equals("")) {
+            return false;
+        }
+        String[] parts = cmbGioHangString.split(",");
+
+        UpdateOrderItem updateOrderItem = new UpdateOrderItem();
+        updateOrderItem.setProductId(productId);
+        updateOrderItem.setCustomerName(parts[0]);
+        updateOrderItem.setCustomerPhone(parts[1].trim());
+        updateOrderItem.setAmount(Integer.parseInt(txtSoLuong.getText()));
+
+        return OrderService.patchUpdateAddOrderItem(updateOrderItem);
+    }
+
+    public boolean updateReduceOrderItem(String productId) throws JSONException, IOException {
+        String cmbGioHangString = cmbGioHang.getSelectedItem().toString();
+        if (cmbGioHangString.equals("")) {
+            return false;
+        }
+        String[] parts = cmbGioHangString.split(",");
+
+        UpdateOrderItem updateOrderItem = new UpdateOrderItem();
+        updateOrderItem.setProductId(productId);
+        updateOrderItem.setCustomerName(parts[0]);
+        updateOrderItem.setCustomerPhone(parts[1].trim());
+        updateOrderItem.setAmount(Integer.parseInt(txtSoLuong.getText()));
+
+        return OrderService.patchUpdateReduceOrderItem(updateOrderItem);
+    }
+
+    public GetOrderResponse getRequestByCustomerNameAndCustomerPhoneNumber() throws IOException {
+        String cmbGioHangString = cmbGioHang.getSelectedItem().toString();
+        if (cmbGioHangString.equals("")) {
+            return null;
+        }
+        String[] parts = cmbGioHangString.split(",");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getRequestByCustomerNameAndCustomerPhoneNumber(parts[0], parts[1].trim());
+        return mapper.readValue(rd, GetOrderResponse.class);
+    }
+
+    public void readCurrentCartToTableCart(GetOrderResponse getOrderResponse) throws IOException {
+        emptyTableCart();
+        if (getOrderResponse != null) {
+            DecimalFormat df = new DecimalFormat("#,##0");
+
+            List<OrderItemResponseModel> orderItems = getOrderResponse.getOrderItems();
+            for (OrderItemResponseModel orderItem : orderItems) {
+                ProductResponseModel product = orderItem.getProduct();
+
+                modelGioHang.addRow(new Object[]{product.getId(), product.getName(), product.getType(),
+                        product.getBrand(), df.format(product.getPrice()), orderItem.getQuantity(), df.format(orderItem.getPrice())});
+            }
+        }
+    }
+
+    public Product getProductRequest(String productId) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        BufferedReader rd = ProductService.getRequest(tableNameProduct, productId);
+        return mapper.readValue(rd, Product.class);
     }
 }

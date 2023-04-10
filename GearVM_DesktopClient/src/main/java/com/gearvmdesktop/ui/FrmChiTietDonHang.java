@@ -378,7 +378,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         for (OrderItemResponseModel orderItem : orderItems) {
             ProductResponseModel product = orderItem.getProduct();
             double rowPrice = orderItem.getPrice() * orderItem.getQuantity();
-            Product productDb = getRequest(product.getId().toString());
+            Product productDb = getProductRequest(product.getId().toString());
 
             modelSanPham.addRow(new Object[]{product.getId(), product.getName(), product.getType(),
                     product.getBrand(), df.format(orderItem.getPrice()), orderItem.getQuantity(), productDb.getQuantity(), df.format(rowPrice)});
@@ -390,7 +390,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         dm.setRowCount(0);
     }
 
-    public Product getRequest(String productId) throws IOException {
+    public Product getProductRequest(String productId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         BufferedReader rd = ProductService.getRequest(tableNameProduct, productId);
         return mapper.readValue(rd, Product.class);

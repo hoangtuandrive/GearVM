@@ -1,5 +1,6 @@
 package com.gearvmdesktop.service;
 
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -70,11 +71,16 @@ public class OrderService extends ApiService {
         }
     }
 
-    public static boolean createDirectOrder(String customerId) throws IOException {
+    // 0: created
+    // 1: existing cart
+    // 2: error
+    public static int createDirectOrder(String customerId) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost request = new HttpPost(url + "create-directOrder/" + customerId);
         HttpResponse response = client.execute(request);
-        return response.getStatusLine().getStatusCode() == 200;
+        if (response.getStatusLine().getStatusCode() == 200) return 0;
+        else if (response.getStatusLine().getStatusCode() == 302) return 1;
+        else return 2;
     }
 
     public static BufferedReader getPendingDirectOrderList() throws IOException {
@@ -85,5 +91,45 @@ public class OrderService extends ApiService {
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
-    
+    public static BufferedReader getRequestByCustomerNameAndCustomerPhoneNumber(String customerName, String customerPhone) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "get-direct-pending?customerName=" + customerName + "&customerPhone=" + customerPhone);
+        HttpResponse response = client.execute(request);
+        if (response.getStatusLine().getStatusCode() != 200) return null;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    }
+
+    public static boolean patchUpdateAddOrderItem(UpdateOrderItem updateOrderItem) throws IOException, JSONException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + "update-add-orderItem");
+
+        JSONObject json = new JSONObject();
+        json.put("productId", updateOrderItem.getProductId());
+        json.put("customerName", updateOrderItem.getCustomerName());
+        json.put("customerPhone", updateOrderItem.getCustomerPhone());
+        json.put("amount", updateOrderItem.getAmount());
+
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return response.getStatusLine().getStatusCode() == 200;
+    }
+
+    public static boolean patchUpdateReduceOrderItem(UpdateOrderItem updateOrderItem) throws IOException, JSONException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + "update-reduce-orderItem");
+
+        JSONObject json = new JSONObject();
+        json.put("productId", updateOrderItem.getProductId());
+        json.put("customerName", updateOrderItem.getCustomerName());
+        json.put("customerPhone", updateOrderItem.getCustomerPhone());
+        json.put("amount", updateOrderItem.getAmount());
+
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return response.getStatusLine().getStatusCode() == 200;
+    }
 }

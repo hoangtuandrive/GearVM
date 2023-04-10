@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class PlaceOrderDto {
     private double totalPrice;
-    private List<OrderItemDto> orderItems;
+    private List<OrderItemDto> orderItemDtos;
 }

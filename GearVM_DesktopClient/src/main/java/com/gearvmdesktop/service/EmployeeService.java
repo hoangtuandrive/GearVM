@@ -1,7 +1,7 @@
 package com.gearvmdesktop.service;
 
 import com.gearvmstore.GearVM.model.Employee;
-import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
+import com.gearvmstore.GearVM.model.dto.user.LoginDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
@@ -85,7 +85,7 @@ public class EmployeeService extends ApiService {
         return response.getStatusLine().getStatusCode() == 200;
     }
 
-    public static BufferedReader login(LoginDTO loginDTO) throws IOException, JSONException {
+    public static BufferedReader login(LoginDto loginDTO) throws IOException, JSONException {
         HttpClient client = new DefaultHttpClient();
         HttpPost request = new HttpPost(url + "login");
         JSONObject json = new JSONObject();

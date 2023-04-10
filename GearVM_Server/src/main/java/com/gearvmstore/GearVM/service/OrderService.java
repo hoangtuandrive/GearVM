@@ -3,6 +3,7 @@ package com.gearvmstore.GearVM.service;
 import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
@@ -26,7 +27,6 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final OrderItemService orderItemService;
     private final CustomerService customerService;
     private final ProductService productService;
     private final EmployeeService employeeService;
@@ -40,9 +40,8 @@ public class OrderService {
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository, ShippingDetailRepository shippingDetailRepository, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService) {
+    public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService) {
         this.orderRepository = orderRepository;
-        this.orderItemService = orderItemService;
         this.customerService = customerService;
         this.productService = productService;
         this.employeeService = employeeService;
@@ -69,7 +68,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrder(PlaceOrderDto placeOrderDTO, String token) {
+    public GetOrderResponse placeNewOrder(PlaceOrderDto placeOrderDto, String token) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -79,16 +78,15 @@ public class OrderService {
 
             order.setCustomer(customer);
             order.setCreatedDate(LocalDateTime.now());
-            order.setTotalPrice(placeOrderDTO.getTotalPrice());
+            order.setUpdatedDate(LocalDateTime.now());
+            order.setTotalPrice(placeOrderDto.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
             Payment payment = new Payment();
             paymentRepository.save(payment);
 
             ShippingDetail shippingDetail = new ShippingDetail();
-            // TODO set phone number trước khi tạo link
-//            shippingDetail.setPhoneNumber(placeOrderDTO.getPhoneNumber());
-            shippingDetail.setPhoneNumber("029471420");
+            shippingDetail.setPhoneNumber(customer.getPhoneNumber());
             shippingDetailRepository.save(shippingDetail);
 
             order.setPayment(payment);
@@ -96,8 +94,8 @@ public class OrderService {
 
             Order savedOrder = orderRepository.save(order);
 
-            List<OrderItemDto> orderItems = placeOrderDTO.getOrderItems();
-            for (OrderItemDto orderItemDto : orderItems) {
+            List<OrderItemDto> orderItemDtos = placeOrderDto.getOrderItemDtos();
+            for (OrderItemDto orderItemDto : orderItemDtos) {
                 OrderItem item = new OrderItem();
                 Product product = productService.getProduct(orderItemDto.getProductId());
                 item.setProduct(product);
@@ -148,6 +146,13 @@ public class OrderService {
         return modelMapper.map(order, GetOrderResponse.class);
     }
 
+    public GetOrderResponse getDirectPendingOrder(String customerName, String customerPhoneNumber) {
+        Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(
+                OrderStatus.DIRECT_PENDING,
+                customerName, customerPhoneNumber);
+        return modelMapper.map(order, GetOrderResponse.class);
+    }
+
     public void addPaymentLinkToOrder(String paymentLink, Long orderId) {
         Order order = orderRepository.findById(orderId).get();
 
@@ -171,14 +176,14 @@ public class OrderService {
         // Reduce quantity if order is confirmed
         OrderStatus newOrderStatus = order.getOrderStatus();
         if (newOrderStatus == OrderStatus.SHIPPING)
-            for (OrderItem orderItem : order.getOrderItems()) {
+            for (com.gearvmstore.GearVM.model.OrderItem orderItem : order.getOrderItems()) {
                 productService.reduceQuantity(orderItem.getProduct(), orderItem.getQuantity());
             }
 
         // Add quantity if order is from confirmed to something else
         if ((oldOrderStatus == OrderStatus.SHIPPING || oldOrderStatus == OrderStatus.SHIP_SUCCESS)
                 && (newOrderStatus != OrderStatus.SHIPPING || newOrderStatus != OrderStatus.SHIP_SUCCESS)) {
-            for (OrderItem orderItem : order.getOrderItems()) {
+            for (com.gearvmstore.GearVM.model.OrderItem orderItem : order.getOrderItems()) {
                 productService.addQuantity(orderItem.getProduct(), orderItem.getQuantity());
             }
         }
@@ -197,6 +202,80 @@ public class OrderService {
         order.setUpdatedDate(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.DIRECT_PENDING);
 
+        if (orderRepository.existsByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
+                customer.getName(), customer.getPhoneNumber()))
+            return null;
+
         return orderRepository.save(order);
+    }
+
+    public Order updateAddOrderItem(UpdateOrderItem updateOrderItem) {
+        Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
+                updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
+        int quantity = updateOrderItem.getAmount();
+
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (OrderItem orderItem : orderItems) {
+            // If there are item in cart --> plus existing item
+            if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
+                int newQuantity = orderItem.getQuantity() + updateOrderItem.getAmount();
+
+                orderItem.setQuantity(newQuantity);
+                orderItem.setPrice(newQuantity * orderItem.getProduct().getPrice());
+                productService.reduceQuantity(orderItem.getProduct(), quantity);
+                orderItemRepository.save(orderItem);
+
+                return order;
+            }
+        }
+
+        OrderItem orderItemToAdd = new OrderItem();
+        Product product = productService.getProduct(Long.parseLong(updateOrderItem.getProductId()));
+
+        orderItemToAdd.setProduct(product);
+        orderItemToAdd.setId(order.getId());
+        orderItemToAdd.setQuantity(quantity);
+        orderItemToAdd.setPrice(quantity * product.getPrice());
+        orderItemToAdd.setOrder(order);
+
+        productService.reduceQuantity(product, quantity);
+
+        orderItemRepository.save(orderItemToAdd);
+        return order;
+    }
+
+    public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
+        Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
+                updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
+        int quantity = updateOrderItem.getAmount();
+
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (OrderItem orderItem : orderItems) {
+            // If there are item in cart --> minus existing item
+            if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
+                int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
+
+                orderItem.setQuantity(newQuantity);
+                orderItem.setPrice(newQuantity * orderItem.getProduct().getPrice());
+                productService.addQuantity(orderItem.getProduct(), quantity);
+                orderItemRepository.save(orderItem);
+
+                return order;
+            }
+        }
+
+        OrderItem orderItemToAdd = new OrderItem();
+        Product product = productService.getProduct(Long.parseLong(updateOrderItem.getProductId()));
+
+        orderItemToAdd.setProduct(product);
+        orderItemToAdd.setId(order.getId());
+        orderItemToAdd.setQuantity(quantity);
+        orderItemToAdd.setPrice(quantity * product.getPrice());
+        orderItemToAdd.setOrder(order);
+
+        productService.addQuantity(product, quantity);
+
+        orderItemRepository.save(orderItemToAdd);
+        return order;
     }
 }

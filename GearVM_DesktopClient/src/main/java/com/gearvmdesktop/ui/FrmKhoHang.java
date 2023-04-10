@@ -505,11 +505,11 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (postRequest()) {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         GUI.readAllDatabaseToTable();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException | JSONException ex) {
@@ -522,11 +522,11 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     if (deleteRequest()) {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaNhapHang.getText() + " thành công!", "Thành công",
+                        JOptionPane.showMessageDialog(this, "Xóa mã nhập hàng số " + txtMaNhapHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaNhapHang.getText() + " thất bại!", "Thất bại",
+                        JOptionPane.showMessageDialog(this, "Xóa mã nhập hàng số " + txtMaNhapHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.service.EmployeeService;
 import com.gearvmstore.GearVM.model.Employee;
-import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
+import com.gearvmstore.GearVM.model.dto.user.LoginDto;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -142,7 +142,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
     }
 
     public Employee login() throws IOException, JSONException {
-        LoginDTO loginDTO = new LoginDTO();
+        LoginDto loginDTO = new LoginDto();
         loginDTO.setUsername(txtTenDangNhap.getText());
         loginDTO.setPassword(txtMatKhau.getText());
         ObjectMapper mapper = new ObjectMapper();

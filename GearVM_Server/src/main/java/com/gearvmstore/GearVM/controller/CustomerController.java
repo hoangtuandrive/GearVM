@@ -1,8 +1,8 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Customer;
-import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
-import com.gearvmstore.GearVM.model.dto.user.RegisterDTO;
+import com.gearvmstore.GearVM.model.dto.user.LoginDto;
+import com.gearvmstore.GearVM.model.dto.user.RegisterDto;
 import com.gearvmstore.GearVM.service.CustomerService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.modelmapper.ModelMapper;
@@ -30,7 +30,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = modelMapper.map(registerDTO, Customer.class);
 
         Customer newAccount = customerService.register(customer);
@@ -47,7 +47,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = customerService.validateLogin(loginDTO.getUsername(), loginDTO.getPassword());
 
         if (customer == null) {

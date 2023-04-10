@@ -1,8 +1,9 @@
 package com.gearvmstore.GearVM.controller;
 
+import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
-import com.gearvmstore.GearVM.service.CustomerService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderService orderService;
     private final JwtUtil jwtUtil;
-    private final CustomerService customerService;
 
     @Autowired
-    public OrderController(OrderService orderService, JwtUtil jwtUtil, CustomerService customerService) {
+    public OrderController(OrderService orderService, JwtUtil jwtUtil) {
         this.orderService = orderService;
         this.jwtUtil = jwtUtil;
-        this.customerService = customerService;
     }
 
     @GetMapping
@@ -34,13 +33,19 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getDirectPendingOrderList(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/get-direct-pending")
+    public ResponseEntity<?> getDirectPendingOrder(@RequestParam("customerName") String customerName,
+                                                   @RequestParam("customerPhone") String customerPhone) {
+        return new ResponseEntity<>(orderService.getDirectPendingOrder(customerName, customerPhone), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{orderId}")
     public ResponseEntity<?> findOrder(@PathVariable(value = "orderId") Long id) {
         return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/place-order")
-    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDto placeOrderDTO, @RequestHeader(name = "Authorization") String header) {
+    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDto placeOrderDto, @RequestHeader(name = "Authorization") String header) {
 
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
@@ -48,7 +53,7 @@ public class OrderController {
         String token = header.substring(7);
 
         if (jwtUtil.validateJwtToken(token))
-            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrderDTO, token));
+            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrderDto, token));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 
@@ -66,6 +71,19 @@ public class OrderController {
 
     @PostMapping(value = "/create-directOrder/{customerId}")
     public ResponseEntity<?> createDirectOrder(@PathVariable(value = "customerId") Long customerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.createDirectOrder(customerId));
+        Order order = orderService.createDirectOrder(customerId);
+        if (order == null)
+            return ResponseEntity.status(HttpStatus.FOUND).body("");
+        return ResponseEntity.status(HttpStatus.OK).body(order);
+    }
+
+    @PatchMapping(value = "/update-add-orderItem")
+    public ResponseEntity<?> updateAddOrderItem(@RequestBody UpdateOrderItem updateOrderItem) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateAddOrderItem(updateOrderItem));
+    }
+
+    @PatchMapping(value = "/update-reduce-orderItem")
+    public ResponseEntity<?> updateReduceOrderItem(@RequestBody UpdateOrderItem updateOrderItem) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateReduceOrderItem(updateOrderItem));
     }
 }
