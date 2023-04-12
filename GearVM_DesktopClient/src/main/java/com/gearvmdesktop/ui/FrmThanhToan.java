@@ -293,6 +293,12 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                 }
             }
         }
+        if (o.equals(btnQRCode)) {
+            if (cmbPhuongThucThanhToan.getSelectedIndex() == 3)
+                new FrmQRCode(0);
+            else if (cmbPhuongThucThanhToan.getSelectedIndex() == 4)
+                new FrmQRCode(1);
+        }
     }
 
     public void readDatabaseToTable(GetOrderResponse getOrderResponse) throws IOException {
