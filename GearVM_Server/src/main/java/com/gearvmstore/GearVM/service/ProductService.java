@@ -77,7 +77,6 @@ public class ProductService {
     }
 
     public Product reduceQuantity(Product p, int quantityToReduce) {
-        System.out.println("here");
         p.setQuantity(p.getQuantity() - quantityToReduce);
         return productRepository.save(p);
     }

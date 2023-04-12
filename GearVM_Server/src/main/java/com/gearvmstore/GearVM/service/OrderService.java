@@ -1,10 +1,7 @@
 package com.gearvmstore.GearVM.service;
 
 import com.gearvmstore.GearVM.model.*;
-import com.gearvmstore.GearVM.model.dto.order.OrderItemDto;
-import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
-import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
-import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
+import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
@@ -37,7 +34,6 @@ public class OrderService {
     private final PaymentService paymentService;
     private final ShippingDetailRepository shippingDetailRepository;
     private final ShippingDetailService shippingDetailService;
-
 
     @Autowired
     public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService) {
@@ -175,15 +171,16 @@ public class OrderService {
 
         // Reduce quantity if order is confirmed
         OrderStatus newOrderStatus = order.getOrderStatus();
-        if (newOrderStatus == OrderStatus.SHIPPING)
-            for (com.gearvmstore.GearVM.model.OrderItem orderItem : order.getOrderItems()) {
+        if (newOrderStatus == OrderStatus.SHIPPING && !order.isDirect())
+            for (OrderItem orderItem : order.getOrderItems()) {
                 productService.reduceQuantity(orderItem.getProduct(), orderItem.getQuantity());
             }
 
         // Add quantity if order is from confirmed to something else
         if ((oldOrderStatus == OrderStatus.SHIPPING || oldOrderStatus == OrderStatus.SHIP_SUCCESS)
-                && (newOrderStatus != OrderStatus.SHIPPING || newOrderStatus != OrderStatus.SHIP_SUCCESS)) {
-            for (com.gearvmstore.GearVM.model.OrderItem orderItem : order.getOrderItems()) {
+                && (newOrderStatus != OrderStatus.SHIPPING || newOrderStatus != OrderStatus.SHIP_SUCCESS)
+                && !order.isDirect()) {
+            for (OrderItem orderItem : order.getOrderItems()) {
                 productService.addQuantity(orderItem.getProduct(), orderItem.getQuantity());
             }
         }
@@ -221,11 +218,10 @@ public class OrderService {
                 int newQuantity = orderItem.getQuantity() + updateOrderItem.getAmount();
 
                 orderItem.setQuantity(newQuantity);
-                orderItem.setPrice(newQuantity * orderItem.getProduct().getPrice());
                 productService.reduceQuantity(orderItem.getProduct(), quantity);
                 orderItemRepository.save(orderItem);
 
-                return order;
+                return updateTotalPrice(order);
             }
         }
 
@@ -235,8 +231,10 @@ public class OrderService {
         orderItemToAdd.setProduct(product);
         orderItemToAdd.setId(order.getId());
         orderItemToAdd.setQuantity(quantity);
-        orderItemToAdd.setPrice(quantity * product.getPrice());
+        orderItemToAdd.setPrice(product.getPrice());
         orderItemToAdd.setOrder(order);
+
+        order.setTotalPrice(orderItemToAdd.getPrice() * orderItemToAdd.getQuantity());
 
         productService.reduceQuantity(product, quantity);
 
@@ -254,28 +252,67 @@ public class OrderService {
             // If there are item in cart --> minus existing item
             if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
                 int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
-
-                orderItem.setQuantity(newQuantity);
-                orderItem.setPrice(newQuantity * orderItem.getProduct().getPrice());
                 productService.addQuantity(orderItem.getProduct(), quantity);
-                orderItemRepository.save(orderItem);
 
-                return order;
+                // If quantity of order item = 0 --> remove from cart
+                if (newQuantity == 0) {
+                    orderItemRepository.delete(orderItem);
+                } else {
+                    orderItem.setQuantity(newQuantity);
+                    orderItemRepository.save(orderItem);
+                }
+                order.setTotalPrice(order.getTotalPrice() - (orderItem.getPrice() * updateOrderItem.getAmount()));
             }
         }
+        if (order.getTotalPrice() == 0) {
+            orderRepository.delete(order);
+            return null;
+        } else return orderRepository.save(order);
+    }
 
-        OrderItem orderItemToAdd = new OrderItem();
-        Product product = productService.getProduct(Long.parseLong(updateOrderItem.getProductId()));
+    public Order updateTotalPrice(Order order) {
+        List<OrderItem> orderItems = order.getOrderItems();
+        double totalPrice = 0;
 
-        orderItemToAdd.setProduct(product);
-        orderItemToAdd.setId(order.getId());
-        orderItemToAdd.setQuantity(quantity);
-        orderItemToAdd.setPrice(quantity * product.getPrice());
-        orderItemToAdd.setOrder(order);
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getPrice() * orderItem.getQuantity();
+        }
 
-        productService.addQuantity(product, quantity);
+        order.setTotalPrice(totalPrice);
 
-        orderItemRepository.save(orderItemToAdd);
-        return order;
+        if (totalPrice == 0) {
+            orderRepository.delete(order);
+            return null;
+        }
+
+        return orderRepository.save(order);
+    }
+
+    public Order processDirectOrderPayment(ProcessDirectOrderPayment processDirectOrderPayment) {
+        Order order = orderRepository.findById(processDirectOrderPayment.getOrderId()).get();
+        Employee employee = employeeService.getEmployee(processDirectOrderPayment.getEmployeeId());
+
+        if (processDirectOrderPayment.getShippingAddress() == null) {
+            order.setOrderStatus(OrderStatus.SHIP_SUCCESS);
+            order.setShippingDetail(null);
+        } else {
+            order.setOrderStatus(OrderStatus.PAYMENT_DONE);
+            ShippingDetail shippingDetail = new ShippingDetail();
+            shippingDetail.setName(processDirectOrderPayment.getShippingName());
+            shippingDetail.setPhoneNumber(processDirectOrderPayment.getShippingPhone());
+            shippingDetail.setAddress(processDirectOrderPayment.getShippingAddress());
+            shippingDetailRepository.save(shippingDetail);
+            order.setShippingDetail(shippingDetail);
+        }
+
+        Payment payment = new Payment();
+        payment.setPaymentMethod(processDirectOrderPayment.getPaymentMethod());
+        paymentRepository.save(payment);
+        order.setPayment(payment);
+
+        order.setEmployee(employee);
+        order.setCreatedDate(LocalDateTime.now());
+        order.setUpdatedDate(LocalDateTime.now());
+        return orderRepository.save(order);
     }
 }

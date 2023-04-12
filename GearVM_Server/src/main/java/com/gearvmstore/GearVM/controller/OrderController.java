@@ -2,6 +2,7 @@ package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
+import com.gearvmstore.GearVM.model.dto.order.ProcessDirectOrderPayment;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.service.OrderService;
@@ -85,5 +86,10 @@ public class OrderController {
     @PatchMapping(value = "/update-reduce-orderItem")
     public ResponseEntity<?> updateReduceOrderItem(@RequestBody UpdateOrderItem updateOrderItem) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.updateReduceOrderItem(updateOrderItem));
+    }
+
+    @PatchMapping(value = "/process-directOrder-payment")
+    public ResponseEntity<?> processDirectOrderPayment(@RequestBody ProcessDirectOrderPayment processDirectOrderPayment) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.processDirectOrderPayment(processDirectOrderPayment));
     }
 }

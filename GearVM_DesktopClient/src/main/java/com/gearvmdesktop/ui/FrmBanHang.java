@@ -53,7 +53,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private DefaultTableModel modelGioHang;
     private static JTable tableGioHang;
     private JTextField txtTongTien;
-    private JButton btnHuy;
+    private JButton btnLamMoi;
     private JButton btnThanhToan;
     private JLabel lblMa;
     private JLabel lblTen;
@@ -241,15 +241,16 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         tableGioHang.setPreferredScrollableViewportSize(new Dimension(500, 105));
         b10.add(lblTongTien = new JLabel("Tổng Tiền:"));
         b10.add(txtTongTien = new JTextField());
+
         b12.add(btnThanhToan = new JButton("THANH TOÁN", new ImageIcon("image/thanhtoan.png")));
         btnThanhToan.setBackground(new Color(0, 148, 224));
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setFocusPainted(false);
         b12.add(Box.createHorizontalStrut(10));
-        b12.add(btnHuy = new JButton("LÀM MỚI", new ImageIcon("image/lammoi.png")));
-        btnHuy.setBackground(new Color(0, 148, 224));
-        btnHuy.setForeground(Color.WHITE);
-        btnHuy.setFocusPainted(false);
+        b12.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("image/lammoi.png")));
+        btnLamMoi.setBackground(new Color(0, 148, 224));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setFocusPainted(false);
         b2.add(b4);
         b11.add(Box.createHorizontalStrut(10));
         b11.add(btnCong = new JButton("THÊM", new ImageIcon("image/them.png")));
@@ -299,7 +300,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         b17.setBorder(new EmptyBorder(new Insets(10, 10, 0, 10)));
 
         btnThanhToan.setBounds(36, 330, 79, 13);
-        btnHuy.setBounds(131, 330, 79, 13);
+        btnLamMoi.setBounds(131, 330, 79, 13);
         txtMaKhachHang.setEditable(false);
 
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -325,7 +326,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         btnCong.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTru.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnThanhToan.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnHuy.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 12));
         txtTongTien.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblTongTien.setFont(new Font("Tahoma", Font.BOLD, 12));
 
@@ -351,6 +352,8 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         btnTaoGioHang.addActionListener(this);
         btnCong.addActionListener(this);
         btnTru.addActionListener(this);
+        btnLamMoi.addActionListener(this);
+        btnThanhToan.addActionListener(this);
         cmbGioHang.addActionListener(this);
 
         return p;
@@ -374,102 +377,140 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
             }
         }
         if (o.equals(btnTaoGioHang)) {
-            try {
-                int result = createCart();
-                if (result == 0) {
-                    JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    clearTextField();
-                    GUI.readAllDatabaseToTable();
-                    emptyTableCart();
-                    cmbDanhSachSdt.setSelectedIndex(cmbDanhSachSdt.getItemCount() - 1);
-                } else if (result == 1) {
-                    JOptionPane.showMessageDialog(null, "Khách hàng đã có giỏ hàng, vui lòng xử lý giỏ hàng này!", "Thất bại",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    setSelectedIndexFromPhoneNumber();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thất bại. Xin vui lòng thử lại!", "Thất bại",
-                            JOptionPane.INFORMATION_MESSAGE);
+            if (txtTenKhachHang.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập thông tin khách hàng", "Thất bại",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        int resultCreateCart = createCart();
+                        if (resultCreateCart == 0) {
+                            JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            clearTextField();
+                            GUI.readAllDatabaseToTable();
+                            emptyTableCart();
+                            cmbGioHang.setSelectedIndex(cmbGioHang.getItemCount() - 1);
+                        } else if (resultCreateCart == 1) {
+                            JOptionPane.showMessageDialog(null, "Khách hàng đã có giỏ hàng, vui lòng xử lý giỏ hàng này!", "Thất bại",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            setSelectedIndexFromPhoneNumber();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thất bại. Xin vui lòng thử lại!", "Thất bại",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
-            } catch (IOException | JSONException ex) {
-                throw new RuntimeException(ex);
             }
+
         }
         if (o.equals(cmbGioHang)) {
             try {
-                readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                Object giaTriCbo = cmbGioHang.getSelectedItem();
+                if (giaTriCbo == null || giaTriCbo.toString().equals("")) {
+                } else {
+                    readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                    txtSoLuong.setText("");
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
         if (o.equals(btnCong)) {
-            Object giaTriCmb = cmbGioHang.getSelectedItem();
-            int row = tableSanPham.getSelectedRow();
-            String soLuong = txtSoLuong.getText();
-            if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng", "Thất bại", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (soLuong.equals("") && soLuong.equals("0")) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần thêm!", "Thất bại",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (row < 0) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần thêm", "Thất bại", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (Integer.parseInt(modelSanPham.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
-                JOptionPane.showMessageDialog(this, "Không đủ số lượng để thêm sản phẩm", "Thất bại",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            } else {
-                String productId = modelSanPham.getValueAt(row, 0).toString().trim();
-                try {
-                    if (updateAddOrderItem(productId)) {
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm vào giỏ hàng thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
-                        readDatabaseToTableProduct();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm vào giỏ hàng thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                Object giaTriCmb = cmbGioHang.getSelectedItem();
+                int row = tableSanPham.getSelectedRow();
+                String soLuong = txtSoLuong.getText();
+                if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (soLuong.equals("") && soLuong.equals("0")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần thêm!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (row < 0) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần thêm", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (Integer.parseInt(modelSanPham.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
+                    JOptionPane.showMessageDialog(this, "Không đủ số lượng để thêm sản phẩm", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else {
+                    String productId = modelSanPham.getValueAt(row, 0).toString().trim();
+                    try {
+                        if (updateAddOrderItem(productId)) {
+                            JOptionPane.showMessageDialog(null, "Thêm sản phẩm vào giỏ hàng thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                            readDatabaseToTableProduct();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Thêm sản phẩm vào giỏ hàng thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (JSONException | IOException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (JSONException | IOException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
         if (o.equals(btnTru)) {
-            Object giaTriCmb = cmbGioHang.getSelectedItem();
-            int row = tableGioHang.getSelectedRow();
-            String soLuong = txtSoLuong.getText();
-            if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng!", "Thất bại", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (soLuong.equals("") && soLuong.equals("0")) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần giảm!", "Thất bại",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (row < 0) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần giảm!", "Thất bại", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (Integer.parseInt(modelGioHang.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
-                JOptionPane.showMessageDialog(this, "Số sản phẩm cần giảm lớn hơn số sản phẩm trong giỏ hàng!", "Thất bại",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            } else {
-                String productId = modelGioHang.getValueAt(row, 0).toString().trim();
-                try {
-                    if (updateReduceOrderItem((productId))) {
-                        JOptionPane.showMessageDialog(null, "Giảm sản phẩm trong giỏ hàng thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
-                        readDatabaseToTableProduct();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Giảm sản phẩm trong giỏ hàng thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                Object giaTriCmb = cmbGioHang.getSelectedItem();
+                int row = tableGioHang.getSelectedRow();
+                String soLuong = txtSoLuong.getText();
+                if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (soLuong.equals("") && soLuong.equals("0")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần giảm!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (row < 0) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm trong giỏ hàng!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (Integer.parseInt(modelGioHang.getValueAt(row, 5).toString().trim()) < Integer.parseInt(txtSoLuong.getText())) {
+                    JOptionPane.showMessageDialog(this, "Số sản phẩm cần giảm lớn hơn số sản phẩm trong giỏ hàng!", "Thất bại",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else {
+                    String productId = modelGioHang.getValueAt(row, 0).toString().trim();
+                    try {
+                        if (updateReduceOrderItem((productId))) {
+                            if (tableGioHang.getRowCount() == 1 && Integer.parseInt(modelGioHang.getValueAt(row, 5).toString().trim()) == Integer.parseInt(txtSoLuong.getText())) {
+                                JOptionPane.showMessageDialog(null, "Xóa giỏ hàng thành công!", "Thành công",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                txtTongTien.setText("0.0 VNĐ");
+                                emptyTableCart();
+                                setPendingDirectOrderToCombobox();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Giảm sản phẩm trong giỏ hàng thành công!", "Thành công",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                readCurrentCartToTableCart(getRequestByCustomerNameAndCustomerPhoneNumber());
+                            }
+                            readDatabaseToTableProduct();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Giảm sản phẩm trong giỏ hàng thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (JSONException | IOException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (JSONException | IOException ex) {
-                    throw new RuntimeException(ex);
                 }
+            }
+        }
+        if (o.equals(btnLamMoi)) {
+            clearTextField();
+        }
+        if (o.equals(btnThanhToan)) {
+            try {
+                new FrmThanhToan(getRequestByCustomerNameAndCustomerPhoneNumber());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }
@@ -679,21 +720,27 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     }
 
     public GetOrderResponse getRequestByCustomerNameAndCustomerPhoneNumber() throws IOException {
-        String cmbGioHangString = cmbGioHang.getSelectedItem().toString();
-        if (cmbGioHangString.equals("")) {
+        try {
+            String cmbGioHangString = cmbGioHang.getSelectedItem().toString();
+            if (cmbGioHangString.equals("")) {
+                return null;
+            }
+            String[] parts = cmbGioHangString.split(",");
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            BufferedReader rd = OrderService.getRequestByCustomerNameAndCustomerPhoneNumber(parts[0], parts[1].trim());
+            return mapper.readValue(rd, GetOrderResponse.class);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return null;
         }
-        String[] parts = cmbGioHangString.split(",");
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        BufferedReader rd = OrderService.getRequestByCustomerNameAndCustomerPhoneNumber(parts[0], parts[1].trim());
-        return mapper.readValue(rd, GetOrderResponse.class);
     }
 
     public void readCurrentCartToTableCart(GetOrderResponse getOrderResponse) throws IOException {
         emptyTableCart();
         if (getOrderResponse != null) {
+            Double totalPrice = 0.0;
             DecimalFormat df = new DecimalFormat("#,##0");
 
             List<OrderItemResponseModel> orderItems = getOrderResponse.getOrderItems();
@@ -701,8 +748,14 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 ProductResponseModel product = orderItem.getProduct();
 
                 modelGioHang.addRow(new Object[]{product.getId(), product.getName(), product.getType(),
-                        product.getBrand(), df.format(product.getPrice()), orderItem.getQuantity(), df.format(orderItem.getPrice())});
+                        product.getBrand(), df.format(product.getPrice()), orderItem.getQuantity(),
+                        df.format(orderItem.getPrice() * orderItem.getQuantity())});
+                totalPrice += orderItem.getPrice() * orderItem.getQuantity();
             }
+            if (totalPrice == 0)
+                txtTongTien.setText("0.0 VNĐ");
+            else
+                txtTongTien.setText(df.format(totalPrice) + " VNĐ");
         }
     }
 

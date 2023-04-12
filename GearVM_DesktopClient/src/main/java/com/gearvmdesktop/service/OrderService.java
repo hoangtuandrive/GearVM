@@ -1,5 +1,6 @@
 package com.gearvmdesktop.service;
 
+import com.gearvmstore.GearVM.model.dto.order.ProcessDirectOrderPayment;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import org.apache.http.HttpResponse;
@@ -125,6 +126,27 @@ public class OrderService extends ApiService {
         json.put("customerName", updateOrderItem.getCustomerName());
         json.put("customerPhone", updateOrderItem.getCustomerPhone());
         json.put("amount", updateOrderItem.getAmount());
+
+        StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
+        se.setContentType("application/json;charset=UTF-8");
+        request.setEntity(se);
+        HttpResponse response = client.execute(request);
+        return response.getStatusLine().getStatusCode() == 200;
+    }
+
+    public static boolean patchProcessDirectOrderPayment(ProcessDirectOrderPayment processDirectOrderPayment) throws IOException, JSONException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPatch request = new HttpPatch(url + "process-directOrder-payment");
+
+        JSONObject json = new JSONObject();
+        json.put("orderId", processDirectOrderPayment.getOrderId());
+        json.put("employeeId", processDirectOrderPayment.getEmployeeId());
+        json.put("paymentMethod", processDirectOrderPayment.getPaymentMethod().toString());
+        if (processDirectOrderPayment.getShippingAddress() != null) {
+            json.put("shippingName", processDirectOrderPayment.getShippingName());
+            json.put("shippingPhone", processDirectOrderPayment.getShippingPhone());
+            json.put("shippingAddress", processDirectOrderPayment.getShippingAddress());
+        }
 
         StringEntity se = new StringEntity(json.toString(), StandardCharsets.UTF_8);
         se.setContentType("application/json;charset=UTF-8");

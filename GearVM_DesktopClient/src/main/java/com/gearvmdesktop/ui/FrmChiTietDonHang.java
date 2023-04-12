@@ -149,7 +149,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b5.add(txtTenKhachHang = new JTextField());
         b3.add(b5);
 
-        b6.add(lblSdtKhachHang = new JLabel("Số Điện Thoại:"));
+        b6.add(lblSdtKhachHang = new JLabel("SDT Khách Hàng:"));
         b6.add(Box.createHorizontalStrut(10));
         b6.add(txtSdtKhachHang = new JTextField());
         b3.add(b6);
@@ -266,6 +266,19 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
 
         readDatabaseToTable(getOrderResponse);
         LoadDataToTextField(getOrderResponse);
+
+        txtMaDonHang.setEditable(false);
+        txtTenKhachHang.setEditable(false);
+        txtSdtKhachHang.setEditable(false);
+        txtDiaChi.setEditable(false);
+        txtEmail.setEditable(false);
+        txtMaThanhToan.setEditable(false);
+        txtNgayLapDonHang.setEditable(false);
+        txtNgaySuaDonHang.setEditable(false);
+        txtMaNhanVien.setEditable(false);
+        txtTenKhachHang.setEditable(false);
+        txtPhuongThucThanhToan.setEditable(false);
+        txtTongTien.setEditable(false);
 
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
