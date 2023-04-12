@@ -1,10 +1,8 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Order;
-import com.gearvmstore.GearVM.model.dto.order.PlaceOrderDto;
-import com.gearvmstore.GearVM.model.dto.order.ProcessDirectOrderPayment;
-import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
-import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
+import com.gearvmstore.GearVM.model.PaymentMethod;
+import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/place-order")
-    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrderDto placeOrderDto, @RequestHeader(name = "Authorization") String header) {
+    public ResponseEntity<?> placeOrder(@RequestBody PlaceOrder placeOrder, @RequestHeader(name = "Authorization") String header) {
 
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
@@ -54,7 +52,22 @@ public class OrderController {
         String token = header.substring(7);
 
         if (jwtUtil.validateJwtToken(token))
-            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrderDto, token));
+            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrder, token));
+        return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping(value = "/place-order-alt/{paymentMethod}")
+    public ResponseEntity<?> placeOrderAlt(@RequestBody PlaceOrderAlt placeOrderAlt,
+                                           @RequestHeader(name = "Authorization") String header,
+                                           @PathVariable(value = "paymentMethod") PaymentMethod paymentMethod) {
+
+        if (header == null)
+            return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
+
+        String token = header.substring(7);
+
+        if (jwtUtil.validateJwtToken(token))
+            return ResponseEntity.ok().body(orderService.placeNewOrderAlt(placeOrderAlt, token, paymentMethod));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 

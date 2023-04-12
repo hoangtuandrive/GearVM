@@ -64,7 +64,52 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrder(PlaceOrderDto placeOrderDto, String token) {
+    public GetOrderResponse placeNewOrder(PlaceOrder placeOrder, String token) {
+        try {
+            Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
+            if (customer == null)
+                return null;
+
+            Order order = new Order();
+
+            order.setCustomer(customer);
+            order.setCreatedDate(LocalDateTime.now());
+            order.setUpdatedDate(LocalDateTime.now());
+            order.setTotalPrice(placeOrder.getTotalPrice());
+            order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+
+            Payment payment = new Payment();
+            paymentRepository.save(payment);
+
+            ShippingDetail shippingDetail = new ShippingDetail();
+            shippingDetail.setPhoneNumber(customer.getPhoneNumber());
+            shippingDetailRepository.save(shippingDetail);
+
+            order.setPayment(payment);
+            order.setShippingDetail(shippingDetail);
+
+            Order savedOrder = orderRepository.save(order);
+
+            List<OrderItemDto> orderItemDtos = placeOrder.getOrderItemDtos();
+            for (OrderItemDto orderItemDto : orderItemDtos) {
+                OrderItem item = new OrderItem();
+                Product product = productService.getProduct(orderItemDto.getProductId());
+                item.setProduct(product);
+                item.setOrder(order);
+                item.setQuantity(orderItemDto.getQuantity());
+                item.setPrice(orderItemDto.getPrice());
+                orderItemRepository.save(item);
+            }
+
+            em.refresh(savedOrder);
+            return getOrder(savedOrder.getId());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    public GetOrderResponse placeNewOrderAlt(PlaceOrderAlt placeOrderDto, String token, PaymentMethod paymentMethod) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -79,10 +124,14 @@ public class OrderService {
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
             Payment payment = new Payment();
+            payment.setPaymentMethod(paymentMethod);
             paymentRepository.save(payment);
 
             ShippingDetail shippingDetail = new ShippingDetail();
-            shippingDetail.setPhoneNumber(customer.getPhoneNumber());
+            shippingDetail.setPhoneNumber(shippingDetail.getPhoneNumber());
+            shippingDetail.setName(shippingDetail.getName());
+            shippingDetail.setAddress(shippingDetail.getAddress());
+            shippingDetail.setEmail(shippingDetail.getEmail());
             shippingDetailRepository.save(shippingDetail);
 
             order.setPayment(payment);
