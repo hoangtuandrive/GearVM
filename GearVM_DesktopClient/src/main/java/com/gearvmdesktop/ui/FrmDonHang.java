@@ -3,10 +3,10 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.OrderStatus;
-import com.gearvmdesktop.model.response.GetOrderListResponse;
-import com.gearvmdesktop.model.response.GetOrderResponse;
 import com.gearvmdesktop.service.OrderService;
+import com.gearvmstore.GearVM.model.OrderStatus;
+import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
+import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;

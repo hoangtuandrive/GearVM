@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/payment")
 public class StripeController {
+    @Value("${STRIPE_WEBHOOK_KEY}")
+    private String stripeWebhookKey;
 
     private final StripeService stripeService;
     private final OrderService orderService;
@@ -52,7 +55,7 @@ public class StripeController {
     public ResponseEntity<String> WebHook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) throws JSONException {
         Event event = null;
         try {
-            event = Webhook.constructEvent(payload, sigHeader, "whsec_d3b41c87f134816de2dc0794a10290a22286618974d2bb91576e388e3abe7097");
+            event = Webhook.constructEvent(payload, sigHeader, stripeWebhookKey);
         } catch (SignatureVerificationException e) {
             System.out.println("Failed signature verification");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

@@ -3,15 +3,16 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Purchase;
-import com.gearvmdesktop.model.dto.purchase.CreatePurchase;
-import com.gearvmdesktop.model.response.EmployeeResponseModel;
-import com.gearvmdesktop.model.response.GetPurchaseListResponse;
 import com.gearvmdesktop.service.PurchaseService;
+import com.gearvmstore.GearVM.model.Purchase;
+import com.gearvmstore.GearVM.model.dto.purchase.CreatePurchase;
+import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
+import com.gearvmstore.GearVM.model.response.GetPurchaseListResponse;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -122,7 +123,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
         btnSave = new JButton();
         btnCancel = new JButton();
 
-        String[] header = {"Mã Nhập Hàng", "Mã Nhân Viên Nhập", "Tên Người Nhân Viên Nhập", "Thời Gian Nhập", "Mã Sản Phẩm", "Tên Sản Phẩm",  "Giá Nhập", "Số Lượng", "Chi Tiêu"};
+        String[] header = {"Mã Nhập Hàng", "Mã Nhân Viên Nhập", "Tên Người Nhân Viên Nhập", "Thời Gian Nhập", "Mã Sản Phẩm", "Tên Sản Phẩm", "Giá Nhập", "Số Lượng", "Chi Tiêu"};
         modelKhoHang = new DefaultTableModel(header, 0);
         tableKhoHang = new JTable(modelKhoHang) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -504,7 +505,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if(o.equals(btnChon)){
+        if (o.equals(btnChon)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
@@ -527,7 +528,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -561,7 +562,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
             if (result == JFileChooser.APPROVE_OPTION) {
                 File file = fileDialog.getSelectedFile();
                 String filePath = file.getAbsolutePath();
-                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
+                if (!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
                     filePath += ".xls";
                 }
                 if (exportExcel(filePath))
@@ -581,9 +582,9 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
         txtTenNhanVien.setText(modelKhoHang.getValueAt(row, 2).toString().trim());
         txtThoiGianNhap.setText(modelKhoHang.getValueAt(row, 3).toString().trim());
         txtMaSanPham.setText(modelKhoHang.getValueAt(row, 4).toString().trim());
-        txtTenSanPham.setText(modelKhoHang.getValueAt(row,5).toString().trim());
-        txtGiaNhap.setText(modelKhoHang.getValueAt(row,6).toString().trim());
-        txtSoLuong.setText(modelKhoHang.getValueAt(row,7).toString().trim());
+        txtTenSanPham.setText(modelKhoHang.getValueAt(row, 5).toString().trim());
+        txtGiaNhap.setText(modelKhoHang.getValueAt(row, 6).toString().trim());
+        txtSoLuong.setText(modelKhoHang.getValueAt(row, 7).toString().trim());
         String tien[] = modelKhoHang.getValueAt(row, 4).toString().split(",");
         String chiTieu = "";
         for (int i = 0; i < tien.length; i++)
@@ -643,7 +644,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
         txtChiTieu.setText(null);
     }
 
-    public boolean postRequest() throws IOException {
+    public boolean postRequest() throws IOException, JSONException {
         CreatePurchase p = new CreatePurchase();
         p.setEmployeeId(Long.parseLong(txtMaNhanVien.getText()));
         p.setProductId(Long.parseLong(txtMaSanPham.getText()));
@@ -667,7 +668,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
         new FrmChonSanPham();
     }
 
-    public static void setTextFieldAfterSelectingProduct(String productId, String productName){
+    public static void setTextFieldAfterSelectingProduct(String productId, String productName) {
         emptyTextField();
         EmployeeResponseModel employeeResponseModel = GUI.getEmployeeInfo();
         txtMaNhanVien.setText(employeeResponseModel.getId().toString());
@@ -699,7 +700,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
             cell.setCellValue("DANH SÁCH SẢN PHẨM");
             cell.setCellStyle(styleTenDanhSach);
 
-            String[] header = { "STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn" };
+            String[] header = {"STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
             worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
 
             // Dòng 2 người lập

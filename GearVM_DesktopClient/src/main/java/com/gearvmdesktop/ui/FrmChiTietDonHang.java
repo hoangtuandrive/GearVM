@@ -3,16 +3,17 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.OrderStatus;
-import com.gearvmdesktop.model.PaymentMethod;
-import com.gearvmdesktop.model.Product;
-import com.gearvmdesktop.model.dto.order.UpdateOrderStatusAndEmployee;
-import com.gearvmdesktop.model.response.EmployeeResponseModel;
-import com.gearvmdesktop.model.response.GetOrderResponse;
-import com.gearvmdesktop.model.response.OrderItemResponseModel;
-import com.gearvmdesktop.model.response.ProductResponseModel;
 import com.gearvmdesktop.service.OrderService;
 import com.gearvmdesktop.service.ProductService;
+import com.gearvmstore.GearVM.model.OrderStatus;
+import com.gearvmstore.GearVM.model.PaymentMethod;
+import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
+import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
+import com.gearvmstore.GearVM.model.response.GetOrderResponse;
+import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
+import com.gearvmstore.GearVM.model.response.ProductResponseModel;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -148,7 +149,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b5.add(txtTenKhachHang = new JTextField());
         b3.add(b5);
 
-        b6.add(lblSdtKhachHang = new JLabel("Số Điện Thoại:"));
+        b6.add(lblSdtKhachHang = new JLabel("SDT Khách Hàng:"));
         b6.add(Box.createHorizontalStrut(10));
         b6.add(txtSdtKhachHang = new JTextField());
         b3.add(b6);
@@ -266,6 +267,19 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         readDatabaseToTable(getOrderResponse);
         LoadDataToTextField(getOrderResponse);
 
+        txtMaDonHang.setEditable(false);
+        txtTenKhachHang.setEditable(false);
+        txtSdtKhachHang.setEditable(false);
+        txtDiaChi.setEditable(false);
+        txtEmail.setEditable(false);
+        txtMaThanhToan.setEditable(false);
+        txtNgayLapDonHang.setEditable(false);
+        txtNgaySuaDonHang.setEditable(false);
+        txtMaNhanVien.setEditable(false);
+        txtTenKhachHang.setEditable(false);
+        txtPhuongThucThanhToan.setEditable(false);
+        txtTongTien.setEditable(false);
+
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
         btnXacNhan.addActionListener(this);
@@ -279,97 +293,92 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if(o.equals(btnThayDoiTrangThai)){
+        if (o.equals(btnThayDoiTrangThai)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatusAndEmployee(GUI.getEmployeeInfo())){
+                    if (patchOrderStatusAndEmployee(GUI.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
-        if(o.equals(btnXacNhan)){
+        if (o.equals(btnXacNhan)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(0, GUI.getEmployeeInfo())){
+                    if (patchOrderStatus(0, GUI.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
-        if(o.equals(btnTuChoi)){
+        if (o.equals(btnTuChoi)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(1, GUI.getEmployeeInfo())){
+                    if (patchOrderStatus(1, GUI.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
-        if(o.equals(btnThanhCong)){
+        if (o.equals(btnThanhCong)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(2, GUI.getEmployeeInfo())){
+                    if (patchOrderStatus(2, GUI.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
-        if(o.equals(btnThatBai)){
+        if (o.equals(btnThatBai)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if(patchOrderStatus(3, GUI.getEmployeeInfo())){
+                    if (patchOrderStatus(3, GUI.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
-        if(o.equals(btnXemThanhToan)){
+        if (o.equals(btnXemThanhToan)) {
             openPaymentDetailOnStripe();
         }
     }
@@ -382,7 +391,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         for (OrderItemResponseModel orderItem : orderItems) {
             ProductResponseModel product = orderItem.getProduct();
             double rowPrice = orderItem.getPrice() * orderItem.getQuantity();
-            Product productDb = getRequest(product.getId().toString());
+            Product productDb = getProductRequest(product.getId().toString());
 
             modelSanPham.addRow(new Object[]{product.getId(), product.getName(), product.getType(),
                     product.getBrand(), df.format(orderItem.getPrice()), orderItem.getQuantity(), productDb.getQuantity(), df.format(rowPrice)});
@@ -394,7 +403,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         dm.setRowCount(0);
     }
 
-    public Product getRequest(String productId) throws IOException {
+    public Product getProductRequest(String productId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         BufferedReader rd = ProductService.getRequest(tableNameProduct, productId);
         return mapper.readValue(rd, Product.class);
@@ -422,9 +431,11 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
 
         String paymentMethod = null;
-        if(order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE) paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
-        else if(order.getPayment().getPaymentMethod() == PaymentMethod.BANK) paymentMethod = "Chuyển khoản qua ngân hàng";
-        else if(order.getPayment().getPaymentMethod() == PaymentMethod.COD) paymentMethod = "Trả tiền khi giao hàng";
+        if (order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE)
+            paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.BANK)
+            paymentMethod = "Chuyển khoản qua ngân hàng";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.COD) paymentMethod = "Trả tiền khi giao hàng";
 
         txtMaDonHang.setText(order.getId().toString());
         txtTenKhachHang.setText(order.getShippingDetail().getName());
@@ -435,19 +446,19 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtPhuongThucThanhToan.setText(paymentMethod);
         txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
         txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
-        if(order.getEmployee() != null){
+        if (order.getEmployee() != null) {
             txtMaNhanVien.setText(order.getEmployee().getId().toString());
             txtTenNhanVien.setText(order.getEmployee().getName());
         }
         txtTongTien.setText(df.format(order.getTotalPrice()));
     }
 
-    public boolean patchOrderStatus(int i, EmployeeResponseModel e) throws IOException {
+    public boolean patchOrderStatus(int i, EmployeeResponseModel e) throws IOException, JSONException {
         OrderStatus orderStatus = null;
-        if(i==0) orderStatus = OrderStatus.SHIPPING;
-        if(i==1) orderStatus = OrderStatus.REJECTED;
-        if(i==2) orderStatus = OrderStatus.SHIP_SUCCESS;
-        if(i==3) orderStatus = OrderStatus.SHIP_FAIL;
+        if (i == 0) orderStatus = OrderStatus.SHIPPING;
+        if (i == 1) orderStatus = OrderStatus.REJECTED;
+        if (i == 2) orderStatus = OrderStatus.SHIP_SUCCESS;
+        if (i == 3) orderStatus = OrderStatus.SHIP_FAIL;
 
         UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee = new UpdateOrderStatusAndEmployee();
         updateOrderStatusAndEmployee.setEmployee(e);
@@ -456,23 +467,29 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         return OrderService.patchOrderStatus(txtMaDonHang.getText(), updateOrderStatusAndEmployee);
     }
 
-    public boolean patchOrderStatusAndEmployee(EmployeeResponseModel e) throws IOException {
+    public boolean patchOrderStatusAndEmployee(EmployeeResponseModel e) throws IOException, JSONException {
         String orderId = txtMaDonHang.getText();
         UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee = new UpdateOrderStatusAndEmployee();
 
-        if(cmbTrangThai.getSelectedIndex() == 0) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_PENDING);
-        else if(cmbTrangThai.getSelectedIndex() == 1) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_DONE);
-        else if(cmbTrangThai.getSelectedIndex() == 2) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIPPING);
-        else if(cmbTrangThai.getSelectedIndex() == 3) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_SUCCESS);
-        else if(cmbTrangThai.getSelectedIndex() == 4) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_FAIL);
-        else if(cmbTrangThai.getSelectedIndex() == 5) updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.REJECTED);
+        if (cmbTrangThai.getSelectedIndex() == 0)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+        else if (cmbTrangThai.getSelectedIndex() == 1)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.PAYMENT_DONE);
+        else if (cmbTrangThai.getSelectedIndex() == 2)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIPPING);
+        else if (cmbTrangThai.getSelectedIndex() == 3)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_SUCCESS);
+        else if (cmbTrangThai.getSelectedIndex() == 4)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.SHIP_FAIL);
+        else if (cmbTrangThai.getSelectedIndex() == 5)
+            updateOrderStatusAndEmployee.setOrderStatus(OrderStatus.REJECTED);
 
         updateOrderStatusAndEmployee.setEmployee(e);
 
         return OrderService.patchOrderStatusAndEmployee(orderId, updateOrderStatusAndEmployee);
     }
 
-    public void openPaymentDetailOnStripe(){
+    public void openPaymentDetailOnStripe() {
         OrderService.openPaymentDetailOnStripe(txtMaThanhToan.getText());
     }
 }

@@ -6,16 +6,15 @@ package com.gearvmdesktop.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Product;
 import com.gearvmdesktop.service.ProductService;
+import com.gearvmstore.GearVM.model.Product;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -542,7 +541,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -559,7 +558,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                         JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -589,7 +588,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                 throw new RuntimeException(ex);
             }
         }
-        if(o.equals(btnChonSanPham)){
+        if (o.equals(btnChonSanPham)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 selectProduct();
@@ -650,7 +649,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         }
     }
 
-    public void selectProduct(){
+    public void selectProduct() {
         int row = tableSanPham.getSelectedRow();
         String productId = tableSanPham.getValueAt(row, 0).toString().trim();
         String productName = tableSanPham.getValueAt(row, 1).toString().trim();
@@ -676,7 +675,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         return mapper.readValue(rd, Product.class);
     }
 
-    public boolean postRequest() throws IOException {
+    public boolean postRequest() throws IOException, JSONException {
         ObjectMapper mapper = new ObjectMapper();
         Product p = new Product();
         p.setName(txtTenSanPham.getText());
@@ -689,7 +688,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         return product != null;
     }
 
-    public boolean putRequest() throws IOException {
+    public boolean putRequest() throws IOException, JSONException {
         Product p = new Product();
         p.setId(Long.parseLong(txtMaSanPham.getText()));
         p.setName(txtTenSanPham.getText());

@@ -3,15 +3,16 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Customer;
-import com.gearvmdesktop.model.Gender;
 import com.gearvmdesktop.service.CustomerService;
 import com.gearvmdesktop.service.EmployeeService;
+import com.gearvmstore.GearVM.model.Customer;
+import com.gearvmstore.GearVM.model.Gender;
 import com.toedter.calendar.JDateChooser;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -454,7 +455,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                         JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -471,7 +472,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                         JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -572,7 +573,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         else return Gender.UNDEFINED;
     }
 
-    public boolean postRequest() throws IOException {
+    public boolean postRequest() throws IOException, JSONException {
         Customer c = new Customer();
         c.setName(txtTenKhachHang.getText());
         c.setGender(getGenderFromCmb());
@@ -583,7 +584,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         return CustomerService.postRequest(c);
     }
 
-    public boolean putRequest() throws IOException {
+    public boolean putRequest() throws IOException, JSONException {
         Customer c = new Customer();
         c.setId(Long.parseLong(txtMaKhachHang.getText()));
         c.setName(txtTenKhachHang.getText());

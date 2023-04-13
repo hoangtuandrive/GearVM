@@ -55,6 +55,7 @@ public class StripeService {
     }
 
     public PaymentLink createPaymentLink(String orderId, String price) throws StripeException {
+        // TODO
         String productName = "Đơn hàng mã số #" + orderId;
         PaymentLinkCreateParams params =
                 PaymentLinkCreateParams

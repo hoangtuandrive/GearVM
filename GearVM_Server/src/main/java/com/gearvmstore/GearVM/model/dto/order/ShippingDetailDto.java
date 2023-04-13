@@ -1,11 +1,11 @@
-package com.gearvmdesktop.model.response;
+package com.gearvmstore.GearVM.model.dto.order;
 
 import lombok.Data;
 
 @Data
-public class CustomerResponseModel {
-    private Long id;
+public class ShippingDetailDto {
     private String name;
+    private String address;
     private String phoneNumber;
     private String email;
 }

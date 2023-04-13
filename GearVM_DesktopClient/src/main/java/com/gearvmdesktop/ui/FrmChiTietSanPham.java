@@ -1,8 +1,8 @@
 package com.gearvmdesktop.ui;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Product;
 import com.gearvmdesktop.service.ProductService;
+import com.gearvmstore.GearVM.model.Product;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;

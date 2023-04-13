@@ -3,24 +3,25 @@ package com.gearvmdesktop.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.model.Employee;
-import com.gearvmdesktop.model.Gender;
-import com.gearvmdesktop.model.Role;
 import com.gearvmdesktop.service.EmployeeService;
+import com.gearvmstore.GearVM.model.Employee;
+import com.gearvmstore.GearVM.model.Gender;
+import com.gearvmstore.GearVM.model.Role;
 import com.toedter.calendar.JDateChooser;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -550,7 +551,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                         JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -567,7 +568,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                         JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (IOException ex) {
+                } catch (IOException | JSONException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -601,7 +602,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
             if (result == JFileChooser.APPROVE_OPTION) {
                 java.io.File file = fileDialog.getSelectedFile();
                 String filePath = file.getAbsolutePath();
-                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
+                if (!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
                     filePath += ".xls";
                 }
                 if (exportExcel(filePath))
@@ -679,7 +680,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         txtLuong.setText(null);
     }
 
-    public boolean postRequest() throws IOException {
+    public boolean postRequest() throws IOException, JSONException {
         Employee e = new Employee();
         e.setName(txtTen.getText());
         e.setGender(getGenderFromCmb());
@@ -695,7 +696,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         return EmployeeService.postRequest(e);
     }
 
-    public boolean putRequest() throws IOException {
+    public boolean putRequest() throws IOException, JSONException {
         Employee e = new Employee();
         e.setId(Long.parseLong(txtMaNhanVien.getText()));
         e.setName(txtTen.getText());

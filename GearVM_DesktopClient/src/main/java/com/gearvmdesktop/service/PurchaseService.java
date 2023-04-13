@@ -1,14 +1,15 @@
 package com.gearvmdesktop.service;
 
-import com.gearvmdesktop.model.Product;
-import com.gearvmdesktop.model.Purchase;
-import com.gearvmdesktop.model.dto.purchase.CreatePurchase;
+
+import com.gearvmstore.GearVM.model.Purchase;
+import com.gearvmstore.GearVM.model.dto.purchase.CreatePurchase;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class PurchaseService extends ApiService {
     private static final String url = staticUrl + "/purchases/";
 
-    public static boolean postRequest(CreatePurchase p) throws IOException {
+    public static boolean postRequest(CreatePurchase p) throws IOException, JSONException {
         HttpClient client = new DefaultHttpClient();
         HttpPost request = new HttpPost(url);
         JSONObject json = new JSONObject();

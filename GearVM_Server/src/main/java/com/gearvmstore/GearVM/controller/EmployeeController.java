@@ -1,7 +1,7 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Employee;
-import com.gearvmstore.GearVM.model.dto.user.LoginDTO;
+import com.gearvmstore.GearVM.model.dto.user.LoginDto;
 import com.gearvmstore.GearVM.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +51,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDTO) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Employee employee = employeeService.validateLogin(loginDTO.getUsername(), loginDTO.getPassword());
 
         if (employee == null) {
