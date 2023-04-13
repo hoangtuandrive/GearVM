@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(150deg, #2988bc, #2f496e, #f4eade, #ed8c72);
+  // background: linear-gradient(150deg, #2988bc, #2f496e, #f4eade, #ed8c72);
 }
 .MomoPageContent {
   box-shadow: 5px 5px 5px lightblue;
@@ -13,6 +13,7 @@
   width: 50%;
 }
 .MomoPageContentLeft {
+  position: relative;
   background-color: #203bb2;
   display: flex;
   flex-direction: column;
@@ -51,6 +52,11 @@
 .imgLogo {
   width: 100px;
   height: 100px;
+  border-radius: 15px;
+}
+.imgQr {
+  width: 60%;
+  height: 50%;
 }
 .Scantxt {
   color: #203bb2;
@@ -98,5 +104,22 @@
 .TotaltxtMagin {
   color: white;
   margin-left: 25px;
-  font-size: 18px;
+  font-size: 22px;
+}
+.btnBack {
+  position: absolute;
+  bottom: 25px;
+  left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btnBackTxt {
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
 }

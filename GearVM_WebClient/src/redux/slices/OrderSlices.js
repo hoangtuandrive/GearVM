@@ -4,10 +4,13 @@ import { url } from "../../API/api";
 
 const initialState = {
   itemTracking: {},
+  AllOrder: [],
   orderStatus: "",
   orderError: "",
   orderTrackingStatus: "",
   orderTrackingError: "",
+  getAllOrderStatus: "",
+  getAllOrderError: "",
 };
 
 export const OrderCart = createAsyncThunk(
@@ -51,11 +54,25 @@ export const OrderCart = createAsyncThunk(
   }
 );
 
+export const GetAllOrderSlice = createAsyncThunk(
+  "orders/GetAll-order",
+  async (values, { rejectWithValue }) => {
+    try {
+      const GetAllOrder = await axios.get(`${url}/orders`, {});
+      return GetAllOrder.data;
+    } catch (error) {
+      // console.log(error.response.data);
+      // console.log(rejectWithValue(error));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const TrackingOrderSlice = createAsyncThunk(
   "orders/tracking-order",
   async (values, { rejectWithValue }) => {
     try {
-      const TrackingOrder = await axios.get(`${url}/orders/1`, {
+      const TrackingOrder = await axios.get(`${url}/orders/${values}`, {
         // headers: {
         //   Authorization: `Bearer ${localStorage.getItem("token")}`,
         //   "Content-Type": "application/json",
@@ -115,6 +132,25 @@ const orderSlices = createSlice({
         orderTrackingStatus: "fulfilled",
         itemTracking: action.payload,
       };
+    });
+    builder.addCase(GetAllOrderSlice.pending, (state, action) => {
+      return {
+        ...state,
+        getAllOrderStatus: "pending",
+      };
+    });
+    builder.addCase(GetAllOrderSlice.rejected, (state, action) => {
+      return {
+        ...state,
+        getAllOrderStatus: "rejected",
+        getAllOrderError: action.payload,
+      };
+    });
+    builder.addCase(GetAllOrderSlice.fulfilled, (state, action) => {
+      if (JSON.stringify(state.AllOrder) !== JSON.stringify(action.payload)) {
+        state.AllOrder = action.payload;
+      }
+      state.getAllOrderStatus = "fulfilled";
     });
   },
 });

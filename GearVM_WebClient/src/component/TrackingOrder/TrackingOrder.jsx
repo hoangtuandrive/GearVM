@@ -16,9 +16,37 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
+import { TrackingOrderSlice } from "../../redux/slices/OrderSlices";
+import axios from "axios";
+import { url } from "../../API/api";
 
 const cx = classNames.bind(styles);
 const TrackingOrder = ({ data }) => {
+  const dispatch = useDispatch();
+  const [order, setOrder] = useState();
+  const [activeItem, setActiveItem] = useState();
+
+  // console.log(order);
+  // // console.log(data.id);
+  const handleShowOrder = async () => {
+    setActiveItem(data?.id);
+    try {
+      const TrackingOrder = await axios.get(`${url}/orders/${data?.id}`, {
+        // headers: {
+        //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   "Content-Type": "application/json",
+        // },
+      });
+      setOrder(TrackingOrder.data);
+      return TrackingOrder.data;
+    } catch (error) {
+      // console.log(error.response.data);
+      // console.log(rejectWithValue(error));
+      return error.response.data;
+    }
+  };
+  console.log(order);
   const [status, setStatus] = useState();
   const [active, setActive] = useState();
   function ChangeStatus() {
@@ -66,6 +94,7 @@ const TrackingOrder = ({ data }) => {
   const [showItem, setShowItem] = useState(true);
   const handleShowItemOrder = () => {
     setShowItem(!showItem);
+    console.log(data?.id);
   };
   const settings = {
     dots: true,
@@ -189,27 +218,37 @@ const TrackingOrder = ({ data }) => {
               ))}
             </Slider> */}
           <Container>
-            <Row
-              lg={4}
-              className={cx(`ShowitemOrder${showItem ? "show" : "hidden"}`)}
+            <h6
+              className={`${styles.itemShow} ${
+                active === data?.id ? styles.selected : ""
+              }`}
+              onClick={handleShowOrder}
             >
-              {/* <ul className={cx("row")}> */}
-              {data.orderItems?.map((item, index) => (
-                // <div
-                //   // onClick={() => {
-                //   //   handelItemProduct(item);
-                //   // }}
-                //   className={cx("listProduct_thumb_item")}
-                //   key={item.id}
-                // >
-                <Col key={item.id}>
-                  <ItemOrder data={item} />
-                </Col>
-                // </div>
-              ))}
-              {/* </ul> */}
-            </Row>
+              Xem chi tiết
+            </h6>
+            {activeItem === data?.id ? (
+              <Row
+                lg={4}
+                className={cx(`ShowitemOrder${showItem ? "show" : "hidden"}`)}
+              >
+                {order?.orderItems?.map((item, index) => (
+                  // <div
+                  //   // onClick={() => {
+                  //   //   handelItemProduct(item);
+                  //   // }}
+                  //   className={cx("listProduct_thumb_item")}
+                  //   key={item.id}
+                  // >
+                  <Col key={item.id}>
+                    <ItemOrder data={item} />
+                  </Col>
+                  // </div>
+                ))}
+                {/* </ul> */}
+              </Row>
+            ) : null}
           </Container>
+
           {data.orderItems?.length > 5 ? (
             <h6 className={cx("ShowItemOrder")} onClick={handleShowItemOrder}>
               Xem Thêm

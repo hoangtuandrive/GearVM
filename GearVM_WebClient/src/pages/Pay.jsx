@@ -10,7 +10,7 @@ const Pay = () => {
   return (
     <div className={cx("wrapPay")}>
       <Header />
-      <PayBody name="Thanh toán qua Internet" />
+      <PayBody />
       <Footer />
     </div>
   );

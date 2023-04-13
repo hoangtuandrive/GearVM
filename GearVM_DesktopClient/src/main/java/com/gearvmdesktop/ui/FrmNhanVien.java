@@ -741,7 +741,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         else return Role.MANAGER;
     }
 
-    public static void readDatabaseToTable() throws IOException {
+    public static void  readDatabaseToTable() throws IOException {
         emptyTable();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DecimalFormat df = new DecimalFormat("#,##0");
@@ -759,6 +759,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
             if (e.getRole() == Role.EMPLOYEE) role = "Nhân viên";
             else role = "Quản lý";
+
 
             modelNhanVien.addRow(new Object[]{e.getId(), e.getName(),
                     dateFormat.format(e.getDateOfBirth()), e.getNationalId(), gender,

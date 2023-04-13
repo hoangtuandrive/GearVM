@@ -2,15 +2,16 @@ import React, { useState } from "react";
 
 export const AppContext = React.createContext();
 function AppProvider({ children }) {
-  const [show,setShow] = useState(false);
-  const [UserOpen,setUserOpen] = useState(false);
-  const [openMenu,setOpenMenu] = useState(false);
-  
+  const [show, setShow] = useState(false);
+  const [UserOpen, setUserOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+
   const clearState = () => {
     setShow(false);
     setUserOpen(false);
     setOpenMenu(false);
-  
+    setShowChat(false);
   };
   return (
     <AppContext.Provider
@@ -21,7 +22,9 @@ function AppProvider({ children }) {
         UserOpen,
         setUserOpen,
         openMenu,
-        setOpenMenu
+        setOpenMenu,
+        showChat,
+        setShowChat,
       }}
     >
       {children}

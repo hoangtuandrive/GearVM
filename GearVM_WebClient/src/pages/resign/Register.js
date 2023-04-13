@@ -24,12 +24,14 @@ const Register = () => {
     phoneNumber: "",
     email: "",
     password: "",
+    address: "",
   });
   const [errorMessage, setErrorMessage] = useState({
     messageEmail: "",
     messagePass: "",
     messagePhone: "",
     messageName: "",
+    messageAddress: "",
   });
   // console.log(auth);
   useEffect(() => {
@@ -45,7 +47,8 @@ const Register = () => {
       handleName(user.email) === true &&
       handlePasswrod(user.password) === true &&
       handlePhone(user.phoneNumber) === true &&
-      handleExitEmail(user.email) === true
+      handleExitEmail(user.email) === true &&
+      handleAddress(user.address)
     ) {
       dispatch(registerUser(user));
     }
@@ -111,6 +114,18 @@ const Register = () => {
       return true;
     }
   };
+  const handleAddress = () => {
+    if (user.address === "") {
+      setErrorMessage({
+        ...errorMessage,
+        messageAddress: "Bạn chưa nhập địa chỉ",
+      });
+      return false;
+    } else {
+      setErrorMessage({ ...errorMessage, messageAddress: "" });
+      return true;
+    }
+  };
   const handlePasswrod = () => {
     const regexPasswrod =
       /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
@@ -133,7 +148,7 @@ const Register = () => {
     }
   };
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
-  console.log(user.dateOfBirth);
+  // console.log(user.dateOfBirth);
   return (
     <div className={cx("wrapLogin")}>
       <div className={cx("LoginContent")}>
@@ -209,6 +224,18 @@ const Register = () => {
           </div>
           {errorMessage.messagePhone === "" ? null : (
             <span style={{ color: "red" }}>{errorMessage.messagePhone}</span>
+          )}
+          <div className={cx("form-group")}>
+            <input
+              type="text"
+              placeholder="Địa chỉ"
+              className={cx("form-input")}
+              onChange={(e) => setUser({ ...user, address: e.target.value })}
+              onBlur={handleAddress}
+            />
+          </div>
+          {errorMessage.messageAddress === "" ? null : (
+            <span style={{ color: "red" }}>{errorMessage.messageAddress}</span>
           )}
           <div className={cx("form-check-group")}>
             <div className="form-check">

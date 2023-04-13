@@ -167,6 +167,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 				Employee employee = login();
 
 				if(employee != null){
+
 					GUI gui = new GUI(employee);
 					gui.setVisible(true);
 					gui.setDefaultCloseOperation(EXIT_ON_CLOSE);

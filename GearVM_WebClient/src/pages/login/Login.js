@@ -16,10 +16,12 @@ const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
+    phoneNumber: "",
   });
   const [errorMessage, setErrorMessage] = useState({
     messageEmail: "",
     messagePass: "",
+    messagePhone: "",
   });
   console.log(auth);
   useEffect(() => {
@@ -36,7 +38,8 @@ const Login = () => {
     // console.log(user);
     if (
       handlePasswrod(user.password) === true &&
-      handleExitEmail(user.email) === true
+      handleExitEmail(user.email) === true &&
+      handlePhone(user.phoneNumber)
     ) {
       dispatch(loginUser(user));
     }
@@ -56,6 +59,26 @@ const Login = () => {
       return false;
     } else {
       setErrorMessage({ ...errorMessage, messageEmail: "" });
+      return true;
+    }
+  };
+
+  const handlePhone = () => {
+    const regexPhone = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+    if (user.phoneNumber === "") {
+      setErrorMessage({
+        ...errorMessage,
+        messagePhone: "Bạn chưa nhập số điện thoại",
+      });
+      return false;
+    } else if (!regexPhone.test(user.phoneNumber)) {
+      setErrorMessage({
+        ...errorMessage,
+        messagePhone: "Nhập số điện thoại sai định dạng",
+      });
+      return false;
+    } else {
+      setErrorMessage({ ...errorMessage, messagePhone: "" });
       return true;
     }
   };
@@ -99,6 +122,22 @@ const Login = () => {
           {errorMessage.messageEmail === "" ? null : (
             <span style={{ color: "red" }}>{errorMessage.messageEmail}</span>
           )}
+
+          <div className={cx("form-group")}>
+            <input
+              type="text"
+              placeholder="Số điện thoại"
+              className={cx("form-input")}
+              onChange={(e) =>
+                setUser({ ...user, phoneNumber: e.target.value })
+              }
+              onBlur={handlePhone}
+            />
+          </div>
+          {errorMessage.messagePhone === "" ? null : (
+            <span style={{ color: "red" }}>{errorMessage.messagePhone}</span>
+          )}
+
           <div className={cx("form-group")}>
             <input
               type="password"

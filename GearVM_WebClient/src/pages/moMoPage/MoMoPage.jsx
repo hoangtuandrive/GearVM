@@ -3,9 +3,10 @@ import styles from "./MoMoPage.module.scss";
 import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "antd";
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import { faCoins, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const cx = classNames.bind(styles);
 
 const MoMoPage = () => {
@@ -13,22 +14,44 @@ const MoMoPage = () => {
   const handleComplete = () => {
     navigate("/payment-success");
   };
+  const handleBack = () => {
+    navigate("/payOffline");
+  };
+
+  const cart = useSelector((state) => state.todoCart);
   return (
     <div className={cx("wrapMoMoPage")}>
       <Container className={cx("MomoPageContent")}>
         <Row>
           <Col lg={4} className={cx("MomoPageContentLeft")}>
             <div>
-              <h6 className={cx("Suptxt")}>Nhà cung cấp</h6>
-              <h4 className={cx("NameCty")}>CÔNG TY THIẾT BỊ ĐIỆN TỬ GEARVM</h4>
-            </div>
-            <hr />
-            <div>
-              <div className={cx("MomoTotal")}>
-                <FontAwesomeIcon icon={faCoins} style={{ color: "white" }} />
-                <h6 className={cx("Totaltxt")}>Số tiền</h6>
+              <div>
+                <h6 className={cx("Suptxt")}>Nhà cung cấp</h6>
+                <h4 className={cx("NameCty")}>
+                  CÔNG TY THƯƠNG MẠI DỊCH VỤ GEARVM
+                </h4>
               </div>
-              <h4 className={cx("Totaltxt")}>10.00đ</h4>
+              <hr />
+              <div>
+                <div className={cx("MomoTotal")}>
+                  <FontAwesomeIcon icon={faCoins} style={{ color: "white" }} />
+                  <h6 className={cx("Totaltxt")}>Số tiền</h6>
+                </div>
+                <h4 className={cx("Totaltxt")}>
+                  {" "}
+                  {new Intl.NumberFormat("de-DE", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(cart.cartTotalAmount)}
+                </h4>
+              </div>
+            </div>
+            <div className={cx("btnBack")} onClick={handleBack}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                style={{ color: "white", marginLeft: 5, fontWeight: "bold" }}
+              />
+              <h6 className={cx("btnBackTxt")}>Quay lại</h6>
             </div>
           </Col>
           <Col lg={8} className={cx("wrapRight")}>
@@ -47,7 +70,7 @@ const MoMoPage = () => {
               <div className={cx("Scantxt")}>Quét Mã Để Thanh Toán</div>
               <div className={cx("QrCode")}>
                 <img
-                  src={require("../../assets/QrCode.png")}
+                  src={require("../../assets/QrMomo.jpg")}
                   className={cx("imgQr")}
                 />
               </div>

@@ -2,16 +2,28 @@ import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./InfoCustomer.module.scss";
 import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
 const InfoCustomer = () => {
+  const CurrentUser = useSelector((state) => state.auth.user);
   const [user, setUser] = useState({
-    name: "",
+    name: CurrentUser.name,
     address: "",
     phone: "",
     email: "",
   });
+  useEffect(() => {
+    setUser({
+      name: CurrentUser.name,
+      address: CurrentUser.address,
+      phone: CurrentUser.phoneNumber,
+      email: CurrentUser.email,
+    });
+  }, [CurrentUser]);
+
   const [errorMessage, setErrorMessage] = useState({
     messageName: "",
     messageAddress: "",
@@ -78,7 +90,7 @@ const InfoCustomer = () => {
   };
 
   const handleAddress = () => {
-    console.log(user.address === "");
+    // console.log(user.address === "");
     if (user.address === "") {
       setErrorMessage({
         ...errorMessage,
@@ -101,6 +113,7 @@ const InfoCustomer = () => {
               className={cx("input__field")}
               type="text"
               placeholder=" "
+              defaultValue={user.name}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
               onBlur={handleName}
             />
@@ -116,6 +129,7 @@ const InfoCustomer = () => {
               className={cx("input__field")}
               type="text"
               placeholder=" "
+              defaultValue={user.address}
               onChange={(e) => setUser({ ...user, address: e.target.value })}
               onBlur={handleAddress}
             />
@@ -130,6 +144,7 @@ const InfoCustomer = () => {
               className={cx("input__field")}
               type="text"
               placeholder=" "
+              defaultValue={user.phone}
               onChange={(e) => setUser({ ...user, phone: e.target.value })}
               onBlur={handlePhone}
             />
@@ -144,6 +159,7 @@ const InfoCustomer = () => {
               className={cx("input__field")}
               type="text"
               placeholder=" "
+              defaultValue={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               onBlur={handleExitEmail}
             />

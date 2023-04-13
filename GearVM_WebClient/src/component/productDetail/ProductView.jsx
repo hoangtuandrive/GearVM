@@ -85,11 +85,6 @@ const ProductView = () => {
             src={imageData ? imageData : ""}
             className={cx("ProductView_Img")}
           />
-          <div className={cx("ProductView_description")}>
-            {lines?.map((item, index) => (
-              <p key={index}>{item}</p>
-            ))}
-          </div>
         </div>
 
         <div className={cx("ProductView_Content")}>
@@ -140,6 +135,13 @@ const ProductView = () => {
               onClick={() => handleAddToCart(productDetail)}
             />
           </div>
+        </div>
+      </div>
+      <div className={cx("wrap_description")}>
+        <div className={cx("ProductView_description")}>
+          {lines?.map((item, index) => (
+            <p key={index}>{item}</p>
+          ))}
         </div>
       </div>
     </Container>

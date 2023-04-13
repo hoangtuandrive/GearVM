@@ -69,107 +69,10 @@ const PaybodyOffline = ({ name }) => {
     navigate("/cashPage", { replace: true });
   };
 
-  const [user, setUser] = useState({
-    name: "",
-    address: "",
-    phone: "",
-    email: "",
-  });
-  const [errorMessage, setErrorMessage] = useState({
-    messageName: "",
-    messageAddress: "",
-    messagePhone: "",
-    messageEmail: "",
-  });
-  const handlePhone = () => {
-    const regexPhone = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
-    if (user.phoneNumber === "") {
-      setErrorMessage({
-        ...errorMessage,
-        messagePhone: "Bạn chưa nhập số điện thoại",
-      });
-      return false;
-    } else if (!regexPhone.test(user.phoneNumber)) {
-      setErrorMessage({
-        ...errorMessage,
-        messagePhone: "Nhập số điện thoại sai định dạng",
-      });
-      return false;
-    } else {
-      setErrorMessage({ ...errorMessage, messagePhone: "" });
-      return true;
-    }
-  };
-
-  const handleExitEmail = () => {
-    const regexEmail =
-      /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
-
-    if (user.email === "") {
-      setErrorMessage({ ...errorMessage, messageEmail: "Bạn chưa nhập Email" });
-      return false;
-    } else if (!regexEmail.test(user.email)) {
-      setErrorMessage({
-        ...errorMessage,
-        messageEmail: "Nhập email sai định dạng",
-      });
-      return false;
-    } else {
-      setErrorMessage({ ...errorMessage, messageEmail: "" });
-      return true;
-    }
-  };
-
-  const handleName = () => {
-    const regexName = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-    if (user.name === "") {
-      setErrorMessage({ ...errorMessage, messageName: "Bạn chưa nhập Họ tên" });
-      return false;
-    } else if (!regexName.test(user.name)) {
-      setErrorMessage({
-        ...errorMessage,
-
-        messageName:
-          "Tên người dùng phải có 3-16 ký tự và không được bao gồm bất kỳ ký tự đặc biệt nào!",
-      });
-      return false;
-    } else {
-      setErrorMessage({ ...errorMessage, messageName: "" });
-      return true;
-    }
-  };
-
-  const handleAddress = () => {
-    if (user.address === "") {
-      setErrorMessage({
-        ...errorMessage,
-        messageAddress: "Bạn chưa nhập Địa chỉ",
-      });
-      return false;
-    } else {
-      setErrorMessage({ ...errorMessage, messageName: "" });
-      return true;
-    }
-  };
-
   return (
     <Container>
       {/* <div className={cx("wrapPayBody")}> */}
       <div className={cx("wrapPayBody_right")}>
-        <div className={cx("wrapPayBody_right_address")}>
-          <h5 className={cx("Paytxt")}>Mã giảm giá</h5>
-          <div className={cx("discout")}>
-            <label className={cx("input")}>
-              <input
-                className={cx("input__field")}
-                type="text"
-                placeholder=" "
-              />
-              <span className={cx("input__label")}>Nhập mã khuyến mãi</span>
-            </label>
-            <div className={cx("btn", "btn_Use")}>Áp Dụng</div>
-          </div>
-        </div>
         <div className={cx("wrapPayBody_right_Sumpay_content")}>
           <span className={cx("wrapPayBody_right_Sumpay_text")}>
             Tổng tiền:
@@ -201,12 +104,12 @@ const PaybodyOffline = ({ name }) => {
             </div>
 
             <div>
+              <CustomButon Click={handlePay} name={"Thanh toán MoMo"} />
+            </div>
+            <div>
               <CustomButon name="Thanh toán tiền mặt" Click={handleCash} />
 
               {/* <h5 style={{ color: "black" }}>Thanh toán khi nhận hàng</h5> */}
-            </div>
-            <div>
-              <CustomButon Click={handlePay} name={"Thanh toán MoMo"} />
             </div>
           </div>
         </div>

@@ -156,3 +156,10 @@ p {
 .ShowitemOrderhidden {
   height: 100%;
 }
+.itemShow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(30, 30, 179, 0.807);
+}

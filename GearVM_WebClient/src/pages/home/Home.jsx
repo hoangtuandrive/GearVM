@@ -9,16 +9,22 @@ import ListProductHome from "../../component/Home/listProductofHome/ListProductH
 import Footer from "../../component/Home/footer/Footer";
 import Content from "../../component/Home/content/Content";
 import ScrolltoTop from "../../component/Home/ScrolltoTop/ScrolltoTop";
+import ChatBox from "../../component/chatBox/ChatBox";
+import { useContext } from "react";
+import { AppContext } from "../../component/context/AppProvider";
 const cx = classNames.bind(styles);
 const Home = () => {
+  const { showChat } = useContext(AppContext);
+
   return (
     <div className={cx("wrapHome")}>
       <Header></Header>
       {/* <NavModal/> */}
       <SlideShow />
       <Content></Content>
-      <ListProductHome name="SẢN PHẨM BÁN CHẠY"/>
+      <ListProductHome name="SẢN PHẨM BÁN CHẠY" />
       <ScrolltoTop />
+      {showChat ? <ChatBox /> : null}
       {/* <ListProduct /> */}
       <Footer />
     </div>

@@ -10,6 +10,7 @@ const CashPage = () => {
   const handleComplete = () => {
     navigate("/");
   };
+ 
   return (
     <div className={cx("wrapper")}>
       <form action="#" className={cx("card-content")}>

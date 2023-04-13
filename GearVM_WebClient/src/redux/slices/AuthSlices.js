@@ -30,6 +30,7 @@ export const registerUser = createAsyncThunk(
         email: values.email,
         phoneNumber: values.phoneNumber,
         password: values.password,
+        address: values.address,
       });
     } catch (error) {
       console.log(error.reponse.data);

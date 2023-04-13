@@ -5,13 +5,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(-150deg, #ffccbb, #6eb5c0, #006c84, #e2e8e4);
+  // background: linear-gradient(-150deg, #ffccbb, #6eb5c0, #006c84, #e2e8e4);
 }
 .MomoPageContent {
   background-color: white;
   width: 50%;
 }
 .MomoPageContentLeft {
+  position: relative;
   background-color: #a50064;
   display: flex;
   flex-direction: column;
@@ -47,6 +48,10 @@
 .imgLogo {
   width: 100px;
   height: 100px;
+}
+.imgQr {
+  width: 50%;
+  height: 50%;
 }
 .Scantxt {
   color: #d82d8b;
@@ -90,4 +95,21 @@
 .Introtxt {
   font-weight: 800;
   width: 80%;
+}
+.btnBack {
+  position: absolute;
+  bottom: 25px;
+  left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btnBackTxt {
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
 }

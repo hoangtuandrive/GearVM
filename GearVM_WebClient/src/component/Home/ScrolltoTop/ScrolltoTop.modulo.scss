@@ -35,8 +35,8 @@
   position: fixed;
 
   z-index: 1030;
-  right: 2.5rem;
-  bottom: 5.6rem;
+  right: 0.5rem;
+  bottom: 2rem;
   margin-top: -2rem;
 }
 .ChatEmployeeImg {
@@ -44,6 +44,12 @@
   height: 60px;
   background-image: url(../../../assets/scroll.jpg);
   background-repeat: no-repeat;
+}
+.chatBox {
+  margin-top: 20px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
 }
 @media screen and (max-width: 768px) {
   .btnTop.show {

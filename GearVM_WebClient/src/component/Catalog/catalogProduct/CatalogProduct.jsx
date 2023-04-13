@@ -353,7 +353,7 @@ const CatalogProduct = () => {
           </div>
           <div className="gach"></div>
           <div className={cx("wrapCatalogProduct_fillter_Price")}>
-            <h6 className={cx("txtWrap_Head")}>Thương Hiệu</h6>
+            <h6 className={cx("txtWrap_Head")}>Lọc Theo giá tiền</h6>
             <div className={cx("bodyPrice")}>
               <p className={cx("bodyPrice_content")}>
                 {" "}

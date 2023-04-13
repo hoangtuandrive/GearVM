@@ -20,7 +20,7 @@ import CustomButon from "../Custom/CustomButon/CustomButon";
 import { Button } from "antd";
 
 const cx = classNames.bind(styles);
-const PayBody = ({ name }) => {
+const PayBody = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -169,13 +169,16 @@ const PayBody = ({ name }) => {
                 </h6>
               </div> */}
               <div>
-                <CustomButon Click={handlePay} name={name} />
+                <CustomButon
+                  Click={handlePay}
+                  name="Thanh toán bằng thẻ Visa,Mastercard"
+                />
               </div>
 
               <div>
                 <CustomButon
                   Click={handlePayOffline}
-                  name="Thanh toán khi nhận hàng"
+                  name="Phương thức khác (Ngân hàng, Momo, COD)"
                 />
 
                 {/* <h5 style={{ color: "black" }}>Thanh toán khi nhận hàng</h5> */}

@@ -2,8 +2,17 @@ import React from "react";
 import styles from "./ScrolltoTop.modulo.scss";
 import classNames from "classnames/bind";
 import { UpOutlined } from "@ant-design/icons";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppProvider";
+
 const cx = classNames.bind(styles);
 const ScrolltoTop = () => {
+  const { setShowChat } = useContext(AppContext);
+
+  const handleShowChatBox = () => {
+    setShowChat(true);
+  };
+
   document.addEventListener("scroll", () => {
     const add = document.documentElement.scrollTop;
     const top = document.documentElement.clientHeight;
@@ -35,6 +44,13 @@ const ScrolltoTop = () => {
       <div onClick={message}>
         {/* <img src={require("../../../assets/scroll.jpg")} /> */}
         <div className={cx("ChatEmployeeImg")}></div>
+      </div>
+      <div>
+        <img
+          src={require("../../../assets/chatbox.png")}
+          className={cx("chatBox")}
+          onClick={handleShowChatBox}
+        />
       </div>
     </div>
   );
