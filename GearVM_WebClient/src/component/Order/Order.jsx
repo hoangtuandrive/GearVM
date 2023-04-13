@@ -49,7 +49,7 @@ const Order = () => {
           </Link>
         </div>
         <TrackingOrder data={order} />
-        <TrackingOrder data={order} />
+        {/* <TrackingOrder data={order} /> */}
       </div>
     </Container>
   );

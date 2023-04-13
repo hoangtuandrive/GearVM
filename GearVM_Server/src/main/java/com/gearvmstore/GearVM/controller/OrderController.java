@@ -27,6 +27,18 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
     }
 
+    @GetMapping("current-customer")
+    public ResponseEntity<?> getOrderListByCurrentCustomerToken(@RequestHeader(name = "Authorization") String header) {
+        if (header == null)
+            return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
+
+        String token = header.substring(7);
+
+        if (jwtUtil.validateJwtToken(token))
+            return new ResponseEntity<>(orderService.getOrderListByCurrentCustomerToken(token), HttpStatus.OK);
+        return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping(value = "/direct-pending")
     public ResponseEntity<?> getDirectPendingOrderList() {
         return new ResponseEntity<>(orderService.getDirectPendingOrderList(), HttpStatus.OK);
@@ -45,7 +57,6 @@ public class OrderController {
 
     @PostMapping(value = "/place-order")
     public ResponseEntity<?> placeOrder(@RequestBody PlaceOrder placeOrder, @RequestHeader(name = "Authorization") String header) {
-
         if (header == null)
             return new ResponseEntity<String>("Not logged in", HttpStatus.UNAUTHORIZED);
 

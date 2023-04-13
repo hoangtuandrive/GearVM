@@ -157,12 +157,24 @@ public class OrderService {
         }
     }
 
-    public List<Order> listOrdersByCustomerId(Long customerId) {
-        return orderRepository.findAllByCustomerIdOrderByCreatedDateDesc(customerId);
-    }
-
     public List<GetOrderListResponse> getOrders() {
         List<Order> orderList = orderRepository.findAll();
+        List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+
+        for (Order order : orderList) {
+            GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+            getOrderListResponseList.add(orderListResponse);
+        }
+        return getOrderListResponseList;
+    }
+
+    public List<GetOrderListResponse> getOrderListByCurrentCustomerToken(String token) {
+        Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
+        if (customer == null)
+            return null;
+
+        List<Order> orderList = orderRepository.findAllByCustomerIdAndIsDirectOrderByUpdatedDateDesc
+                (customer.getId(), false);
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
 
         for (Order order : orderList) {
