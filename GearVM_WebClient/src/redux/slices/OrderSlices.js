@@ -58,7 +58,12 @@ export const GetAllOrderSlice = createAsyncThunk(
   "orders/GetAll-order",
   async (values, { rejectWithValue }) => {
     try {
-      const GetAllOrder = await axios.get(`${url}/orders`, {});
+      const GetAllOrder = await axios.get(`${url}/orders/current-customer`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
       return GetAllOrder.data;
     } catch (error) {
       // console.log(error.response.data);
