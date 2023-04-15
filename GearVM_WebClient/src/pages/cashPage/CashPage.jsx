@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 const CashPage = () => {
   const navigate = useNavigate();
+
   const handleComplete = () => {
     navigate("/");
   };
- 
+
   return (
     <div className={cx("wrapper")}>
       <form action="#" className={cx("card-content")}>

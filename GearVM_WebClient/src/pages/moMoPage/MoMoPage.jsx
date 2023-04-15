@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./MoMoPage.module.scss";
 import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
@@ -6,19 +6,60 @@ import { Button } from "antd";
 import { faCoins, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { currentCustomer } from "../../redux/slices/AuthSlices";
+import { OrderMethod } from "../../redux/slices/OrderSlices";
+import CartSlice from "../../redux/slices/CartSlices";
+import { AppContext } from "../../component/context/AppProvider";
 const cx = classNames.bind(styles);
 
 const MoMoPage = () => {
   const navigate = useNavigate();
-  const handleComplete = () => {
+
+  const { user } = useContext(AppContext);
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.todoCart);
+  const JcartItems = localStorage.getItem("cartItems");
+  const cartItems = JSON.parse(JcartItems);
+
+  const handleComplete = (e) => {
+    dispatch(currentCustomer());
+    let orderItems = [];
+
+    cartItems.map((item) => {
+      if (item.checkCart === true) {
+        let price = item.price;
+        let quantity = item.cartQuantity;
+        let productId = item.id;
+        let orderItemTemp = { price, quantity, productId };
+        orderItems.push(orderItemTemp);
+      }
+      // console.log(oderItem);
+    });
+    // let totalPrice =;
+    const cartOrder = {
+      totalPrice: cart.cartTotalAmount,
+      orderItems,
+      method: "MOMO",
+      shippingDetailDto: user,
+    };
+
+    dispatch(OrderMethod(cartOrder));
+
+    cartItems.map((item) => {
+      if (item.checkCart === true) {
+        dispatch(CartSlice.actions.removeCartPay(item));
+      }
+    });
+
     navigate("/payment-success");
+    e.preventDefault();
   };
+
   const handleBack = () => {
     navigate("/payOffline");
   };
 
-  const cart = useSelector((state) => state.todoCart);
   return (
     <div className={cx("wrapMoMoPage")}>
       <Container className={cx("MomoPageContent")}>

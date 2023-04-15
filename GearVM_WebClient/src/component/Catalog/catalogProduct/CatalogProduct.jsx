@@ -279,7 +279,7 @@ const CatalogProduct = () => {
       fetchProduct(productUrl);
     } else {
       const productUrl =
-        "http://localhost:8080/api/products?pageNumber=0&pageSize=1";
+        "http://localhost:8080/api/products?pageNumber=0&pageSize=24";
 
       fetchProduct(productUrl);
     }
@@ -290,7 +290,7 @@ const CatalogProduct = () => {
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
+  // const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
   const paginate = (pageNumber) => {
@@ -385,7 +385,7 @@ const CatalogProduct = () => {
         {/* <div className={cx("wrapCatalogProduct_content")}> */}
         <Container>
           <Row lg={4 | "auto"} md={3} sm={2}>
-            {products.map((item, index) => (
+            {products?.map((item, index) => (
               <Col key={item.id}>
                 <ItemProduct data={item} />
               </Col>

@@ -128,11 +128,12 @@ public class OrderService {
             paymentRepository.save(payment);
 
             ShippingDetail shippingDetail = new ShippingDetail();
-            shippingDetail.setPhoneNumber(shippingDetail.getPhoneNumber());
-            shippingDetail.setName(shippingDetail.getName());
-            shippingDetail.setAddress(shippingDetail.getAddress());
-            shippingDetail.setEmail(shippingDetail.getEmail());
+            shippingDetail.setPhoneNumber(placeOrderDto.getShippingDetailDto().getPhoneNumber());
+            shippingDetail.setName(placeOrderDto.getShippingDetailDto().getName());
+            shippingDetail.setAddress(placeOrderDto.getShippingDetailDto().getAddress());
+            shippingDetail.setEmail(placeOrderDto.getShippingDetailDto().getEmail());
             shippingDetailRepository.save(shippingDetail);
+
 
             order.setPayment(payment);
             order.setShippingDetail(shippingDetail);

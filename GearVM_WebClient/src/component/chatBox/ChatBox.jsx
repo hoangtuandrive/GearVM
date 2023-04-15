@@ -38,19 +38,19 @@ const systemMessage = {
   content:
     "Explain things like you're talking to a software professional with 2 years of experience.",
 };
-const API_KEY = "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";
+
 export default function ChatBox() {
-  const { setShowChat } = useContext(AppContext);
+  const { setShowChat, messages, setMessages } = useContext(AppContext);
 
   // const [message, setMessage] = useState("");
 
-  const [messages, setMessages] = useState([
-    {
-      message: "Hello, I'm ChatGPT! Ask me anything!",
-      sentTime: "just now",
-      sender: "ChatGPT",
-    },
-  ]);
+  // const [messages, setMessages] = useState([
+  //   {
+  //     message: "Hello, I'm ChatGPT! Ask me anything!",
+  //     sentTime: "just now",
+  //     sender: "ChatGPT",
+  //   },
+  // ]);
   sessionStorage.setItem("chatBox", JSON.stringify(messages));
 
   const chatMessage = JSON.parse(sessionStorage.getItem("chatBox"));

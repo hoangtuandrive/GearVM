@@ -36,10 +36,11 @@ const publicRoutes = [
   { path: "/forget", component: ForgetPassword },
   { path: "/payOffline", component: PayOffline },
   { path: "/moMoPage", component: MoMoPage },
-  { path: "/bankingPage", component: BankingPage },
   { path: "/cashPage", component: CashPage },
+  { path: "/bankingPage", component: BankingPage },
 ];
 
-const privateRoutes = [];
+// const privateRoutes = [];
 
-export { publicRoutes, privateRoutes };
+// export { publicRoutes, privateRoutes };
+export default publicRoutes;

@@ -1,28 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import classNames from "classnames/bind";
 import styles from "./InfoCustomer.module.scss";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { AppContext } from "../context/AppProvider";
 
 const cx = classNames.bind(styles);
 
 const InfoCustomer = () => {
+  const { user, setUser } = useContext(AppContext);
   const CurrentUser = useSelector((state) => state.auth.user);
-  const [user, setUser] = useState({
-    name: CurrentUser.name,
-    address: "",
-    phone: "",
-    email: "",
-  });
-  useEffect(() => {
-    setUser({
-      name: CurrentUser.name,
-      address: CurrentUser.address,
-      phone: CurrentUser.phoneNumber,
-      email: CurrentUser.email,
-    });
-  }, [CurrentUser]);
 
   const [errorMessage, setErrorMessage] = useState({
     messageName: "",

@@ -46,7 +46,7 @@ const TrackingOrder = ({ data }) => {
       return error.response.data;
     }
   };
-  console.log(order);
+  // console.log(order);
   const [status, setStatus] = useState();
   const [active, setActive] = useState();
   function ChangeStatus() {
@@ -159,52 +159,62 @@ const TrackingOrder = ({ data }) => {
               </Col>
             </Row>
           </article>
-          <div className={cx("track")}>
-            <div className={cx(`step`, `${active >= 1 ? "active" : null}`)}>
-              {" "}
-              <span className={cx("icon")}>
-                {" "}
-                <FontAwesomeIcon icon={faCheck} />
-                {/* <i className={cx("fa fa-check")}></i> */}
-              </span>{" "}
-              <span className={cx("text")}>Tạo Đơn Hàng Thành Công</span>
+          {data?.orderStatus === "REJECTED" ? (
+            <div className={cx("txtReject")}>
+              Đơn hàng của bạn đã bị từ chối
             </div>
-            <div className={cx(`step`, `${active >= 2 ? "active" : null}`)}>
-              <span className={cx("icon")}>
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <span className={cx("text")}> Nhân Viên Đã Xác Nhận</span>{" "}
-            </div>
-            <div className={cx(`step`, `${active >= 3 ? "active" : null}`)}>
-              <span className={cx("icon")}>
-                {" "}
-                <FontAwesomeIcon icon={faTruck} />
-              </span>{" "}
-              <span className={cx("text")}>Tiến Hành Giao Hàng</span>{" "}
-            </div>
-            {active === 5 ? (
-              <div className={cx(`step`, `${active >= 5 ? "active" : null}`)}>
-                {" "}
-                <span className={cx("icon")}>
+          ) : (
+            <div>
+              <div className={cx("track")}>
+                <div className={cx(`step`, `${active >= 1 ? "active" : null}`)}>
                   {" "}
-                  <FontAwesomeIcon icon={faBox} />
-                </span>{" "}
-                <span className={cx("text")}>Giao Hàng Thất Bại</span>{" "}
+                  <span className={cx("icon")}>
+                    {" "}
+                    <FontAwesomeIcon icon={faCheck} />
+                    {/* <i className={cx("fa fa-check")}></i> */}
+                  </span>{" "}
+                  <span className={cx("text")}>Tạo Đơn Hàng Thành Công</span>
+                </div>
+                <div className={cx(`step`, `${active >= 2 ? "active" : null}`)}>
+                  <span className={cx("icon")}>
+                    <FontAwesomeIcon icon={faUser} />
+                  </span>
+                  <span className={cx("text")}> Thanh Toán Thành Công</span>{" "}
+                </div>
+                <div className={cx(`step`, `${active >= 3 ? "active" : null}`)}>
+                  <span className={cx("icon")}>
+                    {" "}
+                    <FontAwesomeIcon icon={faTruck} />
+                  </span>{" "}
+                  <span className={cx("text")}>Tiến Hành Giao Hàng</span>{" "}
+                </div>
+                {active === 5 ? (
+                  <div
+                    className={cx(`step`, `${active >= 5 ? "active" : null}`)}
+                  >
+                    {" "}
+                    <span className={cx("icon")}>
+                      {" "}
+                      <FontAwesomeIcon icon={faBox} />
+                    </span>{" "}
+                    <span className={cx("text")}>Giao Hàng Thất Bại</span>{" "}
+                  </div>
+                ) : (
+                  <div
+                    className={cx(`step`, `${active >= 4 ? "active" : null}`)}
+                  >
+                    {" "}
+                    <span className={cx("icon")}>
+                      {" "}
+                      <FontAwesomeIcon icon={faBox} />
+                    </span>{" "}
+                    <span className={cx("text")}>Giao Hàng Thành Công</span>{" "}
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className={cx(`step`, `${active >= 4 ? "active" : null}`)}>
-                {" "}
-                <span className={cx("icon")}>
-                  {" "}
-                  <FontAwesomeIcon icon={faBox} />
-                </span>{" "}
-                <span className={cx("text")}>Giao Hàng Thành Công</span>{" "}
-              </div>
-            )}
-          </div>
-          <hr />
+              <hr />
 
-          {/* <Slider {...settings}>
+              {/* <Slider {...settings}>
               {dataTrackingOrder?.map((item, index) => (
                 <div
                   // onClick={() => {
@@ -217,43 +227,50 @@ const TrackingOrder = ({ data }) => {
                 </div>
               ))}
             </Slider> */}
-          <Container>
-            <h6
-              className={`${styles.itemShow} ${
-                active === data?.id ? styles.selected : ""
-              }`}
-              onClick={handleShowOrder}
-            >
-              Xem chi tiết
-            </h6>
-            {activeItem === data?.id ? (
-              <Row
-                lg={4}
-                className={cx(`ShowitemOrder${showItem ? "show" : "hidden"}`)}
-              >
-                {order?.orderItems?.map((item, index) => (
-                  // <div
-                  //   // onClick={() => {
-                  //   //   handelItemProduct(item);
-                  //   // }}
-                  //   className={cx("listProduct_thumb_item")}
-                  //   key={item.id}
-                  // >
-                  <Col key={item.id}>
-                    <ItemOrder data={item} />
-                  </Col>
-                  // </div>
-                ))}
-                {/* </ul> */}
-              </Row>
-            ) : null}
-          </Container>
+              <Container>
+                <h6
+                  className={`${styles.itemShow} ${
+                    active === data?.id ? styles.selected : ""
+                  }`}
+                  onClick={handleShowOrder}
+                >
+                  Xem chi tiết
+                </h6>
+                {activeItem === data?.id ? (
+                  <Row
+                    lg={4}
+                    className={cx(
+                      `ShowitemOrder${showItem ? "show" : "hidden"}`
+                    )}
+                  >
+                    {order?.orderItems?.map((item, index) => (
+                      // <div
+                      //   // onClick={() => {
+                      //   //   handelItemProduct(item);
+                      //   // }}
+                      //   className={cx("listProduct_thumb_item")}
+                      //   key={item.id}
+                      // >
+                      <Col key={item.id}>
+                        <ItemOrder data={item} />
+                      </Col>
+                      // </div>
+                    ))}
+                    {/* </ul> */}
+                  </Row>
+                ) : null}
+              </Container>
 
-          {data.orderItems?.length > 5 ? (
-            <h6 className={cx("ShowItemOrder")} onClick={handleShowItemOrder}>
-              Xem Thêm
-            </h6>
-          ) : null}
+              {data.orderItems?.length > 5 ? (
+                <h6
+                  className={cx("ShowItemOrder")}
+                  onClick={handleShowItemOrder}
+                >
+                  Xem Thêm
+                </h6>
+              ) : null}
+            </div>
+          )}
 
           {/* <hr /> */}
         </div>

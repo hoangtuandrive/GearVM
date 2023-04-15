@@ -92,6 +92,42 @@ export const TrackingOrderSlice = createAsyncThunk(
   }
 );
 
+export const OrderMethod = createAsyncThunk(
+  "orders/post-orderMethod",
+  async (values, { rejectWithValue }) => {
+    console.log(values.shippingDetailDto);
+    try {
+      const orderMethod = await axios.post(
+        `${url}/orders/place-order-alt/${values.method}`,
+        {
+          totalPrice: values.totalPrice,
+          shippingDetailDto: {
+            name: values.shippingDetailDto.name,
+            address: values.shippingDetailDto.address,
+            phoneNumber: values.shippingDetailDto.phone,
+            email: values.shippingDetailDto.email,
+          },
+          // shippingDetailDto: values.shippingDetailDto,
+          orderItemDtos: values.orderItems,
+        },
+        // JSON.stringify(values),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(orderMethod);
+      return orderMethod.data;
+    } catch (error) {
+      // console.log(error.response.data);
+      // console.log(rejectWithValue(error));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const orderSlices = createSlice({
   name: "order",
   initialState,
