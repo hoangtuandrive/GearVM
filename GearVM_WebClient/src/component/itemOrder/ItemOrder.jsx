@@ -47,7 +47,7 @@ const ItemOrder = ({ data }) => {
           {new Intl.NumberFormat("de-DE", {
             style: "currency",
             currency: "VND",
-          }).format(data.price)}{" "}
+          }).format(data.price * data.quantity)}{" "}
         </span>
       </figcaption>
     </figure>

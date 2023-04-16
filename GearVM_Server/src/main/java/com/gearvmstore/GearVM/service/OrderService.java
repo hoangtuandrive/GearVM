@@ -134,6 +134,7 @@ public class OrderService {
             shippingDetail.setEmail(placeOrderDto.getShippingDetailDto().getEmail());
             shippingDetailRepository.save(shippingDetail);
 
+
             order.setPayment(payment);
             order.setShippingDetail(shippingDetail);
 

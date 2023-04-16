@@ -38,6 +38,7 @@ const ItemProduct = (props) => {
       replace: true,
     });
   };
+
   return (
     <div className={cx("wrapItemProduct")} onClick={handelItemProduct}>
       <div className={cx("imgProduct")}>
@@ -53,9 +54,13 @@ const ItemProduct = (props) => {
               currency: "VND",
             }).format(props.data.price)}
           </h5>
-          <div className={cx("contentDiscount")}>
-            <h5 className={cx("txtDiscount")}>{props.data.discount}%</h5>
-          </div>
+          {props.data?.percentageDiscount === 0 ? null : (
+            <div className={cx("contentDiscount")}>
+              <h5 className={cx("txtDiscount")}>
+                {props.data.percentageDiscount}%
+              </h5>
+            </div>
+          )}
         </div>
         <h5 className={cx("txt_pricereal")}>
           {" "}

@@ -48,7 +48,7 @@ const TableListCart = ({ cartItem }) => {
   const handleChangeQuantity = (e) => {
     setquantity(e.target.value);
   };
-
+  console.log(cartItem);
   const handleChangeQuantityBlur = (e) => {
     if (e.target.value === "") {
       setquantity(cartItem.cartQuantity);

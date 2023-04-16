@@ -18,6 +18,7 @@ import { currentCustomer } from "../../redux/slices/AuthSlices";
 import Table from "react-bootstrap/Table";
 import CustomButon from "../Custom/CustomButon/CustomButon";
 import { Button } from "antd";
+import { OrderMethod } from "../../redux/slices/OrderSlices";
 
 const cx = classNames.bind(styles);
 const PaybodyOffline = ({ name }) => {
@@ -65,8 +66,40 @@ const PaybodyOffline = ({ name }) => {
     navigate("/bankingPage", { replace: true });
   };
 
-  const handleCash = () => {
+  const { user } = useContext(AppContext);
+
+  const handleCash = (e) => {
+    dispatch(currentCustomer());
+    let orderItems = [];
+
+    cartItems.map((item) => {
+      if (item.checkCart === true) {
+        let price = item.price;
+        let quantity = item.cartQuantity;
+        let productId = item.id;
+        let orderItemTemp = { price, quantity, productId };
+        orderItems.push(orderItemTemp);
+      }
+      // console.log(oderItem);
+    });
+    // let totalPrice =;
+    const cartOrder = {
+      totalPrice: cart.cartTotalAmount,
+      shippingDetailDto: user,
+      orderItems,
+      method: "COD",
+    };
+
+    dispatch(OrderMethod(cartOrder));
+
+    cartItems.map((item) => {
+      if (item.checkCart === true) {
+        dispatch(CartSlice.actions.removeCartPay(item));
+      }
+    });
+
     navigate("/cashPage", { replace: true });
+    e.preventDefault();
   };
 
   return (

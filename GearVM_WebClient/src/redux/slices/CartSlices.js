@@ -42,13 +42,22 @@ const CartSlice = createSlice({
       );
 
       if (existingIndex >= 0) {
-        state.cartItems[existingIndex] = {
-          ...state.cartItems[existingIndex],
-          cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
-        };
-        toast.info("Đã thêm sản phẩm vào giỏ hàng", {
-          position: "top-right",
-        });
+        if (state.cartItems[existingIndex].cartQuantity <= 201) {
+          toast.info(
+            "Bạn chỉ có thể mua tối đa 200 sản phẩm cho cùng loại sản phẩm",
+            {
+              position: "top-right",
+            }
+          );
+        } else {
+          state.cartItems[existingIndex] = {
+            ...state.cartItems[existingIndex],
+            cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
+          };
+          toast.info("Đã thêm sản phẩm vào giỏ hàng", {
+            position: "top-right",
+          });
+        }
       } else {
         let tempProductItem = {
           ...action.payload,
@@ -95,7 +104,9 @@ const CartSlice = createSlice({
         );
         state.cartItems = nextCartItems;
       } else {
-        state.cartItems[itemIndex].cartQuantity = action.payload.numberChange;
+        state.cartItems[itemIndex].cartQuantity = parseInt(
+          action.payload.numberChange
+        );
       }
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
@@ -110,6 +121,19 @@ const CartSlice = createSlice({
           toast.error("Đã xóa sản phẩm khỏi giỏ hàng", {
             position: "top-right",
           });
+        }
+
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        return state;
+      });
+    },
+    removeCartPay(state, action) {
+      state.cartItems.map((cartItem) => {
+        if (cartItem.id === action.payload.id) {
+          const nextCartItems = state.cartItems.filter(
+            (item) => item.id !== cartItem.id
+          );
+          state.cartItems = nextCartItems;
         }
 
         localStorage.setItem("cartItems", JSON.stringify(state.cartItems));

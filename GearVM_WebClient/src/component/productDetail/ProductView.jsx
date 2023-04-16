@@ -36,8 +36,10 @@ const ProductView = () => {
       }
     };
     fetchProduct();
-  }, []);
+    console.log(213);
+  }, [productUrl]);
 
+  console.log(productDetail);
   useEffect(() => {
     const getImage = async () => {
       try {
@@ -74,7 +76,7 @@ const ProductView = () => {
 
   // Tách chuỗi thành mảng các dòng
   let lines = text?.split("\n");
-  console.log(lines);
+
   return (
     <Container>
       <div className={cx("wrapProductView")}>
@@ -99,7 +101,10 @@ const ProductView = () => {
             </h4>
             <h4 className={cx("ProductView_txtTrademark")}>
               Mã sản phẩm:
-              <span> {productDetail.id}</span>
+              <span className={cx("ProductView_txtTrademark_Name")}>
+                {" "}
+                {productDetail.id}
+              </span>
             </h4>
           </div>
           <h5 className={cx("ProductView_txtPrice")}>
@@ -116,9 +121,13 @@ const ProductView = () => {
                 currency: "VND",
               }).format(productDetail.price)}
             </h5>
-            <div className={cx("contentDiscount")}>
-              <h5 className={cx("txtDiscount")}>4%</h5>
-            </div>
+            {productDetail?.percentageDiscount === 0 ? null : (
+              <div className={cx("contentDiscount")}>
+                <h5 className={cx("txtDiscount")}>
+                  {productDetail.percentageDiscount}%
+                </h5>
+              </div>
+            )}
           </div>
           <CustomDiscount />
           <div className={cx("ProductView_btn")}>
