@@ -38,24 +38,14 @@ const Login = () => {
     // console.log(user);
     if (
       handlePasswrod(user.password) === true &&
-      handleExitEmail(user.email) === true &&
-      handlePhone(user.phoneNumber)
+      handleExitEmail(user.email) === true
     ) {
       dispatch(loginUser(user));
     }
   };
   const handleExitEmail = () => {
-    const regexEmail =
-      /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
-
     if (user.email === "") {
       setErrorMessage({ ...errorMessage, messageEmail: "Bạn chưa nhập Email" });
-      return false;
-    } else if (!regexEmail.test(user.email)) {
-      setErrorMessage({
-        ...errorMessage,
-        messageEmail: "Nhập email sai định dạng",
-      });
       return false;
     } else {
       setErrorMessage({ ...errorMessage, messageEmail: "" });
@@ -63,25 +53,6 @@ const Login = () => {
     }
   };
 
-  const handlePhone = () => {
-    const regexPhone = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
-    if (user.phoneNumber === "") {
-      setErrorMessage({
-        ...errorMessage,
-        messagePhone: "Bạn chưa nhập số điện thoại",
-      });
-      return false;
-    } else if (!regexPhone.test(user.phoneNumber)) {
-      setErrorMessage({
-        ...errorMessage,
-        messagePhone: "Nhập số điện thoại sai định dạng",
-      });
-      return false;
-    } else {
-      setErrorMessage({ ...errorMessage, messagePhone: "" });
-      return true;
-    }
-  };
   // console.log(errorMessage);
   const handlePasswrod = () => {
     const regexPasswrod =
@@ -113,7 +84,7 @@ const Login = () => {
           <div className={cx("form-group")}>
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Email hoặc Số điện thoại"
               className={cx("form-input")}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               onBlur={handleExitEmail}
@@ -121,21 +92,6 @@ const Login = () => {
           </div>
           {errorMessage.messageEmail === "" ? null : (
             <span style={{ color: "red" }}>{errorMessage.messageEmail}</span>
-          )}
-
-          <div className={cx("form-group")}>
-            <input
-              type="text"
-              placeholder="Số điện thoại"
-              className={cx("form-input")}
-              onChange={(e) =>
-                setUser({ ...user, phoneNumber: e.target.value })
-              }
-              onBlur={handlePhone}
-            />
-          </div>
-          {errorMessage.messagePhone === "" ? null : (
-            <span style={{ color: "red" }}>{errorMessage.messagePhone}</span>
           )}
 
           <div className={cx("form-group")}>
