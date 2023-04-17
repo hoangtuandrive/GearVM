@@ -136,7 +136,7 @@ const TrackingOrder = ({ data }) => {
         <hr />
         {/* <header className={cx("card-header")}> My Orders / Tracking </header> */}
         <div className={cx("card-pad")}>
-          <h6 className={cx("card-txt")}>Order ID: {data?.id}</h6>
+          <h6 className={cx("card-txt")}>Mã đơn hàng: {data?.id}</h6>
           <article className={cx("card")}>
             <Row className={cx("card-body")}>
               <Col>

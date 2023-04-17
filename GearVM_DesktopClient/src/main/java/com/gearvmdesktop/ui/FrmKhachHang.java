@@ -19,9 +19,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -506,7 +506,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
             if (result == JFileChooser.APPROVE_OPTION) {
                 java.io.File file = fileDialog.getSelectedFile();
                 String filePath = file.getAbsolutePath();
-                if(!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
+                if (!(filePath.endsWith(".xls") || filePath.endsWith(".xlsx"))) {
                     filePath += ".xls";
                 }
                 if (exportExcel(filePath))
@@ -521,6 +521,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
     @Override
     public void mouseClicked(MouseEvent e) {
         try {
+            emptyTextField();
             int row = tableKhachHang.getSelectedRow();
             txtMaKhachHang.setText(modelKhachHang.getValueAt(row, 0).toString().trim());
             txtTenKhachHang.setText(modelKhachHang.getValueAt(row, 1).toString().trim());
@@ -651,8 +652,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
             cell.setCellValue("DANH SÁCH KHÁCH HÀNG");
             cell.setCellStyle(styleTenDanhSach);
 
-            String[] header = {"STT", "Mã Khách hàng", "Tên Khách hàng", "Ngày Sinh", "Giới Tính", "SDT", "Email",
-                    "Địa Chỉ"};
+            String[] header = {"STT", "Mã Khách hàng", "Tên Khách hàng", "Ngày Sinh", "Giới Tính", "SDT", "Email"};
             worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
 
             // Dòng 2 người lập
@@ -721,8 +721,15 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                         cell.setCellValue(STT + 1);
                         STT++;
                     } else {
-                        if (tableKhachHang.getValueAt(i, j - 1) != null) {
-                                cell.setCellValue(tableKhachHang.getValueAt(i, j - 1).toString().trim());
+                        try {
+                            if (j == header.length - 6) {
+                                cell.setCellValue(Integer.parseInt(tableKhachHang.getValueAt(i, j - 1).toString()));
+                            } else
+                                cell.setCellValue(tableKhachHang.getValueAt(i, j - 1).toString());
+                        } catch (NullPointerException e) {
+                            cell.setCellValue("");
+                            cell.setCellStyle(styleRow);
+                            continue;
                         }
                     }
                     cell.setCellStyle(styleRow);

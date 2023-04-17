@@ -806,11 +806,13 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                     } else {
                         if (tableSanPham.getValueAt(i, j - 1) != null) {
                             if (j == header.length - 2) {
-                                String luong[] = tableSanPham.getValueAt(i, j - 1).toString().split(",");
-                                String tienLuong = "";
-                                for (int t = 0; t < luong.length; t++)
-                                    tienLuong += luong[t];
-                                cell.setCellValue(Double.parseDouble(tienLuong));
+                                String stringDouble[] = tableSanPham.getValueAt(i, j - 1).toString().split(",");
+                                String donGia = "";
+                                for (int t = 0; t < stringDouble.length; t++)
+                                    donGia += stringDouble[t];
+                                cell.setCellValue(Double.parseDouble(donGia));
+                            } else if (j == header.length - 1 || j == header.length - 6) {
+                                cell.setCellValue(Integer.parseInt(tableSanPham.getValueAt(i, j - 1).toString()));
                             } else
                                 cell.setCellValue(tableSanPham.getValueAt(i, j - 1).toString().trim());
                         }

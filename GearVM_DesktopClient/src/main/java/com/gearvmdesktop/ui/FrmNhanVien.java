@@ -742,7 +742,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         else return Role.MANAGER;
     }
 
-    public static void  readDatabaseToTable() throws IOException {
+    public static void readDatabaseToTable() throws IOException {
         emptyTable();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DecimalFormat df = new DecimalFormat("#,##0");
@@ -874,6 +874,8 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                                 for (int t = 0; t < luong.length; t++)
                                     tienLuong += luong[t];
                                 cell.setCellValue(Double.parseDouble(tienLuong));
+                            } else if (j == header.length - 11) {
+                                cell.setCellValue(Integer.parseInt(tableNhanVien.getValueAt(i, j - 1).toString()));
                             } else
                                 cell.setCellValue(tableNhanVien.getValueAt(i, j - 1).toString().trim());
                         }

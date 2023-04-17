@@ -681,10 +681,10 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             styleTenDanhSach.setAlignment(HorizontalAlignment.CENTER);
             styleTenDanhSach.setFont(newFont);
 
-            cell.setCellValue("DANH SÁCH SẢN PHẨM");
+            cell.setCellValue("LỊCH SỬ KHO HÀNG");
             cell.setCellStyle(styleTenDanhSach);
 
-            String[] header = {"STT", "Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
+            String[] header = {"STT", "Mã Nhập Hàng", "Mã NV", "Tên Nhân Viên Nhập", "Thời Gian Nhập", "Mã SP", "Tên Sản Phẩm", "Giá Nhập", "Số Lượng", "Chi Tiêu"};
             worksheet.addMergedRegion(new CellRangeAddress(1, 1, 1, header.length));
 
             // Dòng 2 người lập
@@ -754,12 +754,14 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                         STT++;
                     } else {
                         if (tableKhoHang.getValueAt(i, j - 1) != null) {
-                            if (j == header.length - 2) {
-                                String luong[] = tableKhoHang.getValueAt(i, j - 1).toString().split(",");
-                                String tienLuong = "";
-                                for (int t = 0; t < luong.length; t++)
-                                    tienLuong += luong[t];
-                                cell.setCellValue(Double.parseDouble(tienLuong));
+                            if (j == header.length - 3 || j == header.length - 1) {
+                                String stringDouble[] = tableKhoHang.getValueAt(i, j - 1).toString().split(",");
+                                String doubleValue = "";
+                                for (int t = 0; t < stringDouble.length; t++)
+                                    doubleValue += stringDouble[t];
+                                cell.setCellValue(Double.parseDouble(doubleValue));
+                            } else if (j == header.length - 2 || j == header.length - 5 || j == header.length - 8 || j == header.length - 9) {
+                                cell.setCellValue(Integer.parseInt(tableKhoHang.getValueAt(i, j - 1).toString()));
                             } else
                                 cell.setCellValue(tableKhoHang.getValueAt(i, j - 1).toString().trim());
                         }
