@@ -8,8 +8,25 @@
   // background: linear-gradient(-150deg, #ffccbb, #6eb5c0, #006c84, #e2e8e4);
 }
 .MomoPageContent {
+  box-shadow: 5px 5px 5px lightblue;
   background-color: white;
-  width: 50%;
+  max-width: 600px;
+}
+.wrapMoMoPage_about {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.BankingRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  // padding: 15px;
+}
+.Back {
+  display: none;
 }
 .MomoPageContentLeft {
   position: relative;
@@ -17,6 +34,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 15px;
 }
 .Suptxt {
   // margin-top: 18px;
@@ -112,4 +130,44 @@
   font-size: 16px;
   text-align: center;
   margin: 0;
+}
+.MomoPageContentLeft_Reposive {
+  display: none;
+}
+@media screen and (max-width: 480px) {
+  .MomoPageContentLeft {
+    display: none;
+  }
+  .MomoPageContentLeft_Reposive {
+    position: relative;
+    background-color: #a50064;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+  }
+  .Back {
+    display: flex;
+    flex-direction: row;
+    background-color: #a50064;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btnBackTxt {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .btnBack_Reposive {
+    cursor: pointer;
+  }
+  .MomoPageContent {
+    height: 100%;
+  }
+  .wrapMoMoPage_about {
+    display: flex;
+    flex-direction: column;
+  }
+  .BankingRow {
+    height: 100%;
+  }
 }

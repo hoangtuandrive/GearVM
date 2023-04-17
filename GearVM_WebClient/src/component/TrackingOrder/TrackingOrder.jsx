@@ -160,8 +160,52 @@ const TrackingOrder = ({ data }) => {
             </Row>
           </article>
           {data?.orderStatus === "REJECTED" ? (
-            <div className={cx("txtReject")}>
-              Đơn hàng của bạn đã bị từ chối
+            <div>
+              <div className={cx("txtReject")}>
+                Đơn hàng của bạn đã bị từ chối
+              </div>
+              <Container>
+                <h6
+                  className={`${styles.itemShow} ${
+                    active === data?.id ? styles.selected : ""
+                  }`}
+                  onClick={handleShowOrder}
+                >
+                  Xem chi tiết
+                </h6>
+                {activeItem === data?.id ? (
+                  <Row
+                    lg={4}
+                    className={cx(
+                      `ShowitemOrder${showItem ? "show" : "hidden"}`
+                    )}
+                  >
+                    {order?.orderItems?.map((item, index) => (
+                      // <div
+                      //   // onClick={() => {
+                      //   //   handelItemProduct(item);
+                      //   // }}
+                      //   className={cx("listProduct_thumb_item")}
+                      //   key={item.id}
+                      // >
+                      <Col key={item.id}>
+                        <ItemOrder data={item} />
+                      </Col>
+                      // </div>
+                    ))}
+                    {/* </ul> */}
+                  </Row>
+                ) : null}
+              </Container>
+
+              {order?.orderItems?.length > 5 ? (
+                <h6
+                  className={cx("ShowItemOrder")}
+                  onClick={handleShowItemOrder}
+                >
+                  Xem Thêm
+                </h6>
+              ) : null}
             </div>
           ) : (
             <div>
@@ -261,7 +305,7 @@ const TrackingOrder = ({ data }) => {
                 ) : null}
               </Container>
 
-              {data.orderItems?.length > 5 ? (
+              {order?.orderItems?.length > 5 ? (
                 <h6
                   className={cx("ShowItemOrder")}
                   onClick={handleShowItemOrder}

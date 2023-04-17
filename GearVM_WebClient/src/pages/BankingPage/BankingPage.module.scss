@@ -1,16 +1,25 @@
 .wrapMoMoPage {
   width: 100%;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+
   // background: linear-gradient(150deg, #2988bc, #2f496e, #f4eade, #ed8c72);
 }
 .MomoPageContent {
   box-shadow: 5px 5px 5px lightblue;
   background-color: white;
-  width: 50%;
+  max-width: 600px;
+  height: 100%;
+}
+.wrapMoMoPage_about {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .MomoPageContentLeft {
   position: relative;
@@ -18,6 +27,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 15px;
+}
+.MomoPageContentLeft_Reposive {
+  display: none;
 }
 .Suptxt {
   // margin-top: 18px;
@@ -48,6 +61,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
+  padding: 15px;
 }
 .imgLogo {
   width: 100px;
@@ -122,4 +136,40 @@
   font-size: 16px;
   text-align: center;
   margin: 0;
+}
+.BankingRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  // padding: 15px;
+}
+.Back {
+  display: none;
+}
+@media screen and (max-width: 550px) {
+  .MomoPageContentLeft {
+    display: none;
+  }
+  .MomoPageContentLeft_Reposive {
+    position: relative;
+    background-color: #203bb2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+  }
+  .Back {
+    display: flex;
+    flex-direction: row;
+    background-color: #203bb2;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btnBackTxt {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .btnBack_Reposive {
+    cursor: pointer;
+  }
 }

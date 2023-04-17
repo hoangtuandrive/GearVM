@@ -6,14 +6,13 @@ function AppProvider({ children }) {
   const [UserOpen, setUserOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [showChat, setShowChat] = useState(false);
-
+  const [showFilter, setShowFilter] = useState(false);
   const [user, setUser] = useState({
     name: "",
     address: "",
     phone: "",
     email: "",
   });
-
   const [messages, setMessages] = useState([
     {
       message: "Hello, I'm ChatGPT! Ask me anything!",
@@ -28,6 +27,7 @@ function AppProvider({ children }) {
     setOpenMenu(false);
     setShowChat(false);
     setUser();
+    setShowFilter(false);
   };
   return (
     <AppContext.Provider
@@ -45,6 +45,8 @@ function AppProvider({ children }) {
         setUser,
         setMessages,
         messages,
+        setShowFilter,
+        showFilter,
       }}
     >
       {children}
