@@ -12,7 +12,8 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomPagination from "../CustomPagination";
-import MultiRangeSlider from "multi-range-slider-react";
+
+import FilterCatalog from "../filterCatalog/FilterCatalog";
 const cx = classNames.bind(styles);
 const CatalogProduct = () => {
   // const productList = [
@@ -314,7 +315,8 @@ const CatalogProduct = () => {
   //handleGia
 
   return (
-    <Container>
+    <Container fluid="md">
+      <FilterCatalog />
       <div className={cx("wrapCatalogProduct")}>
         <div className={cx("wrapCatalogProduct_fillter")}>
           <div className={cx("wrapCatalogProduct_fillter_Price")}>
@@ -383,7 +385,7 @@ const CatalogProduct = () => {
           </div>
         </div>
         {/* <div className={cx("wrapCatalogProduct_content")}> */}
-        <Container>
+        <Container fluid="md">
           <Row lg={4 | "auto"} md={3} sm={2}>
             {products?.map((item, index) => (
               <Col key={item.id}>

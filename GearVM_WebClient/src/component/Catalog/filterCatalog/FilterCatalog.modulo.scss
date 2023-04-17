@@ -1,0 +1,32 @@
+.mobileFilter {
+  display: none;
+}
+@media screen and (max-width: 576px) {
+  .mobileFilter {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 100px;
+    z-index: 3;
+    background-color: white;
+    padding-bottom: 15px;
+    transition: all 1s ease-in-out;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px;
+  }
+  .mobileFiltertxt {
+    font-size: 18px;
+  }
+  .mobileFilter.sticky {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 60px;
+    z-index: 3;
+    background-color: white;
+  }
+}

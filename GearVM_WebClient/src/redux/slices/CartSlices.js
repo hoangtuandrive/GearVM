@@ -42,7 +42,7 @@ const CartSlice = createSlice({
       );
 
       if (existingIndex >= 0) {
-        if (state.cartItems[existingIndex].cartQuantity <= 201) {
+        if (state.cartItems[existingIndex].cartQuantity >= 201) {
           toast.info(
             "Bạn chỉ có thể mua tối đa 200 sản phẩm cho cùng loại sản phẩm",
             {

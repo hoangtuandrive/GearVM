@@ -162,6 +162,12 @@
     }
   }
 }
+.btnPay {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 10px;
+}
 @media screen and (max-width: 768px) {
   .wrapPayBody {
     margin-top: 100px;
@@ -192,6 +198,16 @@
 @media (min-width: 576px) {
   .container {
     max-width: 700px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .wrapPayBody_right_metodpay_wrapbtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .btnPay {
+    margin-top: 10px;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 999px) {

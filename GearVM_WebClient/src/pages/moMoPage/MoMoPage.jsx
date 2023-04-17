@@ -62,75 +62,126 @@ const MoMoPage = () => {
 
   return (
     <div className={cx("wrapMoMoPage")}>
-      <Container className={cx("MomoPageContent")}>
-        <Row>
-          <Col lg={4} className={cx("MomoPageContentLeft")}>
-            <div>
+      <div className={cx("wrapMoMoPage_about")}>
+        <div className={cx("MomoPageContent")}>
+          <div className={cx("BankingRow")}>
+            <div className={cx("MomoPageContentLeft")}>
               <div>
-                <h6 className={cx("Suptxt")}>Nhà cung cấp</h6>
-                <h4 className={cx("NameCty")}>
-                  CÔNG TY THƯƠNG MẠI DỊCH VỤ GEARVM
-                </h4>
-              </div>
-              <hr />
-              <div>
-                <div className={cx("MomoTotal")}>
-                  <FontAwesomeIcon icon={faCoins} style={{ color: "white" }} />
-                  <h6 className={cx("Totaltxt")}>Số tiền</h6>
+                <div>
+                  <h6 className={cx("Suptxt")}>Nhà cung cấp</h6>
+                  <h4 className={cx("NameCty")}>
+                    CÔNG TY THƯƠNG MẠI DỊCH VỤ GEARVM
+                  </h4>
                 </div>
-                <h4 className={cx("Totaltxt")}>
-                  {" "}
-                  {new Intl.NumberFormat("de-DE", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(cart.cartTotalAmount)}
-                </h4>
+                <hr />
+                <div>
+                  <div className={cx("MomoTotal")}>
+                    <FontAwesomeIcon
+                      icon={faCoins}
+                      style={{ color: "white" }}
+                    />
+                    <h6 className={cx("Totaltxt")}>Số tiền</h6>
+                  </div>
+                  <h4 className={cx("Totaltxt")}>
+                    {" "}
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(cart.cartTotalAmount)}
+                  </h4>
+                </div>
+              </div>
+              <div className={cx("btnBack")} onClick={handleBack}>
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  style={{ color: "white", marginLeft: 5, fontWeight: "bold" }}
+                />
+                <h6 className={cx("btnBackTxt")}>Quay lại</h6>
               </div>
             </div>
-            <div className={cx("btnBack")} onClick={handleBack}>
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                style={{ color: "white", marginLeft: 5, fontWeight: "bold" }}
-              />
-              <h6 className={cx("btnBackTxt")}>Quay lại</h6>
-            </div>
-          </Col>
-          <Col lg={8} className={cx("wrapRight")}>
-            <div className={cx("MomoPageContentRight")}>
-              <img
-                src={require("../../assets/logoGear.jpg")}
-                className={cx("imgLogo")}
-              />
-              <img
-                src={require("../../assets/MoMo.jpg")}
-                className={cx("imgLogo")}
-              />
-            </div>
-            <hr />
-            <div className={cx("ScanCotent")}>
-              <div className={cx("Scantxt")}>Quét Mã Để Thanh Toán</div>
-              <div className={cx("QrCode")}>
+            <div className={cx("wrapRight")}>
+              <div className={cx("Back")}>
+                <div className={cx("btnBack_Reposive")} onClick={handleBack}>
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    style={{
+                      color: "white",
+                      marginLeft: 5,
+                      fontSize: 30,
+                    }}
+                  />
+                </div>
+                <h6 className={cx("btnBackTxt")}>Thanh Toán</h6>
+                <h6></h6>
+              </div>
+              <div className={cx("MomoPageContentRight")}>
                 <img
-                  src={require("../../assets/QrMomo.jpg")}
-                  className={cx("imgQr")}
+                  src={require("../../assets/logoGear.jpg")}
+                  className={cx("imgLogo")}
+                />
+                <img
+                  src={require("../../assets/MoMo.jpg")}
+                  className={cx("imgLogo")}
                 />
               </div>
-              <div className={cx("Intro")}>
-                <h6 className={cx("Introtxt")}>
-                  Sử dụng App MoMo hoặc ứng dụng Camera hỗ trợ QR code để quét
-                  mã
-                </h6>
+              <hr />
+              {/* Open Reposive */}
+              <div className={cx("MomoPageContentLeft_Reposive")}>
+                <div>
+                  <div>
+                    <h6 className={cx("Suptxt")}>Nhà cung cấp</h6>
+                    <h4 className={cx("NameCty")}>
+                      CÔNG TY THƯƠNG MẠI DỊCH VỤ GEARVM
+                    </h4>
+                  </div>
+                  <hr />
+                  <div>
+                    <div className={cx("MomoTotal")}>
+                      <FontAwesomeIcon
+                        icon={faCoins}
+                        style={{ color: "white" }}
+                      />
+                      <h6 className={cx("Totaltxt")}>Số tiền</h6>
+                    </div>
+                    <h4 className={cx("Totaltxt")}>
+                      {" "}
+                      {new Intl.NumberFormat("de-DE", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(cart.cartTotalAmount)}
+                    </h4>
+                  </div>
+                </div>
               </div>
-              <div className={cx("Momobtn")}>
-                <button className={cx("btnComplete")} onClick={handleComplete}>
-                  {" "}
-                  Hoàn Thành Thanh Toán
-                </button>
+              {/* Close Reposive */}
+              <div className={cx("ScanCotent")}>
+                <div className={cx("Scantxt")}>Quét Mã Để Thanh Toán</div>
+                <div className={cx("QrCode")}>
+                  <img
+                    src={require("../../assets/QrMomo.jpg")}
+                    className={cx("imgQr")}
+                  />
+                </div>
+                <div className={cx("Intro")}>
+                  <h6 className={cx("Introtxt")}>
+                    Sử dụng App MoMo hoặc ứng dụng Camera hỗ trợ QR code để quét
+                    mã
+                  </h6>
+                </div>
+                <div className={cx("Momobtn")}>
+                  <button
+                    className={cx("btnComplete")}
+                    onClick={handleComplete}
+                  >
+                    {" "}
+                    Hoàn Thành Thanh Toán
+                  </button>
+                </div>
               </div>
             </div>
-          </Col>
-        </Row>
-      </Container>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@
   flex-direction: column;
   margin-top: 5px;
   margin-bottom: 7px;
+  min-height: 41vh;
   background-color: white;
 }
 .wrapOrder_thumb {
@@ -83,4 +84,27 @@
   background-color: #ff2b00;
   border-color: #ff2b00;
   border-radius: 5px;
+}
+@media screen and (min-width: 999px) {
+  .wrapOrder {
+    margin-top: 30px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 999px) {
+  .wrapOrder {
+    margin-top: 100px;
+    min-height: 55vh;
+  }
+}
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .wrapOrder {
+    margin-top: 100px;
+    min-height: 55vh;
+  }
+}
+@media screen and (max-width: 480px) {
+  .wrapOrder {
+    margin-top: 100px;
+    min-height: 55vh;
+  }
 }

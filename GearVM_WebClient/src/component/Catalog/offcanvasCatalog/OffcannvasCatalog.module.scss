@@ -1,0 +1,44 @@
+.catalog__filter__widget__content__item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.offcanva {
+  width: 280px !important;
+}
+.bodyPrice {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.bodyPrice_content {
+  border-style: solid;
+  width: 100px;
+  height: 20px;
+  font-size: 14px;
+  // margin: 5px;
+
+  text-align: center;
+  border-color: rgb(203, 206, 208);
+  border-width: 1px;
+  border-radius: 5px;
+}
+.ant-tooltip-inner {
+  color: yellow;
+  background-color: green;
+  width: 200px;
+}
+.changePrice {
+  margin: 10px 10px;
+}
+.wrapFilterCatalog {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.btnOff {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

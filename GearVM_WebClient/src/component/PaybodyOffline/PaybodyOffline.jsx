@@ -129,17 +129,17 @@ const PaybodyOffline = ({ name }) => {
                   Thanh toán qua Internet Banking, Visa, Master, JCB, VNPAY-QR
                 </h6>
               </div> */}
-            <div>
+            <div className={cx("btnPay")}>
               <CustomButon
                 Click={handleBanking}
                 name={"Thanh toán qua ngân hàng"}
               />
             </div>
 
-            <div>
+            <div className={cx("btnPay")}>
               <CustomButon Click={handlePay} name={"Thanh toán MoMo"} />
             </div>
-            <div>
+            <div className={cx("btnPay")}>
               <CustomButon name="Thanh toán tiền mặt" Click={handleCash} />
 
               {/* <h5 style={{ color: "black" }}>Thanh toán khi nhận hàng</h5> */}

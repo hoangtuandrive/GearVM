@@ -168,14 +168,14 @@ const PayBody = () => {
                   Thanh toán qua Internet Banking, Visa, Master, JCB, VNPAY-QR
                 </h6>
               </div> */}
-              <div>
+              <div className={cx("btnPay")}>
                 <CustomButon
                   Click={handlePay}
                   name="Thanh toán bằng thẻ Visa,Mastercard"
                 />
               </div>
 
-              <div>
+              <div className={cx("btnPay")}>
                 <CustomButon
                   Click={handlePayOffline}
                   name="Phương thức khác (Ngân hàng, Momo, COD)"

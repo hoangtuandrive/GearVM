@@ -145,8 +145,8 @@ export default function ChatBox() {
 
   return (
     <MDBContainer className={cx("wrapChatBox")}>
-      <MDBRow className="d-flex justify-content-center">
-        <MDBCol md="6" lg="12" xl="12">
+      <MDBRow className="d-flex justify-content-flex-end">
+        <MDBCol md="12" lg="12" xl="12">
           <MDBCard id="chat1" style={{ borderRadius: "15px" }}>
             <MDBCardHeader
               className="d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"

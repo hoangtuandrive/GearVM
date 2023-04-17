@@ -45,7 +45,7 @@ const ListCart = () => {
   };
 
   return (
-    <Container>
+    <Container fluid="md">
       <div className={cx("wrapListCart")}>
         <div className={cx("wrapListCart_Content")}>
           <Table>
