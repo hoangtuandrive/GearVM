@@ -169,6 +169,22 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
+    public List<GetOrderListResponse> getAllOnlineOrdersAndPaidDirectOrders() {
+        List<Order> paidDirectOrder = orderRepository.findAllByIsDirectAndOrderStatusNot
+                (true, OrderStatus.DIRECT_PENDING);
+
+        List<Order> onlineOrder = orderRepository.findAllByIsDirect(false);
+
+        paidDirectOrder.addAll(onlineOrder);
+
+        List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+        for (Order order : paidDirectOrder) {
+            GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+            getOrderListResponseList.add(orderListResponse);
+        }
+        return getOrderListResponseList;
+    }
+
     public List<GetOrderListResponse> getOrderListByCurrentCustomerToken(String token) {
         Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
         if (customer == null)
