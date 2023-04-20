@@ -68,6 +68,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JTextField txtEmail;
     private final JLabel lblPhuongThucThanhToan;
     private final JTextField txtPhuongThucThanhToan;
+    private final JLabel lblHinhThucMuaHang;
+    private final JTextField txtHinhThucMuaHang;
 
     public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
@@ -131,10 +133,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b12 = Box.createHorizontalBox();
         Box b13 = Box.createHorizontalBox();
 
-        // Box for shipping detail and payment
         Box b17 = Box.createHorizontalBox();
         Box b18 = Box.createHorizontalBox();
         Box b19 = Box.createHorizontalBox();
+        Box b20 = Box.createHorizontalBox();
 
         b2.add(Box.createHorizontalStrut(100));
         b2.add(b3);
@@ -165,15 +167,21 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b18.add(txtEmail = new JTextField());
         b3.add(b18);
 
-        b7.add(lblMaThanhToan = new JLabel("Mã Thanh Toán:"));
+        b7.add(lblMaThanhToan = new JLabel("Mã Thanh Toán Stripe:"));
         b7.add(Box.createHorizontalStrut(10));
         b7.add(txtMaThanhToan = new JTextField());
         b3.add(b7);
+
+        b20.add(lblHinhThucMuaHang = new JLabel("Hình thức mua hàng:"));
+        b20.add(Box.createHorizontalStrut(10));
+        b20.add(txtHinhThucMuaHang = new JTextField());
+        b3.add(b20);
 
         b8.add(lblNgayLapDonHang = new JLabel("Ngày Lập Đơn Hàng:"));
         b8.add(Box.createHorizontalStrut(10));
         b8.add(txtNgayLapDonHang = new JTextField());
         b3.add(b8);
+
 
         b9.add(lblNgaySuaDonHang = new JLabel("Ngày Sửa Đơn Hàng:"));
         b9.add(Box.createHorizontalStrut(10));
@@ -282,6 +290,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         lblDiaChi.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblEmail.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblPhuongThucThanhToan.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblHinhThucMuaHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
 
         b4.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b5.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
@@ -299,6 +308,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b17.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b18.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b20.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         readDatabaseToTable(getOrderResponse);
         LoadDataToTextField(getOrderResponse);
@@ -312,9 +322,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtNgayLapDonHang.setEditable(false);
         txtNgaySuaDonHang.setEditable(false);
         txtMaNhanVien.setEditable(false);
-        txtTenKhachHang.setEditable(false);
+        txtTenNhanVien.setEditable(false);
         txtPhuongThucThanhToan.setEditable(false);
         txtTongTien.setEditable(false);
+        txtHinhThucMuaHang.setEditable(false);
 
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
@@ -471,22 +482,41 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
         else if (order.getPayment().getPaymentMethod() == PaymentMethod.BANK)
             paymentMethod = "Chuyển khoản qua ngân hàng";
-        else if (order.getPayment().getPaymentMethod() == PaymentMethod.COD) paymentMethod = "Trả tiền khi giao hàng";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.COD)
+            paymentMethod = "Trả tiền khi giao hàng";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.MOMO)
+            paymentMethod = "Chuyển khoản qua Momo";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.CASH)
+            paymentMethod = "Thanh toán trực tiếp bằng tiền mặt";
+        else if (order.getPayment().getPaymentMethod() == PaymentMethod.SWIPE_CARD)
+            paymentMethod = "Thanh toán trực tiếp bằng quẹt thẻ ngân hàng";
 
-        txtMaDonHang.setText(order.getId().toString());
-        txtTenKhachHang.setText(order.getShippingDetail().getName());
-        txtSdtKhachHang.setText(order.getShippingDetail().getPhoneNumber());
-        txtDiaChi.setText(order.getShippingDetail().getAddress());
-        txtEmail.setText(order.getShippingDetail().getEmail());
-        txtMaThanhToan.setText(order.getPayment().getPaymentDescription());
-        txtPhuongThucThanhToan.setText(paymentMethod);
-        txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
-        txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
-        if (order.getEmployee() != null) {
-            txtMaNhanVien.setText(order.getEmployee().getId().toString());
-            txtTenNhanVien.setText(order.getEmployee().getName());
+        try {
+            txtMaDonHang.setText(order.getId().toString());
+
+            if (order.getShippingDetail() != null) {
+                txtTenKhachHang.setText(order.getShippingDetail().getName());
+                txtSdtKhachHang.setText(order.getShippingDetail().getPhoneNumber());
+                txtDiaChi.setText(order.getShippingDetail().getAddress());
+                txtEmail.setText(order.getShippingDetail().getEmail());
+                txtHinhThucMuaHang.setText("Mua hàng Online");
+            } else {
+                txtTenKhachHang.setText(order.getCustomer().getName());
+                txtSdtKhachHang.setText(order.getCustomer().getPhoneNumber());
+                txtHinhThucMuaHang.setText("Mua tại cửa hàng");
+            }
+
+            txtMaThanhToan.setText(order.getPayment().getPaymentDescription());
+            txtPhuongThucThanhToan.setText(paymentMethod);
+            txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
+            txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
+            if (order.getEmployee() != null) {
+                txtMaNhanVien.setText(order.getEmployee().getId().toString());
+                txtTenNhanVien.setText(order.getEmployee().getName());
+            }
+            txtTongTien.setText(df.format(order.getTotalPrice()));
+        } catch (NullPointerException e) {
         }
-        txtTongTien.setText(df.format(order.getTotalPrice()));
     }
 
     public boolean patchOrderStatus(int i, EmployeeResponseModel e) throws IOException, JSONException {

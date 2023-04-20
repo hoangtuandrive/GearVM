@@ -100,6 +100,13 @@ public class OrderService extends ApiService {
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
+    public static BufferedReader getAllOnlineOrdersAndPaidDirectOrders() throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "online-and-paidDirect");
+        HttpResponse response = client.execute(request);
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    }
+
     public static boolean patchUpdateAddOrderItem(UpdateOrderItem updateOrderItem) throws IOException, JSONException {
         HttpClient client = new DefaultHttpClient();
         HttpPatch request = new HttpPatch(url + "update-add-orderItem");

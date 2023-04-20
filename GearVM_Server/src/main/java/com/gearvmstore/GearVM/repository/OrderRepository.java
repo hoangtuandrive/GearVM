@@ -16,4 +16,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     boolean existsByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus orderStatus, String name, String phoneNumber);
 
     Order findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus orderStatus, String name, String phoneNumber);
+
+    List<Order> findAllByIsDirect(boolean isDirect);
+
+    List<Order> findAllByIsDirectAndOrderStatusNot(boolean isDirect, OrderStatus orderStatus);
 }

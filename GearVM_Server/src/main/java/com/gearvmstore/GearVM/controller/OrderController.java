@@ -27,6 +27,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
     }
 
+    @GetMapping("online-and-paidDirect")
+    public ResponseEntity<?> getAllOnlineOrdersAndPaidDirectOrders() {
+        return new ResponseEntity<>(orderService.getAllOnlineOrdersAndPaidDirectOrders(), HttpStatus.OK);
+    }
+
     @GetMapping("current-customer")
     public ResponseEntity<?> getOrderListByCurrentCustomerToken(@RequestHeader(name = "Authorization") String header) {
         if (header == null)

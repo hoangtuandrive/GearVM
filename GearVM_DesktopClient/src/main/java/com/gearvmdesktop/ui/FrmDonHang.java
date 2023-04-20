@@ -170,7 +170,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        BufferedReader rd = OrderService.getAllRequest(tableName);
+        BufferedReader rd = OrderService.getAllOnlineOrdersAndPaidDirectOrders();
         List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
