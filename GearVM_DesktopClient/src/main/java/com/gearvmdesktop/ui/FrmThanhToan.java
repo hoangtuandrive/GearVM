@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -65,6 +66,11 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         Box b = Box.createHorizontalBox();
         Box b1 = Box.createVerticalBox();
         Box b2 = Box.createHorizontalBox();
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconThanhToan = classLoader.getResource("assets/xacNhanGiaoHang.png");
+        URL iconIn = classLoader.getResource("assets/inhoadon.png");
+        URL iconQrCode = classLoader.getResource("assets/qrCode.png");
 
         String[] colHeader = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Sản Phẩm", "Số Lượng Tồn Kho", "Thành Tiền"};
         modelSanPham = new DefaultTableModel(colHeader, 0);
@@ -169,6 +175,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         String[] phuongThucThanhToan = {"", "Tiền Mặt", "Quét Thẻ", "Chuyển Khoản Ngân Hàng", "Chuyển Khoản Momo"};
         cmbPhuongThucThanhToan = new JComboBox<String>(phuongThucThanhToan);
         b13.add(lblPhuongThucThanhToan = new JLabel("Phương Thức Thanh Toán:"));
+
         b13.add(Box.createHorizontalStrut(10));
         b13.add(cmbPhuongThucThanhToan);
         b3.add(b13);
@@ -179,12 +186,21 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         Box b15 = Box.createHorizontalBox();
         Box b16 = Box.createHorizontalBox();
 
-        b14.add(btnQRCode = new JButton("HIỂN THỊ MÃ THANH TOÁN QR CODE"));
+        b14.add(btnQRCode = new JButton("HIỂN THỊ MÃ THANH TOÁN QR CODE",new ImageIcon(iconQrCode)));
+        btnQRCode.setBackground(new Color(0, 148, 224));
+        btnQRCode.setForeground(Color.WHITE);
+        btnQRCode.setFocusPainted(false);
         b3.add(b14);
 
-        b15.add(btnProcessPayment = new JButton("TIẾN HÀNH THANH TOÁN"));
+        b15.add(btnProcessPayment = new JButton("TIẾN HÀNH THANH TOÁN",new ImageIcon(iconThanhToan)));
+        btnProcessPayment.setBackground(new Color(0, 148, 224));
+        btnProcessPayment.setForeground(Color.WHITE);
+        btnProcessPayment.setFocusPainted(false);
         b15.add(Box.createHorizontalStrut(15));
-        b15.add(btnPrintBill = new JButton("IN HÓA ĐƠN"));
+        b15.add(btnPrintBill = new JButton("IN HÓA ĐƠN",new ImageIcon(iconIn)));
+        btnPrintBill.setBackground(new Color(0, 148, 224));
+        btnPrintBill.setForeground(Color.WHITE);
+        btnPrintBill.setFocusPainted(false);
         b3.add(b15);
         b3.add(Box.createVerticalStrut(50));
 

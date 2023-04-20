@@ -100,6 +100,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         tabbedPane.setForeground(Color.WHITE);
         tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 16));
 
+
         FrmBanHang frmBanHang = new FrmBanHang();
         FrmHoaDon frmHoaDon = new FrmHoaDon();
         FrmNhanVien frmNhanVien = new FrmNhanVien();
@@ -118,15 +119,28 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         JPanel pnlKhoHang = frmKhoHang.createPanelKhoHang();
         JPanel pnlDonHang = frmDonHang.createPanelDonHang();
 
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        URL iconHoaDon = classLoader.getResource("assets/hoadon.png");
+        URL iconBanHang = classLoader.getResource("assets/banhang.png");
+        URL iconNhanVien = classLoader.getResource("assets/nhanvien.png");
+        URL iconKhachHang = classLoader.getResource("assets/khachhang.png");
+        URL iconHangHoa = classLoader.getResource("assets/hanghoa.png");
+        URL iconKhoHang = classLoader.getResource("assets/khohang.png");
+        URL iconDonHang = classLoader.getResource("assets/donhang.png");
+
+
+
         /* add tab with JPanel */
-        tabbedPane.addTab("TRANG CHỦ", new ImageIcon("image/trangchu.png"), pnlTrangChu, "TRANG CHỦ");
-        tabbedPane.addTab("ĐƠN HÀNG", new ImageIcon("image/hoadon.png"), pnlDonHang, "ĐƠN HÀNG");
-        tabbedPane.addTab("BÁN HÀNG", new ImageIcon("image/banhang.png"), pnlBanHang, "BÁN HÀNG");
-        tabbedPane.addTab("NHÂN VIÊN", new ImageIcon("image/nhanvien.png"), pnlNhanVien, "NHÂN VIÊN");
-        tabbedPane.addTab("KHÁCH HÀNG", new ImageIcon("image/khachhang.png"), pnlKhachHang, "KHÁCH HÀNG");
-        tabbedPane.addTab("SẢN PHẨM", new ImageIcon("image/hanghoa.png"), pnlHangHoa, "SẢN PHẨM");
-        tabbedPane.addTab("KHO HÀNG", new ImageIcon("image/hanghoa.png"), pnlKhoHang, "KHO HÀNG");
-        tabbedPane.addTab("HÓA ĐƠN", new ImageIcon("image/hoadon.png"), pnlHoaDon, "HÓA ĐƠN");
+        tabbedPane.addTab("TRANG CHỦ",  new ImageIcon(iconTrangChu), pnlTrangChu, "TRANG CHỦ");
+        tabbedPane.addTab("ĐƠN HÀNG", new ImageIcon(iconHoaDon), pnlDonHang, "ĐƠN HÀNG");
+        tabbedPane.addTab("BÁN HÀNG", new ImageIcon(iconBanHang), pnlBanHang, "BÁN HÀNG");
+        tabbedPane.addTab("NHÂN VIÊN", new ImageIcon(iconNhanVien), pnlNhanVien, "NHÂN VIÊN");
+        tabbedPane.addTab("KHÁCH HÀNG", new ImageIcon(iconKhachHang), pnlKhachHang, "KHÁCH HÀNG");
+        tabbedPane.addTab("SẢN PHẨM", new ImageIcon(iconHangHoa), pnlHangHoa, "SẢN PHẨM");
+        tabbedPane.addTab("KHO HÀNG", new ImageIcon(iconKhoHang), pnlKhoHang, "KHO HÀNG");
+        tabbedPane.addTab("HÓA ĐƠN", new ImageIcon(iconDonHang), pnlHoaDon, "HÓA ĐƠN");
 
         return tabbedPane;
     }

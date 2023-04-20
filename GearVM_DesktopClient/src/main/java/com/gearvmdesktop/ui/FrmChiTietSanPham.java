@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.UUID;
 
 public class FrmChiTietSanPham extends JFrame implements ActionListener {
@@ -47,11 +48,30 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setLayout(null);
 
-        browseButton = new JButton("Chọn ảnh");
-        browseButton.setBounds(200, 480, 100, 40);
-        saveButton = new JButton("Lưu");
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL iconChonAnh = classLoader.getResource("assets/chonanh.png");
+
+        browseButton = new JButton("Chọn ảnh",new ImageIcon(iconChonAnh));
+        browseButton .setBackground(new Color(0, 148, 224));
+        browseButton .setForeground(Color.WHITE);
+        browseButton .setFocusPainted(false);
+        browseButton.setBounds(200, 480, 150, 40);
+
+        URL iconLuu = classLoader.getResource("assets/luu.png");
+
+        saveButton = new JButton("Lưu",new ImageIcon(iconLuu));
+        saveButton .setBackground(new Color(0, 148, 224));
+        saveButton .setForeground(Color.WHITE);
+        saveButton .setFocusPainted(false);
         saveButton.setBounds(400, 480, 100, 40);
-        cancelButton = new JButton("Hủy");
+
+        URL iconHuy = classLoader.getResource("assets/huy.png");
+
+        cancelButton = new JButton("Hủy",new ImageIcon(iconHuy));
+        cancelButton .setBackground(new Color(0, 148, 224));
+        cancelButton .setForeground(Color.WHITE);
+        cancelButton .setFocusPainted(false);
         cancelButton.setBounds(520, 480, 100, 40);
         imageLbl = new JLabel();
         imageLbl.setBounds(10, 10, 600, 450);

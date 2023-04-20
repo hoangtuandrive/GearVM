@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 
 public class FrmDangNhap extends JFrame implements ActionListener {
     private static JTextField txtTenDangNhap;
@@ -70,11 +71,14 @@ public class FrmDangNhap extends JFrame implements ActionListener {
         pcenter.add(b);
 
         p.add(pcenter, BorderLayout.CENTER);
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconDangNhap = classLoader.getResource("assets/login.png");
+        URL iconThoat = classLoader.getResource("assets/out.png");
 
         JPanel pBot = new JPanel();
 //		btnDangNhap = new JButton("Đăng Nhập", new ImageIcon("image/trangchu.png"));
-        btnDangNhap = new JButton("Đăng Nhập");
-        btnThoat = new JButton("Thoát");
+        btnDangNhap = new JButton("Đăng Nhập",new ImageIcon(iconDangNhap));
+        btnThoat = new JButton("Thoát",new ImageIcon(iconThoat));
         pBot.add(Box.createHorizontalStrut(100));
         pBot.add(btnDangNhap);
 
@@ -86,6 +90,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
         btnDangNhap.setFocusPainted(false);
         btnThoat.setBackground(new Color(0, 148, 224));
         btnThoat.setForeground(Color.WHITE);
+
         btnThoat.setFocusPainted(false);
 
         txtTenDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 14));

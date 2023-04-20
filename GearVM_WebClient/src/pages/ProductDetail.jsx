@@ -12,8 +12,6 @@ import ChatBox from "../component/chatBox/ChatBox";
 import ScrolltoTop from "../component/Home/ScrolltoTop/ScrolltoTop";
 const cx = classNames.bind(styles);
 const PageProductDetail = () => {
-  const { showChat } = useContext(AppContext);
-
   return (
     <div className={cx("wrapProductDetail")}>
       <Header />
@@ -21,7 +19,7 @@ const PageProductDetail = () => {
       {/* <Review></Review> */}
       <ListProductHome name="SẢN PHẨM BÁN CHẠY" />
       <ScrolltoTop />
-      {showChat ? <ChatBox /> : null}
+      {/* {showChat ? <ChatBox /> : null} */}
       <Footer />
     </div>
   );

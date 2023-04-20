@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./ProductView.module.scss";
 import classNames from "classnames/bind";
 import CustomDiscount from "../customDiscount/CustomDiscount";
@@ -12,7 +12,8 @@ import { Image } from "antd";
 import { Col, Container } from "react-bootstrap";
 import { s3 } from "../../aws";
 import CustomButon from "../Custom/CustomButon/CustomButon";
-
+import ChatBox from "../chatBox/ChatBox";
+import { AppContext } from "../context/AppProvider";
 const cx = classNames.bind(styles);
 
 const ProductView = () => {
@@ -21,7 +22,9 @@ const ProductView = () => {
   let location = useLocation();
   let query = new URLSearchParams(location.search);
   const productId = query.get("id");
+  const ProductName = query.get("name");
 
+  const { showChat } = useContext(AppContext);
   const productUrl = `http://localhost:8080/api/products/${productId}`;
 
   const [imageData, setImageData] = useState(null);
@@ -153,6 +156,7 @@ const ProductView = () => {
           ))}
         </div>
       </div>
+      {showChat ? <ChatBox name={productDetail.name} /> : null}
     </Container>
   );
 };

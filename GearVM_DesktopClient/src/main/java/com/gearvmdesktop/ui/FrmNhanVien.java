@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -210,6 +211,29 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         btnSua.setText("SỬA");
         btnThayDoiTinhTrangLamViec.setText("CHO NGHỈ VIỆC");
 
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconThem = classLoader.getResource("assets/them.png");
+        URL iconSua = classLoader.getResource("assets/capnhat.png");
+        URL iconNghi = classLoader.getResource("assets/trangthaigiaohang.png");
+        URL iconXuatFile = classLoader.getResource("assets/xuatexcel.png");
+        URL iconNhapFile = classLoader.getResource("assets/docfile.png");
+        URL iconLuu = classLoader.getResource("assets/luu.png");
+        URL iconHuy = classLoader.getResource("assets/huy.png");
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+
+
+        btnThem.setIcon(new ImageIcon(iconThem));
+        btnSua.setIcon(new ImageIcon(iconSua));
+        btnThayDoiTinhTrangLamViec.setIcon(new ImageIcon(iconNghi));
+        btnSave.setIcon(new ImageIcon(iconLuu));
+        btnCancel.setIcon(new ImageIcon(iconHuy));
+        btnImport.setIcon(new ImageIcon(iconNhapFile));
+        btnExport.setIcon(new ImageIcon(iconXuatFile));
+
+
+
+
         txtNgaySinh.setDateFormatString("dd-MM-yyyy");
         txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
 
@@ -378,25 +402,26 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
                         .addGap(50)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
-                        .addGap(60))
-                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
-                        .addGap(40)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
-                        .addGap(80)));
+                        .addGap(60)));
+//                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+//                        .addGap(40)
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+//                        .addGap(80)));
         pnExcelLayout.setVerticalGroup(pnExcelLayout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnImport).addComponent(btnExport))
+//                                .addComponent(btnImport)
+                                .addComponent(btnExport))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5)
-                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnSave).addComponent(btnCancel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(15)));
+                        .addGap(5)));
+//                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                                .addComponent(btnSave).addComponent(btnCancel))
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                        .addGap(15)));
 
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Nhân Viên", "Tên Nhân Viên", "Giới Tính", "SDT", "Chức Vụ", "Lương", "CMND", "Ngày Sinh",
@@ -407,7 +432,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         AutoCompleteDecorator.decorate(cmbTim);
         cmbTim.setMaximumRowCount(10);
         cmbChon.setSize(20, cmbTim.getPreferredSize().height);
-        btnTim = new JButton("TÌM KIẾM", new ImageIcon("image/timkiem.png"));
+        btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);

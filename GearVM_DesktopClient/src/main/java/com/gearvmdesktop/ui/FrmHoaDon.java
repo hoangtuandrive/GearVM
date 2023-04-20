@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -121,6 +122,14 @@ public class FrmHoaDon extends JFrame {
 
         b.add(btim);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+        URL iconLocTheoThuTu = classLoader.getResource("assets/locthutu.png");
+        URL iconTheoTien = classLoader.getResource("assets/loctheogia.png");
+        URL iconLocTheoKhoangTG = classLoader.getResource("assets/loc.png");
+
+
         String[] tim = {"Mã Hóa Đơn", "Tên Khách Hàng", "Tên Nhân Viên", "Ngày Lập Hóa Đơn", "Thành Tiền"};
         cmbChon = new JComboBox<String>(tim);
         btim.add(cmbChon);
@@ -132,7 +141,7 @@ public class FrmHoaDon extends JFrame {
         cmbChon.setSize(200, cmbTim.getPreferredSize().height);
         btim.add(cmbTim);
         btim.add(Box.createHorizontalStrut(10));
-        btnTim = new JButton("TÌM KIẾM", new ImageIcon("image/timkiem.png"));
+        btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
@@ -143,7 +152,7 @@ public class FrmHoaDon extends JFrame {
         btim.add(txtNgayStart = new JDateChooser());
         btim.add(Box.createHorizontalStrut(10));
         btim.add(txtNgayEnd = new JDateChooser());
-        btnTim1 = new JButton("THỐNG KÊ THEO KHOẢNG NGÀY", new ImageIcon("image/timkiem.png"));
+        btnTim1 = new JButton("THỐNG KÊ THEO KHOẢNG NGÀY", new ImageIcon(iconLocTheoKhoangTG));
         btnTim1.setBackground(new Color(0, 148, 224));
         btnTim1.setForeground(Color.WHITE);
         btnTim1.setFocusPainted(false);
@@ -165,7 +174,7 @@ public class FrmHoaDon extends JFrame {
 
         p.add(tblscroll, BorderLayout.CENTER);
         p.add(Box.createHorizontalStrut(50), BorderLayout.SOUTH);
-        p.add(btnHoaDon = new JButton("LỌC THEO THỨ TỰ HÓA ĐƠN", new ImageIcon("image/hoadon.png")));
+        p.add(btnHoaDon = new JButton("LỌC THEO THỨ TỰ HÓA ĐƠN", new ImageIcon(iconLocTheoThuTu)));
         btnHoaDon.setBackground(new Color(0, 148, 224));
         btnHoaDon.setForeground(Color.WHITE);
         btnHoaDon.setFocusPainted(false);
@@ -174,7 +183,7 @@ public class FrmHoaDon extends JFrame {
         p.add(Box.createHorizontalStrut(20));
         p.add(txtDoanhThu = new JLabel(), BorderLayout.SOUTH);
         p.add(Box.createHorizontalStrut(200));
-        p.add(btnSort = new JButton("LỌC THEO THÀNH TIỀN", new ImageIcon("image/thongke.png")));
+        p.add(btnSort = new JButton("LỌC THEO THÀNH TIỀN", new ImageIcon(iconTheoTien)));
         btnSort.setBackground(new Color(0, 148, 224));
         btnSort.setForeground(Color.WHITE);
         btnSort.setFocusPainted(false);

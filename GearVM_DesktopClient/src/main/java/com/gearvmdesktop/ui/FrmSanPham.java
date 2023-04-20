@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -232,15 +233,31 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
         pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
 
-        btnThem.setText("THÊM");
-        btnSua.setText("SỬA");
-        btnXoa.setText("XÓA");
-        btnChiTiet.setText("CHI TIẾT");
-        btnSave.setText("LƯU");
-        btnCancel.setText("HỦY");
-        btnImport.setText("NHẬP FILE");
-        btnExport.setText("XUẤT FILE");
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconThem = classLoader.getResource("assets/them.png");
+        URL iconSua = classLoader.getResource("assets/capnhat.png");
+        URL iconXoa = classLoader.getResource("assets/xoa.png");
+        URL iconXuatFile = classLoader.getResource("assets/xuatexcel.png");
+        URL iconNhapFile = classLoader.getResource("assets/docfile.png");
+        URL iconLuu = classLoader.getResource("assets/luu.png");
+        URL iconHuy = classLoader.getResource("assets/huy.png");
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+        URL iconChiTiet = classLoader.getResource("assets/info.png");
 
+
+        btnThem.setText("THÊM");
+        btnThem.setIcon(new ImageIcon(iconThem));
+        btnSua.setText("SỬA");
+        btnSua.setIcon(new ImageIcon(iconSua));
+        btnXoa.setText("XÓA");
+        btnXoa.setIcon(new ImageIcon(iconXoa));
+        btnChiTiet.setText("CHI TIẾT");
+        btnChiTiet.setIcon(new ImageIcon(iconChiTiet));
+//        btnSave.setText("LƯU");
+//        btnCancel.setText("HỦY");
+//        btnImport.setText("NHẬP FILE");
+        btnExport.setText("XUẤT FILE");
+        btnExport.setIcon(new ImageIcon(iconXuatFile));
 
         // Chức năng button
         btnThem.setBackground(new Color(0, 148, 224));
@@ -303,25 +320,26 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
                         .addGap(50)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
-                        .addGap(50))
-                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
-                        .addGap(40)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
-                        .addGap(70)));
+                        .addGap(50)));
+//                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+//                        .addGap(40)
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+//                        .addGap(70)));
         pnExcelLayout.setVerticalGroup(pnExcelLayout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnImport).addComponent(btnExport))
+//                                .addComponent(btnImport)
+                                .addComponent(btnExport))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5)
-                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnSave).addComponent(btnCancel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(15)));
+                        .addGap(5)));
+//                        .addGroup(pnExcelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                                .addComponent(btnSave).addComponent(btnCancel))
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                        .addGap(15)));
 
         pnThongTin.setBackground(new Color(219, 243, 255));
         pnChucNang.setBackground(new Color(219, 243, 255));
@@ -335,7 +353,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         AutoCompleteDecorator.decorate(cmbTim);
         cmbTim.setMaximumRowCount(10);
         cmbChon.setSize(20, cmbTim.getPreferredSize().height);
-        btnTim = new JButton("TÌM KIẾM", new ImageIcon("image/timkiem.png"));
+        btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);

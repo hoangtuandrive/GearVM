@@ -8,19 +8,12 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -251,7 +244,14 @@ public class FrmChiTietHoaDon extends JFrame implements ActionListener {
 		lblThanhTien.setFont(new Font("Tahoma", Font.BOLD, 12));
 		txtThanhTien.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		btnIn = new JButton("IN HÓA ĐƠN");
+		ClassLoader classLoader = getClass().getClassLoader();
+
+		URL iconInHoaDon = classLoader.getResource("assets/inhoadon.png");
+
+		btnIn = new JButton("IN HÓA ĐƠN",new ImageIcon(iconInHoaDon));
+		btnIn.setBackground(new Color(0, 148, 224));
+		btnIn.setForeground(Color.WHITE);
+		btnIn.setFocusPainted(false);
 		bSouth.add(b3);
 		b3.add(btnIn);
 		btnIn.setBackground(new Color(0, 148, 224));

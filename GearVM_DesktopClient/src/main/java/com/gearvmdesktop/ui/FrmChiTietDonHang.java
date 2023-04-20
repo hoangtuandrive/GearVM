@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -212,19 +213,54 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b15 = Box.createHorizontalBox();
         Box b16 = Box.createHorizontalBox();
 
-        b14.add(btnXacNhan = new JButton("XÁC NHẬN GIAO HÀNG"));
-        b14.add(Box.createHorizontalStrut(15));
-        b14.add(btnTuChoi = new JButton("TỪ CHỐI GIAO HÀNG"));
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconXacNhan = classLoader.getResource("assets/xacNhanGiaoHang.png");
+
+        b14.add(btnXacNhan = new JButton("XÁC NHẬN GIAO HÀNG",new ImageIcon(iconXacNhan)));
+        btnXacNhan.setBackground(new Color(0, 148, 224));
+        btnXacNhan.setForeground(Color.WHITE);
+        btnXacNhan.setFocusPainted(false);
+
+
+        URL iconTuChoi = classLoader.getResource("assets/TuChoiGiaoHang.png");
+
+        b14.add(Box.createHorizontalStrut(80));
+        b14.add(btnTuChoi = new JButton("TỪ CHỐI GIAO HÀNG",new ImageIcon(iconTuChoi)));
+        btnTuChoi.setBackground(new Color(0, 148, 224));
+        btnTuChoi.setForeground(Color.WHITE);
+        btnTuChoi.setFocusPainted(false);
         b3.add(b14);
 
-        b15.add(btnThanhCong = new JButton("GIAO HÀNG THÀNH CÔNG"));
-        b15.add(Box.createHorizontalStrut(15));
-        b15.add(btnThatBai = new JButton("GIAO HÀNG THẤT BẠI"));
+        URL iconThanhCong = classLoader.getResource("assets/GiaoHangThanhCong.png");
+
+        b15.add(btnThanhCong = new JButton("GIAO HÀNG THÀNH CÔNG",new ImageIcon(iconThanhCong)));
+        btnThanhCong.setBackground(new Color(0, 148, 224));
+        btnThanhCong.setForeground(Color.WHITE);
+        btnThanhCong.setFocusPainted(false);
+
+        URL iconThatBai = classLoader.getResource("assets/giaohangthatbai2.png");
+
+        b15.add(Box.createHorizontalStrut(65));
+        b15.add(btnThatBai = new JButton("GIAO HÀNG THẤT BẠI",new ImageIcon(iconThatBai)));
+        btnThatBai.setBackground(new Color(0, 148, 224));
+        btnThatBai.setForeground(Color.WHITE);
+        btnThatBai.setFocusPainted(false);
         b3.add(b15);
 
-        b16.add(btnThayDoiTrangThai = new JButton("THAY ĐỔI TRẠNG THÁI ĐƠN HÀNG"));
-        b16.add(Box.createHorizontalStrut(15));
-        b16.add(btnXemThanhToan = new JButton("XEM CHI TIẾT THANH TOÁN"));
+        URL iconTrangThai = classLoader.getResource("assets/trangthaigiaohang.png");
+
+        b16.add(btnThayDoiTrangThai = new JButton("THAY ĐỔI TRẠNG THÁI ĐƠN HÀNG",new ImageIcon(iconTrangThai)));
+        btnThayDoiTrangThai.setBackground(new Color(0, 148, 224));
+        btnThayDoiTrangThai.setForeground(Color.WHITE);
+        btnThayDoiTrangThai.setFocusPainted(false);
+
+        URL iconChiTiet = classLoader.getResource("assets/chitiet.png");
+
+        b16.add(Box.createHorizontalStrut(20));
+        b16.add(btnXemThanhToan = new JButton("XEM CHI TIẾT THANH TOÁN",new ImageIcon(iconChiTiet)));
+        btnXemThanhToan.setBackground(new Color(0, 148, 224));
+        btnXemThanhToan.setForeground(Color.WHITE);
+        btnXemThanhToan.setFocusPainted(false);
         b3.add(b16);
 
         b2.add(Box.createHorizontalStrut(50));
@@ -257,9 +293,9 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b11.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b12.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b13.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b14.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b15.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b14.setBorder(new EmptyBorder(new Insets(10, 10, 10, 45)));
+        b15.setBorder(new EmptyBorder(new Insets(10, 10, 10, 45)));
+        b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 20)));
         b17.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b18.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
@@ -431,7 +467,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
 
         String paymentMethod = null;
-        if (order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE)
+            if (order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE)
             paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
         else if (order.getPayment().getPaymentMethod() == PaymentMethod.BANK)
             paymentMethod = "Chuyển khoản qua ngân hàng";

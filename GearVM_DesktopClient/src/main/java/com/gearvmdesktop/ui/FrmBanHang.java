@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -102,6 +103,15 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         Box b16 = Box.createHorizontalBox();
         Box b17 = Box.createHorizontalBox();
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconThem = classLoader.getResource("assets/them.png");
+
+        URL iconGiam = classLoader.getResource("assets/xoa.png");
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+        URL iconThanhToan = classLoader.getResource("assets/thanhtoan.png");
+        URL iconTimSp = classLoader.getResource("assets/timhanghoa.png");
+        URL iconLoad = classLoader.getResource("assets/lammoi.png");
+
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
         b3.add(cmbChon);
@@ -113,7 +123,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         cmbChon.setSize(20, cmbTim.getPreferredSize().height);
         b3.add(cmbTim);
         b3.add(Box.createHorizontalStrut(10));
-        b3.add(btnTim = new JButton("TÌM HÀNG", new ImageIcon("image/timhanghoa.png")));
+        b3.add(btnTim = new JButton("TÌM HÀNG", new ImageIcon(iconTimSp)));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
@@ -176,7 +186,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         AutoCompleteDecorator.decorate(cmbDanhSachSdt);
         cmbDanhSachSdt.setMaximumRowCount(10);
         b7.add(cmbDanhSachSdt);
-        btnTimKHCu = new JButton("TÌM SDT", new ImageIcon("image/timkiem.png"));
+        btnTimKHCu = new JButton("TÌM SDT", new ImageIcon(iconTim));
         btnTimKHCu.setBackground(new Color(0, 148, 224));
         btnTimKHCu.setForeground(Color.WHITE);
         btnTimKHCu.setFocusPainted(false);
@@ -223,6 +233,10 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 return c;
             }
         };
+
+
+
+
         tableGioHang.setGridColor(getBackground());
         tableGioHang.setRowHeight(tableGioHang.getRowHeight() + 30);
         tableGioHang.setSelectionBackground(new Color(255, 255, 128));
@@ -242,28 +256,28 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         b10.add(lblTongTien = new JLabel("Tổng Tiền:"));
         b10.add(txtTongTien = new JTextField());
 
-        b12.add(btnThanhToan = new JButton("THANH TOÁN", new ImageIcon("image/thanhtoan.png")));
+        b12.add(btnThanhToan = new JButton("THANH TOÁN", new ImageIcon(iconThanhToan)));
         btnThanhToan.setBackground(new Color(0, 148, 224));
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setFocusPainted(false);
         b12.add(Box.createHorizontalStrut(10));
-        b12.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("image/lammoi.png")));
+        b12.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon(iconLoad)));
         btnLamMoi.setBackground(new Color(0, 148, 224));
         btnLamMoi.setForeground(Color.WHITE);
         btnLamMoi.setFocusPainted(false);
         b2.add(b4);
         b11.add(Box.createHorizontalStrut(10));
-        b11.add(btnCong = new JButton("THÊM", new ImageIcon("image/them.png")));
+        b11.add(btnCong = new JButton("THÊM", new ImageIcon(iconThem)));
         btnCong.setBackground(new Color(0, 148, 224));
         btnCong.setForeground(Color.WHITE);
         btnCong.setFocusPainted(false);
         b11.add(Box.createHorizontalStrut(5));
-        b11.add(btnTru = new JButton("GIẢM", new ImageIcon("image/giam.png")));
+        b11.add(btnTru = new JButton("GIẢM", new ImageIcon(iconGiam)));
         btnTru.setBackground(new Color(0, 148, 224));
         btnTru.setForeground(Color.WHITE);
         btnTru.setFocusPainted(false);
         b13.add(Box.createHorizontalStrut(10));
-        b13.add(btnTaoGioHang = new JButton("TẠO GIỎ HÀNG", new ImageIcon("image/them.png")));
+        b13.add(btnTaoGioHang = new JButton("TẠO GIỎ HÀNG", new ImageIcon(iconThem)));
         btnTaoGioHang.setBackground(new Color(0, 148, 224));
         btnTaoGioHang.setForeground(Color.WHITE);
         btnTaoGioHang.setFocusPainted(false);
@@ -421,10 +435,12 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         }
         if (o.equals(btnCong)) {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
             if (result == JOptionPane.YES_OPTION) {
                 Object giaTriCmb = cmbGioHang.getSelectedItem();
                 int row = tableSanPham.getSelectedRow();
                 String soLuong = txtSoLuong.getText();
+                System.out.println(modelSanPham.getValueAt(row, 5).toString().trim());
                 if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
                     JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng", "Thất bại", JOptionPane.ERROR_MESSAGE);
                     return;

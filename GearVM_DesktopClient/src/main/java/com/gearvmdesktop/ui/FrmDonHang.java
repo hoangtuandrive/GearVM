@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -106,11 +107,17 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         btim.add(cmbTim);
         btim.add(Box.createHorizontalStrut(10));
 
-        btnTim = new JButton("TÌM KIẾM");
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+        URL iconLoad = classLoader.getResource("assets/lammoi.png");
+
+
+        btnTim = new JButton("TÌM KIẾM",new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
 
-        btnReset = new JButton("LOAD LẠI TẠM THỜI");
+        btnReset = new JButton("LOAD LẠI TẠM THỜI",new ImageIcon(iconLoad));
         btnReset.setBackground(new Color(0, 148, 224));
         btnReset.setForeground(Color.WHITE);
 

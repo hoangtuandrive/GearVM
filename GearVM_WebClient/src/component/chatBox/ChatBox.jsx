@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   MDBContainer,
   MDBRow,
@@ -30,6 +30,7 @@ import { AppContext } from "../context/AppProvider";
 import { useState } from "react";
 import { chatgpt } from "../../chatgpt";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+
 const cx = classNames.bind(styles);
 
 const systemMessage = {
@@ -39,7 +40,7 @@ const systemMessage = {
     "Explain things like you're talking to a software professional with 2 years of experience.",
 };
 
-export default function ChatBox() {
+const ChatBox = ({ name }) => {
   const { setShowChat, messages, setMessages } = useContext(AppContext);
 
   // const [message, setMessage] = useState("");
@@ -55,8 +56,12 @@ export default function ChatBox() {
 
   const chatMessage = JSON.parse(sessionStorage.getItem("chatBox"));
   console.log(chatMessage);
-
+  console.log(name);
+  const review = name ? `Hãy mô tả chi tiết cho tôi sản phẩm ${name}` : null;
+  // useEffect(() => {}, []);
   const [isTyping, setIsTyping] = useState(false);
+  const [value, setValue] = useState(review);
+
   const handleMessage = async (message) => {
     const newMessage = {
       message,
@@ -71,6 +76,7 @@ export default function ChatBox() {
     // Initial system message to determine ChatGPT functionality
     // How it responds, how it talks, etc.
 
+    setValue("");
     setIsTyping(true);
     // console.log(chatgpt);
     await processMessageToChatGPT(newMessages);
@@ -186,14 +192,40 @@ export default function ChatBox() {
                       //       />
                       //     )} */}
                       //   </div>
-                      <Message key={i} model={message} />
+                      // <Message key={i} model={message} />
+                      <Message
+                        model={{
+                          direction: message.direction,
+                          type: "custom",
+                          sender: message.sender,
+                        }}
+                      >
+                        <Message.CustomContent>
+                          <span
+                            className={cx(
+                              `${
+                                message.sender === "user"
+                                  ? styles.user
+                                  : styles.chatgpt
+                              }`
+                            )}
+                          >
+                            {message.message}
+                          </span>
+                        </Message.CustomContent>
+                      </Message>
                       // </div>
                     ))}
                   </MessageList>
                   <MessageInput
                     attachButton={false}
                     placeholder="Type message here"
+                    value={value}
+                    onChange={(message) => {
+                      setValue(message);
+                    }}
                     onSend={handleMessage}
+                    sendDisabled={false}
                   />
                 </ChatContainer>
               </MainContainer>
@@ -203,4 +235,5 @@ export default function ChatBox() {
       </MDBRow>
     </MDBContainer>
   );
-}
+};
+export default ChatBox;

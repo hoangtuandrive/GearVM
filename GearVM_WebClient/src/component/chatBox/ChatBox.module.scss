@@ -72,6 +72,18 @@
   max-width: 500px;
   margin-left: 10px;
 }
+.cs-message__content {
+  color: white;
+  background-color: red !important ;
+}
+.Message-content-text.outgoing {
+  color: #fff;
+}
+.user {
+  color: white;
+  display: flex;
+  flex-direction: row-reverse;
+}
 @media screen and (min-width: 768px) and (max-width: 999px) {
   .wrapChatBox {
     width: 35%;

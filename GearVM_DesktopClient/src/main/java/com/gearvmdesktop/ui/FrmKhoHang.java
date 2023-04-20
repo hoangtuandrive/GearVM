@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -270,13 +271,35 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
         pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconXoa = classLoader.getResource("assets/xoa.png");
+
+        URL iconXuatFile = classLoader.getResource("assets/xuatexcel.png");
+        URL iconNhapFile = classLoader.getResource("assets/docfile.png");
+        URL iconLuu = classLoader.getResource("assets/luu.png");
+        URL iconHuy = classLoader.getResource("assets/huy.png");
+        URL iconChon = classLoader.getResource("assets/chon.png");
+        URL iconTim = classLoader.getResource("assets/timkiem.png");
+
         btnChon.setText("CHỌN SP");
+        btnChon.setIcon(new ImageIcon(iconChon));
         btnNhap.setText("NHẬP");
+        btnNhap.setIcon(new ImageIcon(iconNhapFile));
+
         btnXoa.setText("XÓA");
-        btnSave.setText("LƯU");
-        btnCancel.setText("HỦY");
-        btnImport.setText("NHẬP FILE");
+        btnXoa.setIcon(new ImageIcon(iconXoa));
+
+//        btnSave.setText("LƯU");
+//        btnSave.setIcon(new ImageIcon(iconLuu));
+//
+//        btnCancel.setText("HỦY");
+//        btnCancel.setIcon(new ImageIcon(iconHuy));
+//
+//        btnImport.setText("NHẬP FILE");
+//        btnImport.setIcon(new ImageIcon(iconNhapFile));
+
         btnExport.setText("XUẤT FILE");
+        btnExport.setIcon(new ImageIcon(iconXuatFile));
 
 
         // Chức năng button
@@ -309,19 +332,24 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         pnChucNangLayout.setHorizontalGroup(pnChucNangLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChon)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnNhap)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
-                        .addGap(48, 48, 48)));
-
+                        .addGap(50)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnChon)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnNhap)
+                        .addGap(48))
+                .addGroup(GroupLayout.Alignment.LEADING, pnChucNangLayout.createSequentialGroup()
+                        .addGap(70)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnXoa)
+                        .addGap(50)));
         pnChucNangLayout.setVerticalGroup(pnChucNangLayout
-                .createParallelGroup(GroupLayout.Alignment.LEADING)
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnChucNangLayout.createSequentialGroup().addGap(10, 10, 10)
-                        .addGroup(pnChucNangLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnChon).addComponent(btnNhap).addComponent(btnXoa))
+                        .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnChon).addComponent(btnNhap))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(5)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnXoa).addComponent(btnXoa))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(15)));
 
         GroupLayout pnExcelLayout = new GroupLayout(pnExcel);
@@ -330,25 +358,26 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                 .createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
                         .addGap(50)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
+//                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnImport)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnExport)
-                        .addGap(50))
-                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
-                        .addGap(40)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
-                        .addGap(70)));
+                        .addGap(50)));
+//                .addGroup(GroupLayout.Alignment.LEADING, pnExcelLayout.createSequentialGroup()
+//                        .addGap(40)
+//                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(btnSave)
+//                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancel)
+//                        .addGap(70)));
         pnExcelLayout.setVerticalGroup(pnExcelLayout
                 .createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(pnExcelLayout.createSequentialGroup().addGap(10, 10, 10)
                         .addGroup(pnExcelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnImport).addComponent(btnExport))
+//                                .addComponent(btnImport)
+                                .addComponent(btnExport))
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5)
-                        .addGroup(pnExcelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnSave).addComponent(btnCancel))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(15)));
+                        .addGap(5)));
+//                        .addGroup(pnExcelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                                .addComponent(btnSave).addComponent(btnCancel))
+//                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                        .addGap(15)));
 
         pnThongTin.setBackground(new Color(219, 243, 255));
         pnChucNang.setBackground(new Color(219, 243, 255));
@@ -362,7 +391,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         AutoCompleteDecorator.decorate(cmbTim);
         cmbTim.setMaximumRowCount(10);
         cmbChon.setSize(20, cmbTim.getPreferredSize().height);
-        btnTim = new JButton("TÌM KIẾM", new ImageIcon("image/timkiem.png"));
+        btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
