@@ -1,10 +1,9 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.response.GetProductPagination;
 import com.gearvmstore.GearVM.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +19,31 @@ public class ProductController {
         return productService.createProduct(p);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> readProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                          @RequestParam(defaultValue = "24") Integer pageSize,
-                                          @RequestParam(defaultValue = "id") String sortBy) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNumber, pageSize, sortBy));
+    @GetMapping
+    public GetProductPagination readProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                             @RequestParam(defaultValue = "24") Integer pageSize,
+                                             @RequestParam(defaultValue = "id") String sortBy) {
+        return productService.getProducts(pageNumber, pageSize, sortBy);
     }
+
+    @GetMapping(value = "price-range")
+    public GetProductPagination readProductsByPrice(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                    @RequestParam(defaultValue = "24") Integer pageSize,
+                                                    @RequestParam(defaultValue = "id") String sortBy,
+                                                    @RequestParam(defaultValue = "0") Integer min,
+                                                    @RequestParam(defaultValue = "10000000000000000000") Integer max) {
+        return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
+    }
+
+    //    @GetMapping(value = "filter")
+    //    public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
+    //                                                    @RequestParam(defaultValue = "24") Integer pageSize,
+    //                                                    @RequestParam(defaultValue = "id") String sortBy,
+    //                                                    @RequestParam(required = false) String name,
+    //                                                    @RequestParam(required = false) String type,
+    //                                                    @RequestParam(required = false) String brand) {
+    //        return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
+    //    }
 
     @GetMapping(value = "get-all")
     public List<Product> readAllProducts(@RequestParam(required = false) Long id,
@@ -36,6 +54,7 @@ public class ProductController {
                                          @RequestParam(required = false) String quantity) {
         return productService.getAllProducts();
     }
+
 
     // api/products/2 GET
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)

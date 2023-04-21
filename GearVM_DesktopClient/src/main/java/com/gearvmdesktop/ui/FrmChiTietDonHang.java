@@ -172,7 +172,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b7.add(txtMaThanhToan = new JTextField());
         b3.add(b7);
 
-        b20.add(lblHinhThucMuaHang = new JLabel("Hình thức mua hàng:"));
+        b20.add(lblHinhThucMuaHang = new JLabel("Hình thức Mua Hàng:"));
         b20.add(Box.createHorizontalStrut(10));
         b20.add(txtHinhThucMuaHang = new JTextField());
         b3.add(b20);
@@ -224,7 +224,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         ClassLoader classLoader = getClass().getClassLoader();
         URL iconXacNhan = classLoader.getResource("assets/xacNhanGiaoHang.png");
 
-        b14.add(btnXacNhan = new JButton("XÁC NHẬN GIAO HÀNG",new ImageIcon(iconXacNhan)));
+        b14.add(btnXacNhan = new JButton("XÁC NHẬN GIAO HÀNG", new ImageIcon(iconXacNhan)));
         btnXacNhan.setBackground(new Color(0, 148, 224));
         btnXacNhan.setForeground(Color.WHITE);
         btnXacNhan.setFocusPainted(false);
@@ -233,7 +233,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         URL iconTuChoi = classLoader.getResource("assets/TuChoiGiaoHang.png");
 
         b14.add(Box.createHorizontalStrut(80));
-        b14.add(btnTuChoi = new JButton("TỪ CHỐI GIAO HÀNG",new ImageIcon(iconTuChoi)));
+        b14.add(btnTuChoi = new JButton("TỪ CHỐI GIAO HÀNG", new ImageIcon(iconTuChoi)));
         btnTuChoi.setBackground(new Color(0, 148, 224));
         btnTuChoi.setForeground(Color.WHITE);
         btnTuChoi.setFocusPainted(false);
@@ -241,7 +241,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
 
         URL iconThanhCong = classLoader.getResource("assets/GiaoHangThanhCong.png");
 
-        b15.add(btnThanhCong = new JButton("GIAO HÀNG THÀNH CÔNG",new ImageIcon(iconThanhCong)));
+        b15.add(btnThanhCong = new JButton("GIAO HÀNG THÀNH CÔNG", new ImageIcon(iconThanhCong)));
         btnThanhCong.setBackground(new Color(0, 148, 224));
         btnThanhCong.setForeground(Color.WHITE);
         btnThanhCong.setFocusPainted(false);
@@ -249,7 +249,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         URL iconThatBai = classLoader.getResource("assets/giaohangthatbai2.png");
 
         b15.add(Box.createHorizontalStrut(65));
-        b15.add(btnThatBai = new JButton("GIAO HÀNG THẤT BẠI",new ImageIcon(iconThatBai)));
+        b15.add(btnThatBai = new JButton("GIAO HÀNG THẤT BẠI", new ImageIcon(iconThatBai)));
         btnThatBai.setBackground(new Color(0, 148, 224));
         btnThatBai.setForeground(Color.WHITE);
         btnThatBai.setFocusPainted(false);
@@ -257,7 +257,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
 
         URL iconTrangThai = classLoader.getResource("assets/trangthaigiaohang.png");
 
-        b16.add(btnThayDoiTrangThai = new JButton("THAY ĐỔI TRẠNG THÁI ĐƠN HÀNG",new ImageIcon(iconTrangThai)));
+        b16.add(btnThayDoiTrangThai = new JButton("THAY ĐỔI TRẠNG THÁI ĐƠN HÀNG", new ImageIcon(iconTrangThai)));
         btnThayDoiTrangThai.setBackground(new Color(0, 148, 224));
         btnThayDoiTrangThai.setForeground(Color.WHITE);
         btnThayDoiTrangThai.setFocusPainted(false);
@@ -265,7 +265,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         URL iconChiTiet = classLoader.getResource("assets/chitiet.png");
 
         b16.add(Box.createHorizontalStrut(20));
-        b16.add(btnXemThanhToan = new JButton("XEM CHI TIẾT THANH TOÁN",new ImageIcon(iconChiTiet)));
+        b16.add(btnXemThanhToan = new JButton("XEM CHI TIẾT THANH TOÁN", new ImageIcon(iconChiTiet)));
         btnXemThanhToan.setBackground(new Color(0, 148, 224));
         btnXemThanhToan.setForeground(Color.WHITE);
         btnXemThanhToan.setFocusPainted(false);
@@ -478,7 +478,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         else if (order.getOrderStatus() == OrderStatus.REJECTED) cmbTrangThai.setSelectedIndex(5);
 
         String paymentMethod = null;
-            if (order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE)
+        if (order.getPayment().getPaymentMethod() == PaymentMethod.STRIPE)
             paymentMethod = "Chuyển khoản qua dịch vụ Stripe";
         else if (order.getPayment().getPaymentMethod() == PaymentMethod.BANK)
             paymentMethod = "Chuyển khoản qua ngân hàng";
@@ -499,12 +499,16 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
                 txtSdtKhachHang.setText(order.getShippingDetail().getPhoneNumber());
                 txtDiaChi.setText(order.getShippingDetail().getAddress());
                 txtEmail.setText(order.getShippingDetail().getEmail());
-                txtHinhThucMuaHang.setText("Mua hàng Online");
+
             } else {
                 txtTenKhachHang.setText(order.getCustomer().getName());
                 txtSdtKhachHang.setText(order.getCustomer().getPhoneNumber());
-                txtHinhThucMuaHang.setText("Mua tại cửa hàng");
             }
+
+            if (order.isDirect())
+                txtHinhThucMuaHang.setText("Mua hàng tại cửa hàng");
+            else
+                txtHinhThucMuaHang.setText("Mua hàng qua website");
 
             txtMaThanhToan.setText(order.getPayment().getPaymentDescription());
             txtPhuongThucThanhToan.setText(paymentMethod);

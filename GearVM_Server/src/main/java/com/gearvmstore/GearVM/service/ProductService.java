@@ -23,11 +23,7 @@ public class ProductService {
         return productRepository.save(p);
     }
 
-    public GetProductPagination getProducts(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
-        Page<Product> pagedResult = productRepository.findAll(paging);
-
+    public GetProductPagination getProductPagination(Page<Product> pagedResult) {
         if (pagedResult.hasContent()) {
             GetProductPagination getProductPagination = new GetProductPagination();
             getProductPagination.setTotalPage(pagedResult.getTotalPages());
@@ -38,6 +34,18 @@ public class ProductService {
         }
     }
 
+    public GetProductPagination getProducts(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult = productRepository.findAll(paging);
+        return getProductPagination(pagedResult);
+    }
+
+    public GetProductPagination findAllByPriceBetween(Integer pageNo, Integer pageSize, String sortBy, int min, int max) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult = productRepository.findAllByPriceBetweenOrderByPriceAsc(paging, min, max);
+        return getProductPagination(pagedResult);
+    }
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -45,6 +53,7 @@ public class ProductService {
     public Product getProduct(Long id) {
         return productRepository.findById(id).get();
     }
+
 
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);

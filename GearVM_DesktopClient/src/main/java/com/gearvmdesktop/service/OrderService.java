@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class OrderService extends ApiService {
@@ -94,7 +95,11 @@ public class OrderService extends ApiService {
 
     public static BufferedReader getRequestByCustomerNameAndCustomerPhoneNumber(String customerName, String customerPhone) throws IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(url + "get-direct-pending?customerName=" + customerName + "&customerPhone=" + customerPhone);
+
+        String customerNameUrlEncoded = URLEncoder.encode(customerName, "UTF-8").replaceAll("\\+", "%20");
+        ;
+
+        HttpGet request = new HttpGet(url + "get-direct-pending?customerName=" + customerNameUrlEncoded + "&customerPhone=" + customerPhone);
         HttpResponse response = client.execute(request);
         if (response.getStatusLine().getStatusCode() != 200) return null;
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));

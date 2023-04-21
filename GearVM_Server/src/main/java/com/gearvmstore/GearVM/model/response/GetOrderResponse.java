@@ -22,4 +22,5 @@ public class GetOrderResponse {
     private List<OrderItemResponseModel> orderItems;
     private Discount discount;
     private ShippingDetail shippingDetail;
+    private boolean isDirect;
 }
