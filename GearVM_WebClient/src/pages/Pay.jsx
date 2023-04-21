@@ -9,19 +9,35 @@ import { useSelector } from "react-redux";
 
 import ChatBox from "../component/chatBox/ChatBox";
 import ScrolltoTop from "../component/Home/ScrolltoTop/ScrolltoTop";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 const Pay = () => {
   const { setUser, showChat } = useContext(AppContext);
 
   const CurrentUser = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
+  const cart = useSelector((state) => state.todoCart);
+
+  const JcartItems = localStorage.getItem("cartItems");
+  const cartItems = JSON.parse(JcartItems);
   useEffect(() => {
-    setUser({
-      name: CurrentUser.name,
-      address: CurrentUser.address,
-      phone: CurrentUser.phoneNumber,
-      email: CurrentUser.email,
+    const CarTrue = cartItems.map((item) => {
+      if (item.checkCart === true) {
+        return item.cartTotalAmount;
+      }
     });
+    if (token && CarTrue) {
+      setUser({
+        name: CurrentUser.name,
+        address: CurrentUser.address,
+        phone: CurrentUser.phoneNumber,
+        email: CurrentUser.email,
+      });
+    } else {
+      navigate("/", { replace: true });
+    }
   }, [CurrentUser]);
   return (
     <div className={cx("wrapPay")}>
