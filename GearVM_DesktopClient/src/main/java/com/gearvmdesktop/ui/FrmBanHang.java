@@ -49,7 +49,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private static DefaultTableModel modelSanPham;
     private static JTable tableSanPham;
     private JTextField txtMaKhachHang;
-    private JTextField txtSoLuong;
+    private static JTextField txtSoLuong;
     private JButton btnCong;
     private DefaultTableModel modelGioHang;
     private static JTable tableGioHang;
@@ -233,8 +233,6 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 return c;
             }
         };
-
-
 
 
         tableGioHang.setGridColor(getBackground());
@@ -577,6 +575,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     }
 
     public static void emptyTableCart() {
+        txtSoLuong.setText("0");
         DefaultTableModel dm = (DefaultTableModel) tableGioHang.getModel();
         dm.setRowCount(0);
     }
@@ -627,7 +626,6 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         editor.setEditable(isEditable);
         txtTenKhachHang.setText("");
         txtSoLuong.setText("");
-//		txtDiaChi.setText("");
         txtMaKhachHang.setText("");
         txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
         cmbGioiTinh.setSelectedIndex(0);
@@ -636,7 +634,6 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     public void clearTextField() {
         txtTenKhachHang.setText("");
         txtSoLuong.setText("");
-//		txtDiaChi.setText("");
         txtMaKhachHang.setText("");
         txtNgaySinh.setDate(new Date(1999 - 1900, 1 - 1, 1));
         cmbGioHang.setSelectedIndex(-1);

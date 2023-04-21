@@ -186,18 +186,18 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         Box b15 = Box.createHorizontalBox();
         Box b16 = Box.createHorizontalBox();
 
-        b14.add(btnQRCode = new JButton("HIỂN THỊ MÃ THANH TOÁN QR CODE",new ImageIcon(iconQrCode)));
+        b14.add(btnQRCode = new JButton("HIỂN THỊ MÃ THANH TOÁN QR CODE", new ImageIcon(iconQrCode)));
         btnQRCode.setBackground(new Color(0, 148, 224));
         btnQRCode.setForeground(Color.WHITE);
         btnQRCode.setFocusPainted(false);
         b3.add(b14);
 
-        b15.add(btnProcessPayment = new JButton("TIẾN HÀNH THANH TOÁN",new ImageIcon(iconThanhToan)));
+        b15.add(btnProcessPayment = new JButton("TIẾN HÀNH THANH TOÁN", new ImageIcon(iconThanhToan)));
         btnProcessPayment.setBackground(new Color(0, 148, 224));
         btnProcessPayment.setForeground(Color.WHITE);
         btnProcessPayment.setFocusPainted(false);
         b15.add(Box.createHorizontalStrut(15));
-        b15.add(btnPrintBill = new JButton("IN HÓA ĐƠN",new ImageIcon(iconIn)));
+        b15.add(btnPrintBill = new JButton("IN HÓA ĐƠN", new ImageIcon(iconIn)));
         btnPrintBill.setBackground(new Color(0, 148, 224));
         btnPrintBill.setForeground(Color.WHITE);
         btnPrintBill.setFocusPainted(false);
@@ -298,6 +298,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thành công", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         GUI.readAllDatabaseToTable();
+                        FrmBanHang.emptyTableCart();
                     } else {
                         JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thất bại", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);
