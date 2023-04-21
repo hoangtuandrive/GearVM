@@ -97,7 +97,6 @@ public class OrderService extends ApiService {
         HttpClient client = new DefaultHttpClient();
 
         String customerNameUrlEncoded = URLEncoder.encode(customerName, "UTF-8").replaceAll("\\+", "%20");
-        ;
 
         HttpGet request = new HttpGet(url + "get-direct-pending?customerName=" + customerNameUrlEncoded + "&customerPhone=" + customerPhone);
         HttpResponse response = client.execute(request);

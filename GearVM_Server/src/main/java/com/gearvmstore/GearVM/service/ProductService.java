@@ -40,6 +40,15 @@ public class ProductService {
         return getProductPagination(pagedResult);
     }
 
+    public GetProductPagination filterSearch(Integer pageNo, Integer pageSize, String sortBy, String filter) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult =
+                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCase
+                        (paging, filter, filter, filter);
+        return getProductPagination(pagedResult);
+    }
+
+
     public GetProductPagination findAllByPriceBetween(Integer pageNo, Integer pageSize, String sortBy, int min, int max) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Product> pagedResult = productRepository.findAllByPriceBetweenOrderByPriceAsc(paging, min, max);

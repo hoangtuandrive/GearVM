@@ -35,28 +35,19 @@ public class ProductController {
         return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
     }
 
-    //    @GetMapping(value = "filter")
-    //    public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
-    //                                                    @RequestParam(defaultValue = "24") Integer pageSize,
-    //                                                    @RequestParam(defaultValue = "id") String sortBy,
-    //                                                    @RequestParam(required = false) String name,
-    //                                                    @RequestParam(required = false) String type,
-    //                                                    @RequestParam(required = false) String brand) {
-    //        return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
-    //    }
+    @GetMapping(value = "filter-search")
+    public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                               @RequestParam(defaultValue = "24") Integer pageSize,
+                                               @RequestParam(defaultValue = "id") String sortBy,
+                                               @RequestParam(required = false) String filter) {
+        return productService.filterSearch(pageNumber, pageSize, sortBy, filter);
+    }
 
     @GetMapping(value = "get-all")
-    public List<Product> readAllProducts(@RequestParam(required = false) Long id,
-                                         @RequestParam(required = false) String name,
-                                         @RequestParam(required = false) String type,
-                                         @RequestParam(required = false) String brand,
-                                         @RequestParam(required = false) String price,
-                                         @RequestParam(required = false) String quantity) {
+    public List<Product> readAllProducts() {
         return productService.getAllProducts();
     }
 
-
-    // api/products/2 GET
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
     public Product findProduct(@PathVariable(value = "productId") Long id) {
         return productService.getProduct(id);
