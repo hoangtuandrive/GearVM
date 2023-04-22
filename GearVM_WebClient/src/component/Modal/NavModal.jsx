@@ -76,7 +76,10 @@ const NavModal = ({ data }) => {
   };
 
   const handleChangePage = (item) => {
-    navigate("/catalog", { replace: true });
+    navigate(`/catalog?filed=${item}`, {
+      replace: true,
+    });
+    console.log(item);
   };
 
   return (
@@ -96,10 +99,10 @@ const NavModal = ({ data }) => {
               onMouseEnter={() => {
                 handleFilter(item);
               }}
-              onClick={() => handleChangePage(item)}
+              onClick={() => handleChangePage(item.name)}
             >
               <FontAwesomeIcon icon={item.icon} className={cx("Navtext")} />
- 
+
               <h3 className={cx("Navtext")}>{item.name}</h3>
             </div>
             // </Tippy>

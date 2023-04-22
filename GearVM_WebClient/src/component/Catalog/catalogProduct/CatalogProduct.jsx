@@ -14,6 +14,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import CustomPagination from "../CustomPagination";
 
 import FilterCatalog from "../filterCatalog/FilterCatalog";
+import { url } from "../../../API/api";
+
 const cx = classNames.bind(styles);
 const CatalogProduct = () => {
   // const productList = [
@@ -126,6 +128,7 @@ const CatalogProduct = () => {
   let location = useLocation();
   let query = new URLSearchParams(location.search);
   const page = query.get("page");
+  const filed = query.get("filed");
 
   const [productList, setProductList] = useState([]);
   const [products, setProducts] = useState(productList);
@@ -237,6 +240,10 @@ const CatalogProduct = () => {
   const handleChangePrice = (e) => {
     set_minValue(e[0]);
     set_maxValue(e[1]);
+    const productUrl = `${url}/products/price-range?pageSize=24&min=${
+      e[0] * 1000000
+    }&max=${e[1] * 1000000}`;
+    fetchProduct(productUrl);
   };
 
   const updateProducts = useCallback(() => {
@@ -273,20 +280,22 @@ const CatalogProduct = () => {
   };
   useEffect(() => {
     if (page) {
-      const productUrl = `http://localhost:8080/api/products?pageNumber=${
+      // const productUrl = `http://localhost:8080/api/products?pageNumber=${
+      //   page - 1
+      // }&pageSize=2`;
+      const productUrl = `${url}/products/filter-search?pageNumber=${
         page - 1
-      }&pageSize=24`;
-
+      }&pageSize=24&filter=${filed}`;
       fetchProduct(productUrl);
     } else {
-      const productUrl =
-        "http://localhost:8080/api/products?pageNumber=0&pageSize=24";
-
+      // const productUrl =
+      //   "http://localhost:8080/api/products?pageNumber=0&pageSize=2";
+      const productUrl = `${url}/products/filter-search?pageNumber=0&pageSize=24&filter=${filed}`;
       fetchProduct(productUrl);
     }
 
     updateProducts();
-  }, [filter]);
+  }, [filter, filed]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -297,9 +306,13 @@ const CatalogProduct = () => {
   const paginate = (pageNumber) => {
     navigate(`/catalog?page=${pageNumber}`);
     const fetchProduct = async () => {
-      const productUrl = `http://localhost:8080/api/products?pageNumber=${
+      // const productUrl = `http://localhost:8080/api/products?pageNumber=${
+      //   pageNumber - 1
+      // }&pageSize=2`;
+      const productUrl = `${url}/products/filter-search?pageNumber=${
         pageNumber - 1
-      }&pageSize=24`;
+      }&pageSize=24&filter=${filed}`;
+
       try {
         const rep = await axios.get(productUrl);
         setProducts(rep.data.productList);

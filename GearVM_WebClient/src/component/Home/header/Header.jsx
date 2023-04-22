@@ -20,6 +20,7 @@ import { AppContext } from "../../context/AppProvider";
 import OffcanvasMenu from "../../Offcanvas/OffcanvasMenu";
 import { useState } from "react";
 import SearchProduct from "../search/SearchProduct";
+import SearchProducts from "../search/SearchProducts";
 
 // const {  AudioOutlined  } = icons;
 const { Search } = Input;
@@ -83,7 +84,8 @@ const Header = () => {
 
             <div className={cx("SearchInput")}>
               {/* <Search placeholder="input search text" enterButton /> */}
-              <SearchProduct />
+              {/* <SearchProduct /> */}
+              <SearchProducts />
             </div>
 
             {token ? (

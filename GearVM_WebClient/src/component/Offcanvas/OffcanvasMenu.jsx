@@ -29,6 +29,18 @@ const OffcanvasMenu = () => {
   const handleSignOut = () => {
     dispatch(authSlice.actions.logoutUser(null));
   };
+  const PageGuidePayment = () => {
+    navigate("/guidePayment", { replace: true });
+  };
+  const PageGuidePolicy = () => {
+    navigate("/guidePolicy", { replace: true });
+  };
+  const PageGuideDeli = () => {
+    navigate("/guideDeli", { replace: true });
+  };
+  const PagePromotion = () => {
+    navigate("/promotion", { replace: true });
+  };
   return (
     <div>
       {/* <Button variant="primary" onClick={handleShow}>
@@ -154,18 +166,20 @@ const OffcanvasMenu = () => {
           </Accordion>
           <div className={cx("offcanNav_header")}>Thông Tin</div>
           <div className={cx("offcanNav")}>
-            <div>Thông tin đơn hàng</div>
-            <div>Hướng dẫn thanh toán</div>
-            <div> Chính Sách bảo hành </div>
-            <div> Chính Sách vận chuyển </div>
-            <div> Khuyến mãi </div>
+            {token ? <div>Thông tin đơn hàng</div> : null}
+            <div onClick={PageGuidePayment}>Hướng dẫn thanh toán</div>
+            <div onClick={PageGuidePolicy}> Chính Sách bảo hành </div>
+            <div onClick={PageGuideDeli}> Chính Sách vận chuyển </div>
+            <div onClick={PagePromotion}> Khuyến mãi </div>
           </div>
-          <input
-            type="button"
-            className={cx("wrapMenuAcount_thumb_btn")}
-            value="Đăng xuất"
-            onClick={handleSignOut}
-          />
+          {token ? (
+            <input
+              type="button"
+              className={cx("wrapMenuAcount_thumb_btn")}
+              value="Đăng xuất"
+              onClick={handleSignOut}
+            />
+          ) : null}
         </Offcanvas.Body>
       </Offcanvas>
     </div>

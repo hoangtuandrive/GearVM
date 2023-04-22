@@ -8,6 +8,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import { SearchOutlined } from "@ant-design/icons";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { url } from "../../../API/api";
+
 const cx = classNames.bind(styles);
 export default function SearchProduct() {
   const { Search } = Input;
@@ -17,8 +20,24 @@ export default function SearchProduct() {
     setValue(event.target.value);
   };
 
+  const fetchProduct = async (search) => {
+    const productUrl = `${url}/products/filter-search?pageSize=5&filter=${search}`;
+
+    try {
+      const rep = await axios.get(productUrl);
+      console.log(rep.data);
+      return rep.data;
+      //   setProduct(rep.data);
+    } catch (error) {
+      // console.log(error);
+      return error;
+    }
+  };
+
   const onSearch = (searchTerm) => {
-    setValue(searchTerm);
+    fetchProduct();
+    console.log(searchTerm);
+    // setValue(searchTerm);
     // our api to fetch the search result
     console.log("search ", searchTerm);
   };
