@@ -31,16 +31,38 @@ public class ProductController {
                                                     @RequestParam(defaultValue = "24") Integer pageSize,
                                                     @RequestParam(defaultValue = "id") String sortBy,
                                                     @RequestParam(defaultValue = "0") Integer min,
-                                                    @RequestParam(defaultValue = "10000000000000000000") Integer max) {
+                                                    @RequestParam(defaultValue = "1000000000") Integer max) {
         return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
+    }
+
+    @GetMapping(value = "search bar")
+    public GetProductPagination searchBar(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                          @RequestParam(defaultValue = "24") Integer pageSize,
+                                          @RequestParam(defaultValue = "id") String sortBy,
+                                          @RequestParam(required = false) String filter) {
+        return productService.searchBar(pageNumber, pageSize, sortBy, filter);
     }
 
     @GetMapping(value = "filter-search")
     public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
                                                @RequestParam(defaultValue = "24") Integer pageSize,
                                                @RequestParam(defaultValue = "id") String sortBy,
-                                               @RequestParam(required = false) String filter) {
-        return productService.filterSearch(pageNumber, pageSize, sortBy, filter);
+                                               @RequestParam(required = false) String name,
+                                               @RequestParam(required = false) String brand,
+                                               @RequestParam(required = false) String type) {
+        return productService.filterSearchNameBrandType(pageNumber, pageSize, sortBy, name, brand, type);
+    }
+
+    @GetMapping(value = "filter-search-price")
+    public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                               @RequestParam(defaultValue = "24") Integer pageSize,
+                                               @RequestParam(defaultValue = "id") String sortBy,
+                                               @RequestParam(required = false) String name,
+                                               @RequestParam(required = false) String brand,
+                                               @RequestParam(required = false) String type,
+                                               @RequestParam(required = false, defaultValue = "0") Integer min,
+                                               @RequestParam(required = false, defaultValue = "1000000000") Integer max) {
+        return productService.filterSearchNameBrandTypePriceBetween(pageNumber, pageSize, sortBy, name, brand, type, min, max);
     }
 
     @GetMapping(value = "get-all")

@@ -10,5 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllByPriceBetweenOrderByPriceAsc(Pageable pageable, double min, double max);
 
-    Page<Product> findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCase(Pageable pageable, String name, String brand, String type);
+    Page<Product> findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByPriceAsc(Pageable pageable, String name, String brand, String type);
+
+    Page<Product> findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc(Pageable pageable, String name, String brand, String type, double min, double max);
 }

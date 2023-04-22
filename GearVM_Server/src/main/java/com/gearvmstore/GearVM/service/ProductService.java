@@ -40,14 +40,31 @@ public class ProductService {
         return getProductPagination(pagedResult);
     }
 
-    public GetProductPagination filterSearch(Integer pageNo, Integer pageSize, String sortBy, String filter) {
+    public GetProductPagination searchBar(Integer pageNo, Integer pageSize, String sortBy, String filter) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Product> pagedResult =
-                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCase
+                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByPriceAsc
                         (paging, filter, filter, filter);
         return getProductPagination(pagedResult);
     }
 
+    public GetProductPagination filterSearchNameBrandType(Integer pageNo, Integer pageSize, String sortBy,
+                                                          String name, String brand, String type) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult =
+                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByPriceAsc
+                        (paging, name, brand, type);
+        return getProductPagination(pagedResult);
+    }
+
+    public GetProductPagination filterSearchNameBrandTypePriceBetween(Integer pageNo, Integer pageSize, String sortBy,
+                                                                      String name, String brand, String type, int min, int max) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult =
+                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc
+                        (paging, name, brand, type, min, max);
+        return getProductPagination(pagedResult);
+    }
 
     public GetProductPagination findAllByPriceBetween(Integer pageNo, Integer pageSize, String sortBy, int min, int max) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
@@ -62,7 +79,6 @@ public class ProductService {
     public Product getProduct(Long id) {
         return productRepository.findById(id).get();
     }
-
 
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
