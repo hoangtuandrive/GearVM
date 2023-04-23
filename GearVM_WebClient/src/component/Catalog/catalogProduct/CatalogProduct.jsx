@@ -15,6 +15,7 @@ import CustomPagination from "../CustomPagination";
 
 import FilterCatalog from "../filterCatalog/FilterCatalog";
 import { url } from "../../../API/api";
+import dataNavModal from "../../../dataUI/dataNavModal";
 
 const cx = classNames.bind(styles);
 const CatalogProduct = () => {
@@ -129,6 +130,10 @@ const CatalogProduct = () => {
   let query = new URLSearchParams(location.search);
   const page = query.get("page");
   const filed = query.get("filed");
+  const type = query.get("type");
+  const brand = query.get("brand");
+  const min = query.get("min");
+  const max = query.get("max");
 
   const [productList, setProductList] = useState([]);
   const [products, setProducts] = useState(productList);
@@ -138,8 +143,8 @@ const CatalogProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
 
-  const [minValue, set_minValue] = useState(0);
-  const [maxValue, set_maxValue] = useState(100);
+  const [minValue, set_minValue] = useState(min ? min : 0);
+  const [maxValue, set_maxValue] = useState(max ? max : 100);
   // const handleInput = (e) => {
   //   set_minValue(e.minValue);
   //   set_maxValue(e.maxValue);
@@ -240,10 +245,34 @@ const CatalogProduct = () => {
   const handleChangePrice = (e) => {
     set_minValue(e[0]);
     set_maxValue(e[1]);
-    const productUrl = `${url}/products/price-range?pageSize=24&min=${
-      e[0] * 1000000
-    }&max=${e[1] * 1000000}`;
-    fetchProduct(productUrl);
+    if (brand) {
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}&min=${
+        e[0] * 1000000
+      }&max=${e[1] * 1000000}`;
+      fetchProduct(productUrl);
+    } else if (max) {
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${type}&min=${
+        e[0] * 1000000
+      }&max=${e[1] * 1000000}`;
+      fetchProduct(productUrl);
+    } else {
+      const CheckFiled = (value) => {
+        return dataNavModal.map((item) => {
+          return item.name === value;
+        });
+      };
+      if (CheckFiled(filed)) {
+        const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${filed}&min=${
+          e[0] * 1000000
+        }&max=${e[1] * 1000000}`;
+        fetchProduct(productUrl);
+      } else {
+        const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${filed}&min=${
+          e[0] * 1000000
+        }&max=${e[1] * 1000000}`;
+        fetchProduct(productUrl);
+      }
+    }
   };
 
   const updateProducts = useCallback(() => {
@@ -279,23 +308,64 @@ const CatalogProduct = () => {
     }
   };
   useEffect(() => {
-    if (page) {
-      // const productUrl = `http://localhost:8080/api/products?pageNumber=${
-      //   page - 1
-      // }&pageSize=2`;
-      const productUrl = `${url}/products/filter-search?pageNumber=${
+    set_maxValue(max ? max : 100);
+    set_minValue(min ? min : 0);
+
+    if (page && brand) {
+      const productUrl = `${url}/products/filter-search-price?pageNumber=${
+        page - 1
+      }&pageSize=24&brand=${brand}&type=${type}`;
+      fetchProduct(productUrl);
+    } else if (page && max) {
+      const productUrl = `${url}/products/filter-search-price?pageNumber=${
+        page - 1
+      }&pageSize=24&type=${type}&min=${minValue * 1000000}&max=${
+        maxValue * 1000000
+      }`;
+      fetchProduct(productUrl);
+    } else if (page) {
+      const productUrl = `${url}/products/search-bar?pageNumber=${
         page - 1
       }&pageSize=24&filter=${filed}`;
       fetchProduct(productUrl);
+    } else if (brand) {
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}`;
+      fetchProduct(productUrl);
+    } else if (max) {
+      console.log(13);
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${type}&min=${
+        minValue * 1000000
+      }&max=${maxValue * 1000000}`;
+      fetchProduct(productUrl);
     } else {
-      // const productUrl =
-      //   "http://localhost:8080/api/products?pageNumber=0&pageSize=2";
-      const productUrl = `${url}/products/filter-search?pageNumber=0&pageSize=24&filter=${filed}`;
+      const productUrl = `${url}/products/search-bar?pageNumber=0&pageSize=24&filter=${filed}`;
       fetchProduct(productUrl);
     }
 
+    // if (page) {
+    //   if (brand) {
+    //     const productUrl = `${url}/products/filter-search-price?pageNumber=${
+    //       page - 1
+    //     }&pageSize=24&brand=${brand}&type=${type}`;
+    //     fetchProduct(productUrl);
+    //   } else {
+    //     const productUrl = `${url}/products/search-bar?pageNumber=${
+    //       page - 1
+    //     }&pageSize=24&filter=${filed}`;
+    //     fetchProduct(productUrl);
+    //   }
+    // } else {
+    //   if (brand) {
+    //     const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}`;
+    //     fetchProduct(productUrl);
+    //   } else {
+    //     const productUrl = `${url}/products/search-bar?pageNumber=0&pageSize=24&filter=${filed}`;
+    //     fetchProduct(productUrl);
+    //   }
+    // }
+
     updateProducts();
-  }, [filter, filed]);
+  }, [filter, filed, min, max, brand, type]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -306,10 +376,7 @@ const CatalogProduct = () => {
   const paginate = (pageNumber) => {
     navigate(`/catalog?page=${pageNumber}`);
     const fetchProduct = async () => {
-      // const productUrl = `http://localhost:8080/api/products?pageNumber=${
-      //   pageNumber - 1
-      // }&pageSize=2`;
-      const productUrl = `${url}/products/filter-search?pageNumber=${
+      const productUrl = `${url}/products/search-bar?pageNumber=${
         pageNumber - 1
       }&pageSize=24&filter=${filed}`;
 
@@ -391,7 +458,9 @@ const CatalogProduct = () => {
               autoAdjustOverflow={true}
               tooltip={{ open: false }}
               range
-              defaultValue={[0, 100]}
+              min={parseFloat(min ? min : 0)}
+              max={parseFloat(max ? max : 100)}
+              defaultValue={[minValue, max ? max : 100]}
               onChange={handleChangePrice}
               className={cx("changePrice")}
             />

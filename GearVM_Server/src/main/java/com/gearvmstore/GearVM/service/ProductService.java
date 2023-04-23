@@ -61,8 +61,12 @@ public class ProductService {
                                                                       String name, String brand, String type, int min, int max) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Product> pagedResult =
-                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc
+//                productRepository.findDistinctByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc
+//                        (paging, name, brand, type, min, max);
+                productRepository.findDistinctByNameContainingIgnoreCaseAndBrandContainingIgnoreCaseAndTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc
                         (paging, name, brand, type, min, max);
+
+
         return getProductPagination(pagedResult);
     }
 

@@ -89,7 +89,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, ...props }) {
 
 const fetchProduct = async (search) => {
   console.log(search);
-  const productUrl = `${url}/products/filter-search?pageSize=5&filter=${search}`;
+  const productUrl = `${url}/products/search-bar?pageSize=5&filter=${search}`;
 
   try {
     const rep = await axios.get(productUrl);

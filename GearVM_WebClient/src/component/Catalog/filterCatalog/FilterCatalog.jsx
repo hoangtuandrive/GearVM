@@ -12,10 +12,10 @@ const FilterCatalog = () => {
   document.addEventListener("scroll", () => {
     const top = document.documentElement.scrollTop;
     if (top != 0) {
-      document.querySelector(".mobileFilter").classList.add("sticky");
+      document.querySelector(".mobileFilter")?.classList.add("sticky");
       // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
     } else {
-      document.querySelector(".mobileFilter").classList.remove("sticky");
+      document.querySelector(".mobileFilter")?.classList.remove("sticky");
     }
   });
 

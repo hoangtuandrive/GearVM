@@ -35,7 +35,7 @@ public class ProductController {
         return productService.findAllByPriceBetween(pageNumber, pageSize, sortBy, min, max);
     }
 
-    @GetMapping(value = "search bar")
+    @GetMapping(value = "search-bar")
     public GetProductPagination searchBar(@RequestParam(defaultValue = "0") Integer pageNumber,
                                           @RequestParam(defaultValue = "24") Integer pageSize,
                                           @RequestParam(defaultValue = "id") String sortBy,
@@ -57,11 +57,12 @@ public class ProductController {
     public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
                                                @RequestParam(defaultValue = "24") Integer pageSize,
                                                @RequestParam(defaultValue = "id") String sortBy,
-                                               @RequestParam(required = false) String name,
-                                               @RequestParam(required = false) String brand,
-                                               @RequestParam(required = false) String type,
+                                               @RequestParam(required = false,defaultValue = "") String name,
+                                               @RequestParam(required = false,defaultValue = "") String brand,
+                                               @RequestParam(required = false,defaultValue = "") String type,
                                                @RequestParam(required = false, defaultValue = "0") Integer min,
                                                @RequestParam(required = false, defaultValue = "1000000000") Integer max) {
+
         return productService.filterSearchNameBrandTypePriceBetween(pageNumber, pageSize, sortBy, name, brand, type, min, max);
     }
 
