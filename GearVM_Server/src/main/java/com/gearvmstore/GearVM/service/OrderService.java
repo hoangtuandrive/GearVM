@@ -4,7 +4,6 @@ import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
 import com.gearvmstore.GearVM.repository.OrderItemRepository;
 import com.gearvmstore.GearVM.repository.OrderRepository;
 import com.gearvmstore.GearVM.repository.PaymentRepository;
@@ -170,10 +169,10 @@ public class OrderService {
     }
 
     public List<GetOrderListResponse> getAllOnlineOrdersAndPaidDirectOrders() {
-        List<Order> paidDirectOrder = orderRepository.findAllByIsDirectAndOrderStatusNot
+        List<Order> paidDirectOrder = orderRepository.findAllByIsDirectAndOrderStatusNotOrderByCreatedDateDesc
                 (true, OrderStatus.DIRECT_PENDING);
 
-        List<Order> onlineOrder = orderRepository.findAllByIsDirect(false);
+        List<Order> onlineOrder = orderRepository.findAllByIsDirectOrderByCreatedDateDesc(false);
 
         paidDirectOrder.addAll(onlineOrder);
 
@@ -201,16 +200,13 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
-    public List<GetPendingDirectOrderListResponse> getDirectPendingOrderList() {
-        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.DIRECT_PENDING);
-        List<GetPendingDirectOrderListResponse> getOrderListResponseList = new ArrayList<>();
+    public List<GetOrderListResponse> getOrderListByOrderStatus(OrderStatus orderStatus) {
+        List<Order> orderList = orderRepository.findAllByOrderStatusOrderByCreatedDateDesc(orderStatus);
+        List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
 
         for (Order order : orderList) {
-            GetPendingDirectOrderListResponse orderResponse = new GetPendingDirectOrderListResponse();
-            orderResponse.setId(order.getId());
-            orderResponse.setCustomerName(order.getCustomer().getName());
-            orderResponse.setCustomerPhoneNumber(order.getCustomer().getPhoneNumber());
-            getOrderListResponseList.add(orderResponse);
+            GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+            getOrderListResponseList.add(orderListResponse);
         }
         return getOrderListResponseList;
     }

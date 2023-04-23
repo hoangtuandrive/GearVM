@@ -93,6 +93,14 @@ public class OrderService extends ApiService {
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
+    public static BufferedReader getDeliveredOrderList() throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "ship-success");
+        HttpResponse response = client.execute(request);
+        if (response.getStatusLine().getStatusCode() != 200) return null;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    }
+
     public static BufferedReader getRequestByCustomerNameAndCustomerPhoneNumber(String customerName, String customerPhone) throws IOException {
         HttpClient client = new DefaultHttpClient();
 

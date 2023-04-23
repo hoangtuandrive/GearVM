@@ -1,6 +1,7 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Order;
+import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.PaymentMethod;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.service.OrderService;
@@ -46,7 +47,12 @@ public class OrderController {
 
     @GetMapping(value = "/direct-pending")
     public ResponseEntity<?> getDirectPendingOrderList() {
-        return new ResponseEntity<>(orderService.getDirectPendingOrderList(), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.getOrderListByOrderStatus(OrderStatus.DIRECT_PENDING), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "ship-success")
+    public ResponseEntity<?> getDeliveredOrderList() {
+        return new ResponseEntity<>(orderService.getOrderListByOrderStatus(OrderStatus.SHIP_SUCCESS), HttpStatus.OK);
     }
 
     @GetMapping(value = "/get-direct-pending")
@@ -59,6 +65,7 @@ public class OrderController {
     public ResponseEntity<?> findOrder(@PathVariable(value = "orderId") Long id) {
         return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);
     }
+
 
     @PostMapping(value = "/place-order")
     public ResponseEntity<?> placeOrder(@RequestBody PlaceOrder placeOrder, @RequestHeader(name = "Authorization") String header) {

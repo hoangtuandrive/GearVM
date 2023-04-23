@@ -11,13 +11,13 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByCustomerIdAndIsDirectOrderByUpdatedDateDesc(Long customerId, boolean isDirect);
 
-    List<Order> findByOrderStatus(OrderStatus orderStatus);
+    List<Order> findAllByOrderStatusOrderByCreatedDateDesc(OrderStatus orderStatus);
 
     boolean existsByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus orderStatus, String name, String phoneNumber);
 
     Order findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus orderStatus, String name, String phoneNumber);
 
-    List<Order> findAllByIsDirect(boolean isDirect);
+    List<Order> findAllByIsDirectOrderByCreatedDateDesc(boolean isDirect);
 
-    List<Order> findAllByIsDirectAndOrderStatusNot(boolean isDirect, OrderStatus orderStatus);
+    List<Order> findAllByIsDirectAndOrderStatusNotOrderByCreatedDateDesc(boolean isDirect, OrderStatus orderStatus);
 }
