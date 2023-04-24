@@ -34,6 +34,8 @@ public class Customer {
     private String password;
     private boolean isCart;
 
+    private String resetPasswordToken;
+
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
     @ToString.Exclude
