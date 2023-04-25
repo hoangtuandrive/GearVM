@@ -54,6 +54,66 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const forgotPassword = createAsyncThunk(
+  "auth/forgot",
+  async (values, { rejectWithValue }) => {
+    console.log(`${values}`);
+    try {
+      const token = await axios.post(
+        `${url}/customers/forgot-password`,
+        `${values}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return token.data;
+    } catch (error) {
+      console.log(error.response);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const checkToken = createAsyncThunk(
+  "auth/check-tokenforgot",
+  async (values, { rejectWithValue }) => {
+    try {
+      console.log(values);
+      const token = await axios.get(
+        `${url}/customers/Check-tokenforgot/${values}`
+      );
+
+      return token.data;
+    } catch (error) {
+      console.log(error.response);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const resetPassword = createAsyncThunk(
+  "auth/resetpassword",
+  async (values, { rejectWithValue }) => {
+    console.log(values);
+    try {
+      const token = await axios.put(
+        `${url}/customers/reset_password/${values.token}`,
+        `${values.password}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return token.data;
+    } catch (error) {
+      console.log(error.response);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const exitEmail = createAsyncThunk(
   "auth/exitEmail",
   async (values, { rejectWithValue }) => {

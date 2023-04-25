@@ -93,10 +93,6 @@ public class CustomerService {
         if (customer != null) {
             customer.setResetPasswordToken(token);
             customerRepository.save(customer);
-        }else{
-            System.out.println("cus"+customer);
-            System.out.println("cus"+customerRepository.findByEmail(email));
-
         }
     }
 

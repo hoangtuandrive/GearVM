@@ -17,6 +17,8 @@ import PayOffline from "../pages/PayOffline";
 import MoMoPage from "../pages/moMoPage/MoMoPage";
 import BankingPage from "../pages/BankingPage/BankingPage";
 import CashPage from "../pages/cashPage/CashPage";
+import Identify from "../pages/ForgetPassword/Identify";
+import ResetPassword from "../pages/ForgetPassword/ResetPassword";
 
 const publicRoutes = [
   { path: "/", component: Home },
@@ -38,6 +40,8 @@ const publicRoutes = [
   { path: "/moMoPage", component: MoMoPage },
   { path: "/cashPage", component: CashPage },
   { path: "/bankingPage", component: BankingPage },
+  { path: "/identify", component: Identify },
+  { path: "/resetpassword", component: ResetPassword },
 ];
 
 // const privateRoutes = [];

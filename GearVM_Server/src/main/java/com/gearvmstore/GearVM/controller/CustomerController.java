@@ -112,15 +112,15 @@ public class CustomerController {
         helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
         helper.setTo(recipientEmail);
 
-        String subject = "Here's the link to reset your password";
+        String subject = "Đây là OTP để đặt lại mật khẩu của bạn";
 
         String content = "<p>Hello,</p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=http://localhost:8080/api/" + link + "\">Change my password</a></p>"
+                + "<p>Bạn đã yêu cầu đặt lại mật khẩu của mình.</p>"
+                + "<p>Đây là mã OTP để đặt lại mật khẩu của bạn </p>"
+                + "<p>" + link + "</p>"
                 + "<br>"
-                + "<p>Ignore this email if you do remember your password, "
-                + "or you have not made the request.</p>";
+                + "<p>Bỏ qua email này nếu bạn nhớ mật khẩu của mình, "
+                + "hoặc bạn chưa thực hiện yêu cầu.</p>";
 
         helper.setSubject(subject);
 
@@ -128,16 +128,44 @@ public class CustomerController {
 
         mailSender.send(message);
     }
-    @PostMapping("/forgot_password")
+    @PostMapping("/forgot-password")
     public ResponseEntity<String> processForgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
+        boolean customer=customerService.checkEmailExist(email);
+        System.out.println(email);
+        if(customer != true){
+            return ResponseEntity.badRequest().body("Email này không tồn tại");
+        }
 
         String token = RandomString.make(30);
         customerService.updateResetPasswordToken(token, email);
-        String resetPasswordLink =  "/reset_password?token=" + token;
+        String resetPasswordLink =  token;
         sendEmail(email, resetPasswordLink);
 
         return ResponseEntity.ok().body(resetPasswordLink);
     }
+    @GetMapping("/Check-tokenforgot/{token}")
+    public ResponseEntity<String> CheckTokenForgot(@PathVariable(value = "token") String token)  {
 
+        Customer customer = customerService.getByResetPasswordToken(token);
+
+        if(customer==null){
+            return ResponseEntity.badRequest().body("OTP của bạn đã hết hạn hoặc bạn đã nhập sai");
+        }
+        return ResponseEntity.ok().body(token);
+    }
+    @PutMapping("/reset_password/{token}")
+    public ResponseEntity<?> updateCustomer(@PathVariable(value = "token") String token,@RequestBody String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        Customer customer = customerService.getByResetPasswordToken(token);
+        System.out.println(token);
+        System.out.println("asd"+password);
+        if (customer == null) {
+            return ResponseEntity.badRequest().body("OTP của bạn đã hết hạn hoặc bạn đã nhập sai");
+        } else {
+            customerService.updatePassword(customer, password);
+            return ResponseEntity.ok().body(customer);
+        }
+
+    }
 
 }

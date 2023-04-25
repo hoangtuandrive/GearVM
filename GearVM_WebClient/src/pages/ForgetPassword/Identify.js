@@ -3,58 +3,49 @@ import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "../login/login.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { forgotPassword, loginUser } from "../../redux/slices/AuthSlices";
-import Header from "../../component/Home/header/Header";
-
+import { checkToken } from "../../redux/slices/AuthSlices";
 const cx = classNames.bind(styles);
-const ForgetPassword = () => {
+
+const Identify = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const token = localStorage.getItem("token");
 
-  const [user, setUser] = useState("");
+  const [otp, setOtp] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  console.log(auth);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(user);
-    if (handleExitEmail(user) === true) {
-      console.log(123);
-      dispatch(forgotPassword(user));
-      navigate("/identify");
-    }
-  };
-  const handleExitEmail = () => {
-    const regexEmail =
-      /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
-
-    if (user === "") {
+  const handleOTP = () => {
+    if (otp === "") {
       setErrorMessage("Bạn chưa nhập Email");
-      return false;
-    } else if (!regexEmail.test(user)) {
-      console.log(123);
-      setErrorMessage("Nhập email sai định dạng");
       return false;
     } else {
       setErrorMessage("");
       return true;
     }
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (handleOTP(otp) === true) {
+      console.log(123);
+      dispatch(checkToken(otp));
+      navigate(`/resetpassword?token=${otp}`);
+    }
+  };
   return (
     <div className={cx("wrapLogin")}>
       {/* <Header /> */}
       <div className={cx("LoginContent")}>
         <form action="" id="form-login">
-          <h1 className={cx("logintxt")}>Quên Mật Khẩu</h1>
+          <h1 className={cx("logintxt")}>Xác Nhận Mã OTP</h1>
           <div className={cx("form-group")}>
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Otp"
               className={cx("form-input")}
-              onChange={(e) => setUser(e.target.value)}
-              onBlur={handleExitEmail}
+              onChange={(e) => setOtp(e.target.value)}
+              onBlur={handleOTP}
             />
           </div>
           {errorMessage === "" ? null : (
@@ -73,9 +64,6 @@ const ForgetPassword = () => {
           <div className="addtional-link">
             <Link to="/" className={cx("txtLogin")}>
               Trang chủ
-            </Link>
-            <Link to="/login" className={cx("txtLogin")}>
-              Đăng nhập
             </Link>
             <Link to="/resign" className={cx("txtLogin")}>
               Đăng ký
@@ -133,4 +121,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default Identify;
