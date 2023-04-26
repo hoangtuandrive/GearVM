@@ -14,7 +14,6 @@ const Identify = () => {
 
   const [otp, setOtp] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(auth);
 
   const handleOTP = () => {
     if (otp === "") {
@@ -28,11 +27,14 @@ const Identify = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (handleOTP(otp) === true) {
-      console.log(123);
       dispatch(checkToken(otp));
-      navigate(`/resetpassword?token=${otp}`);
     }
   };
+  useEffect(() => {
+    if (auth.identifyStatus === "Thành Công") {
+      navigate(`/resetpassword?token=${otp}`);
+    }
+  }, [auth, navigate]);
   return (
     <div className={cx("wrapLogin")}>
       {/* <Header /> */}
@@ -54,12 +56,14 @@ const Identify = () => {
 
           <input
             type="submit"
-            value={auth.loginStatus === "Chờ" ? "Submitting..." : "Tiếp tục"}
+            value={
+              auth.identifyStatus === "pending" ? "Submitting..." : "Tiếp tục"
+            }
             className={cx("form-submit")}
             onClick={handleSubmit}
           />
-          {auth.loginStatus === "rejected" ? (
-            <p className={cx("txtError")}>{auth.loginError}</p>
+          {auth.identifyStatus === "Từ chối" ? (
+            <p className={cx("txtError")}>{auth.identiftError}</p>
           ) : null}
           <div className="addtional-link">
             <Link to="/" className={cx("txtLogin")}>

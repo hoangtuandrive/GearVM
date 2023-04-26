@@ -100,6 +100,10 @@ public class CustomerService {
         return customerRepository.findByResetPasswordToken(token);
     }
 
+    public Customer getEmailResetPassWord(String email){
+        return  customerRepository.findByEmail(email);
+    }
+
     public void updatePassword(Customer customer, String newPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         customer.setPassword(hashPasswordUtil.generatePasswordHash(newPassword));

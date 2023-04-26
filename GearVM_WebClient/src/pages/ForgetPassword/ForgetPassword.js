@@ -22,7 +22,6 @@ const ForgetPassword = () => {
     if (handleExitEmail(user) === true) {
       console.log(123);
       dispatch(forgotPassword(user));
-      navigate("/identify");
     }
   };
   const handleExitEmail = () => {
@@ -41,6 +40,11 @@ const ForgetPassword = () => {
       return true;
     }
   };
+  useEffect(() => {
+    if (auth.forgotStatus === "Thành Công") {
+      navigate("/identify");
+    }
+  }, [auth, navigate]);
 
   return (
     <div className={cx("wrapLogin")}>
@@ -60,16 +64,18 @@ const ForgetPassword = () => {
           {errorMessage === "" ? null : (
             <span style={{ color: "red" }}>{errorMessage}</span>
           )}
-
+          {auth.forgotStatus === "Từ chối" ? (
+            <p className={cx("txtError")}>{auth.forgotError}</p>
+          ) : null}
           <input
             type="submit"
-            value={auth.loginStatus === "Chờ" ? "Submitting..." : "Tiếp tục"}
+            value={
+              auth.forgotStatus === "pending" ? "Submitting..." : "Tiếp tục"
+            }
             className={cx("form-submit")}
             onClick={handleSubmit}
           />
-          {auth.loginStatus === "rejected" ? (
-            <p className={cx("txtError")}>{auth.loginError}</p>
-          ) : null}
+
           <div className="addtional-link">
             <Link to="/" className={cx("txtLogin")}>
               Trang chủ

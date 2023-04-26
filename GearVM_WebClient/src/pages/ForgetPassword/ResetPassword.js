@@ -81,7 +81,12 @@ const ResetPassword = () => {
       dispatch(resetPassword(value));
     }
   };
-  console.log(auth);
+  useEffect(() => {
+    if (auth.resetPassStatus === "Thành Công") {
+      navigate("/login");
+    }
+  }, [auth, navigate]);
+
   return (
     <div className={cx("wrapLogin")}>
       {/* <Header /> */}
@@ -119,12 +124,14 @@ const ResetPassword = () => {
 
           <input
             type="submit"
-            value={auth.loginStatus === "Chờ" ? "Submitting..." : "Tiếp tục"}
+            value={
+              auth.resetPassStatus === "pending" ? "Submitting..." : "Tiếp tục"
+            }
             className={cx("form-submit")}
             onClick={handleSubmit}
           />
-          {auth.loginStatus === "rejected" ? (
-            <p className={cx("txtError")}>{auth.loginError}</p>
+          {auth.resetPassStatus === "Từ chối" ? (
+            <p className={cx("txtError")}>{auth.resetPassError}</p>
           ) : null}
           <div className="addtional-link">
             <Link to="/" className={cx("txtLogin")}>

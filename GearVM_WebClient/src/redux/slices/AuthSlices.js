@@ -16,6 +16,12 @@ const initialState = {
   currentError: "",
   emailStatus: false,
   emailError: "",
+  forgotStatus: "",
+  forgotError: "",
+  identifyStatus: "",
+  identiftError: "",
+  resetPassStatus: "",
+  resetPassError: "",
   user: [],
   userLoaded: false,
 };
@@ -58,13 +64,15 @@ export const forgotPassword = createAsyncThunk(
   "auth/forgot",
   async (values, { rejectWithValue }) => {
     console.log(`${values}`);
+
     try {
       const token = await axios.post(
         `${url}/customers/forgot-password`,
+
         `${values}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain",
           },
         }
       );
@@ -102,7 +110,7 @@ export const resetPassword = createAsyncThunk(
         `${values.password}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain",
           },
         }
       );
@@ -271,6 +279,57 @@ const authSlice = createSlice({
         ...state,
         user: action.payload,
         currentStatus: "Thanh cong",
+      };
+    });
+    builder.addCase(forgotPassword.pending, (state, action) => {
+      return { ...state, forgotStatus: "pending" };
+    });
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+      return {
+        ...state,
+        forgotStatus: "Thành Công",
+      };
+      // return { ...state, userLoaded: true };
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      return {
+        ...state,
+        forgotError: action.payload,
+        forgotStatus: "Từ chối",
+      };
+    });
+    builder.addCase(checkToken.pending, (state, action) => {
+      return { ...state, identifyStatus: "pending" };
+    });
+    builder.addCase(checkToken.fulfilled, (state, action) => {
+      return {
+        ...state,
+        identifyStatus: "Thành Công",
+      };
+      // return { ...state, userLoaded: true };
+    });
+    builder.addCase(checkToken.rejected, (state, action) => {
+      return {
+        ...state,
+        identiftError: action.payload,
+        identifyStatus: "Từ chối",
+      };
+    });
+    builder.addCase(resetPassword.pending, (state, action) => {
+      return { ...state, resetPassStatus: "pending" };
+    });
+    builder.addCase(resetPassword.fulfilled, (state, action) => {
+      return {
+        ...state,
+        resetPassStatus: "Thành Công",
+      };
+      // return { ...state, userLoaded: true };
+    });
+    builder.addCase(resetPassword.rejected, (state, action) => {
+      return {
+        ...state,
+        resetPassError: action.payload,
+        resetPassStatus: "Từ chối",
       };
     });
   },

@@ -114,7 +114,7 @@ public class CustomerController {
 
         String subject = "Đây là OTP để đặt lại mật khẩu của bạn";
 
-        String content = "<p>Hello,</p>"
+        String content = "<p>Xin chào,</p>"
                 + "<p>Bạn đã yêu cầu đặt lại mật khẩu của mình.</p>"
                 + "<p>Đây là mã OTP để đặt lại mật khẩu của bạn </p>"
                 + "<p>" + link + "</p>"
@@ -130,11 +130,13 @@ public class CustomerController {
     }
     @PostMapping("/forgot-password")
     public ResponseEntity<String> processForgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
-        boolean customer=customerService.checkEmailExist(email);
+        Customer customer=customerService.getEmailResetPassWord(email);
         System.out.println(email);
-        if(customer != true){
+        if(customer == null){
             return ResponseEntity.badRequest().body("Email này không tồn tại");
         }
+
+        customer.setResetPasswordToken(null);
 
         String token = RandomString.make(30);
         customerService.updateResetPasswordToken(token, email);
