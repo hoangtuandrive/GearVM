@@ -31,7 +31,7 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
-    private int percentageDiscount;
+
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @ToString.Exclude

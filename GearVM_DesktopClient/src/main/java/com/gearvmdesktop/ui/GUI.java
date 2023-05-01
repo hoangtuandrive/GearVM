@@ -133,7 +133,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 
         /* add tab with JPanel */
-        tabbedPane.addTab("TRANG CHỦ",  new ImageIcon(iconTrangChu), pnlTrangChu, "TRANG CHỦ");
+        tabbedPane.addTab("TRANG CHỦ", new ImageIcon(iconTrangChu), pnlTrangChu, "TRANG CHỦ");
         tabbedPane.addTab("ĐƠN HÀNG", new ImageIcon(iconHoaDon), pnlDonHang, "ĐƠN HÀNG");
         tabbedPane.addTab("BÁN HÀNG", new ImageIcon(iconBanHang), pnlBanHang, "BÁN HÀNG");
         tabbedPane.addTab("NHÂN VIÊN", new ImageIcon(iconNhanVien), pnlNhanVien, "NHÂN VIÊN");
@@ -301,5 +301,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         FrmSanPham.readDatabaseToTable();
         FrmKhoHang.readDatabaseToTable();
         FrmBanHang.readDatabase();
+        FrmHoaDon.readDatabaseToTable();
     }
 }

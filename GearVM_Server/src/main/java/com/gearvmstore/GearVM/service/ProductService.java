@@ -3,6 +3,7 @@ package com.gearvmstore.GearVM.service;
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.model.response.GetProductPagination;
 import com.gearvmstore.GearVM.repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +15,14 @@ import java.util.List;
 
 @Service
 public class ProductService {
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
+
     @Autowired
-    ProductRepository productRepository;
+    public ProductService(ProductRepository productRepository, ModelMapper modelMapper) {
+        this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public Product createProduct(Product p) {
         p.setImageUri("empty-product.jpg");
@@ -78,6 +85,16 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findDistinctByIdEqualsOrNameOrBrandOrType(String id, String name, String brand, String type) {
+        try {
+            return productRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByIdAsc
+                    (Long.parseLong(id), name, brand, type);
+        } catch (NumberFormatException e) {
+            return productRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByIdAsc
+                    (null, name, brand, type);
+        }
     }
 
     public Product getProduct(Long id) {

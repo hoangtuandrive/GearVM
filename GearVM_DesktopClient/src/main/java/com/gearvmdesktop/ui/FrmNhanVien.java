@@ -11,7 +11,6 @@ import com.toedter.calendar.JDateChooser;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -43,7 +42,7 @@ import java.util.List;
 
 public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "employees/";
-    private static JComboBox<String> cmbTim;
+    private static JTextField txtTim;
     private static JTable tableNhanVien;
     private static DefaultTableModel modelNhanVien;
     private Boolean isQuanLy;
@@ -230,8 +229,6 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         btnCancel.setIcon(new ImageIcon(iconHuy));
         btnImport.setIcon(new ImageIcon(iconNhapFile));
         btnExport.setIcon(new ImageIcon(iconXuatFile));
-
-
 
 
         txtNgaySinh.setDateFormatString("dd-MM-yyyy");
@@ -427,11 +424,8 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         String[] tim = {"Mã Nhân Viên", "Tên Nhân Viên", "Giới Tính", "SDT", "Chức Vụ", "Lương", "CMND", "Ngày Sinh",
                 "Địa Chỉ", "Email", "Trạng thái"};
         cmbChon = new JComboBox<String>(tim);
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(20, cmbTim.getPreferredSize().height);
+        txtTim = new JTextField();
+        cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
@@ -439,7 +433,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
 
         b.add(cmbChon);
         b.add(Box.createHorizontalStrut(10));
-        b.add(cmbTim);
+        b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
         b.add(Box.createHorizontalStrut(30));
@@ -534,7 +528,7 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnThayDoiTinhTrangLamViec.setFont(new Font("Tahoma", Font.BOLD, 12));
-        cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
 

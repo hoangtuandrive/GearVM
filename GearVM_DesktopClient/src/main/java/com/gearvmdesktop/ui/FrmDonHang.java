@@ -7,7 +7,6 @@ import com.gearvmdesktop.service.OrderService;
 import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +31,8 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
     private static JTable tableDonHang;
     private static DefaultTableModel modelDonHang;
     private JButton btnTim, btnReset;
-    private JComboBox<String> cmbChon, cmbTim;
+    private JComboBox<String> cmbChon;
+    private JTextField txtTim;
     private JLabel lblHiddenId;
     private JLabel lblHiddenName;
 
@@ -99,12 +99,9 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         cmbChon = new JComboBox<String>(tim);
         btim.add(cmbChon);
         btim.add(Box.createHorizontalStrut(10));
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(200, cmbTim.getPreferredSize().height);
-        btim.add(cmbTim);
+        txtTim = new JTextField();
+        cmbChon.setSize(200, txtTim.getPreferredSize().height);
+        btim.add(txtTim);
         btim.add(Box.createHorizontalStrut(10));
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -113,11 +110,11 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         URL iconLoad = classLoader.getResource("assets/lammoi.png");
 
 
-        btnTim = new JButton("TÌM KIẾM",new ImageIcon(iconTim));
+        btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
 
-        btnReset = new JButton("LOAD LẠI TẠM THỜI",new ImageIcon(iconLoad));
+        btnReset = new JButton("LOAD LẠI TẠM THỜI", new ImageIcon(iconLoad));
         btnReset.setBackground(new Color(0, 148, 224));
         btnReset.setForeground(Color.WHITE);
 

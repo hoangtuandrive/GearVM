@@ -6,8 +6,8 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.service.OrderService;
 import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
+import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.toedter.calendar.JDateChooser;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -28,10 +28,9 @@ import java.util.Date;
 import java.util.List;
 
 public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
-
+    private static final String tableName = "orders/";
     private static DefaultTableModel modelHoaDon;
     private static JTable tableHoaDon;
-    private static JComboBox<String> cmbTim;
     private static JLabel txtDoanhThu;
     private JTextField txtTim;
     private JLabel lblTim;
@@ -122,12 +121,9 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
         cmbChon = new JComboBox<String>(tim);
         btim.add(cmbChon);
         btim.add(Box.createHorizontalStrut(10));
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(200, cmbTim.getPreferredSize().height);
-        btim.add(cmbTim);
+        txtTim = new JTextField();
+        cmbChon.setSize(200, txtTim.getPreferredSize().height);
+        btim.add(txtTim);
         btim.add(Box.createHorizontalStrut(10));
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
@@ -155,7 +151,7 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
 
         tblscroll.setBorder(
                 BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "DANH SÁCH HÓA ĐƠN: "));
-        cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim1.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -208,7 +204,15 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        int row = tableHoaDon.getSelectedRow();
+        if (e.getClickCount() == 2 && tableHoaDon.getSelectedRow() != -1) {
+            try {
+                GetOrderResponse getOrderResponse = getRequest(tableHoaDon.getValueAt(row, 0).toString().trim());
+                new FrmChiTietDonHang(getOrderResponse);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -262,5 +266,12 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
     public static void emptyTable() {
         DefaultTableModel dm = (DefaultTableModel) tableHoaDon.getModel();
         dm.setRowCount(0);
+    }
+
+    public GetOrderResponse getRequest(String id) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getRequest(tableName, id);
+        return mapper.readValue(rd, GetOrderResponse.class);
     }
 }

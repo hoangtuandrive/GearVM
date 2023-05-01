@@ -11,7 +11,6 @@ import com.gearvmstore.GearVM.model.Product;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -39,7 +38,7 @@ import java.util.List;
 
 public class FrmSanPham extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "products/";
-    private static JComboBox<String> cmbTim;
+    private static JTextField txtTim;
     private static JTable tableSanPham;
     private static DefaultTableModel modelSanPham;
     private JComboBox<String> cmbChon;
@@ -348,11 +347,8 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(20, cmbTim.getPreferredSize().height);
+        txtTim = new JTextField();
+        cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
@@ -360,7 +356,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
 
         b.add(cmbChon);
         b.add(Box.createHorizontalStrut(10));
-        b.add(cmbTim);
+        b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
         b.add(Box.createHorizontalStrut(30));
@@ -439,7 +435,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         btnExport.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
-        cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         tableSanPham.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -632,6 +628,13 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                     JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseFilterToTable();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -681,6 +684,20 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                     p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
         }
     }
+
+    public static void readDatabaseFilterToTable() throws IOException {
+        emptyTable();
+        ObjectMapper mapper = new ObjectMapper();
+        // Get all products
+        BufferedReader rd = ProductService.getAllFilterRequest(tableName, txtTim.getText());
+        List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+        DecimalFormat df = new DecimalFormat("#,##0");
+        for (Product p : listProduct) {
+            modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
+        }
+    }
+
 
     private void emptyTextField() {
         txtMaSanPham.setText(null);

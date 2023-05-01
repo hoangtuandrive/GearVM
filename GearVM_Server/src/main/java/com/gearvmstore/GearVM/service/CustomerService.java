@@ -38,7 +38,6 @@ public class CustomerService {
         c.setGender(customerDetails.getGender());
         c.setPhoneNumber(customerDetails.getPhoneNumber());
         c.setDateOfBirth(customerDetails.getDateOfBirth());
-        c.setEmail(customerDetails.getEmail());
         return customerRepository.save(c);
     }
 
@@ -64,8 +63,8 @@ public class CustomerService {
 
     public Customer validateLogin(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Customer customer = customerRepository.findByEmail(username);
-        System.out.println("sa"+username);
-        System.out.println("sa"+customer);
+        System.out.println("sa" + username);
+        System.out.println("sa" + customer);
 
         if (customer == null) customer = customerRepository.findByPhoneNumber(username);
 
@@ -100,8 +99,8 @@ public class CustomerService {
         return customerRepository.findByResetPasswordToken(token);
     }
 
-    public Customer getEmailResetPassWord(String email){
-        return  customerRepository.findByEmail(email);
+    public Customer getEmailResetPassWord(String email) {
+        return customerRepository.findByEmail(email);
     }
 
     public void updatePassword(Customer customer, String newPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {

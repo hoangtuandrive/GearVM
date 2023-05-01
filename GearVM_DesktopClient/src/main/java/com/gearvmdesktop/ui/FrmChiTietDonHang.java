@@ -310,6 +310,13 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b20.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
+        btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnTuChoi.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThanhCong.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThatBai.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThayDoiTrangThai.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnXemThanhToan.setFont(new Font("Tahoma", Font.BOLD, 12));
+
         readDatabaseToTable(getOrderResponse);
         LoadDataToTextField(getOrderResponse);
 
@@ -333,6 +340,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         btnTuChoi.addActionListener(this);
         btnXemThanhToan.addActionListener(this);
         btnThayDoiTrangThai.addActionListener(this);
+
 
         setVisible(true);
     }

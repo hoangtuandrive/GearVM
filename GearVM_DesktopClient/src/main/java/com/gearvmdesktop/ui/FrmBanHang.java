@@ -44,7 +44,6 @@ import java.util.List;
 public class FrmBanHang extends JFrame implements ActionListener, MouseListener {
     private static final String tableNameProduct = "products/";
     private static final String tableNameOrder = "orders/";
-    private JTextField txtTim;
     private JButton btnTim;
     private static DefaultTableModel modelSanPham;
     private static JTable tableSanPham;
@@ -67,7 +66,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private JDateChooser txtNgaySinh;
     private JLabel lblNgaySinh;
     private static JComboBox<String> cmbDanhSachSdt;
-    private static JComboBox<String> cmbTim;
+    private JTextField txtTim;
     private JButton btnTimKHCu;
     private JLabel lblGioHang;
     private JPanel pTitle1;
@@ -116,12 +115,10 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         cmbChon = new JComboBox<String>(tim);
         b3.add(cmbChon);
         b3.add(Box.createHorizontalStrut(10));
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(20, cmbTim.getPreferredSize().height);
-        b3.add(cmbTim);
+        txtTim = new JTextField();
+        txtTim.setEditable(true);
+        cmbChon.setSize(20, txtTim.getPreferredSize().height);
+        b3.add(txtTim);
         b3.add(Box.createHorizontalStrut(10));
         b3.add(btnTim = new JButton("TÌM HÀNG", new ImageIcon(iconTimSp)));
         btnTim.setBackground(new Color(0, 148, 224));
@@ -316,7 +313,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         txtMaKhachHang.setEditable(false);
 
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
-        cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblSDT.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbDanhSachSdt.setFont(new Font("Tahoma", Font.BOLD, 12));

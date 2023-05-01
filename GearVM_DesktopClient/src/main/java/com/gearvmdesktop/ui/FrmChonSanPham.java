@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.service.ProductService;
 import com.gearvmstore.GearVM.model.Product;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -30,7 +29,7 @@ import java.util.List;
 public class FrmChonSanPham extends JFrame implements ActionListener, MouseListener {
     private String newProductId;
     private static final String tableName = "products/";
-    private static JComboBox<String> cmbTim;
+    private static JTextField txtTim;
     private static JTable tableSanPham;
     private static DefaultTableModel modelSanPham;
     private final JButton btnChonSanPham;
@@ -354,11 +353,8 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        cmbTim = new JComboBox<String>();
-        cmbTim.setEditable(true);
-        AutoCompleteDecorator.decorate(cmbTim);
-        cmbTim.setMaximumRowCount(10);
-        cmbChon.setSize(20, cmbTim.getPreferredSize().height);
+        txtTim = new JTextField();
+        cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
@@ -370,7 +366,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
         b.add(cmbChon);
         b.add(Box.createHorizontalStrut(10));
-        b.add(cmbTim);
+        b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
         b.add(Box.createHorizontalStrut(30));
@@ -451,7 +447,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnExport.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
-        cmbTim.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         cmbChon.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnChonSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));

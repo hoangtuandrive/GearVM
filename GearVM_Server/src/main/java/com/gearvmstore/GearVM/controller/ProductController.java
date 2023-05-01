@@ -57,9 +57,9 @@ public class ProductController {
     public GetProductPagination filterProducts(@RequestParam(defaultValue = "0") Integer pageNumber,
                                                @RequestParam(defaultValue = "24") Integer pageSize,
                                                @RequestParam(defaultValue = "id") String sortBy,
-                                               @RequestParam(required = false,defaultValue = "") String name,
-                                               @RequestParam(required = false,defaultValue = "") String brand,
-                                               @RequestParam(required = false,defaultValue = "") String type,
+                                               @RequestParam(required = false, defaultValue = "") String name,
+                                               @RequestParam(required = false, defaultValue = "") String brand,
+                                               @RequestParam(required = false, defaultValue = "") String type,
                                                @RequestParam(required = false, defaultValue = "0") Integer min,
                                                @RequestParam(required = false, defaultValue = "1000000000") Integer max) {
 
@@ -69,6 +69,11 @@ public class ProductController {
     @GetMapping(value = "get-all")
     public List<Product> readAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @GetMapping(value = "get-all-filter")
+    public List<Product> readAllProductsByFilter(@RequestParam(defaultValue = "") String filter) {
+        return productService.findDistinctByIdEqualsOrNameOrBrandOrType(filter, filter, filter, filter);
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
