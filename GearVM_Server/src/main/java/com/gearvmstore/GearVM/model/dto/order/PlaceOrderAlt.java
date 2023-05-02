@@ -9,4 +9,5 @@ public class PlaceOrderAlt {
     private double totalPrice;
     private ShippingDetailDto shippingDetailDto;
     private List<OrderItemDto> orderItemDtos;
+    private String code;
 }

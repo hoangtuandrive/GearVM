@@ -11,6 +11,8 @@ const initialState = {
   orderTrackingError: "",
   getAllOrderStatus: "",
   getAllOrderError: "",
+  methodStatus: "",
+  methodError: "",
 };
 
 export const OrderCart = createAsyncThunk(
@@ -22,7 +24,8 @@ export const OrderCart = createAsyncThunk(
           `${url}/orders/place-order`,
           {
             totalPrice: values.totalPrice,
-            orderItems: values.orderItems,
+            orderItemDtos: values.orderItems,
+            code: values.code,
           },
           // JSON.stringify(values),
           {
@@ -33,6 +36,7 @@ export const OrderCart = createAsyncThunk(
           }
         )
         .then(async (response) => {
+          console.log(response.data.id);
           await axios
             .post(`${url}/payment/create-payment-link/`, {
               id: response.data.id,
@@ -109,6 +113,7 @@ export const OrderMethod = createAsyncThunk(
           },
           // shippingDetailDto: values.shippingDetailDto,
           orderItemDtos: values.orderItems,
+          code: values.code,
         },
         // JSON.stringify(values),
         {
@@ -192,6 +197,22 @@ const orderSlices = createSlice({
         state.AllOrder = action.payload;
       }
       state.getAllOrderStatus = "fulfilled";
+    });
+    builder.addCase(OrderMethod.pending, (state, action) => {
+      return {
+        ...state,
+        methodStatus: "pending",
+      };
+    });
+    builder.addCase(OrderMethod.rejected, (state, action) => {
+      return {
+        ...state,
+        methodStatus: "rejected",
+        methodError: action.payload,
+      };
+    });
+    builder.addCase(OrderMethod.fulfilled, (state, action) => {
+      state.methodStatus = "fulfilled";
     });
   },
 });

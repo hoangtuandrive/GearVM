@@ -20,7 +20,7 @@ function AppProvider({ children }) {
       sender: "ChatGPT",
     },
   ]);
-
+  const [discount, setDiscount] = useState("");
   const clearState = () => {
     setShow(false);
     setUserOpen(false);
@@ -28,6 +28,7 @@ function AppProvider({ children }) {
     setShowChat(false);
     setUser();
     setShowFilter(false);
+    setDiscount("");
   };
   return (
     <AppContext.Provider
@@ -47,6 +48,8 @@ function AppProvider({ children }) {
         messages,
         setShowFilter,
         showFilter,
+        discount,
+        setDiscount,
       }}
     >
       {children}
