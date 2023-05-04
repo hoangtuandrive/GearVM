@@ -4,10 +4,7 @@ import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import com.gearvmstore.GearVM.repository.OrderItemRepository;
-import com.gearvmstore.GearVM.repository.OrderRepository;
-import com.gearvmstore.GearVM.repository.PaymentRepository;
-import com.gearvmstore.GearVM.repository.ShippingDetailRepository;
+import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +30,13 @@ public class OrderService {
     private final PaymentService paymentService;
     private final ShippingDetailRepository shippingDetailRepository;
     private final ShippingDetailService shippingDetailService;
+    private final DiscountRepository discountRepository;
+
+
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService) {
+    public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService,
+                        DiscountRepository discountRepository) {
         this.orderRepository = orderRepository;
         this.customerService = customerService;
         this.productService = productService;
@@ -48,6 +49,7 @@ public class OrderService {
         this.paymentRepository = paymentRepository1;
         this.shippingDetailRepository = shippingDetailRepository1;
         this.shippingDetailService = shippingDetailService;
+        this.discountRepository = discountRepository;
     }
 
     public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName, String address, String email, String phoneNumber) {
@@ -63,7 +65,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrder(PlaceOrder placeOrder, String token) {
+    public GetOrderResponse placeNewOrder(PlaceOrder placeOrder, String token,String code) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -76,6 +78,13 @@ public class OrderService {
             order.setUpdatedDate(LocalDateTime.now());
             order.setTotalPrice(placeOrder.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+
+            if(code != "") {
+                Discount discount = discountRepository.findByCode(code);
+                discount.setUsed(true);
+                discountRepository.save(discount);
+                order.setDiscount(discount);
+            }
 
             Payment payment = new Payment();
             paymentRepository.save(payment);
@@ -101,6 +110,8 @@ public class OrderService {
             }
 
             em.refresh(savedOrder);
+            System.out.println("123");
+            System.out.println(getOrder(savedOrder.getId()));
             return getOrder(savedOrder.getId());
         } catch (Exception e) {
             return null;
@@ -108,7 +119,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrderAlt(PlaceOrderAlt placeOrderDto, String token, PaymentMethod paymentMethod) {
+    public GetOrderResponse placeNewOrderAlt(PlaceOrderAlt placeOrderDto, String token, PaymentMethod paymentMethod,String code) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -121,6 +132,13 @@ public class OrderService {
             order.setUpdatedDate(LocalDateTime.now());
             order.setTotalPrice(placeOrderDto.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
+
+            if(code != "") {
+                Discount discount = discountRepository.findByCode(code);
+                discount.setUsed(true);
+                discountRepository.save(discount);
+                order.setDiscount(discount);
+            }
 
             Payment payment = new Payment();
             payment.setPaymentMethod(paymentMethod);
@@ -150,7 +168,9 @@ public class OrderService {
                 orderItemRepository.save(item);
             }
 
+
             em.refresh(savedOrder);
+
             return getOrder(savedOrder.getId());
         } catch (Exception e) {
             return null;

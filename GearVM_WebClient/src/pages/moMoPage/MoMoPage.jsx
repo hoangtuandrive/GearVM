@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./MoMoPage.module.scss";
 import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
@@ -16,11 +16,27 @@ const cx = classNames.bind(styles);
 const MoMoPage = () => {
   const navigate = useNavigate();
 
-  const { user } = useContext(AppContext);
+  const { user, discount, setDiscount } = useContext(AppContext);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.todoCart);
   const JcartItems = localStorage.getItem("cartItems");
   const cartItems = JSON.parse(JcartItems);
+
+  const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+  const percentDiscount = useSelector((state) => state.discount);
+  const order = useSelector((state) => state.order);
+
+  useEffect(() => {
+    if (percentDiscount.percentDiscount > 0) {
+      const totalPriceTinh =
+        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+      setTotalPrice(totalPriceTinh);
+    }
+    if (order.methodStatus == "fulfilled") {
+      navigate("/payment-success");
+      setDiscount("");
+    }
+  }, [percentDiscount.percentDiscount, order.methodStatus]);
 
   const handleComplete = (e) => {
     dispatch(currentCustomer());
@@ -38,10 +54,11 @@ const MoMoPage = () => {
     });
     // let totalPrice =;
     const cartOrder = {
-      totalPrice: cart.cartTotalAmount,
+      totalPrice: totalPrice,
       orderItems,
       method: "MOMO",
       shippingDetailDto: user,
+      code: discount,
     };
 
     dispatch(OrderMethod(cartOrder));
@@ -52,7 +69,6 @@ const MoMoPage = () => {
       }
     });
 
-    navigate("/payment-success");
     e.preventDefault();
   };
 
@@ -148,7 +164,7 @@ const MoMoPage = () => {
                       {new Intl.NumberFormat("de-DE", {
                         style: "currency",
                         currency: "VND",
-                      }).format(cart.cartTotalAmount)}
+                      }).format(totalPrice)}
                     </h4>
                   </div>
                 </div>

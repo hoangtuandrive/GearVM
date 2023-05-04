@@ -26,7 +26,7 @@ const PaybodyOffline = ({ name }) => {
 
   const dispatch = useDispatch();
 
-  const { setShow } = useContext(AppContext);
+  const { setShow, discount, setDiscount } = useContext(AppContext);
 
   const [cartFilter, setCartFilter] = useState([]);
 
@@ -34,6 +34,10 @@ const PaybodyOffline = ({ name }) => {
 
   const JcartItems = localStorage.getItem("cartItems");
   const cartItems = JSON.parse(JcartItems);
+
+  const order = useSelector((state) => state.order);
+  const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+  const percentDiscount = useSelector((state) => state.discount);
 
   const FilterCartTrue = () => {
     let CartTrue = [];
@@ -48,7 +52,16 @@ const PaybodyOffline = ({ name }) => {
 
   useEffect(() => {
     FilterCartTrue();
-  }, []);
+    if (percentDiscount.percentDiscount > 0) {
+      const totalPriceTinh =
+        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+      setTotalPrice(totalPriceTinh);
+    }
+    if (order.methodStatus == "fulfilled") {
+      navigate("/cashPage", { replace: true });
+      setDiscount("");
+    }
+  }, [percentDiscount.percentDiscount, order.methodStatus]);
 
   const handleShow = () => {
     setShow(true);
@@ -84,9 +97,10 @@ const PaybodyOffline = ({ name }) => {
     });
     // let totalPrice =;
     const cartOrder = {
-      totalPrice: cart.cartTotalAmount,
+      totalPrice: totalPrice,
       shippingDetailDto: user,
       orderItems,
+      code: discount,
       method: "COD",
     };
 
@@ -98,7 +112,6 @@ const PaybodyOffline = ({ name }) => {
       }
     });
 
-    navigate("/cashPage", { replace: true });
     e.preventDefault();
   };
 
@@ -114,7 +127,7 @@ const PaybodyOffline = ({ name }) => {
             {new Intl.NumberFormat("de-DE", {
               style: "currency",
               currency: "VND",
-            }).format(cart.cartTotalAmount)}
+            }).format(totalPrice)}
           </span>
         </div>
         <div className={cx("wrapPayBody_right_metodpay")}>

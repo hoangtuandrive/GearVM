@@ -400,8 +400,8 @@ const CatalogProduct = () => {
       <div className={cx("wrapCatalogProduct")}>
         <div className={cx("wrapCatalogProduct_fillter")}>
           <div className={cx("wrapCatalogProduct_fillter_Price")}>
-            <h6 className={cx("txtWrap_Head")}>Lọc theo giá</h6>
-            <div className={cx("wrapCatalogProduct_fillter_Price_about")}>
+            {/* <h6 className={cx("txtWrap_Head")}>Lọc theo giá</h6> */}
+            {/* <div className={cx("wrapCatalogProduct_fillter_Price_about")}>
               <Form.Select
                 aria-label="Default select example"
                 onChange={handleGia}
@@ -412,9 +412,9 @@ const CatalogProduct = () => {
                 <option value="25-30">Từ 25 triệu -30 triệu</option>
                 <option value="tren30">Trên 30 Triệu</option>
               </Form.Select>
-            </div>
+            </div> */}
           </div>
-          <div className={cx("wrapCatalogProduct_fillter_Price")}>
+          {/* <div className={cx("wrapCatalogProduct_fillter_Price")}>
             <h6 className={cx("txtWrap_Head")}>Thương Hiệu</h6>
             <div className={cx("wrapCatalogProduct_fillter_Price_about")}>
               {brands.map((item, index) => (
@@ -432,7 +432,7 @@ const CatalogProduct = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
           <div className="gach"></div>
           <div className={cx("wrapCatalogProduct_fillter_Price")}>
             <h6 className={cx("txtWrap_Head")}>Lọc Theo giá tiền</h6>

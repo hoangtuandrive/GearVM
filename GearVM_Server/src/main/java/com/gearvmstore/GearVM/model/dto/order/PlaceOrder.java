@@ -8,4 +8,5 @@ import java.util.List;
 public class PlaceOrder {
     private double totalPrice;
     private List<OrderItemDto> orderItemDtos;
+    private String code;
 }

@@ -4,6 +4,7 @@ import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.PaymentMethod;
 import com.gearvmstore.GearVM.model.dto.order.*;
+import com.gearvmstore.GearVM.service.DiscountService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
+    private  final DiscountService discountService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public OrderController(OrderService orderService, JwtUtil jwtUtil) {
+    public OrderController(OrderService orderService, DiscountService discountService, JwtUtil jwtUtil) {
         this.orderService = orderService;
+        this.discountService = discountService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -80,7 +86,8 @@ public class OrderController {
         String token = header.substring(7);
 
         if (jwtUtil.validateJwtToken(token))
-            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrder, token));
+
+            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrder, token,placeOrder.getCode()));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 
@@ -95,13 +102,17 @@ public class OrderController {
         String token = header.substring(7);
 
         if (jwtUtil.validateJwtToken(token))
-            return ResponseEntity.ok().body(orderService.placeNewOrderAlt(placeOrderAlt, token, paymentMethod));
+            return ResponseEntity.ok().body(orderService.placeNewOrderAlt(placeOrderAlt, token, paymentMethod,placeOrderAlt.getCode()));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 
     @PatchMapping(value = "/update-orderStatus/{orderId}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable(value = "orderId") Long id,
-                                               @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
+                                               @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) throws MessagingException, UnsupportedEncodingException {
+                discountService.SendDiscount(id,updateOrderStatusAndEmployee);
+                if(discountService.GetIdDiscount(id) != null){
+                    discountService.UpdateisUsedDiscount(id,updateOrderStatusAndEmployee);
+                }
         return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatusAndEmployee(id, updateOrderStatusAndEmployee));
     }
 

@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "../slices/AuthSlices";
 import CartSlice from "../slices/CartSlices";
 import orderSlices from "../slices/OrderSlices";
+import discountSlices from "../slices/DiscountSlices";
 
 // const persistConfig = {
 //   key: "root",
@@ -19,6 +20,7 @@ const store = configureStore({
     todoCart: CartSlice.reducer,
     auth: authSlice.reducer,
     order: orderSlices.reducer,
+    discount: discountSlices.reducer,
   },
 });
 

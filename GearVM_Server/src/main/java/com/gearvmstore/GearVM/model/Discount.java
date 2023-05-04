@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -19,13 +20,24 @@ public class Discount {
     private Long id;
     private int percentageDiscount;
     private double flatDiscount;
+
     private LocalDateTime expirationDate;
     private boolean isUsed;
 
+    private String code;
     @OneToOne(mappedBy = "discount")
     @JsonIgnore
     private Order order;
 
     public Discount() {
     }
+    public Discount(int percentageDiscount, double flatDiscount, LocalDateTime expirationDate, boolean isUsed, String code) {
+        this.percentageDiscount = percentageDiscount;
+        this.flatDiscount = flatDiscount;
+        this.expirationDate = expirationDate;
+        this.isUsed = isUsed;
+        this.code = code;
+    }
+
+
 }

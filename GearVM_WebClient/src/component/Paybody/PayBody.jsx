@@ -18,6 +18,7 @@ import { currentCustomer } from "../../redux/slices/AuthSlices";
 import Table from "react-bootstrap/Table";
 import CustomButon from "../Custom/CustomButon/CustomButon";
 import { Button } from "antd";
+import { DiscountCode } from "../../redux/slices/DiscountSlices";
 
 const cx = classNames.bind(styles);
 const PayBody = () => {
@@ -25,7 +26,7 @@ const PayBody = () => {
 
   const dispatch = useDispatch();
 
-  const { setShow } = useContext(AppContext);
+  const { setShow, discount, setDiscount } = useContext(AppContext);
 
   const [cartFilter, setCartFilter] = useState([]);
 
@@ -45,10 +46,6 @@ const PayBody = () => {
     setCartFilter(CartTrue);
   };
 
-  useEffect(() => {
-    FilterCartTrue();
-  }, []);
-
   const handleShow = () => {
     setShow(true);
   };
@@ -57,6 +54,25 @@ const PayBody = () => {
   //   navigate("/payment", { replace: true });
   // };
   // console.log(cartFilter);
+  const percentDiscount = useSelector((state) => state.discount);
+
+  // var totalPrice = cart.cartTotalAmount;
+
+  // const [discout, setDiscount] = useState("");
+  const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+  console.log(cart.cartTotalAmount);
+  const handleDiscount = () => {
+    dispatch(DiscountCode(discount));
+  };
+
+  useEffect(() => {
+    FilterCartTrue();
+    if (percentDiscount.percentDiscount > 0) {
+      const totalPriceTinh =
+        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+      setTotalPrice(totalPriceTinh);
+    }
+  }, [percentDiscount.percentDiscount]);
 
   const handlePayOffline = () => {
     navigate("/payOffline", { replace: true });
@@ -72,15 +88,23 @@ const PayBody = () => {
         let price = item.price;
         let quantity = item.cartQuantity;
         let productId = item.id;
+        // let code = discount;
         let orderItemTemp = { price, quantity, productId };
         orderItems.push(orderItemTemp);
       }
       // console.log(oderItem);
     });
     // let totalPrice =;
+    var code = "";
+    if (percentDiscount.percentDiscount > 0) {
+      code = discount;
+    }
+
     const cartOrder = {
-      totalPrice: cart.cartTotalAmount,
+      // totalPrice: cart.cartTotalAmount,
+      totalPrice: totalPrice,
       orderItems,
+      code: code,
     };
 
     dispatch(OrderCart(cartOrder));
@@ -139,11 +163,20 @@ const PayBody = () => {
                   className={cx("input__field")}
                   type="text"
                   placeholder=" "
+                  onChange={(e) => {
+                    setDiscount(e.target.value);
+                  }}
+                  value={discount}
                 />
                 <span className={cx("input__label")}>Nhập mã khuyến mãi</span>
               </label>
-              <div className={cx("btn", "btn_Use")}>Áp Dụng</div>
+              <div className={cx("btn", "btn_Use")} onClick={handleDiscount}>
+                Áp Dụng
+              </div>
             </div>
+            {percentDiscount.discountError ? (
+              <span>{percentDiscount.discountError}</span>
+            ) : null}
           </div>
           <div className={cx("wrapPayBody_right_Sumpay_content")}>
             <span className={cx("wrapPayBody_right_Sumpay_text")}>
@@ -153,7 +186,7 @@ const PayBody = () => {
               {new Intl.NumberFormat("de-DE", {
                 style: "currency",
                 currency: "VND",
-              }).format(cart.cartTotalAmount)}
+              }).format(totalPrice)}
             </span>
           </div>
           <div className={cx("wrapPayBody_right_metodpay")}>
