@@ -689,7 +689,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         emptyTable();
         ObjectMapper mapper = new ObjectMapper();
         // Get all products
-        BufferedReader rd = ProductService.getAllFilterRequest(tableName, txtTim.getText());
+        BufferedReader rd = ProductService.getAllByFilterRequest(tableName, txtTim.getText());
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {

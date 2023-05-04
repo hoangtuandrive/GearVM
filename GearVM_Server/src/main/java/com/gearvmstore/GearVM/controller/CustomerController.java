@@ -10,17 +10,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
-import org.springframework.mail.javamail.JavaMailSender;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -30,6 +29,7 @@ public class CustomerController {
     private final ModelMapper modelMapper;
     @Autowired
     private JavaMailSender mailSender;
+
     @Autowired
     public CustomerController(CustomerService customerService, JwtUtil jwtUtil, ModelMapper modelMapper) {
         this.customerService = customerService;
@@ -52,6 +52,11 @@ public class CustomerController {
     @GetMapping
     public List<Customer> getAllCustomers() {
         return customerService.getCustomers();
+    }
+
+    @GetMapping("get-all-filter")
+    public List<Customer> getAllCustomersByFilter(@RequestParam(defaultValue = "") String filter) {
+        return customerService.getCustomersByFilter(filter, filter, filter, filter);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -128,11 +133,12 @@ public class CustomerController {
 
         mailSender.send(message);
     }
+
     @PostMapping("/forgot-password")
     public ResponseEntity<String> processForgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
-        Customer customer=customerService.getEmailResetPassWord(email);
+        Customer customer = customerService.getEmailResetPassWord(email);
         System.out.println(email);
-        if(customer == null){
+        if (customer == null) {
             return ResponseEntity.badRequest().body("Email này không tồn tại");
         }
 
@@ -140,27 +146,29 @@ public class CustomerController {
 
         String token = RandomString.make(30);
         customerService.updateResetPasswordToken(token, email);
-        String resetPasswordLink =  token;
+        String resetPasswordLink = token;
         sendEmail(email, resetPasswordLink);
 
         return ResponseEntity.ok().body(resetPasswordLink);
     }
+
     @GetMapping("/Check-tokenforgot/{token}")
-    public ResponseEntity<String> CheckTokenForgot(@PathVariable(value = "token") String token)  {
+    public ResponseEntity<String> CheckTokenForgot(@PathVariable(value = "token") String token) {
 
         Customer customer = customerService.getByResetPasswordToken(token);
 
-        if(customer==null){
+        if (customer == null) {
             return ResponseEntity.badRequest().body("OTP của bạn đã hết hạn hoặc bạn đã nhập sai");
         }
         return ResponseEntity.ok().body(token);
     }
+
     @PutMapping("/reset_password/{token}")
-    public ResponseEntity<?> updateCustomer(@PathVariable(value = "token") String token,@RequestBody String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<?> updateCustomer(@PathVariable(value = "token") String token, @RequestBody String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         Customer customer = customerService.getByResetPasswordToken(token);
         System.out.println(token);
-        System.out.println("asd"+password);
+        System.out.println("asd" + password);
         if (customer == null) {
             return ResponseEntity.badRequest().body("OTP của bạn đã hết hạn hoặc bạn đã nhập sai");
         } else {

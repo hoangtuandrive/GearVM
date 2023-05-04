@@ -57,4 +57,37 @@ public class PurchaseService {
         }
         return getPurchaseListResponseList;
     }
+
+    public List<GetPurchaseListResponse> getPurchasesByFilter(String id, String employeeId, String employeeName, String productId, String productName) {
+        try {
+            Long parsedId = Long.parseLong(id);
+            Long parsedEmployeeId = Long.parseLong(employeeId);
+            Long parsedProductId = Long.parseLong(productId);
+
+            List<Purchase> purchaseList = purchaseRepository.findDistinctByIdEqualsOrEmployee_IdEqualsOrEmployee_NameContainingIgnoreCaseOrProduct_IdEqualsOrProduct_NameContainingIgnoreCaseOrderByIdAsc
+                    (parsedId, parsedEmployeeId, employeeName, parsedProductId, productName);
+            List<GetPurchaseListResponse> getPurchaseListResponseList = new ArrayList<>();
+
+            for (Purchase purchase : purchaseList) {
+                GetPurchaseListResponse getPurchaseListResponse = modelMapper.map(purchase, GetPurchaseListResponse.class);
+                getPurchaseListResponse.setEmployeeResponseModel(modelMapper.map(purchase.getEmployee(), EmployeeResponseModel.class));
+                getPurchaseListResponse.setProductResponseModel(modelMapper.map(purchase.getProduct(), ProductResponseModel.class));
+                getPurchaseListResponseList.add(getPurchaseListResponse);
+            }
+            return getPurchaseListResponseList;
+        } catch (NumberFormatException e) {
+            List<Purchase> purchaseList = purchaseRepository.findDistinctByIdEqualsOrEmployee_IdEqualsOrEmployee_NameContainingIgnoreCaseOrProduct_IdEqualsOrProduct_NameContainingIgnoreCaseOrderByIdAsc
+                    (null, null, employeeName, null, productName);
+            List<GetPurchaseListResponse> getPurchaseListResponseList = new ArrayList<>();
+
+            for (Purchase purchase : purchaseList) {
+                GetPurchaseListResponse getPurchaseListResponse = modelMapper.map(purchase, GetPurchaseListResponse.class);
+                getPurchaseListResponse.setEmployeeResponseModel(modelMapper.map(purchase.getEmployee(), EmployeeResponseModel.class));
+                getPurchaseListResponse.setProductResponseModel(modelMapper.map(purchase.getProduct(), ProductResponseModel.class));
+                getPurchaseListResponseList.add(getPurchaseListResponse);
+            }
+            return getPurchaseListResponseList;
+        }
+
+    }
 }

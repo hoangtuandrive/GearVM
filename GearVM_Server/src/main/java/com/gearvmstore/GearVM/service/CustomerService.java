@@ -28,6 +28,14 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public List<Customer> getCustomersByFilter(String id, String name, String phoneNumber, String email) {
+        try {
+            return customerRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrPhoneNumberContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(Long.parseLong(id), name, phoneNumber, email);
+        } catch (NumberFormatException e) {
+            return customerRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrPhoneNumberContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(null, name, phoneNumber, email);
+        }
+    }
+
     public Customer getCustomer(Long customerId) {
         return customerRepository.findById(customerId).get();
     }

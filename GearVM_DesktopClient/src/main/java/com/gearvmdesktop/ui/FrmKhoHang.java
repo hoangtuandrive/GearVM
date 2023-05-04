@@ -581,6 +581,13 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                     JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseToTableByFilter();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -627,6 +634,26 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         mapper.registerModule(new JavaTimeModule());
 
         BufferedReader rd = PurchaseService.getAllRequest(tableName);
+        List<GetPurchaseListResponse> listPurchase = Arrays.asList(mapper.readValue(rd, GetPurchaseListResponse[].class));
+
+        DecimalFormat df = new DecimalFormat("#,##0");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+
+        for (GetPurchaseListResponse p : listPurchase) {
+            double chiTieu = p.getPrice() * p.getQuantity();
+            modelKhoHang.addRow(new Object[]{p.getId(), p.getEmployeeResponseModel().getId(),
+                    p.getEmployeeResponseModel().getName(), dateFormat.format(p.getCreatedDate()),
+                    p.getProductResponseModel().getId(), p.getProductResponseModel().getName(),
+                    df.format(p.getPrice()), p.getQuantity(), df.format(chiTieu)});
+        }
+    }
+
+    public static void readDatabaseToTableByFilter() throws IOException {
+        emptyTable();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        BufferedReader rd = PurchaseService.getAllByFilterRequest(tableName, txtTim.getText());
         List<GetPurchaseListResponse> listPurchase = Arrays.asList(mapper.readValue(rd, GetPurchaseListResponse[].class));
 
         DecimalFormat df = new DecimalFormat("#,##0");

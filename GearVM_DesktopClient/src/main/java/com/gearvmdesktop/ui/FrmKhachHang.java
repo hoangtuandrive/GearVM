@@ -41,7 +41,7 @@ import java.util.List;
 
 public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, MouseListener {
     private static final String tableName = "customers/";
-    private JTextField txtTim;
+    private static JTextField txtTim;
     private static DefaultTableModel modelKhachHang;
     private static JTable tableKhachHang;
     private JComboBox<String> cmbChon;
@@ -552,6 +552,13 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                     JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseToTableByFilter();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -650,6 +657,26 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = EmployeeService.getAllRequest(tableName);
+        List<Customer> customerList = Arrays.asList(mapper.readValue(rd, Customer[].class));
+        for (Customer c : customerList) {
+            String gender;
+
+            if (c.getGender() == Gender.MALE) gender = "Nam";
+            else if (c.getGender() == Gender.FEMALE) gender = "Nữ";
+            else gender = "Không xác định";
+
+            modelKhachHang.addRow(new Object[]{c.getId(), c.getName(),
+                    dateFormat.format(c.getDateOfBirth()), gender,
+                    c.getPhoneNumber(), c.getEmail()});
+        }
+    }
+
+    public static void readDatabaseToTableByFilter() throws IOException {
+        emptyTable();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = EmployeeService.getAllByFilterRequest(tableName, txtTim.getText());
         List<Customer> customerList = Arrays.asList(mapper.readValue(rd, Customer[].class));
         for (Customer c : customerList) {
             String gender;

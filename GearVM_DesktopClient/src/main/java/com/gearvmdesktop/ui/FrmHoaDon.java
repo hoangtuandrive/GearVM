@@ -32,7 +32,7 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
     private static DefaultTableModel modelHoaDon;
     private static JTable tableHoaDon;
     private static JLabel txtDoanhThu;
-    private JTextField txtTim;
+    private static JTextField txtTim;
     private JLabel lblTim;
     private JButton btnTim;
     private JPanel p;
@@ -190,6 +190,7 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
         sorter1.setSortKeys(sortKeyss);
         sortHoaDon = true;
 
+        btnTim.addActionListener(this);
         tableHoaDon.addMouseListener(this);
 
         readDatabaseToTable();
@@ -199,7 +200,14 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        Object o = e.getSource();
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseToTableByFilter();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -241,6 +249,34 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = OrderService.getDeliveredOrderList();
+        List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+
+
+        for (GetOrderListResponse o : getOrderListResponse) {
+            String orderStatusString = "";
+            if (o.getOrderStatus() == OrderStatus.PAYMENT_PENDING) orderStatusString = "Đang chờ thanh toán";
+            else if (o.getOrderStatus() == OrderStatus.PAYMENT_DONE) orderStatusString = "Đang chờ xác nhận";
+            else if (o.getOrderStatus() == OrderStatus.SHIPPING) orderStatusString = "Đang giao hàng";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_SUCCESS) orderStatusString = "Giao hàng thành công";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_FAIL) orderStatusString = "Giao hàng thất bại";
+            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị từ chối";
+
+            modelHoaDon.addRow(new Object[]{
+                    o.getId(), o.getCustomer().getName(), o.getCustomer().getPhoneNumber(),
+                    orderStatusString, dateFormat.format(o.getCreatedDate()), df.format(o.getTotalPrice())
+            });
+        }
+    }
+
+    public static void readDatabaseToTableByFilter() throws IOException {
+        emptyTable();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getAllByFilterRequest("orders/", txtTim.getText());
         List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");

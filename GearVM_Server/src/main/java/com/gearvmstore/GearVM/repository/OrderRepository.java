@@ -19,5 +19,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByIsDirectOrderByCreatedDateDesc(boolean isDirect);
 
+    List<Order> findDistinctByIsDirectAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+            (boolean isDirect, Long id, String customerName, String customerPhoneNumber);
+
     List<Order> findAllByIsDirectAndOrderStatusNotOrderByCreatedDateDesc(boolean isDirect, OrderStatus orderStatus);
+
+    List<Order> findDistinctByIsDirectAndOrderStatusNotAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+            (boolean isDirect, OrderStatus orderStatus, Long id, String customerName, String customerPhoneNumber);
 }

@@ -18,6 +18,12 @@ public class PurchaseController {
         return ResponseEntity.status(HttpStatus.OK).body(purchaseService.getPurchases());
     }
 
+    @GetMapping("get-all-filter")
+    public ResponseEntity<?> getAllPurchasesByFilter(@RequestParam(defaultValue = "") String filter) {
+        return ResponseEntity.status(HttpStatus.OK).body(purchaseService.getPurchasesByFilter(filter, filter, filter, filter, filter));
+    }
+
+
     @PostMapping()
     public ResponseEntity<?> createPurchase(@RequestBody CreatePurchase createPurchase) {
         return ResponseEntity.status(HttpStatus.OK).body(purchaseService.createPurchase(createPurchase));

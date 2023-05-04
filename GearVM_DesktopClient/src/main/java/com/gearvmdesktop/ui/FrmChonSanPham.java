@@ -471,6 +471,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnTim.addActionListener(this);
         btnChiTiet.addActionListener(this);
         btnChonSanPham.addActionListener(this);
+        btnTim.addActionListener(this);
         tableSanPham.addMouseListener(this);
 
         readDatabaseToTable();
@@ -620,6 +621,13 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
                 selectProduct();
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseFilterToTable();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -667,6 +675,19 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         ObjectMapper mapper = new ObjectMapper();
         // Get all products
         BufferedReader rd = ProductService.getAllRequest(tableName + "/get-all");
+        List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+        DecimalFormat df = new DecimalFormat("#,##0");
+        for (Product p : listProduct) {
+            modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
+        }
+    }
+
+    public static void readDatabaseFilterToTable() throws IOException {
+        emptyTable();
+        ObjectMapper mapper = new ObjectMapper();
+        // Get all products
+        BufferedReader rd = ProductService.getAllByFilterRequest(tableName, txtTim.getText());
         List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
         DecimalFormat df = new DecimalFormat("#,##0");
         for (Product p : listProduct) {

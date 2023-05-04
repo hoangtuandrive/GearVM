@@ -33,6 +33,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getAllOnlineOrdersAndPaidDirectOrders(), HttpStatus.OK);
     }
 
+    @GetMapping("get-all-filter")
+    public ResponseEntity<?> getAllOnlineOrdersAndPaidDirectOrdersByFilter(@RequestParam(defaultValue = "") String filter) {
+        return new ResponseEntity<>(orderService.getAllOnlineOrdersAndPaidDirectOrdersByFilter(filter, filter, filter), HttpStatus.OK);
+    }
+
     @GetMapping("current-customer")
     public ResponseEntity<?> getOrderListByCurrentCustomerToken(@RequestHeader(name = "Authorization") String header) {
         if (header == null)

@@ -11,8 +11,8 @@ import com.gearvmstore.GearVM.model.Customer;
 import com.gearvmstore.GearVM.model.Gender;
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
+import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
 import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
 import com.toedter.calendar.JDateChooser;
@@ -66,7 +66,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private JDateChooser txtNgaySinh;
     private JLabel lblNgaySinh;
     private static JComboBox<String> cmbDanhSachSdt;
-    private JTextField txtTim;
+    private static JTextField txtTim;
     private JButton btnTimKHCu;
     private JLabel lblGioHang;
     private JPanel pTitle1;
@@ -363,6 +363,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         btnTru.addActionListener(this);
         btnLamMoi.addActionListener(this);
         btnThanhToan.addActionListener(this);
+        btnTim.addActionListener(this);
         cmbGioHang.addActionListener(this);
 
         return p;
@@ -524,6 +525,13 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 throw new RuntimeException(ex);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseFilterToTable();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     //region
@@ -565,6 +573,20 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                     p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
         }
     }
+
+    public static void readDatabaseFilterToTable() throws IOException {
+        emptyTableProduct();
+        ObjectMapper mapper = new ObjectMapper();
+        // Get all products
+        BufferedReader rd = ProductService.getAllByFilterRequest(tableNameProduct, txtTim.getText());
+        List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+        DecimalFormat df = new DecimalFormat("#,##0");
+        for (Product p : listProduct) {
+            modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
+        }
+    }
+
 
     public static void emptyTableProduct() {
         DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();
@@ -680,12 +702,13 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         cmbGioHang.removeAllItems();
         cmbGioHang.addItem("");
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = OrderService.getPendingDirectOrderList();
         if (rd != null) {
-            List<GetPendingDirectOrderListResponse> directOrderList = List.of(mapper.readValue(rd, GetPendingDirectOrderListResponse[].class));
-            for (GetPendingDirectOrderListResponse directOrder : directOrderList
+            List<GetOrderListResponse> directOrderList = List.of(mapper.readValue(rd, GetOrderListResponse[].class));
+            for (GetOrderListResponse directOrder : directOrderList
             ) {
-                String row = directOrder.getCustomerName() + ", " + directOrder.getCustomerPhoneNumber();
+                String row = directOrder.getCustomer().getName() + ", " + directOrder.getCustomer().getPhoneNumber();
                 cmbGioHang.addItem(row);
             }
         }
