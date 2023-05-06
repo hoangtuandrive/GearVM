@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.service.EmployeeService;
 import com.gearvmstore.GearVM.model.Employee;
+import com.gearvmstore.GearVM.model.Role;
 import com.gearvmstore.GearVM.model.dto.user.LoginDto;
 import org.json.JSONException;
 
@@ -77,8 +78,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 
         JPanel pBot = new JPanel();
 //		btnDangNhap = new JButton("Đăng Nhập", new ImageIcon("image/trangchu.png"));
-        btnDangNhap = new JButton("Đăng Nhập",new ImageIcon(iconDangNhap));
-        btnThoat = new JButton("Thoát",new ImageIcon(iconThoat));
+        btnDangNhap = new JButton("Đăng Nhập", new ImageIcon(iconDangNhap));
+        btnThoat = new JButton("Thoát", new ImageIcon(iconThoat));
         pBot.add(Box.createHorizontalStrut(100));
         pBot.add(btnDangNhap);
 
@@ -166,13 +167,20 @@ public class FrmDangNhap extends JFrame implements ActionListener {
         if (o.equals(btnDangNhap)) {
             try {
                 Employee employee = login();
-
-                if (employee != null) {
-                    GUI gui = new GUI(employee);
-                    gui.setVisible(true);
-                    gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                    gui.setLocationRelativeTo(null);
-                    dispose();
+                if (employee != null && employee.isWorkStatus()) {
+                    if (employee.getRole() == Role.EMPLOYEE) {
+                        GUI_NhanVien gui = new GUI_NhanVien(employee);
+                        gui.setVisible(true);
+                        gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                        gui.setLocationRelativeTo(null);
+                        dispose();
+                    } else if (employee.getRole() == Role.MANAGER) {
+                        GUI_QuanLy gui = new GUI_QuanLy(employee);
+                        gui.setVisible(true);
+                        gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                        gui.setLocationRelativeTo(null);
+                        dispose();
+                    }
                 } else JOptionPane.showMessageDialog(this, "Đăng Nhập Thất Bại!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             } catch (IOException | JSONException ex) {
                 throw new RuntimeException(ex);

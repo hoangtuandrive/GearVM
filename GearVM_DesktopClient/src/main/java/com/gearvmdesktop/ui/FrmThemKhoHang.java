@@ -519,7 +519,7 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         readDatabaseToTable();
-                        GUI.readAllDatabaseToTable();
+                        GUI_NhanVien.readAllDatabaseToTable();
                     } else {
                         JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);

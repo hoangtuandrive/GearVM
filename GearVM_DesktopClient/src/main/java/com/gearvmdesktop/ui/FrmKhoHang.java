@@ -532,7 +532,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
                     if (postRequest()) {
                         JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        GUI.readAllDatabaseToTable();
+                        GUI_NhanVien.readAllDatabaseToTable();
                     } else {
                         JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thất bại!", "Thất bại",
                                 JOptionPane.ERROR_MESSAGE);

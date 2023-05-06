@@ -297,7 +297,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                     if (patchProcessDirectOrderPayment()) {
                         JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thành công", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        GUI.readAllDatabaseToTable();
+                        GUI_NhanVien.readAllDatabaseToTable();
                         FrmBanHang.emptyTableCart();
                     } else {
                         JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thất bại", "Thất bại",

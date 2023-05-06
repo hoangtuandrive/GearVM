@@ -399,7 +399,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                             JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
                                     JOptionPane.INFORMATION_MESSAGE);
                             clearTextField();
-                            GUI.readAllDatabaseToTable();
+                            GUI_NhanVien.readAllDatabaseToTable();
                             emptyTableCart();
                             cmbGioHang.setSelectedIndex(cmbGioHang.getItemCount() - 1);
                         } else if (resultCreateCart == 1) {
