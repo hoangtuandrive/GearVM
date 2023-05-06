@@ -33,7 +33,7 @@ public class ReportService {
     }
 
     public List<MostSoldProductResponseModel> getMostSoldItems() {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         return orderItemRepository.findMostSoldItems(pageable);
     }
 
