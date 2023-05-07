@@ -773,7 +773,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             cell.setCellValue("Người lập:");
             cell = row.createCell(2);
 
-            cell.setCellValue(GUI.getEmployeeInfo().getName());
+            cell.setCellValue(GUI_NhanVien.getEmployeeInfo().getName());
             worksheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
 
             // Dòng 3 ngày lập

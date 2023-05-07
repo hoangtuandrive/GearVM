@@ -2,7 +2,6 @@ package com.gearvmdesktop.ui;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmstore.GearVM.model.Employee;
-import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import sun.misc.Unsafe;
 
 import javax.swing.*;
@@ -273,12 +272,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public static EmployeeResponseModel getEmployeeInfo() {
-        EmployeeResponseModel e = new EmployeeResponseModel();
-        e.setId(Long.parseLong(txtMaNhanVien.getText()));
-        e.setName(txtTenNhanVien.getText());
-        return e;
-    }
+//    public static EmployeeResponseModel getEmployeeInfo() {
+//        EmployeeResponseModel e = new EmployeeResponseModel();
+//        e.setId(Long.parseLong(txtMaNhanVien.getText()));
+//        e.setName(txtTenNhanVien.getText());
+//        return e;
+//    }
 
     public static void disableWarning() {
         try {
@@ -294,13 +293,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
         }
     }
 
-    public static void readAllDatabaseToTable() throws IOException {
-        FrmDonHang.readDatabaseToTable();
-        FrmKhachHang.readDatabaseToTable();
-        FrmNhanVien.readDatabaseToTable();
-        FrmSanPham.readDatabaseToTable();
-        FrmKhoHang.readDatabaseToTable();
-        FrmBanHang.readDatabase();
-        FrmHoaDon.readDatabaseToTable();
-    }
+//    public static void readAllDatabaseToTable() throws IOException {
+//        FrmDonHang.readDatabaseToTable();
+//        FrmKhachHang.readDatabaseToTable();
+//        FrmNhanVien.readDatabaseToTable();
+//        FrmSanPham.readDatabaseToTable();
+//        FrmKhoHang.readDatabaseToTable();
+//        FrmBanHang.readDatabase();
+//        FrmHoaDon.readDatabaseToTable();
+//    }
 }
