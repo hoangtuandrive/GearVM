@@ -512,20 +512,24 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
             }
         }
         if (o.equals(btnNhap)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (postRequest()) {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                        GUI.readAllDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            }else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (postRequest()) {
+                            JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readDatabaseToTable();
+                            GUI.readAllDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (IOException | JSONException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -793,5 +797,45 @@ public class FrmThemKhoHang extends JFrame implements ActionListener, MouseListe
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean validInput() {
+
+        String giaNhap = txtGiaNhap.getText();
+        String soLuong = txtSoLuong.getText();
+
+        if (giaNhap.trim().length() > 0) {
+            try {
+                double x = Double.parseDouble(giaNhap);
+                if (x <= 0) {
+                    JOptionPane.showMessageDialog(this, "Giá Sản Phẩm phải lớn hơn 0", "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Giá Sản Phẩm phải nhập số", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Giá Sản Phẩm không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (soLuong.trim().length() > 0) {
+            try {
+
+                int x = Integer.parseInt(soLuong);
+                if (x < 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Số lượng phải nhập số", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số lượng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

@@ -6,15 +6,26 @@ import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
 import javax.persistence.EntityManager;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+
+
 
 @Service
 public class OrderService {
@@ -220,6 +231,7 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
+
     public List<GetOrderListResponse> getOrderListByOrderStatus(OrderStatus orderStatus) {
         List<Order> orderList = orderRepository.findAllByOrderStatusOrderByCreatedDateDesc(orderStatus);
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
@@ -408,5 +420,29 @@ public class OrderService {
         order.setCreatedDate(LocalDateTime.now());
         order.setUpdatedDate(LocalDateTime.now());
         return orderRepository.save(order);
+    }
+    public List<PrintOrderDto> getPrintOrderById(Long id) {
+        System.out.println(orderRepository.findPrintOrderByOrderId_Named(id));
+        System.out.println("id"+id);
+        return orderRepository.findPrintOrderByOrderId_Named(id);
+    }
+    public String exportReport(Long id) throws FileNotFoundException, JRException {
+        String path = "C:\\Users\\ASUS\\Desktop";
+        List<PrintOrderDto> listOrder = orderRepository.findPrintOrderByOrderId_Named(id);
+
+        //load file and compile it
+        File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOrder);
+
+//        JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("orderId", id);
+        System.out.println(listOrder);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
+
+        return "report generated in path : " + path;
     }
 }

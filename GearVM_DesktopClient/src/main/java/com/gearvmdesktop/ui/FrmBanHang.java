@@ -1,9 +1,11 @@
 package com.gearvmdesktop.ui;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.json.Json;
 import com.gearvmdesktop.service.CustomerService;
 import com.gearvmdesktop.service.OrderService;
 import com.gearvmdesktop.service.ProductService;
@@ -11,13 +13,12 @@ import com.gearvmstore.GearVM.model.Customer;
 import com.gearvmstore.GearVM.model.Gender;
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
-import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import com.gearvmstore.GearVM.model.response.GetPendingDirectOrderListResponse;
-import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
-import com.gearvmstore.GearVM.model.response.ProductResponseModel;
+import com.gearvmstore.GearVM.model.response.*;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -386,10 +387,9 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
             }
         }
         if (o.equals(btnTaoGioHang)) {
-            if (txtTenKhachHang.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập thông tin khách hàng", "Thất bại",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
+            if (!validInputKhachHang())
+                return;
+            else {
                 int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (result == JOptionPane.YES_OPTION) {
                     try {
@@ -414,7 +414,6 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                     }
                 }
             }
-
         }
         if (o.equals(cmbGioHang)) {
             try {
@@ -435,12 +434,12 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 Object giaTriCmb = cmbGioHang.getSelectedItem();
                 int row = tableSanPham.getSelectedRow();
                 String soLuong = txtSoLuong.getText();
-                System.out.println(modelSanPham.getValueAt(row, 5).toString().trim());
+//                System.out.println(modelSanPham.getValueAt(row, 5).toString().trim());
                 if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
                     JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng", "Thất bại", JOptionPane.ERROR_MESSAGE);
                     return;
-                } else if (soLuong.equals("") && soLuong.equals("0")) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần thêm!", "Thất bại",
+                } else if (soLuong.equals("") || soLuong.equals("0")) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng cần thêm!", "Thất bại",
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 } else if (row < 0) {
@@ -477,8 +476,8 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 if (giaTriCmb == null || giaTriCmb.toString().trim().equals("")) {
                     JOptionPane.showMessageDialog(this, "Vui lòng chọn giỏ hàng!", "Thất bại", JOptionPane.ERROR_MESSAGE);
                     return;
-                } else if (soLuong.equals("") && soLuong.equals("0")) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng cần giảm!", "Thất bại",
+                } else if (soLuong.equals("") || soLuong.equals("0")) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng cần giảm!", "Thất bại",
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 } else if (row < 0) {
@@ -680,16 +679,18 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         cmbGioHang.removeAllItems();
         cmbGioHang.addItem("");
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = OrderService.getPendingDirectOrderList();
         if (rd != null) {
-            List<GetPendingDirectOrderListResponse> directOrderList = List.of(mapper.readValue(rd, GetPendingDirectOrderListResponse[].class));
-            for (GetPendingDirectOrderListResponse directOrder : directOrderList
+            List<GetOrderListResponse> directOrderList = List.of(mapper.readValue(rd, GetOrderListResponse[].class));
+            for (GetOrderListResponse directOrder : directOrderList
             ) {
-                String row = directOrder.getCustomerName() + ", " + directOrder.getCustomerPhoneNumber();
+                String row = directOrder.getCustomer().getName() + ", " + directOrder.getCustomer().getPhoneNumber();
                 cmbGioHang.addItem(row);
             }
         }
     }
+
 
     public static void readDatabase() throws IOException {
         setAllPhoneNumberToCombobox();
@@ -774,4 +775,35 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         BufferedReader rd = ProductService.getRequest(tableNameProduct, productId);
         return mapper.readValue(rd, Product.class);
     }
+    private boolean validInputKhachHang() {
+        // TODO Auto-generated method stub
+
+        String tenKH = txtTenKhachHang.getText();
+        String sdt = cmbDanhSachSdt.getSelectedItem().toString();
+
+
+        if (tenKH.trim().length() > 0) {
+            if (!(tenKH.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)0-9]+"))) {
+                JOptionPane.showMessageDialog(this, "Tên khách hàng phải là ký tự chữ", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (sdt.trim().length() > 0) {
+            if (!(sdt.matches(
+                    "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$"))) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
 }

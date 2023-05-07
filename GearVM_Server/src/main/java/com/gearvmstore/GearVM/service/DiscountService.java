@@ -54,7 +54,7 @@ public class DiscountService {
                 + "<p>Lưu ý mã giảm giá chỉ cho phép sử trong vòng 1 tháng , "
                 + "nếu bạn không sử dụng sẽ hết hạn.</p>";
 
-        helper.setSubject(subject);
+        helper.setSubject(subject); 
 
         helper.setText(content, true);
 

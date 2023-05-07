@@ -11,6 +11,9 @@ import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
+
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -25,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -250,7 +254,8 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         txtDiaChi.setEditable(false);
         btnQRCode.setEnabled(false);
         btnProcessPayment.setEnabled(false);
-        btnPrintBill.setEnabled(false);
+
+        btnPrintBill.setEnabled(true);
 
         btnProcessPayment.addActionListener(this);
         btnPrintBill.addActionListener(this);
@@ -291,22 +296,26 @@ public class FrmThanhToan extends JFrame implements ActionListener {
             }
         }
         if (o.equals(btnProcessPayment)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (patchProcessDirectOrderPayment()) {
-                        JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thành công", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        GUI.readAllDatabaseToTable();
-                        FrmBanHang.emptyTableCart();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thất bại", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if(cmbPhuongThucNhanHang.getSelectedIndex() == 2 && !validInputKhachHang()){
+                return;
+            } else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (patchProcessDirectOrderPayment()) {
+                            JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thành công", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            GUI.readAllDatabaseToTable();
+                            FrmBanHang.emptyTableCart();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thất bại", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (JSONException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (JSONException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -315,6 +324,9 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                 new FrmQRCode(0);
             else if (cmbPhuongThucThanhToan.getSelectedIndex() == 4)
                 new FrmQRCode(1);
+        }
+        if(o.equals(btnPrintBill)){
+
         }
     }
 
@@ -377,5 +389,45 @@ public class FrmThanhToan extends JFrame implements ActionListener {
             processDirectOrderPayment.setPaymentMethod(PaymentMethod.MOMO);
 
         return OrderService.patchProcessDirectOrderPayment(processDirectOrderPayment);
+    }
+    private boolean validInputKhachHang() {
+        // TODO Auto-generated method stub
+
+        String tenKH = txtTenKhachHangNhanHang.getText();
+        String sdt = txtSdtKhachHangNhanHang.getText();
+        String diaChi = txtDiaChi.getText();
+
+
+        if (tenKH.trim().length() > 0) {
+            if (!(tenKH.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)0-9]+"))) {
+                JOptionPane.showMessageDialog(this, "Tên khách hàng phải là ký tự chữ", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (sdt.trim().length() > 0) {
+            if (!(sdt.matches(
+                    "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$"))) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (diaChi.trim().length() > 0) {
+            if (!(diaChi.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
+                JOptionPane.showMessageDialog(this, "Địa chỉ không chứa ký tự đặc biệt", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Địa chỉ không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }
