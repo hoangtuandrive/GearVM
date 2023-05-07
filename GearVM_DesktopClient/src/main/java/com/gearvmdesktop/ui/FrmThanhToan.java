@@ -1,18 +1,19 @@
 package com.gearvmdesktop.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.service.OrderService;
 import com.gearvmdesktop.service.ProductService;
 import com.gearvmstore.GearVM.model.PaymentMethod;
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.order.PrintOrderDto;
 import com.gearvmstore.GearVM.model.dto.order.ProcessDirectOrderPayment;
 import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.view.JasperViewer;
+
 
 import org.json.JSONException;
 
@@ -28,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -326,9 +328,32 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                 new FrmQRCode(1);
         }
         if(o.equals(btnPrintBill)){
-
+            try {
+                printOrder();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
+
+    private void printOrder() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getReportOrder(Long.parseLong("8"));
+
+        System.out.println(rd.readLine());
+        if (rd.ready()) {
+            List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
+            System.out.println(printOrderDto);
+        } else {
+            System.out.println("No content read from the BufferedReader.");
+        }
+        System.out.println(rd.lines());
+//      List<PrintOrderDto> printOrderDto= List.of(mapper.readValue(rd, PrintOrderDto[].class));
+
+    }
+
+
 
     public void readDatabaseToTable(GetOrderResponse getOrderResponse) throws IOException {
         emptyTable();
@@ -366,7 +391,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
     }
 
     public boolean patchProcessDirectOrderPayment() throws JSONException, IOException {
-        EmployeeResponseModel employeeResponseModel = GUI.getEmployeeInfo();
+        EmployeeResponseModel employeeResponseModel = GUI_NhanVien.getEmployeeInfo();
 
         ProcessDirectOrderPayment processDirectOrderPayment = new ProcessDirectOrderPayment();
         processDirectOrderPayment.setOrderId(Long.parseLong(txtMaDonHang.getText()));

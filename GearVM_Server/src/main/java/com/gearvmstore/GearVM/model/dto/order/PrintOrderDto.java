@@ -1,6 +1,7 @@
 package com.gearvmstore.GearVM.model.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import lombok.*;
 
 import javax.persistence.ColumnResult;
@@ -9,6 +10,7 @@ import javax.persistence.SqlResultSetMapping;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
@@ -54,4 +56,5 @@ public class PrintOrderDto {
         this.sanPham_GiaBan = sanPham_GiaBan;
         this.sanPham_Loai = sanPham_Loai;
     }
+   
 }

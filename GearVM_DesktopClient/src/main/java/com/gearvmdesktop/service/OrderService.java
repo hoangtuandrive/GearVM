@@ -174,4 +174,11 @@ public class OrderService extends ApiService {
         HttpResponse response = client.execute(request);
         return response.getStatusLine().getStatusCode() == 200;
     }
+    public static BufferedReader getReportOrder(Long id) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "print-order/"+id);
+        HttpResponse response = client.execute(request);
+        if (response.getStatusLine().getStatusCode() != 200) return null;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    }
 }

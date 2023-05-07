@@ -80,6 +80,7 @@
             <artifactId>jasperreports-fonts</artifactId>
             <version>6.8.1</version>
         </dependency>
+
     </dependencies>
 
     <build>

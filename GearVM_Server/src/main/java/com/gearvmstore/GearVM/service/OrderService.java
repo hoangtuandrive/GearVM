@@ -4,11 +4,17 @@ import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
+import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.*;
+
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +25,7 @@ import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
+import java.util.*;
 
 
 @Service
@@ -463,7 +464,7 @@ public class OrderService {
     public String exportReport(Long id) throws FileNotFoundException, JRException {
         String path = "C:\\Users\\ASUS\\Desktop";
         List<PrintOrderDto> listOrder = orderRepository.findPrintOrderByOrderId_Named(id);
-
+//        List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
         //load file and compile it
         File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
@@ -472,11 +473,11 @@ public class OrderService {
 //        JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("orderId", id);
-        System.out.println(listOrder);
+//        System.out.println(listOrder);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
 
-        return "report generated in path : " + path;
+        return "Xuất báo cáo : " + path;
     }
 }
