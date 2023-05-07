@@ -87,7 +87,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> findDistinctByIdEqualsOrNameOrBrandOrType(String id, String name, String brand, String type) {
+    public List<Product> getAllProductsByFilter(String id, String name, String brand, String type) {
         try {
             return productRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByIdAsc
                     (Long.parseLong(id), name, brand, type);

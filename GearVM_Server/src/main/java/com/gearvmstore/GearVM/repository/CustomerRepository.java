@@ -18,6 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT DISTINCT c.phoneNumber FROM Customer c")
     List<String> findAllPhoneNumber();
 
-
     public Customer findByResetPasswordToken(String token);
+
+    List<Customer> findDistinctByIdEqualsOrNameContainingIgnoreCaseOrPhoneNumberContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(Long id, String name, String phoneNumber, String email);
 }

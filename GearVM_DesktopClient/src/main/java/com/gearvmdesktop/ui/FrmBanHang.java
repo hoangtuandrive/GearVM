@@ -67,7 +67,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
     private JDateChooser txtNgaySinh;
     private JLabel lblNgaySinh;
     private static JComboBox<String> cmbDanhSachSdt;
-    private JTextField txtTim;
+    private static JTextField txtTim;
     private JButton btnTimKHCu;
     private JLabel lblGioHang;
     private JPanel pTitle1;
@@ -364,6 +364,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         btnTru.addActionListener(this);
         btnLamMoi.addActionListener(this);
         btnThanhToan.addActionListener(this);
+        btnTim.addActionListener(this);
         cmbGioHang.addActionListener(this);
 
         return p;
@@ -398,7 +399,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                             JOptionPane.showMessageDialog(null, "Tạo giỏ hàng thành công. Shopping!", "Thành công",
                                     JOptionPane.INFORMATION_MESSAGE);
                             clearTextField();
-                            GUI.readAllDatabaseToTable();
+                            GUI_NhanVien.readAllDatabaseToTable();
                             emptyTableCart();
                             cmbGioHang.setSelectedIndex(cmbGioHang.getItemCount() - 1);
                         } else if (resultCreateCart == 1) {
@@ -523,6 +524,13 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                 throw new RuntimeException(ex);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseFilterToTable();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     //region
@@ -564,6 +572,20 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
                     p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
         }
     }
+
+    public static void readDatabaseFilterToTable() throws IOException {
+        emptyTableProduct();
+        ObjectMapper mapper = new ObjectMapper();
+        // Get all products
+        BufferedReader rd = ProductService.getAllByFilterRequest(tableNameProduct, txtTim.getText());
+        List<Product> listProduct = Arrays.asList(mapper.readValue(rd, Product[].class));
+        DecimalFormat df = new DecimalFormat("#,##0");
+        for (Product p : listProduct) {
+            modelSanPham.addRow(new Object[]{p.getId(), p.getName(), p.getType(),
+                    p.getBrand(), df.format(p.getPrice()), p.getQuantity()});
+        }
+    }
+
 
     public static void emptyTableProduct() {
         DefaultTableModel dm = (DefaultTableModel) tableSanPham.getModel();

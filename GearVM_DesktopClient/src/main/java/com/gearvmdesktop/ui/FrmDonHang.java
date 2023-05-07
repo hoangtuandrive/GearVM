@@ -32,7 +32,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
     private static DefaultTableModel modelDonHang;
     private JButton btnTim, btnReset;
     private JComboBox<String> cmbChon;
-    private JTextField txtTim;
+    private static JTextField txtTim;
     private JLabel lblHiddenId;
     private JLabel lblHiddenName;
 
@@ -114,7 +114,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
 
-        btnReset = new JButton("LOAD LẠI TẠM THỜI", new ImageIcon(iconLoad));
+        btnReset = new JButton(new ImageIcon(iconLoad));
         btnReset.setBackground(new Color(0, 148, 224));
         btnReset.setForeground(Color.WHITE);
 
@@ -144,6 +144,7 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         btnReset.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         tableDonHang.addMouseListener(this);
+        btnTim.addActionListener(this);
         btnReset.addActionListener(this);
 
         readDatabaseToTable();
@@ -160,6 +161,13 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
                 throw new RuntimeException(ex);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseToTableByFilter();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     public static void readDatabaseToTable() throws IOException {
@@ -168,6 +176,34 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = OrderService.getAllOnlineOrdersAndPaidDirectOrders();
+        List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+
+
+        for (GetOrderListResponse o : getOrderListResponse) {
+            String orderStatusString = "";
+            if (o.getOrderStatus() == OrderStatus.PAYMENT_PENDING) orderStatusString = "Đang chờ thanh toán";
+            else if (o.getOrderStatus() == OrderStatus.PAYMENT_DONE) orderStatusString = "Đang chờ xác nhận";
+            else if (o.getOrderStatus() == OrderStatus.SHIPPING) orderStatusString = "Đang giao hàng";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_SUCCESS) orderStatusString = "Giao hàng thành công";
+            else if (o.getOrderStatus() == OrderStatus.SHIP_FAIL) orderStatusString = "Giao hàng thất bại";
+            else if (o.getOrderStatus() == OrderStatus.REJECTED) orderStatusString = "Đơn hàng bị từ chối";
+
+            modelDonHang.addRow(new Object[]{
+                    o.getId(), o.getCustomer().getName(), o.getCustomer().getPhoneNumber(),
+                    orderStatusString, dateFormat.format(o.getCreatedDate()), df.format(o.getTotalPrice())
+            });
+        }
+    }
+
+    public static void readDatabaseToTableByFilter() throws IOException {
+        emptyTable();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getAllByFilterRequest("orders/", txtTim.getText());
         List<GetOrderListResponse> getOrderListResponse = Arrays.asList(mapper.readValue(rd, GetOrderListResponse[].class));
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("k:mm dd-MM-yyyy");

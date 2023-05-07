@@ -25,9 +25,14 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public List<Employee> readEmployees() {
         return employeeService.getEmployees();
+    }
+
+    @GetMapping("get-all-filter")
+    public List<Employee> readEmployeesByFilter(@RequestParam(defaultValue = "") String filter) {
+        return employeeService.getEmployeesByFilter(filter, filter, filter, filter);
     }
 
     @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)

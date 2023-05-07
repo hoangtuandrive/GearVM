@@ -37,6 +37,14 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+    public List<Employee> getEmployeesByFilter(String id, String name, String phoneNumber, String email) {
+        try {
+            return employeeRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrPhoneNumberContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(Long.parseLong(id), name, phoneNumber, email);
+        } catch (NumberFormatException e) {
+            return employeeRepository.findDistinctByIdEqualsOrNameContainingIgnoreCaseOrPhoneNumberContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(null, name, phoneNumber, email);
+        }
+    }
+
     public Employee getEmployee(Long employeeId) {
         return employeeRepository.findById(employeeId).get();
     }

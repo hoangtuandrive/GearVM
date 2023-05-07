@@ -215,6 +215,40 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
+    public List<GetOrderListResponse> getAllOnlineOrdersAndPaidDirectOrdersByFilter(String id, String customerName, String customerPhoneNumber) {
+        try {
+//            List<Order> paidDirectOrder = orderRepository.findAllByIsDirectAndOrderStatusNotAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+//                    (true, OrderStatus.DIRECT_PENDING, Long.parseLong(id), customerName, customerPhoneNumber);
+
+            List<Order> onlineOrder = orderRepository.findDistinctByIsDirectAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+                    (false, Long.parseLong(id), customerName, customerPhoneNumber);
+
+//            paidDirectOrder.addAll(onlineOrder);
+
+            List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+            for (Order order : onlineOrder) {
+                GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+                getOrderListResponseList.add(orderListResponse);
+            }
+            return getOrderListResponseList;
+        } catch (NumberFormatException e) {
+//            List<Order> paidDirectOrder = orderRepository.findDistinctByIsDirectAndOrderStatusNotAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+//                    (true, OrderStatus.DIRECT_PENDING, null, customerName, customerPhoneNumber);
+
+            List<Order> onlineOrder = orderRepository.findDistinctByIsDirectAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
+                    (false, null, customerName, customerPhoneNumber);
+
+//            paidDirectOrder.addAll(onlineOrder);
+
+            List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
+            for (Order order : onlineOrder) {
+                GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
+                getOrderListResponseList.add(orderListResponse);
+            }
+            return getOrderListResponseList;
+        }
+    }
+
     public List<GetOrderListResponse> getOrderListByCurrentCustomerToken(String token) {
         Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
         if (customer == null)

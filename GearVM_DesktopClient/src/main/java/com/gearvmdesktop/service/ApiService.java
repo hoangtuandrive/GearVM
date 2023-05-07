@@ -20,7 +20,7 @@ public class ApiService {
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
-    public static BufferedReader getAllFilterRequest(String tableName, String filter) throws IOException {
+    public static BufferedReader getAllByFilterRequest(String tableName, String filter) throws IOException {
         HttpClient client = new DefaultHttpClient();
 
         String filterEncoded = URLEncoder.encode(filter, "UTF-8").replaceAll("\\+", "%20");

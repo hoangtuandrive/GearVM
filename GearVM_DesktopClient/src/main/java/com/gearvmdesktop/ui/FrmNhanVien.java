@@ -639,6 +639,13 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
                     JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
+        if (o.equals(btnTim)) {
+            try {
+                readDatabaseToTableByFilter();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -776,6 +783,33 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         BufferedReader rd = EmployeeService.getAllRequest(tableName);
+        List<Employee> employeeList = Arrays.asList(mapper.readValue(rd, Employee[].class));
+        for (Employee e : employeeList) {
+            String gender;
+            String role;
+
+            if (e.getGender() == Gender.MALE) gender = "Nam";
+            else if (e.getGender() == Gender.FEMALE) gender = "Nữ";
+            else gender = "Không xác định";
+
+            if (e.getRole() == Role.EMPLOYEE) role = "Nhân viên";
+            else role = "Quản lý";
+
+
+            modelNhanVien.addRow(new Object[]{e.getId(), e.getName(),
+                    dateFormat.format(e.getDateOfBirth()), e.getNationalId(), gender,
+                    e.getPhoneNumber(), role, e.getEmail(), e.getAddress(),
+                    df.format(e.getSalary()), e.isWorkStatus() ? "Đang làm" : "Đã nghỉ việc"});
+        }
+    }
+
+    public static void readDatabaseToTableByFilter() throws IOException {
+        emptyTable();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DecimalFormat df = new DecimalFormat("#,##0");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = EmployeeService.getAllByFilterRequest(tableName, txtTim.getText());
         List<Employee> employeeList = Arrays.asList(mapper.readValue(rd, Employee[].class));
         for (Employee e : employeeList) {
             String gender;

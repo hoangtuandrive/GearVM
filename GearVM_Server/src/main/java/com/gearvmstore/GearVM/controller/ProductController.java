@@ -73,7 +73,7 @@ public class ProductController {
 
     @GetMapping(value = "get-all-filter")
     public List<Product> readAllProductsByFilter(@RequestParam(defaultValue = "") String filter) {
-        return productService.findDistinctByIdEqualsOrNameOrBrandOrType(filter, filter, filter, filter);
+        return productService.getAllProductsByFilter(filter, filter, filter, filter);
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
