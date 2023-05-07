@@ -355,19 +355,20 @@ public class OrderService {
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems) {
             // If there are item in cart --> plus existing item
-            if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
+            if (orderItem.getProduct().getId().equals(updateOrderItem.getProductId())) {
                 int newQuantity = orderItem.getQuantity() + updateOrderItem.getAmount();
-
+                System.out.println(orderItems);
                 orderItem.setQuantity(newQuantity);
                 productService.reduceQuantity(orderItem.getProduct(), quantity);
                 orderItemRepository.save(orderItem);
 
                 return updateTotalPrice(order);
             }
+
         }
 
         OrderItem orderItemToAdd = new OrderItem();
-        Product product = productService.getProduct(Long.parseLong(updateOrderItem.getProductId()));
+        Product product = productService.getProduct(updateOrderItem.getProductId());
 
         orderItemToAdd.setProduct(product);
         orderItemToAdd.setId(order.getId());
@@ -375,12 +376,14 @@ public class OrderService {
         orderItemToAdd.setPrice(product.getPrice());
         orderItemToAdd.setOrder(order);
 
-        order.setTotalPrice(orderItemToAdd.getPrice() * orderItemToAdd.getQuantity());
+
+        order.setTotalPrice(order.getTotalPrice() + (orderItemToAdd.getPrice() * orderItemToAdd.getQuantity()));
 
         productService.reduceQuantity(product, quantity);
 
         orderItemRepository.save(orderItemToAdd);
-        return order;
+        return orderRepository.save(order);
+
     }
 
     public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {

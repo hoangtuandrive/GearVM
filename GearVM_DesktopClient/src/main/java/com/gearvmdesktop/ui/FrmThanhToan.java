@@ -339,17 +339,10 @@ public class FrmThanhToan extends JFrame implements ActionListener {
     private void printOrder() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        BufferedReader rd = OrderService.getReportOrder(Long.parseLong("8"));
+        BufferedReader rd = OrderService.getReportOrder(Long.parseLong("12"));
 
-        System.out.println(rd.readLine());
-        if (rd.ready()) {
-            List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
-            System.out.println(printOrderDto);
-        } else {
-            System.out.println("No content read from the BufferedReader.");
-        }
-        System.out.println(rd.lines());
-//      List<PrintOrderDto> printOrderDto= List.of(mapper.readValue(rd, PrintOrderDto[].class));
+        List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
+
 
     }
 

@@ -728,7 +728,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         String[] parts = cmbGioHangString.split(",");
 
         UpdateOrderItem updateOrderItem = new UpdateOrderItem();
-        updateOrderItem.setProductId(productId);
+        updateOrderItem.setProductId(Long.valueOf(productId));
         updateOrderItem.setCustomerName(parts[0]);
         updateOrderItem.setCustomerPhone(parts[1].trim());
         updateOrderItem.setAmount(Integer.parseInt(txtSoLuong.getText()));
@@ -744,7 +744,7 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
         String[] parts = cmbGioHangString.split(",");
 
         UpdateOrderItem updateOrderItem = new UpdateOrderItem();
-        updateOrderItem.setProductId(productId);
+        updateOrderItem.setProductId(Long.valueOf(productId));
         updateOrderItem.setCustomerName(parts[0]);
         updateOrderItem.setCustomerPhone(parts[1].trim());
         updateOrderItem.setAmount(Integer.parseInt(txtSoLuong.getText()));
