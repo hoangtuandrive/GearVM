@@ -354,7 +354,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
     }
 
     public boolean patchProcessDirectOrderPayment() throws JSONException, IOException {
-        EmployeeResponseModel employeeResponseModel = GUI.getEmployeeInfo();
+        EmployeeResponseModel employeeResponseModel = GUI_NhanVien.getEmployeeInfo();
 
         ProcessDirectOrderPayment processDirectOrderPayment = new ProcessDirectOrderPayment();
         processDirectOrderPayment.setOrderId(Long.parseLong(txtMaDonHang.getText()));

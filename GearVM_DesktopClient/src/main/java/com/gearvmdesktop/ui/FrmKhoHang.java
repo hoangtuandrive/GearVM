@@ -706,7 +706,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
 
     public static void setTextFieldAfterSelectingProduct(String productId, String productName) {
         emptyTextField();
-        EmployeeResponseModel employeeResponseModel = GUI.getEmployeeInfo();
+        EmployeeResponseModel employeeResponseModel = GUI_NhanVien.getEmployeeInfo();
         txtMaNhanVien.setText(employeeResponseModel.getId().toString());
         txtTenNhanVien.setText(employeeResponseModel.getName());
         txtMaSanPham.setText(productId);
@@ -746,7 +746,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             cell.setCellValue("Người lập:");
             cell = row.createCell(2);
 
-            cell.setCellValue(GUI.getEmployeeInfo().getName());
+            cell.setCellValue(GUI_NhanVien.getEmployeeInfo().getName());
             worksheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
 
             // Dòng 3 ngày lập

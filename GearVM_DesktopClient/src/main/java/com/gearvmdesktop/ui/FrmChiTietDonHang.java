@@ -352,7 +352,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (patchOrderStatusAndEmployee(GUI.getEmployeeInfo())) {
+                    if (patchOrderStatusAndEmployee(GUI_NhanVien.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -369,7 +369,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (patchOrderStatus(0, GUI.getEmployeeInfo())) {
+                    if (patchOrderStatus(0, GUI_NhanVien.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -386,7 +386,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (patchOrderStatus(1, GUI.getEmployeeInfo())) {
+                    if (patchOrderStatus(1, GUI_NhanVien.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -403,7 +403,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (patchOrderStatus(2, GUI.getEmployeeInfo())) {
+                    if (patchOrderStatus(2, GUI_NhanVien.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
@@ -420,7 +420,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
-                    if (patchOrderStatus(3, GUI.getEmployeeInfo())) {
+                    if (patchOrderStatus(3, GUI_NhanVien.getEmployeeInfo())) {
                         JOptionPane.showMessageDialog(this, "Sửa đơn hàng mã số " + txtMaDonHang.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshTextField();
