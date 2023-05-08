@@ -8,13 +8,8 @@ import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.*;
 
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -464,23 +459,5 @@ public class OrderService {
         System.out.println("id"+id);
         return orderRepository.findPrintOrderByOrderId_Named(id);
     }
-    public String exportReport(Long id) throws FileNotFoundException, JRException {
-        String path = "C:\\Users\\ASUS\\Desktop";
-        List<PrintOrderDto> listOrder = orderRepository.findPrintOrderByOrderId_Named(id);
-//        List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
-        //load file and compile it
-        File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOrder);
 
-//        JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("orderId", id);
-//        System.out.println(listOrder);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-
-        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
-
-        return "Xuất báo cáo : " + path;
-    }
 }

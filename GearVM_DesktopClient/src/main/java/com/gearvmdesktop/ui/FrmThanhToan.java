@@ -15,7 +15,10 @@ import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
 
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.json.JSONException;
+import org.springframework.util.ResourceUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,11 +29,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.List;
 
 
@@ -257,7 +260,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         btnQRCode.setEnabled(false);
         btnProcessPayment.setEnabled(false);
 
-        btnPrintBill.setEnabled(true);
+        btnPrintBill.setEnabled(false);
 
         btnProcessPayment.addActionListener(this);
         btnPrintBill.addActionListener(this);
@@ -309,6 +312,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                                     JOptionPane.INFORMATION_MESSAGE);
                             GUI_NhanVien.readAllDatabaseToTable();
                             FrmBanHang.emptyTableCart();
+                            btnPrintBill.setEnabled(true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Thanh toán đơn hàng mã số " + txtMaDonHang.getText() + " thất bại", "Thất bại",
                                     JOptionPane.ERROR_MESSAGE);
@@ -328,21 +332,40 @@ public class FrmThanhToan extends JFrame implements ActionListener {
                 new FrmQRCode(1);
         }
         if(o.equals(btnPrintBill)){
+
             try {
                 printOrder();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (JRException ex) {
+                throw new RuntimeException(ex);
             }
+
         }
     }
 
-    private void printOrder() throws IOException {
+    private void printOrder() throws IOException, JRException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        BufferedReader rd = OrderService.getReportOrder(Long.parseLong("12"));
+        BufferedReader rd = OrderService.getReportOrder(Long.parseLong(txtMaDonHang.getText().toString()));
 
         List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
 
+        String path = "C:\\Users\\ASUS\\Desktop";
+
+//      List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
+        //load file and compile it
+        File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(printOrderDto);
+
+//      JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("orderId", txtMaDonHang.getText().toString());
+//      System.out.println(listOrder);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
 
     }
 

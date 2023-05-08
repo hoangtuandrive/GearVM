@@ -10,7 +10,7 @@ import com.gearvmstore.GearVM.service.DiscountService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
 
-import net.sf.jasperreports.engine.JRException;
+//import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -160,8 +160,5 @@ public class OrderController {
         return new ResponseEntity<>(chiTietHoaDons, HttpStatus.OK);
     }
 
-    @GetMapping("/report/{id}")
-    public String generateReport(@PathVariable Long id) throws FileNotFoundException, JRException {
-        return orderService.exportReport(id);
-    }
+
 }
