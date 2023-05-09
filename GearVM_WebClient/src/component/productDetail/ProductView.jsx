@@ -117,7 +117,7 @@ const ProductView = () => {
               currency: "VND",
             }).format(productDetail.price)}
           </h5>
-          <div className={cx("ProductView_Discount")}>
+          {/* <div className={cx("ProductView_Discount")}>
             <h5 className={cx("ProductView_txtPrice_dis")}>
               {new Intl.NumberFormat("de-DE", {
                 style: "currency",
@@ -131,7 +131,7 @@ const ProductView = () => {
                 </h5>
               </div>
             )}
-          </div>
+          </div> */}
           <CustomDiscount />
           <div className={cx("ProductView_btn")}>
             <input

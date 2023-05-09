@@ -1,5 +1,7 @@
 package com.gearvmstore.GearVM.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.PaymentMethod;
@@ -7,13 +9,17 @@ import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.service.DiscountService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
+
+//import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -57,6 +63,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/direct-pending")
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public ResponseEntity<?> getDirectPendingOrderList() {
         return new ResponseEntity<>(orderService.getOrderListByOrderStatus(OrderStatus.DIRECT_PENDING), HttpStatus.OK);
     }
@@ -144,4 +151,14 @@ public class OrderController {
     public ResponseEntity<?> processDirectOrderPayment(@RequestBody ProcessDirectOrderPayment processDirectOrderPayment) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.processDirectOrderPayment(processDirectOrderPayment));
     }
+    @GetMapping("/print-order/{id}")
+    public ResponseEntity<List<PrintOrderDto>> getChiTietHoaDonById(@PathVariable Long id) {
+        List<PrintOrderDto> chiTietHoaDons = orderService.getPrintOrderById(id);
+        if (chiTietHoaDons.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(chiTietHoaDons, HttpStatus.OK);
+    }
+
+
 }

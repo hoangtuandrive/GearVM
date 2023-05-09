@@ -356,7 +356,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         String[] tim = {"Mã Khách Hàng", "Tên Khách Hàng", "Giới Tính", "SDT", "CMND", "Ngày Sinh", "Địa Chỉ",
                 "Email"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
@@ -366,8 +366,8 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
@@ -480,6 +480,9 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o.equals(btnThem)) {
+            if (!validInput()) {
+                return;
+            }else {
             int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 try {
@@ -495,21 +498,26 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
                     ex.printStackTrace();
                 }
             }
+            }
         }
         if (o.equals(btnSua)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            }else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (putRequest()) {
+                            JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Sửa khách hàng mã số " + txtMaKhachHang.getText() + " thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (IOException | JSONException ex) {
-                    ex.printStackTrace();
                 }
             }
         }
@@ -811,5 +819,51 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean validInput() {
+        // TODO Auto-generated method stub
+
+        String tenKH = txtTenKhachHang.getText();
+        String sdt = txtSDT.getText();
+        String email = txtEmail.getText();
+        Date ngaySinh =txtNgaySinh.getDate();
+        Date ngayHienTai = new Date();
+
+        if (tenKH.trim().length() > 0) {
+            if (!(tenKH.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)0-9]+"))) {
+                JOptionPane.showMessageDialog(this, "Tên khách hàng phải là ký tự chữ", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (sdt.trim().length() > 0) {
+            if (!(sdt.matches(
+                    "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$"))) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+//        if (email.trim().length() > 0) {
+//             if (!(email.matches("^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$"))) {
+//                JOptionPane.showMessageDialog(this, "Email không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                return false;
+//            }
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Email không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+        if(ngaySinh.after(ngayHienTai)){
+            JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ","Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtNgaySinh.setDate(new Date());
+            return  false;
+        }
+        return true;
     }
 }

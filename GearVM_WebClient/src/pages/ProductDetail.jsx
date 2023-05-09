@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "../component/Home/header/Header";
 import Footer from "../component/Home/footer/Footer";
 import ProductView from "../component/productDetail/ProductView";
@@ -10,6 +10,7 @@ import ListProductHome from "../component/Home/listProductofHome/ListProductHome
 import { AppContext } from "../component/context/AppProvider";
 import ChatBox from "../component/chatBox/ChatBox";
 import ScrolltoTop from "../component/Home/ScrolltoTop/ScrolltoTop";
+import ScrollTop from "../component/ScrollTop/ScrollTop";
 const cx = classNames.bind(styles);
 const PageProductDetail = () => {
   return (
@@ -17,9 +18,10 @@ const PageProductDetail = () => {
       <Header />
       <ProductView />
       {/* <Review></Review> */}
-      <ListProductHome name="SẢN PHẨM BÁN CHẠY" />
+      <ListProductHome name="SẢN PHẨM Liên Quan" />
       <ScrolltoTop />
       {/* {showChat ? <ChatBox /> : null} */}
+      <ScrollTop />
       <Footer />
     </div>
   );

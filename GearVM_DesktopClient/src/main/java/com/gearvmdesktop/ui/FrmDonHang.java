@@ -97,9 +97,9 @@ public class FrmDonHang extends JFrame implements ActionListener, MouseListener 
 
         String[] tim = {"Mã Đơn Hàng", "Tên Khách Hàng", "SĐT Khách Hàng", "Trạng Thái", "Ngày Lập Đơn Hàng", "Thành Tiền"};
         cmbChon = new JComboBox<String>(tim);
-        btim.add(cmbChon);
-        btim.add(Box.createHorizontalStrut(10));
-        txtTim = new JTextField();
+//        btim.add(cmbChon);
+//        btim.add(Box.createHorizontalStrut(10));
+        txtTim = new JTextField(15);
         cmbChon.setSize(200, txtTim.getPreferredSize().height);
         btim.add(txtTim);
         btim.add(Box.createHorizontalStrut(10));

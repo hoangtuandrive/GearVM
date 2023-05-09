@@ -424,15 +424,15 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
         String[] tim = {"Mã Nhân Viên", "Tên Nhân Viên", "Giới Tính", "SDT", "Chức Vụ", "Lương", "CMND", "Ngày Sinh",
                 "Địa Chỉ", "Email", "Trạng thái"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
-
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
@@ -559,36 +559,44 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o.equals(btnThem)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (postRequest()) {
-                        JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            }else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (postRequest()) {
+                            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (IOException | JSONException ex) {
-                    ex.printStackTrace();
                 }
             }
         }
         if (o.equals(btnSua)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            }else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (putRequest()) {
+                            JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Sửa nhân viên mã số " + txtMaNhanVien.getText() + " thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (IOException | JSONException ex) {
-                    ex.printStackTrace();
                 }
             }
         }
@@ -950,5 +958,89 @@ public class FrmNhanVien extends javax.swing.JFrame implements ActionListener, M
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean validInput() {
+        // TODO Auto-generated method stub
+
+        String ten = txtTen.getText();
+        String sdt = txtSDT.getText();
+        String email = txtEmail.getText();
+        String diaChi = txtDiaChi.getText();
+        String cmnd = txtCMND.getText();
+        String luong=txtLuong.getText();
+        Date ngaySinh =txtNgaySinh.getDate();
+        Date ngayHienTai = new Date();
+
+        if (ten.trim().length() > 0) {
+            if (!(ten.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)0-9]+"))) {
+                JOptionPane.showMessageDialog(this, "Tên nhân viên phải là ký tự chữ", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên nhân viên không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (sdt.trim().length() > 0) {
+            if (!(sdt.matches(
+                    "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$"))) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (cmnd.trim().length() > 0) {
+            if (!(cmnd.matches("\\d{9}"))) {
+                JOptionPane.showMessageDialog(this, "CMND không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "CMND không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (email.trim().length() > 0) {
+            if (!(email.matches("^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$"))) {
+                JOptionPane.showMessageDialog(this, "Email không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Email không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (diaChi.trim().length() > 0) {
+            if (!(diaChi.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
+                JOptionPane.showMessageDialog(this, "Địa chỉ không chứa ký tự đặc biệt", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Địa chỉ không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if(ngaySinh.after(ngayHienTai)){
+        JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ","Lỗi", JOptionPane.ERROR_MESSAGE);
+        txtNgaySinh.setDate(new Date());
+        return  false;
+        }
+        if (luong.trim().length() > 0) {
+            try {
+                double x = Double.parseDouble(luong);
+                if (x <= 0) {
+                    JOptionPane.showMessageDialog(this, "Lương nhân viên phải lớn hơn 0", "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Lương nhân viên phải nhập số", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Bạn chưa nhập lương nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

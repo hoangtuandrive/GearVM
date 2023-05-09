@@ -4,17 +4,24 @@ import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
+import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
+
+
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
 import javax.persistence.EntityManager;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 @Service
 public class OrderService {
@@ -253,6 +260,7 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
+
     public List<GetOrderListResponse> getOrderListByOrderStatus(OrderStatus orderStatus) {
         List<Order> orderList = orderRepository.findAllByOrderStatusOrderByCreatedDateDesc(orderStatus);
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
@@ -341,19 +349,20 @@ public class OrderService {
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems) {
             // If there are item in cart --> plus existing item
-            if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
+            if (orderItem.getProduct().getId().equals(updateOrderItem.getProductId())) {
                 int newQuantity = orderItem.getQuantity() + updateOrderItem.getAmount();
-
+                System.out.println(orderItems);
                 orderItem.setQuantity(newQuantity);
                 productService.reduceQuantity(orderItem.getProduct(), quantity);
                 orderItemRepository.save(orderItem);
 
                 return updateTotalPrice(order);
             }
+
         }
 
         OrderItem orderItemToAdd = new OrderItem();
-        Product product = productService.getProduct(Long.parseLong(updateOrderItem.getProductId()));
+        Product product = productService.getProduct(updateOrderItem.getProductId());
 
         orderItemToAdd.setProduct(product);
         orderItemToAdd.setId(order.getId());
@@ -361,12 +370,14 @@ public class OrderService {
         orderItemToAdd.setPrice(product.getPrice());
         orderItemToAdd.setOrder(order);
 
+
         order.setTotalPrice(order.getTotalPrice() + (orderItemToAdd.getPrice() * orderItemToAdd.getQuantity()));
 
         productService.reduceQuantity(product, quantity);
 
         orderItemRepository.save(orderItemToAdd);
         return orderRepository.save(order);
+
     }
 
     public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
@@ -442,4 +453,10 @@ public class OrderService {
         order.setUpdatedDate(LocalDateTime.now());
         return orderRepository.save(order);
     }
+    public List<PrintOrderDto> getPrintOrderById(Long id) {
+        System.out.println(orderRepository.findPrintOrderByOrderId_Named(id));
+        System.out.println("id"+id);
+        return orderRepository.findPrintOrderByOrderId_Named(id);
+    }
+
 }

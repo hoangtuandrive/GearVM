@@ -385,15 +385,15 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
 
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
@@ -526,19 +526,23 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             }
         }
         if (o.equals(btnNhap)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (postRequest()) {
-                        JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        GUI_NhanVien.readAllDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            }else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (postRequest()) {
+                            JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            GUI_NhanVien.readAllDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Nhập sản phẩm vào kho hàng thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (IOException | JSONException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -835,5 +839,45 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean validInput() {
+
+        String giaNhap = txtGiaNhap.getText();
+        String soLuong = txtSoLuong.getText();
+
+        if (giaNhap.trim().length() > 0) {
+            try {
+                double x = Double.parseDouble(giaNhap);
+                if (x <= 0) {
+                    JOptionPane.showMessageDialog(this, "Giá Sản Phẩm phải lớn hơn 0", "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Giá Sản Phẩm phải nhập số", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Giá Sản Phẩm không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (soLuong.trim().length() > 0) {
+            try {
+
+                int x = Integer.parseInt(soLuong);
+                if (x < 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Số lượng phải nhập số", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Số lượng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

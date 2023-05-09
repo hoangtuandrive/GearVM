@@ -1,5 +1,6 @@
 package com.gearvmdesktop.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gearvmstore.GearVM.model.dto.order.ProcessDirectOrderPayment;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderItem;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
@@ -84,7 +85,7 @@ public class OrderService extends ApiService {
         else if (response.getStatusLine().getStatusCode() == 302) return 1;
         else return 2;
     }
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static BufferedReader getPendingDirectOrderList() throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url + "direct-pending");
@@ -172,5 +173,12 @@ public class OrderService extends ApiService {
         request.setEntity(se);
         HttpResponse response = client.execute(request);
         return response.getStatusLine().getStatusCode() == 200;
+    }
+    public static BufferedReader getReportOrder(Long id) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "print-order/"+id);
+        HttpResponse response = client.execute(request);
+        if (response.getStatusLine().getStatusCode() != 200) return null;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 }

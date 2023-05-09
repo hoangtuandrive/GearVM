@@ -151,12 +151,12 @@ const TableListCart = ({ cartItem }) => {
               currency: "VND",
             }).format(cartItem.price)}
           </h5>
-          <h4 className={cx("wrapListCart_Content_Price")}>
+          {/* <h4 className={cx("wrapListCart_Content_Price")}>
             {new Intl.NumberFormat("de-DE", {
               style: "currency",
               currency: "VND",
             }).format(cartItem.price)}
-          </h4>
+          </h4> */}
 
           <h5 className={cx("listCart_total_txt")}>
             {cartItem.price * cartItem.cartQuantity}đ

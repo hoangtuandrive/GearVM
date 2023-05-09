@@ -12,14 +12,6 @@ const dataNavModal = [
     name: "Laptop",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "Intel Core i8",
-      "Intel Core i7",
-      "Intel Core i6",
-      "AMD Ryzen 3",
-      "AMD Ryzen 6",
-    ],
     Gia: "Lọc theo giá",
     listGia: ["Dưới 10 triệu", "10-15 triệu", "15-20 triệu", "trên 20 triệu"],
   },
@@ -29,14 +21,6 @@ const dataNavModal = [
     name: "LaptopGaming",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "Intel Core i8",
-      "Intel Core i7",
-      "Intel Core i6",
-      "AMD Ryzen 3",
-      "AMD Ryzen 6",
-    ],
     Gia: "Lọc theo giá",
     listGia: [
       "Dưới 10 triệu",
@@ -53,14 +37,7 @@ const dataNavModal = [
     name: "PC special",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "Intel Core i8",
-      "Intel Core i7",
-      "Intel Core i6",
-      "AMD Ryzen 3",
-      "AMD Ryzen 6",
-    ],
+
     Gia: "Lọc theo giá",
     listGia: [
       "Dưới 10 triệu",
@@ -78,8 +55,6 @@ const dataNavModal = [
     name: "Màn Hình",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["LG", "Asus", "Gigabity", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: ["60Hz", "75Hz", "100Hz", "144Hz", "240Hz"],
     Gia: "Lọc theo giá",
     listGia: [
       "Dưới 10 triệu",
@@ -96,22 +71,8 @@ const dataNavModal = [
     name: "Bàn Phím",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Logitech", "Razer", "Crosair", "Asus", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "3068 Seria",
-      "3068 Seria",
-      "3084 Seria",
-      "3087 Seria",
-      "3088 Seria",
-    ],
     Gia: "Lọc theo giá",
-    listGia: [
-      "Dưới 1 triệu",
-      "1-1.5 triệu",
-      "1.5-2 triệu",
-      "2-2.5triệu",
-      "Trên 3 triệu",
-    ],
+    listGia: ["Dưới 1 triệu", "1-2 triệu", "2-3 triệu", "Trên 3 triệu"],
   },
   {
     id: 6,
@@ -119,14 +80,6 @@ const dataNavModal = [
     name: "PC Doanh nghiệp",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "Intel Core i8",
-      "Intel Core i7",
-      "Intel Core i6",
-      "AMD Ryzen 3",
-      "AMD Ryzen 6",
-    ],
     Gia: "Lọc theo giá",
     listGia: [
       "Dưới 10 triệu",
@@ -143,22 +96,8 @@ const dataNavModal = [
     name: "Chuột",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Logitech", "Razer", "Crosair", "Asus", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "3068 Seria",
-      "3068 Seria",
-      "3084 Seria",
-      "3087 Seria",
-      "3088 Seria",
-    ],
     Gia: "Lọc theo giá",
-    listGia: [
-      "Dưới 1 triệu",
-      "1-1.5 triệu",
-      "1.5-2 triệu",
-      "2-2.5triệu",
-      "Trên 3 triệu",
-    ],
+    listGia: ["Dưới 1 triệu", "1-2 triệu", "2-3 triệu", "Trên 3 triệu"],
   },
 ];
 export default dataNavModal;

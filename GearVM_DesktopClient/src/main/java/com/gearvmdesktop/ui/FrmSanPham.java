@@ -347,15 +347,15 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
-
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
@@ -473,7 +473,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         String loaiHang = txtLoaiHang.getText();
         String nhaCC = txtNhaCungCap.getText();
         String gialk = txtDonGia.getText();
-        String soLuong = txtSoLuong.getText();
+
         if (tenLk.trim().length() > 0) {
             if (!(tenLk.matches("[^\\@\\!\\$\\^\\&\\*\\(\\)]+"))) {
                 JOptionPane.showMessageDialog(this, "Tên Sản Phẩm không chứa ký tự đặc biệt", "Lỗi",
@@ -521,22 +521,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             JOptionPane.showMessageDialog(this, "Giá Sản Phẩm không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (soLuong.trim().length() > 0) {
-            try {
 
-                int x = Integer.parseInt(soLuong);
-                if (x < 0) {
-                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Error: Số lượng phải nhập số", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Số lượng không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
         return true;
     }
 
@@ -544,40 +529,48 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o.equals(btnThem)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    Product newProduct = postRequest();
-                    if (newProduct != null) {
-                        String productName = txtTenSanPham.getText();
-                        readDatabaseToTable();
-                        int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (continueResult == JOptionPane.YES_OPTION) {
-                            new FrmThemKhoHang(newProduct.getId().toString(), productName);
+            if (!validInput()) {
+                return;
+            } else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        Product newProduct = postRequest();
+                        if (newProduct != null) {
+                            String productName = txtTenSanPham.getText();
+                            readDatabaseToTable();
+                            int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            if (continueResult == JOptionPane.YES_OPTION) {
+                                new FrmThemKhoHang(newProduct.getId().toString(), productName);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException | JSONException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (IOException | JSONException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
         if (o.equals(btnSua)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    if (putRequest()) {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
-                                JOptionPane.ERROR_MESSAGE);
+            if (!validInput()) {
+                return;
+            } else {
+                int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        if (putRequest()) {
+                            JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            readDatabaseToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException | JSONException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (IOException | JSONException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -870,4 +863,5 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
             return false;
         }
     }
+
 }

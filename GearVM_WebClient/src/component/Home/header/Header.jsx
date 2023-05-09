@@ -44,6 +44,9 @@ const Header = () => {
   const handleHome = () => {
     navigate("/", { replace: true });
   };
+  const handleCart = () => {
+    navigate("/cart", { replace: true });
+  };
   const cart = useSelector((state) => state.todoCart);
   const auth = useSelector((state) => state.auth);
 
@@ -138,7 +141,7 @@ const Header = () => {
                 </h5>
               </div>
             </Tippy>
-            <div className={cx("cart_rep")}>
+            <div className={cx("cart_rep")} onClick={handleCart}>
               <ShoppingCartOutlined style={{ fontSize: 35 }} />
             </div>
           </div>

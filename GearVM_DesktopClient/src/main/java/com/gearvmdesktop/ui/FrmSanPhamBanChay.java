@@ -16,6 +16,7 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
     private PieChart pieChart1;
 
     public FrmSanPhamBanChay() throws IOException {
+
         initComponents();
         getContentPane().setBackground(new Color(255, 255, 255));
         pieChart1.setChartType(PieChart.PeiChartType.DEFAULT);
@@ -34,6 +35,7 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
 
             pieChart1.addData(new ModelPieChart(product.getProductName(), product.getTotalSold(), color));
         }
+        setVisible(true);
     }
 
     /**
@@ -47,7 +49,7 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
         pieChart1 = new PieChart();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Pie Chart");
+        setTitle("FrmSanPhamBanChay");
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
 
