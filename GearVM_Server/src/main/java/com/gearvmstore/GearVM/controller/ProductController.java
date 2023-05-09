@@ -100,6 +100,4 @@ public class ProductController {
     public void deleteProduct(@PathVariable(value = "productId") Long id) {
         productService.deleteProduct(id);
     }
-
-
 }

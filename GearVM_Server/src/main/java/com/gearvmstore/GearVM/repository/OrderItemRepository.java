@@ -11,6 +11,10 @@ import java.util.List;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
-    @Query("SELECT NEW com.gearvmstore.GearVM.model.response.MostSoldProductResponseModel(item.product.name, SUM(item.quantity)) FROM order_item item WHERE item.order.orderStatus = com.gearvmstore.GearVM.model.OrderStatus.SHIP_SUCCESS GROUP BY item.product.name ORDER BY SUM(item.quantity) DESC")
+    @Query("SELECT NEW com.gearvmstore.GearVM.model.response.MostSoldProductResponseModel(item.product.id, " +
+            "item.product.name, item.product.imageUri, item.product.price, SUM(item.quantity)) " +
+            "FROM order_item item WHERE item.order.orderStatus = com.gearvmstore.GearVM.model.OrderStatus.SHIP_SUCCESS " +
+            "GROUP BY item.product.id, item.product.name, item.product.imageUri, item.product.price " +
+            "ORDER BY SUM(item.quantity) DESC")
     List<MostSoldProductResponseModel> findMostSoldItems(Pageable pageable);
 }
