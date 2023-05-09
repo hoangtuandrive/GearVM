@@ -114,9 +114,9 @@ public class FrmBanHang extends JFrame implements ActionListener, MouseListener 
 
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        b3.add(cmbChon);
-        b3.add(Box.createHorizontalStrut(10));
-        txtTim = new JTextField();
+//        b3.add(cmbChon);
+//        b3.add(Box.createHorizontalStrut(10));
+        txtTim = new JTextField(15);
         txtTim.setEditable(true);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         b3.add(txtTim);

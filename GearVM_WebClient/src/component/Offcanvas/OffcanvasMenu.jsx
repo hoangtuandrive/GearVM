@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import authSlice from "../../redux/slices/AuthSlices";
 import Acount from "../Custom/Acount/Acount";
+import dataNavModal from "../../dataUI/dataNavModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AccordionBody from "./AccordionBody";
 const cx = classNames.bind(styles);
 const OffcanvasMenu = () => {
   const { openMenu, setOpenMenu } = useContext(AppContext);
@@ -41,6 +44,15 @@ const OffcanvasMenu = () => {
   const PagePromotion = () => {
     navigate("/promotion", { replace: true });
   };
+
+  const handleChangePageType = (item) => {
+    navigate(`/catalog?filed=${item}`, {
+      replace: true,
+    });
+    console.log(item);
+  };
+
+
   return (
     <div>
       {/* <Button variant="primary" onClick={handleShow}>
@@ -70,107 +82,37 @@ const OffcanvasMenu = () => {
             </div>
           )}
           <div className={cx("offcanNav_header")}>Danh Mục</div>
-          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                <LaptopOutlined />
-                Laptop
-              </Accordion.Header>
-              <Accordion.Body>
-                <Accordion defaultActiveKey="1">
-                  <Accordion.Item eventKey="11">
-                    <Accordion.Header>Thương Hiệu</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>Asus</ListGroup.Item>
-                        <ListGroup.Item>Acer</ListGroup.Item>
-                        <ListGroup.Item>MSI </ListGroup.Item>
-                        <ListGroup.Item>HP</ListGroup.Item>
-                        <ListGroup.Item>DELL</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  <Accordion.Item eventKey="12">
-                    <Accordion.Header>Theo giá bán</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>10Triệu-15Triệu</ListGroup.Item>
-                        <ListGroup.Item>15Triệu-20Triệu</ListGroup.Item>
-                        <ListGroup.Item>20Triệu-25Triệu </ListGroup.Item>
-                        <ListGroup.Item>25Triệu-30Triệu</ListGroup.Item>
-                        <ListGroup.Item>30Triệu trở lên</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  <Accordion.Item eventKey="13">
-                    <Accordion.Header>Theo nhu cầu</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>LapTop đồ họa</ListGroup.Item>
-                        <ListGroup.Item>
-                          Laptop học sinh sinh viên
-                        </ListGroup.Item>
-                        <ListGroup.Item>Laptop mỏng nhẹ</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>
-                <LaptopOutlined />
-                Bàn Phím
-              </Accordion.Header>
-              <Accordion.Body>
-                <Accordion defaultActiveKey="2">
-                  <Accordion.Item eventKey="22">
-                    <Accordion.Header>Thương Hiệu</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>Asus</ListGroup.Item>
-                        <ListGroup.Item>Acer</ListGroup.Item>
-                        <ListGroup.Item>MSI </ListGroup.Item>
-                        <ListGroup.Item>HP</ListGroup.Item>
-                        <ListGroup.Item>DELL</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  <Accordion.Item eventKey="23">
-                    <Accordion.Header>Theo giá bán</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>10Triệu-15Triệu</ListGroup.Item>
-                        <ListGroup.Item>15Triệu-20Triệu</ListGroup.Item>
-                        <ListGroup.Item>20Triệu-25Triệu </ListGroup.Item>
-                        <ListGroup.Item>25Triệu-30Triệu</ListGroup.Item>
-                        <ListGroup.Item>30Triệu trở lên</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  <Accordion.Item eventKey="24">
-                    <Accordion.Header>Theo nhu cầu</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        <ListGroup.Item>LapTop đồ họa</ListGroup.Item>
-                        <ListGroup.Item>
-                          Laptop học sinh sinh viên
-                        </ListGroup.Item>
-                        <ListGroup.Item>Laptop mỏng nhẹ</ListGroup.Item>
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
+          {dataNavModal.map((item, index) => (
+            <Accordion defaultActiveKey={index} key={index}>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header
+                  onDoubleClick={() => handleChangePageType(item.name)}
+                >
+                  <FontAwesomeIcon icon={item.icon} />
+                  {item.name}
+                </Accordion.Header>
+                <AccordionBody data={item} />
+              </Accordion.Item>
+            </Accordion>
+          ))}
+
           <div className={cx("offcanNav_header")}>Thông Tin</div>
           <div className={cx("offcanNav")}>
-            {token ? <div>Thông tin đơn hàng</div> : null}
-            <div onClick={PageGuidePayment}>Hướng dẫn thanh toán</div>
-            <div onClick={PageGuidePolicy}> Chính Sách bảo hành </div>
-            <div onClick={PageGuideDeli}> Chính Sách vận chuyển </div>
-            <div onClick={PagePromotion}> Khuyến mãi </div>
+            {token ? (
+              <div className={cx("offcanNav_item")}>Thông tin đơn hàng</div>
+            ) : null}
+            <div onClick={PageGuidePayment} className={cx("offcanNav_item")}>
+              Hướng dẫn thanh toán
+            </div>
+            <div onClick={PageGuidePolicy} className={cx("offcanNav_item")}>
+              Chính Sách bảo hành
+            </div>
+            <div onClick={PageGuideDeli} className={cx("offcanNav_item")}>
+              Chính Sách vận chuyển
+            </div>
+            <div onClick={PagePromotion} className={cx("offcanNav_item")}>
+              Khuyến mãi
+            </div>
           </div>
           {token ? (
             <input

@@ -194,6 +194,7 @@ const ChatBox = ({ name }) => {
                       //   </div>
                       // <Message key={i} model={message} />
                       <Message
+                        key={i}
                         model={{
                           direction: message.direction,
                           type: "custom",

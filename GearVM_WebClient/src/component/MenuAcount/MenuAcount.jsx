@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./MenuAcount.module.scss";
-import { LaptopOutlined } from "@ant-design/icons";
+import { LaptopOutlined, FileDoneOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppProvider";
@@ -23,18 +23,18 @@ const MenuAcount = () => {
   };
   return (
     <div className={cx("wrapMenuAcount")}>
-      <div className={cx("wrapMenuAcount_thumb")} onClick={handleOpenUser}>
+      {/* <div className={cx("wrapMenuAcount_thumb")} onClick={handleOpenUser}>
         <LaptopOutlined />
         <p className={cx("wrapMenuAcount_thumb_txt")}>Thông tin tài khoản</p>
-      </div>
+      </div> */}
       <div className={cx("wrapMenuAcount_thumb")} onClick={handleOrder}>
-        <LaptopOutlined />
+        <FileDoneOutlined />
         <p className={cx("wrapMenuAcount_thumb_txt")}>Lịch sử đơn hàng</p>
       </div>
-      <div className={cx("wrapMenuAcount_thumb")}>
+      {/* <div className={cx("wrapMenuAcount_thumb")}>
         <LaptopOutlined />
         <p className={cx("wrapMenuAcount_thumb_txt")}>Số địa chỉ</p>
-      </div>
+      </div> */}
       <input
         type="button"
         className={cx("wrapMenuAcount_thumb_btn")}

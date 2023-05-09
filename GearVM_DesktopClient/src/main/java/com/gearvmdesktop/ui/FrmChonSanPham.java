@@ -353,7 +353,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         Box b = Box.createHorizontalBox();
         String[] tim = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Loại Hàng", "Nhà Cung Cấp", "Đơn Giá", "Số Lượng Tồn"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
@@ -364,8 +364,8 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         btnChonSanPham.setForeground(Color.WHITE);
         btnChonSanPham.setFocusPainted(false);
 
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);

@@ -60,14 +60,14 @@ const Filter = ({ data, dropdown }) => {
             </h4>
           ))}
       </div>
-      <div className={cx("trademark")}>
+      {/* <div className={cx("trademark")}>
         <h2 className={cx("trademark_txt")}>{data.cauHinh}</h2>
         {data.listCH.map((th, index) => (
           <h4 key={index} className={cx("trademark_listTxt")}>
             {th}
           </h4>
         ))}
-      </div>
+      </div> */}
       <div className={cx("trademark")}>
         <h2 className={cx("trademark_txt")}>{data.Gia}</h2>
         {data.listGia.map((th, index) => (

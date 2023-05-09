@@ -24,14 +24,6 @@ const NavModal = ({ data }) => {
     name: "PC special",
     thuongHieu: "Lọc theo thương hiệu",
     listTH: ["Acer", "Asus", "HP", "Del", "MSI"],
-    cauHinh: "Lọc theo cấu hình",
-    listCH: [
-      "Intel Core i8",
-      "Intel Core i7",
-      "Intel Core i6",
-      "AMD Ryzen 3",
-      "AMD Ryzen 6",
-    ],
     Gia: "Lọc theo giá",
     listGia: [
       "Dưới 10 triệu",

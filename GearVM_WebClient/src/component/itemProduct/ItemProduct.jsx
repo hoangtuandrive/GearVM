@@ -37,6 +37,7 @@ const ItemProduct = (props) => {
     navigate(`/productdetail?name=${props.data.name}&id=${props.data.id}`, {
       replace: true,
     });
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -47,7 +48,7 @@ const ItemProduct = (props) => {
       </div>
       <div className={cx("textProduct")}>
         <h5 className={cx("txtNameProduct")}>{props.data.name}</h5>
-        <div className={cx("content_dis_price")}>
+        {/* <div className={cx("content_dis_price")}>
           <h5 className={cx("txtPrice")}>
             {new Intl.NumberFormat("de-DE", {
               style: "currency",
@@ -61,7 +62,7 @@ const ItemProduct = (props) => {
               </h5>
             </div>
           )}
-        </div>
+        </div> */}
         <h5 className={cx("txt_pricereal")}>
           {" "}
           {new Intl.NumberFormat("de-DE", {

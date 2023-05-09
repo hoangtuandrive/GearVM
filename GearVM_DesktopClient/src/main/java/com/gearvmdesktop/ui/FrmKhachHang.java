@@ -356,7 +356,7 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         String[] tim = {"Mã Khách Hàng", "Tên Khách Hàng", "Giới Tính", "SDT", "CMND", "Ngày Sinh", "Địa Chỉ",
                 "Email"};
         cmbChon = new JComboBox<String>(tim);
-        txtTim = new JTextField();
+        txtTim = new JTextField(15);
         cmbChon.setSize(20, txtTim.getPreferredSize().height);
         btnTim = new JButton("TÌM KIẾM", new ImageIcon(iconTim));
         btnTim.setBackground(new Color(0, 148, 224));
@@ -366,8 +366,8 @@ public class FrmKhachHang extends javax.swing.JFrame implements ActionListener, 
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        b.add(cmbChon);
-        b.add(Box.createHorizontalStrut(10));
+//        b.add(cmbChon);
+//        b.add(Box.createHorizontalStrut(10));
         b.add(txtTim);
         b.add(Box.createHorizontalStrut(10));
         b.add(btnTim);
