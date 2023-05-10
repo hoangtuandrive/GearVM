@@ -87,12 +87,12 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.PATCH)
-    public Product updateImageUri(@PathVariable(value = "productId") Long id, @RequestBody String description) {
+    public Product updateDescription(@PathVariable(value = "productId") Long id, @RequestBody(required = false) String description) {
         return productService.updateDescription(id, description);
     }
 
     @RequestMapping(value = "/image/{productId}", method = RequestMethod.PATCH)
-    public Product updateDescription(@PathVariable(value = "productId") Long id, @RequestBody String uri) {
+    public Product updateImageUri(@PathVariable(value = "productId") Long id, @RequestBody(required = false) String uri) {
         return productService.updateImageUri(id, uri);
     }
 
