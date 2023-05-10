@@ -14,6 +14,7 @@ import { s3 } from "../../aws";
 import CustomButon from "../Custom/CustomButon/CustomButon";
 import ChatBox from "../chatBox/ChatBox";
 import { AppContext } from "../context/AppProvider";
+import ListProductHome from "../Home/listProductofHome/ListProductHome";
 const cx = classNames.bind(styles);
 
 const ProductView = () => {
@@ -79,6 +80,24 @@ const ProductView = () => {
 
   // Tách chuỗi thành mảng các dòng
   let lines = text?.split("\n");
+
+  const [product, setProduct] = useState([]);
+
+  const productUrlRelative = `http://localhost:8080/api/products/Relative?pageNumber=0&pageSize=24&sortBy=id&type=${productDetail.type}&id=${productDetail.id}`;
+
+  useEffect(() => {
+    if (productDetail.type !== undefined) {
+      const fetchProduct = async () => {
+        try {
+          const rep = await axios.get(productUrlRelative);
+          setProduct(rep.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchProduct();
+    }
+  }, [productDetail]);
 
   return (
     <Container>
@@ -156,6 +175,8 @@ const ProductView = () => {
           ))}
         </div>
       </div>
+      <ListProductHome name="SẢN PHẨM Liên Quan" data={product} />
+
       {showChat ? <ChatBox name={productDetail.name} /> : null}
     </Container>
   );

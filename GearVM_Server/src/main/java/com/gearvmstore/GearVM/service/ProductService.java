@@ -135,4 +135,11 @@ public class ProductService {
         p.setQuantity(p.getQuantity() - quantityToReduce);
         return productRepository.save(p);
     }
+    public GetProductPagination getProductType(Integer pageNo, Integer pageSize, String sortBy,String type,Long id) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> pagedResult = productRepository.findByTypeAndIdNot(paging,type,id);
+        return getProductPagination(pagedResult);
+    }
+
+
 }

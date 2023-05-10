@@ -2,8 +2,10 @@ package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Product;
 import com.gearvmstore.GearVM.model.response.GetProductPagination;
+import com.gearvmstore.GearVM.repository.ProductRepository;
 import com.gearvmstore.GearVM.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductService productService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @RequestMapping(method = RequestMethod.POST)
     public Product createProduct(@RequestBody Product p) {
@@ -101,5 +105,13 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-
+    @GetMapping(value = "Relative")
+    public GetProductPagination GetRelative (@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                    @RequestParam(defaultValue = "24") Integer pageSize,
+                                                    @RequestParam(defaultValue = "id") String sortBy,
+                                                    @RequestParam(defaultValue = "") String  type,
+                                                    @RequestParam(defaultValue = "1L") Long id)
+                          {
+        return productService.getProductType(pageNumber,pageSize,sortBy,type,id);
+    }
 }

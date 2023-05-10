@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findDistinctByNameContainingIgnoreCaseAndBrandContainingIgnoreCaseAndTypeContainingIgnoreCaseAndPriceBetweenOrderByPriceAsc(Pageable pageable, String name, String brand, String type, double min, double max);
 
     List<Product> findDistinctByIdEqualsOrNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByIdAsc(Long id, String name, String brand, String type);
+
+    Page<Product> findByTypeAndIdNot(Pageable pageable,String type,Long productId);
 }
