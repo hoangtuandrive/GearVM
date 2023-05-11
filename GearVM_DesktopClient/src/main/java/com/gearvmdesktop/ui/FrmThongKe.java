@@ -1,36 +1,23 @@
 package com.gearvmdesktop.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.gearvmdesktop.service.OrderService;
-import com.gearvmstore.GearVM.model.OrderStatus;
-import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
-import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 
 public class FrmThongKe extends JFrame implements ActionListener {
-    private JButton btnBestSale,btnStatic;
+    private JButton btnBestSale, btnStatic;
+
     public static void main(String[] args) throws RemoteException {
         // TODO Auto-generated method stub
         new FrmDangNhap().setVisible(true);
     }
+
     public JPanel createPanelThongKe() throws IOException {
         FlatLightLaf.setup();
         setTitle("FrmThôngKê");
@@ -48,13 +35,13 @@ public class FrmThongKe extends JFrame implements ActionListener {
         URL iconLoad = classLoader.getResource("assets/loctheogia.png");
 
 
-        btnBestSale = new JButton("Sản Phẩm Bán Chạy",new ImageIcon(iconTim));
+        btnBestSale = new JButton("Thống Kê Sản Phẩm Bán Chạy", new ImageIcon(iconTim));
         btnBestSale.setBackground(new Color(0, 148, 224));
         btnBestSale.setForeground(Color.WHITE);
         btnBestSale.setPreferredSize(new Dimension(280, 50));
         btnBestSale.setFont(new Font("Tahoma", Font.BOLD, 18));
 
-        btnStatic = new JButton("Thông Kê Doanh Thu",new ImageIcon(iconLoad));
+        btnStatic = new JButton("Thống Kê Doanh Thu", new ImageIcon(iconLoad));
         btnStatic.setBackground(new Color(0, 148, 224));
         btnStatic.setForeground(Color.WHITE);
         btnStatic.setPreferredSize(new Dimension(280, 50));
@@ -90,7 +77,8 @@ public class FrmThongKe extends JFrame implements ActionListener {
 
         }
     }
+
     public void openFrameProductBestSale() throws IOException {
-        new FrmSanPhamBanChay();
+        new FrmBaoCaoSanPhamBanChay();
     }
 }

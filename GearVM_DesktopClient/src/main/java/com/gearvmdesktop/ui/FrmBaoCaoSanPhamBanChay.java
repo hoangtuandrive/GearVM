@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class FrmSanPhamBanChay extends javax.swing.JFrame {
+public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
     private PieChart pieChart1;
 
-    public FrmSanPhamBanChay() throws IOException {
+    public FrmBaoCaoSanPhamBanChay() throws IOException {
 
         initComponents();
         getContentPane().setBackground(new Color(255, 255, 255));
@@ -49,7 +49,7 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
         pieChart1 = new PieChart();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("FrmSanPhamBanChay");
+        setTitle("Báo Cáo Sản Phẩm Bán Chạy");
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
 
@@ -88,13 +88,13 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -102,7 +102,7 @@ public class FrmSanPhamBanChay extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FrmSanPhamBanChay().setVisible(true);
+                    new FrmBaoCaoSanPhamBanChay().setVisible(true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

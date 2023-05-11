@@ -19,4 +19,12 @@ public class ReportService extends ApiService {
         if (response.getStatusLine().getStatusCode() != 200) return null;
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
+
+    public static BufferedReader getMonthlyFinanceReports(String year) throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url + "monthly-finance?year=" + year);
+        HttpResponse response = client.execute(request);
+        if (response.getStatusLine().getStatusCode() != 200) return null;
+        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    }
 }

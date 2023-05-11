@@ -88,6 +88,9 @@ public class Chart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(1500, DimMax.height);
+
         blankPlotChart = new com.gearvmdesktop.barchart.chart.blankchart.BlankPlotChart();
         panelLegend = new javax.swing.JPanel();
 
@@ -103,8 +106,8 @@ public class Chart extends javax.swing.JPanel {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                                        .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, 1500, Short.MAX_VALUE)
+                                        .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 1500, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(

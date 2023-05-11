@@ -12,12 +12,7 @@ public class MostSoldProductResponseModel {
 
     public MostSoldProductResponseModel() {
     }
-
-//    public MostSoldProductResponseModel(Long productId, String productName, Long totalSold) {
-//        this.productName = productName;
-//        this.totalSold = totalSold;
-//    }
-
+    
     public MostSoldProductResponseModel(Long productId, String productName, String productImageUri, double productPrice, Long totalSold) {
         this.productId = productId;
         this.productName = productName;

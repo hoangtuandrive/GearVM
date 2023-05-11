@@ -538,7 +538,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         Product newProduct = postRequest();
                         if (newProduct != null) {
                             String productName = txtTenSanPham.getText();
-                            readDatabaseToTable();
+                            GUI_NhanVien.readAllDatabaseToTable();
                             int continueResult = JOptionPane.showConfirmDialog(this, "Thêm sản phẩm thành công! Bạn có muốn nhập hàng cho sản phẩm này hay không?", "Thành công", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             if (continueResult == JOptionPane.YES_OPTION) {
                                 new FrmThemKhoHang(newProduct.getId().toString(), productName);
@@ -563,7 +563,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                         if (putRequest()) {
                             JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                     JOptionPane.INFORMATION_MESSAGE);
-                            readDatabaseToTable();
+                            GUI_NhanVien.readAllDatabaseToTable();
                         } else {
                             JOptionPane.showMessageDialog(this, "Sửa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
                                     JOptionPane.ERROR_MESSAGE);
@@ -581,7 +581,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
                     if (deleteRequest()) {
                         JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thành công!", "Thành công",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        readDatabaseToTable();
+                        GUI_NhanVien.readAllDatabaseToTable();
                         emptyTextField();
                     } else {
                         JOptionPane.showMessageDialog(this, "Xóa sản phẩm mã số " + txtMaSanPham.getText() + " thất bại!", "Thất bại",
