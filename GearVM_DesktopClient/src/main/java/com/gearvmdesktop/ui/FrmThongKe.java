@@ -11,7 +11,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 
 public class FrmThongKe extends JFrame implements ActionListener {
-    private JButton btnBestSale, btnStatic;
+    private JButton btnBestSale, btnFinance;
 
     public static void main(String[] args) throws RemoteException {
         // TODO Auto-generated method stub
@@ -41,20 +41,20 @@ public class FrmThongKe extends JFrame implements ActionListener {
         btnBestSale.setPreferredSize(new Dimension(280, 50));
         btnBestSale.setFont(new Font("Tahoma", Font.BOLD, 18));
 
-        btnStatic = new JButton("Thống Kê Doanh Thu", new ImageIcon(iconLoad));
-        btnStatic.setBackground(new Color(0, 148, 224));
-        btnStatic.setForeground(Color.WHITE);
-        btnStatic.setPreferredSize(new Dimension(280, 50));
-        btnStatic.setFont(new Font("Tahoma", Font.BOLD, 18));
+        btnFinance = new JButton("Thống Kê Doanh Thu", new ImageIcon(iconLoad));
+        btnFinance.setBackground(new Color(0, 148, 224));
+        btnFinance.setForeground(Color.WHITE);
+        btnFinance.setPreferredSize(new Dimension(280, 50));
+        btnFinance.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 
         panel.add(btnBestSale);
-        panel.add(btnStatic);
+        panel.add(btnFinance);
 
 
         add(panel);
 
-        btnStatic.addActionListener(this);
+        btnFinance.addActionListener(this);
         btnBestSale.addActionListener(this);
 
         return panel;
@@ -64,21 +64,18 @@ public class FrmThongKe extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o.equals(btnBestSale)) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
-                try {
-                    openFrameProductBestSale();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            try {
+                new FrmBaoCaoSanPhamBanChay();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
-        if (o.equals(btnStatic)) {
-
+        if (o.equals(btnFinance)) {
+            try {
+                new FrmBaoCaoDoanhThu();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-    }
-
-    public void openFrameProductBestSale() throws IOException {
-        new FrmBaoCaoSanPhamBanChay();
     }
 }
