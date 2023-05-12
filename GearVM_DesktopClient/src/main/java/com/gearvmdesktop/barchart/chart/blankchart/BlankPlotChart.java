@@ -47,15 +47,16 @@ public class BlankPlotChart extends JComponent {
         format.applyPattern(valuesFormat);
     }
 
-    private final DecimalFormat format = new DecimalFormat("#,##0.##");
+    private final DecimalFormat format = new DecimalFormat("#,##0");
     private NiceScale niceScale;
     private double maxValues;
     private double minValues;
     private int labelCount;
-    private String valuesFormat = "#,##0.##";
+    private String valuesFormat = "#,##0";
     private BlankPlotChatRender blankPlotChatRender;
 
     public BlankPlotChart() {
+        setSize(1500, 1000);
         setBackground(Color.WHITE);
         setOpaque(false);
         setForeground(new Color(100, 100, 100));
