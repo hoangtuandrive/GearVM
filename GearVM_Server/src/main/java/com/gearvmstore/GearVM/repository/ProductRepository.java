@@ -18,5 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findDistinctByIdEqualsOrNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrTypeContainingIgnoreCaseOrderByIdAsc(Long id, String name, String brand, String type);
 
-    Page<Product> findByTypeAndIdNot(Pageable pageable,String type,Long productId);
+    List<Product> findByTypeAndIdNot(String type,Long productId);
 }

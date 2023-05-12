@@ -106,12 +106,10 @@ public class ProductController {
     }
 
     @GetMapping(value = "Relative")
-    public GetProductPagination GetRelative (@RequestParam(defaultValue = "0") Integer pageNumber,
-                                                    @RequestParam(defaultValue = "24") Integer pageSize,
-                                                    @RequestParam(defaultValue = "id") String sortBy,
+    public List<Product> GetRelative (
                                                     @RequestParam(defaultValue = "") String  type,
                                                     @RequestParam(defaultValue = "1L") Long id)
                           {
-        return productService.getProductType(pageNumber,pageSize,sortBy,type,id);
+        return productService.getProductType(type,id);
     }
 }

@@ -62,7 +62,7 @@ const ListProduct = (props) => {
           //   handelItemProduct(item);
           // }}
           className={cx("listProduct_thumb_item")}
-          key={item.id}
+          key={item.id || item.productId}
         >
           <ItemProduct data={item} />
         </div>

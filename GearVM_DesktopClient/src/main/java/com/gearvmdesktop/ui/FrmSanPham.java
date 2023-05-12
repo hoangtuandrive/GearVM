@@ -78,7 +78,7 @@ public class FrmSanPham extends javax.swing.JFrame implements ActionListener, Mo
         lblMaSanPham = new java.awt.Label();
         txtMaSanPham = new javax.swing.JTextField();
         lblTenSanPham = new java.awt.Label();
-        txtTenSanPham = new javax.swing.JTextField();
+        txtTenSanPham = new javax.swing.JTextField(15);
         lblLoaiHang = new java.awt.Label();
         txtLoaiHang = new javax.swing.JTextField();
         lblNhaCungCap = new java.awt.Label();

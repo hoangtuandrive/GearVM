@@ -40,10 +40,10 @@ const ProductView = () => {
       }
     };
     fetchProduct();
-    console.log(213);
+    // console.log(213);
   }, [productUrl]);
 
-  console.log(productDetail);
+  // console.log(productDetail);
   useEffect(() => {
     const getImage = async () => {
       try {
@@ -83,10 +83,11 @@ const ProductView = () => {
 
   const [product, setProduct] = useState([]);
 
-  const productUrlRelative = `http://localhost:8080/api/products/Relative?pageNumber=0&pageSize=24&sortBy=id&type=${productDetail.type}&id=${productDetail.id}`;
-
   useEffect(() => {
     if (productDetail.type !== undefined) {
+      console.log(productId);
+      console.log(productDetail.type);
+      const productUrlRelative = `http://localhost:8080/api/products/Relative?type=${productDetail.type}&id=${productId}`;
       const fetchProduct = async () => {
         try {
           const rep = await axios.get(productUrlRelative);
@@ -97,8 +98,9 @@ const ProductView = () => {
       };
       fetchProduct();
     }
-  }, [productDetail]);
+  }, [productDetail?.type, productId]);
 
+  // console.log(product);
   return (
     <Container>
       <div className={cx("wrapProductView")}>
@@ -176,7 +178,7 @@ const ProductView = () => {
         </div>
       </div>
       <ListProductHome name="SẢN PHẨM Liên Quan" data={product} />
-
+      {/* {console.log(product)} */}
       {showChat ? <ChatBox name={productDetail.name} /> : null}
     </Container>
   );

@@ -19,8 +19,7 @@ const Home = () => {
   const { showChat } = useContext(AppContext);
   const [product, setProduct] = useState([]);
 
-  const productUrl =
-    "http://localhost:8080/api/products?pageNumber=0&pageSize=20&sortBy=id";
+  const productUrl = "http://localhost:8080/api/reports/most-sold-products";
 
   useEffect(() => {
     const fetchProduct = async () => {

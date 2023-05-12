@@ -300,7 +300,7 @@ const CatalogProduct = () => {
   const fetchProduct = async (productUrl) => {
     try {
       const rep = await axios.get(productUrl);
-      setProductList(rep.data.productList);
+      // setProductList(rep.data.productList);
       setProducts(rep.data.productList);
       setTotalPage(rep.data.totalPage);
     } catch (error) {
@@ -310,11 +310,18 @@ const CatalogProduct = () => {
   useEffect(() => {
     set_maxValue(max ? max : 100);
     set_minValue(min ? min : 0);
-
+    console.log(brand, page);
     if (page && brand) {
       const productUrl = `${url}/products/filter-search-price?pageNumber=${
         page - 1
-      }&pageSize=24&brand=${brand}&type=${type}`;
+      }&pageSize=5&brand=${brand}&type=${type}`;
+      // console.log(type, brand, page);
+      // console.log("chay");
+      fetchProduct(productUrl);
+    } else if (page && filed) {
+      const productUrl = `${url}/products/search-bar?pageNumber=${
+        page - 1
+      }&pageSize=24&filter=${filed}`;
       fetchProduct(productUrl);
     } else if (page && max) {
       const productUrl = `${url}/products/filter-search-price?pageNumber=${
@@ -327,15 +334,16 @@ const CatalogProduct = () => {
       const productUrl = `${url}/products/search-bar?pageNumber=${
         page - 1
       }&pageSize=24&filter=${filed}`;
+
       fetchProduct(productUrl);
     } else if (brand) {
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}`;
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=5&brand=${brand}&type=${type}`;
       fetchProduct(productUrl);
     } else if (max) {
       console.log(13);
       const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${type}&min=${
-        minValue * 1000000
-      }&max=${maxValue * 1000000}`;
+        min * 1000000
+      }&max=${max * 1000000}`;
       fetchProduct(productUrl);
     } else {
       const productUrl = `${url}/products/search-bar?pageNumber=0&pageSize=24&filter=${filed}`;
@@ -365,7 +373,7 @@ const CatalogProduct = () => {
     // }
 
     updateProducts();
-  }, [filter, filed, min, max, brand, type]);
+  }, [filter, filed, min, max, brand, type, page]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -374,24 +382,33 @@ const CatalogProduct = () => {
 
   // Change page
   const paginate = (pageNumber) => {
-    navigate(`/catalog?page=${pageNumber}`);
-    const fetchProduct = async () => {
-      const productUrl = `${url}/products/search-bar?pageNumber=${
-        pageNumber - 1
-      }&pageSize=24&filter=${filed}`;
-
-      try {
-        const rep = await axios.get(productUrl);
-        setProducts(rep.data.productList);
-        setTotalPage(rep.data.totalPage);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProduct();
+    if (brand) {
+      navigate(`/catalog?page=${pageNumber}&brand=${brand}&type=${type}`);
+    } else if (filed) {
+      navigate(`/catalog?page=${pageNumber}&filed=${filed}`);
+    } else if (max) {
+      navigate(
+        `/catalog?page=${pageNumber}&type=${type}&min=${min}&max=${max}`
+      );
+    }
+    // const fetchProduct = async () => {
+    //   const productUrl = `${url}/products/search-bar?pageNumber=${
+    //     pageNumber - 1
+    //   }&pageSize=24&filter=${filed}`;
+    //   console.log(filed);
+    //   try {
+    //     const rep = await axios.get(productUrl);
+    //     setProducts(rep.data.productList);
+    //     setTotalPage(rep.data.totalPage);
+    //     console.log(rep.data.productList);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    //   console.log(products);
+    // };
+    // fetchProduct();
     setCurrentPage(pageNumber);
   };
-
   //handleGia
 
   return (

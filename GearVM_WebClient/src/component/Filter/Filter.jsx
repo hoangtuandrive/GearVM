@@ -39,9 +39,15 @@ const Filter = ({ data, dropdown }) => {
         }
       );
     } else {
-      navigate(`/catalog?type=${data.name}&max=${priceStrA}`, {
-        replace: true,
-      });
+      if (price.indexOf("Dưới") >= 0) {
+        navigate(`/catalog?type=${data.name}&max=${priceStrA}`, {
+          replace: true,
+        });
+      } else {
+        navigate(`/catalog?type=${data.name}&min=${priceStrA}&max=100`, {
+          replace: true,
+        });
+      }
     }
   };
   return (

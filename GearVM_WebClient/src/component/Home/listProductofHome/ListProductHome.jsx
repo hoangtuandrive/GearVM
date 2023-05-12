@@ -27,7 +27,7 @@ const ListProductHome = ({ name, data }) => {
     <div className={cx("wrapListHome")}>
       <div className={cx("WrapListProduct_Laptop")}>
         <h1 className={cx("lblwraplistproduct")}>{name}</h1>
-        <ListProduct data={data.productList} />
+        <ListProduct data={data} />
       </div>
     </div>
   );
