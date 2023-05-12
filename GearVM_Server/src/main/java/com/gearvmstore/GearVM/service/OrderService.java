@@ -40,7 +40,6 @@ public class OrderService {
     private final DiscountRepository discountRepository;
 
 
-
     @Autowired
     public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService, EmployeeService employeeService, JwtUtil jwtUtil, OrderItemRepository orderItemRepository, ModelMapper modelMapper, EntityManager em, PaymentService paymentService, PaymentRepository paymentRepository1, ShippingDetailRepository shippingDetailRepository1, ShippingDetailService shippingDetailService,
                         DiscountRepository discountRepository) {
@@ -72,7 +71,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrder(PlaceOrder placeOrder, String token,String code) {
+    public GetOrderResponse placeNewOrder(PlaceOrder placeOrder, String token, String code) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -86,7 +85,7 @@ public class OrderService {
             order.setTotalPrice(placeOrder.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
-            if(code != "") {
+            if (code != "") {
                 Discount discount = discountRepository.findByCode(code);
                 discount.setUsed(true);
                 discountRepository.save(discount);
@@ -126,7 +125,7 @@ public class OrderService {
     }
 
     @Transactional
-    public GetOrderResponse placeNewOrderAlt(PlaceOrderAlt placeOrderDto, String token, PaymentMethod paymentMethod,String code) {
+    public GetOrderResponse placeNewOrderAlt(PlaceOrderAlt placeOrderDto, String token, PaymentMethod paymentMethod, String code) {
         try {
             Customer customer = customerService.getCustomer(Long.parseLong(jwtUtil.getIdFromToken(token)));
             if (customer == null)
@@ -140,7 +139,7 @@ public class OrderService {
             order.setTotalPrice(placeOrderDto.getTotalPrice());
             order.setOrderStatus(OrderStatus.PAYMENT_PENDING);
 
-            if(code != "") {
+            if (code != "") {
                 Discount discount = discountRepository.findByCode(code);
                 discount.setUsed(true);
                 discountRepository.save(discount);
