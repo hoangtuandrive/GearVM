@@ -72,7 +72,7 @@ public class FrmThongKe extends JFrame implements ActionListener {
         }
         if (o.equals(btnFinance)) {
             try {
-                new FrmBaoCaoDoanhThu();
+                new FrmBaoCaoDoanhThu().setVisible(true);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

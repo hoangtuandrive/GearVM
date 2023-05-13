@@ -129,6 +129,7 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
                 .build();
 
         ResponseInputStream<GetObjectResponse> input = s3.getObject(getObjectRequest);
+
         BufferedImage br = ImageIO.read(input);
         ImageIcon imageIcon = new ImageIcon(br);
         Image tempImg = imageIcon.getImage();
@@ -139,8 +140,11 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
     public ImageIcon ResizeImage(String ImagePath) {
         ImageIcon imageIcon = new ImageIcon(ImagePath);
         Image tempImg = imageIcon.getImage();
-        Image newImg = tempImg.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
-        return new ImageIcon(newImg);
+//        Image newImg = tempImg.getScaledInstance(imageLbl.getWidth(), imageLbl.getHeight(), Image.SCALE_SMOOTH);
+//       Image newImg = tempImg.getScaledInstance(800, 600, Image.SCALE_DEFAULT);
+
+        return new ImageIcon(tempImg);
+
     }
 
     private void putObjectS3() throws IOException {

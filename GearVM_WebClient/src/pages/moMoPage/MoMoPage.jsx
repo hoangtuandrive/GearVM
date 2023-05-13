@@ -32,10 +32,6 @@ const MoMoPage = () => {
         totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
       setTotalPrice(totalPriceTinh);
     }
-    if (order.methodStatus == "fulfilled") {
-      navigate("/payment-success");
-      setDiscount("");
-    }
   }, [percentDiscount.percentDiscount, order.methodStatus]);
 
   const handleComplete = (e) => {
@@ -68,6 +64,9 @@ const MoMoPage = () => {
         dispatch(CartSlice.actions.removeCartPay(item));
       }
     });
+
+    navigate("/payment-success");
+    setDiscount("");
 
     e.preventDefault();
   };

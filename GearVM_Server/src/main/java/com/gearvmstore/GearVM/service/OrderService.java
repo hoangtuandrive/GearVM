@@ -350,6 +350,7 @@ public class OrderService {
         for (OrderItem orderItem : orderItems) {
             // If there are item in cart --> plus existing item
             if (orderItem.getProduct().getId().equals(updateOrderItem.getProductId())) {
+                System.out.println(orderItem.getProduct().getId().equals(updateOrderItem.getProductId()));
                 int newQuantity = orderItem.getQuantity() + updateOrderItem.getAmount();
                 System.out.println(orderItems);
                 orderItem.setQuantity(newQuantity);
@@ -365,7 +366,7 @@ public class OrderService {
         Product product = productService.getProduct(updateOrderItem.getProductId());
 
         orderItemToAdd.setProduct(product);
-        orderItemToAdd.setId(order.getId());
+//        orderItemToAdd.setId(order.getId());
         orderItemToAdd.setQuantity(quantity);
         orderItemToAdd.setPrice(product.getPrice());
         orderItemToAdd.setOrder(order);
@@ -380,33 +381,36 @@ public class OrderService {
 
     }
 
-    public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
-        Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
-                updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
-        int quantity = updateOrderItem.getAmount();
+        public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
+            Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
+                    updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
+            int quantity = updateOrderItem.getAmount();
 
-        List<OrderItem> orderItems = order.getOrderItems();
-        for (OrderItem orderItem : orderItems) {
-            // If there are item in cart --> minus existing item
-            if (orderItem.getProduct().getId().toString().equals(updateOrderItem.getProductId())) {
-                int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
-                productService.addQuantity(orderItem.getProduct(), quantity);
+            List<OrderItem> orderItems = order.getOrderItems();
 
-                // If quantity of order item = 0 --> remove from cart
-                if (newQuantity == 0) {
-                    orderItemRepository.delete(orderItem);
-                } else {
-                    orderItem.setQuantity(newQuantity);
-                    orderItemRepository.save(orderItem);
+            List<OrderItem> itemsToRemove = new ArrayList<>();
+            for (OrderItem orderItem : orderItems) {
+                if (orderItem.getProduct().getId().toString().equalsIgnoreCase(updateOrderItem.getProductId().toString())) {
+                    int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
+                    productService.addQuantity(orderItem.getProduct(), quantity);
+                    if (newQuantity == 0) {
+                        orderItemRepository.delete(orderItem);
+                        itemsToRemove.add(orderItem);
+                    } else {
+                        orderItem.setQuantity(newQuantity);
+                        orderItemRepository.save(orderItem);
+                    }
+                    order.setTotalPrice(order.getTotalPrice() - (orderItem.getPrice() * updateOrderItem.getAmount()));
                 }
-                order.setTotalPrice(order.getTotalPrice() - (orderItem.getPrice() * updateOrderItem.getAmount()));
+            }
+            order.getOrderItems().removeAll(itemsToRemove);
+            if (order.getTotalPrice() == 0) {
+                orderRepository.delete(order);
+                return null;
+            } else {
+                return orderRepository.save(order);
             }
         }
-        if (order.getTotalPrice() == 0) {
-            orderRepository.delete(order);
-            return null;
-        } else return orderRepository.save(order);
-    }
 
     public Order updateTotalPrice(Order order) {
         List<OrderItem> orderItems = order.getOrderItems();
@@ -422,7 +426,6 @@ public class OrderService {
             orderRepository.delete(order);
             return null;
         }
-
         return orderRepository.save(order);
     }
 
