@@ -48,7 +48,7 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
 
         pieChart1 = new PieChart();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Báo Cáo Sản Phẩm Bán Chạy");
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N

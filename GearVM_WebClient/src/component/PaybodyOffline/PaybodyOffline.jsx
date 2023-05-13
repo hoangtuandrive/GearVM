@@ -57,10 +57,10 @@ const PaybodyOffline = ({ name }) => {
         totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
       setTotalPrice(totalPriceTinh);
     }
-    if (order.methodStatus == "fulfilled") {
-      navigate("/cashPage", { replace: true });
-      setDiscount("");
-    }
+    // if (order.methodStatus == "fulfilled") {
+    //   navigate("/cashPage", { replace: true });
+    //   setDiscount("");
+    // }
   }, [percentDiscount.percentDiscount, order.methodStatus]);
 
   const handleShow = () => {
@@ -111,6 +111,9 @@ const PaybodyOffline = ({ name }) => {
         dispatch(CartSlice.actions.removeCartPay(item));
       }
     });
+
+    navigate("/cashPage", { replace: true });
+    setDiscount("");
 
     e.preventDefault();
   };

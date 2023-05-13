@@ -30,7 +30,7 @@ const PayOffline = () => {
     } else {
       navigate("/", { replace: true });
     }
-  }, []);
+  }, [token]);
   const { showChat } = useContext(AppContext);
   return (
     <div className={cx("wrapPay")}>

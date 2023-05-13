@@ -116,7 +116,8 @@ public class OrderController {
     @PatchMapping(value = "/update-orderStatus/{orderId}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable(value = "orderId") Long id,
                                                @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) throws MessagingException, UnsupportedEncodingException {
-                discountService.SendDiscount(id,updateOrderStatusAndEmployee);
+
+                    discountService.SendDiscount(id,updateOrderStatusAndEmployee);
                 if(discountService.GetIdDiscount(id) != null){
                     discountService.UpdateisUsedDiscount(id,updateOrderStatusAndEmployee);
                 }

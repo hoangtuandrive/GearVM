@@ -44,7 +44,7 @@ public class DiscountService {
         helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
         helper.setTo(recipientEmail);
 
-        String subject = "Đây là OTP để đặt lại mật khẩu của bạn";
+        String subject = "Đây là mã  Giảm giá mà cửa hàng chúng tôi muốn chi ân bạn";
 
         String content = "<p>Xin chào,</p>"
                 + "<p>Cảm ơn bạn đã mua hàng với đơn giá hơn 10 triệu đồng.</p>"
@@ -67,7 +67,7 @@ public class DiscountService {
         double totalPrice= order.getTotalPrice();
         OrderStatus orderStatus=updateOrderStatusAndEmployee.getOrderStatus();
         System.out.println(email);
-        if(totalPrice>=10000 &&  orderStatus == orderStatus.SHIP_SUCCESS ){
+        if(totalPrice>=10000 &&  orderStatus == orderStatus.SHIP_SUCCESS && email !=null ){
             Discount discount=new Discount(10,10, LocalDateTime.now().plusMonths(1),false,code);
             sendEmail(email,code);
             discountRepository.save(discount);
