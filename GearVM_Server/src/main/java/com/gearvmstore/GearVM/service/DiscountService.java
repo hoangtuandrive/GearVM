@@ -1,6 +1,5 @@
 package com.gearvmstore.GearVM.service;
 
-import com.gearvmstore.GearVM.model.Customer;
 import com.gearvmstore.GearVM.model.Discount;
 import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.OrderStatus;
@@ -18,8 +17,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class DiscountService {
@@ -37,11 +34,12 @@ public class DiscountService {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
     }
+
     public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
+        helper.setFrom("tranhoanglong261220000@gmail.com", "Cửa Hàng GearVM");
         helper.setTo(recipientEmail);
 
         String subject = "Đây là mã  Giảm giá mà cửa hàng chúng tôi muốn chi ân bạn";
@@ -54,58 +52,62 @@ public class DiscountService {
                 + "<p>Lưu ý mã giảm giá chỉ cho phép sử trong vòng 1 tháng , "
                 + "nếu bạn không sử dụng sẽ hết hạn.</p>";
 
-        helper.setSubject(subject); 
+        helper.setSubject(subject);
 
         helper.setText(content, true);
 
         mailSender.send(message);
     }
+
     public void SendDiscount(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) throws MessagingException, UnsupportedEncodingException {
-        Order order=orderRepository.findById(orderId).get();
-        String email= order.getCustomer().getEmail();
+        Order order = orderRepository.findById(orderId).get();
+        String email = order.getCustomer().getEmail();
         String code = RandomString.make(30);
-        double totalPrice= order.getTotalPrice();
-        OrderStatus orderStatus=updateOrderStatusAndEmployee.getOrderStatus();
+        double totalPrice = order.getTotalPrice();
+        OrderStatus orderStatus = updateOrderStatusAndEmployee.getOrderStatus();
         System.out.println(email);
-        if(totalPrice>=10000 &&  orderStatus == orderStatus.SHIP_SUCCESS && email !=null ){
-            Discount discount=new Discount(10,10, LocalDateTime.now().plusMonths(1),false,code);
-            sendEmail(email,code);
+        if (totalPrice >= 10000000 && orderStatus == orderStatus.SHIP_SUCCESS && email != null) {
+            int percentageDiscount = totalPrice >= 20000000 ? 20 : 10;
+            Discount discount = new Discount(percentageDiscount, 10, LocalDateTime.now().plusMonths(1), false, code);
+            sendEmail(email, code);
             discountRepository.save(discount);
         }
     }
-    public double GetPercentDiscount(String code){
-       Discount discount= discountRepository.findByCode(code);
-       if(discount != null ){
-           double percent= discount.getPercentageDiscount();
-           if(discount.getExpirationDate().compareTo(LocalDateTime.now())>0 && discount.isUsed()==false){
-               return  percent;
-           }
-       }
-       return 0;
+
+    public double GetPercentDiscount(String code) {
+        Discount discount = discountRepository.findByCode(code);
+        if (discount != null) {
+            double percent = discount.getPercentageDiscount();
+            if (discount.getExpirationDate().compareTo(LocalDateTime.now()) > 0 && discount.isUsed() == false) {
+                return percent;
+            }
+        }
+        return 0;
     }
-    public Discount  UpdateisUsedDiscount(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee){
-        Order order=orderRepository.findById(orderId).get();
-        OrderStatus orderStatus=updateOrderStatusAndEmployee.getOrderStatus();
 
-        Discount discount=discountRepository.findById(order.getDiscount().getId()).get();
+    public Discount UpdateisUsedDiscount(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {
+        Order order = orderRepository.findById(orderId).get();
+        OrderStatus orderStatus = updateOrderStatusAndEmployee.getOrderStatus();
 
-        if(orderStatus == orderStatus.SHIP_SUCCESS){
+        Discount discount = discountRepository.findById(order.getDiscount().getId()).get();
+
+        if (orderStatus == orderStatus.SHIP_SUCCESS) {
             discount.setUsed(true);
             return discountRepository.save(discount);
-        }
-        else if(orderStatus == orderStatus.REJECTED ){
+        } else if (orderStatus == orderStatus.REJECTED) {
             discount.setUsed(false);
             return discountRepository.save(discount);
         }
         return null;
     }
-    public Discount GetIdDiscount(Long orderId){
-        Order order=orderRepository.findById(orderId).get();
+
+    public Discount GetIdDiscount(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
         Discount discountOrder = order.getDiscount();
-        if(discountOrder != null){
-            Long discountId= discountOrder.getId();
-            Discount discount=discountRepository.findById(discountId).get();
-            return  discount;
+        if (discountOrder != null) {
+            Long discountId = discountOrder.getId();
+            Discount discount = discountRepository.findById(discountId).get();
+            return discount;
         }
         return null;
     }

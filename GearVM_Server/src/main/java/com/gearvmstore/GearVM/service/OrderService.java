@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -194,10 +196,19 @@ public class OrderService {
 
         List<Order> onlineOrder = orderRepository.findAllByIsDirectOrderByCreatedDateDesc(false);
 
-        paidDirectOrder.addAll(onlineOrder);
+        List<Order> mergedList = new ArrayList<>();
+        mergedList.addAll(paidDirectOrder);
+        mergedList.addAll(onlineOrder);
+
+        Collections.sort(mergedList, new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                return o2.getCreatedDate().compareTo(o1.getCreatedDate());
+            }
+        });
 
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
-        for (Order order : paidDirectOrder) {
+        for (Order order : mergedList) {
             GetOrderListResponse orderListResponse = modelMapper.map(order, GetOrderListResponse.class);
             getOrderListResponseList.add(orderListResponse);
         }
@@ -206,13 +217,8 @@ public class OrderService {
 
     public List<GetOrderListResponse> getAllOnlineOrdersAndPaidDirectOrdersByFilter(String id, String customerName, String customerPhoneNumber) {
         try {
-//            List<Order> paidDirectOrder = orderRepository.findAllByIsDirectAndOrderStatusNotAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
-//                    (true, OrderStatus.DIRECT_PENDING, Long.parseLong(id), customerName, customerPhoneNumber);
-
             List<Order> onlineOrder = orderRepository.findDistinctByIsDirectAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
                     (false, Long.parseLong(id), customerName, customerPhoneNumber);
-
-//            paidDirectOrder.addAll(onlineOrder);
 
             List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
             for (Order order : onlineOrder) {
@@ -221,13 +227,9 @@ public class OrderService {
             }
             return getOrderListResponseList;
         } catch (NumberFormatException e) {
-//            List<Order> paidDirectOrder = orderRepository.findDistinctByIsDirectAndOrderStatusNotAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
-//                    (true, OrderStatus.DIRECT_PENDING, null, customerName, customerPhoneNumber);
 
             List<Order> onlineOrder = orderRepository.findDistinctByIsDirectAndIdEqualsOrCustomer_NameContainingIgnoreCaseOrCustomer_PhoneNumberContainingIgnoreCaseOrderByCreatedDateDesc
                     (false, null, customerName, customerPhoneNumber);
-
-//            paidDirectOrder.addAll(onlineOrder);
 
             List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();
             for (Order order : onlineOrder) {

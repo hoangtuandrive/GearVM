@@ -80,6 +80,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JTextField txtPhuongThucThanhToan;
     private final JLabel lblHinhThucMuaHang;
     private final JTextField txtHinhThucMuaHang;
+    private final JLabel lblMaKhuyenMai;
+    private final JTextField txtMaKhuyenMai;
+    private final JLabel lblPhanTramKhuyenMai;
+    private final JTextField txtPhanTramKhuyenMai;
 
     public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
@@ -148,6 +152,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b19 = Box.createHorizontalBox();
         Box b20 = Box.createHorizontalBox();
         Box b21 = Box.createHorizontalBox();
+        Box b22 = Box.createHorizontalBox();
+        Box b23 = Box.createHorizontalBox();
 
         b2.add(Box.createHorizontalStrut(100));
         b2.add(b3);
@@ -183,7 +189,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b7.add(txtMaThanhToan = new JTextField());
         b3.add(b7);
 
-        b20.add(lblHinhThucMuaHang = new JLabel("Hình thức Mua Hàng:"));
+        b20.add(lblHinhThucMuaHang = new JLabel("Hình Thức Mua Hàng:"));
         b20.add(Box.createHorizontalStrut(10));
         b20.add(txtHinhThucMuaHang = new JTextField());
         b3.add(b20);
@@ -209,10 +215,20 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b11.add(txtTenNhanVien = new JTextField());
         b3.add(b11);
 
-        b19.add(lblPhuongThucThanhToan = new JLabel("Phương Thức Thanh Toán"));
+        b19.add(lblPhuongThucThanhToan = new JLabel("Phương Thức Thanh Toán:"));
         b19.add(Box.createHorizontalStrut(10));
         b19.add(txtPhuongThucThanhToan = new JTextField());
         b3.add(b19);
+
+        b22.add(lblMaKhuyenMai = new JLabel("Mã Khuyến Mãi:"));
+        b22.add(Box.createHorizontalStrut(10));
+        b22.add(txtMaKhuyenMai = new JTextField());
+        b3.add(b22);
+
+        b23.add(lblPhanTramKhuyenMai = new JLabel("Phần Trăm Khuyến Mãi:"));
+        b23.add(Box.createHorizontalStrut(10));
+        b23.add(txtPhanTramKhuyenMai = new JTextField());
+        b3.add(b23);
 
         b12.add(lblTongTien = new JLabel("Tổng Tiền Thanh Toán:"));
         b12.add(Box.createHorizontalStrut(10));
@@ -226,7 +242,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b13.add(cmbTrangThai);
         b3.add(b13);
 
-        b3.add(Box.createVerticalStrut(15));
+        b3.add(Box.createVerticalStrut(5));
 
         Box b14 = Box.createHorizontalBox();
         Box b15 = Box.createHorizontalBox();
@@ -309,25 +325,29 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         lblEmail.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblPhuongThucThanhToan.setPreferredSize(lblTenNhanVien.getPreferredSize());
         lblHinhThucMuaHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblMaKhuyenMai.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblPhanTramKhuyenMai.setPreferredSize(lblTenNhanVien.getPreferredSize());
 
         b4.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b5.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b6.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b7.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b8.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b9.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b10.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b11.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b12.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b13.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b14.setBorder(new EmptyBorder(new Insets(10, 10, 10, 45)));
-        b15.setBorder(new EmptyBorder(new Insets(10, 10, 10, 45)));
-        b16.setBorder(new EmptyBorder(new Insets(10, 10, 10, 20)));
-        b17.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b18.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b20.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        b21.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b5.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b6.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b7.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b8.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b9.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b10.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b11.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b12.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b13.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b14.setBorder(new EmptyBorder(new Insets(5, 10, 10, 45)));
+        b15.setBorder(new EmptyBorder(new Insets(5, 10, 10, 45)));
+        b16.setBorder(new EmptyBorder(new Insets(5, 10, 10, 20)));
+        b17.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b18.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b19.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b20.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b21.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b22.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
+        b23.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
 
         btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTuChoi.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -353,6 +373,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtPhuongThucThanhToan.setEditable(false);
         txtTongTien.setEditable(false);
         txtHinhThucMuaHang.setEditable(false);
+        txtMaKhuyenMai.setEditable(false);
+        txtPhanTramKhuyenMai.setEditable(false);
 
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
@@ -597,10 +619,17 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
             txtPhuongThucThanhToan.setText(paymentMethod);
             txtNgayLapDonHang.setText(dateFormat.format(order.getCreatedDate()));
             txtNgaySuaDonHang.setText(dateFormat.format(order.getUpdatedDate()));
+
             if (order.getEmployee() != null) {
                 txtMaNhanVien.setText(order.getEmployee().getId().toString());
                 txtTenNhanVien.setText(order.getEmployee().getName());
             }
+
+            if (order.getDiscount() != null) {
+                txtMaKhuyenMai.setText(order.getDiscount().getCode());
+                txtPhanTramKhuyenMai.setText(order.getDiscount().getPercentageDiscount() + "%");
+            }
+
             txtTongTien.setText(df.format(order.getTotalPrice()));
         } catch (NullPointerException e) {
         }

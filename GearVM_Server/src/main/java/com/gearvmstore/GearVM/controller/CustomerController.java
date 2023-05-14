@@ -27,14 +27,14 @@ public class CustomerController {
     private final CustomerService customerService;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    public CustomerController(CustomerService customerService, JwtUtil jwtUtil, ModelMapper modelMapper) {
+    public CustomerController(CustomerService customerService, JwtUtil jwtUtil, ModelMapper modelMapper, JavaMailSender mailSender) {
         this.customerService = customerService;
         this.jwtUtil = jwtUtil;
         this.modelMapper = modelMapper;
+        this.mailSender = mailSender;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -114,7 +114,7 @@ public class CustomerController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
+        helper.setFrom("tranhoanglong261220000@gmail.com", "Cửa Hàng GearVM ");
         helper.setTo(recipientEmail);
 
         String subject = "Đây là OTP để đặt lại mật khẩu của bạn";

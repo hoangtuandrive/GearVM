@@ -86,7 +86,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         lblMaSanPham = new Label();
         txtMaSanPham = new JTextField();
         lblTenSanPham = new Label();
-        txtTenSanPham = new JTextField();
+        txtTenSanPham = new JTextField(15);
         lblMaNhanVien = new Label();
         txtMaNhanVien = new JTextField();
         lblTenNhanVien = new Label();
@@ -528,7 +528,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
         if (o.equals(btnNhap)) {
             if (!validInput()) {
                 return;
-            }else {
+            } else {
                 int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (result == JOptionPane.YES_OPTION) {
                     try {
@@ -840,6 +840,7 @@ public class FrmKhoHang extends JFrame implements ActionListener, MouseListener 
             return false;
         }
     }
+
     private boolean validInput() {
 
         String giaNhap = txtGiaNhap.getText();
