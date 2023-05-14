@@ -8,12 +8,16 @@ import com.gearvmdesktop.service.ProductService;
 import com.gearvmstore.GearVM.model.OrderStatus;
 import com.gearvmstore.GearVM.model.PaymentMethod;
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.order.PrintOrderDto;
 import com.gearvmstore.GearVM.model.dto.order.UpdateOrderStatusAndEmployee;
 import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.json.JSONException;
+import org.springframework.util.ResourceUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,11 +28,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FrmChiTietDonHang extends JFrame implements ActionListener {
@@ -60,6 +67,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JButton btnTuChoi;
     private final JButton btnThanhCong;
     private final JButton btnThatBai;
+
+    private final JButton btnPrint;
     private final JButton btnXemThanhToan;
     private final JButton btnThayDoiTrangThai;
     private final JLabel lblDiaChi;
@@ -137,6 +146,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b18 = Box.createHorizontalBox();
         Box b19 = Box.createHorizontalBox();
         Box b20 = Box.createHorizontalBox();
+        Box b21 = Box.createHorizontalBox();
 
         b2.add(Box.createHorizontalStrut(100));
         b2.add(b3);
@@ -271,6 +281,13 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         btnXemThanhToan.setFocusPainted(false);
         b3.add(b16);
 
+        b21.add(Box.createHorizontalStrut(20));
+        b21.add(btnPrint = new JButton("IN HÓA ĐƠN", new ImageIcon(iconChiTiet)));
+        btnPrint.setBackground(new Color(0, 148, 224));
+        btnPrint.setForeground(Color.WHITE);
+        btnPrint.setFocusPainted(false);
+        b3.add(b21);
+
         b2.add(Box.createHorizontalStrut(50));
         b.add(Box.createHorizontalStrut(20));
         b.add(b1);
@@ -309,6 +326,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b18.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b19.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b20.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+        b21.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnTuChoi.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -316,6 +334,7 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         btnThatBai.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnThayDoiTrangThai.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnXemThanhToan.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnPrint.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         readDatabaseToTable(getOrderResponse);
         LoadDataToTextField(getOrderResponse);
@@ -340,9 +359,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         btnTuChoi.addActionListener(this);
         btnXemThanhToan.addActionListener(this);
         btnThayDoiTrangThai.addActionListener(this);
-
+        btnPrint.addActionListener(this);
 
         setVisible(true);
+
     }
 
     @Override
@@ -436,8 +456,42 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         if (o.equals(btnXemThanhToan)) {
             openPaymentDetailOnStripe();
         }
-    }
+        if(o.equals(btnPrint)){
 
+            try {
+                printOrder();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (JRException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        }
+    }
+    private void printOrder() throws IOException, JRException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        BufferedReader rd = OrderService.getReportOrder(Long.parseLong(txtMaDonHang.getText().toString()));
+
+        List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
+
+        String path = "C:\\Users\\ASUS\\Desktop";
+
+//      List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
+        //load file and compile it
+        File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(printOrderDto);
+
+//      JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("orderId", txtMaDonHang.getText().toString());
+//      System.out.println(listOrder);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
+
+    }
     public void readDatabaseToTable(GetOrderResponse getOrderResponse) throws IOException {
         emptyTable();
         DecimalFormat df = new DecimalFormat("#,##0");

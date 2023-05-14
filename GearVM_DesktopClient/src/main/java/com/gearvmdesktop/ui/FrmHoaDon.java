@@ -163,7 +163,7 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
 //        btnHoaDon.setForeground(Color.WHITE);
 //        btnHoaDon.setFocusPainted(false);
         p.add(Box.createHorizontalStrut(100));
-        p.add(lblDoanhThu = new JLabel("TỔNG DOANH THU: "));
+//        p.add(lblDoanhThu = new JLabel("TỔNG DOANH THU: "));
         p.add(Box.createHorizontalStrut(20));
         p.add(txtDoanhThu = new JLabel(), BorderLayout.SOUTH);
 //        p.add(Box.createHorizontalStrut(200));
@@ -171,7 +171,7 @@ public class FrmHoaDon extends JFrame implements ActionListener, MouseListener {
 //        btnSort.setBackground(new Color(0, 148, 224));
 //        btnSort.setForeground(Color.WHITE);
 //        btnSort.setFocusPainted(false);
-        lblDoanhThu.setBorder(new EmptyBorder(new Insets(20, 0, 0, 0)));
+//        lblDoanhThu.setBorder(new EmptyBorder(new Insets(20, 0, 0, 0)));
         txtDoanhThu.setBorder(new EmptyBorder(new Insets(20, 0, 0, 0)));
         tableHoaDon.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableHoaDon.setDefaultEditor(Object.class, null);
