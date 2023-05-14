@@ -41,7 +41,7 @@ public class DiscountService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
+        helper.setFrom("tranhoanglong261220000@gmail.com", "Cửa Hàng GEARVM");
         helper.setTo(recipientEmail);
 
         String subject = "Đây là mã  Giảm giá mà cửa hàng chúng tôi muốn chi ân bạn";

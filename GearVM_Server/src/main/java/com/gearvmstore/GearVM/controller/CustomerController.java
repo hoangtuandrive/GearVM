@@ -114,7 +114,7 @@ public class CustomerController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("tranhoanglong261220000@gmail.com", "Hoang Long Tran ");
+        helper.setFrom("tranhoanglong261220000@gmail.com", "Cửa Hàng GEARVM");
         helper.setTo(recipientEmail);
 
         String subject = "Đây là OTP để đặt lại mật khẩu của bạn";
