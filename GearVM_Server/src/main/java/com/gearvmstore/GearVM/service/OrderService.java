@@ -4,23 +4,17 @@ import com.gearvmstore.GearVM.model.*;
 import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.model.response.GetOrderListResponse;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
-import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.repository.*;
 import com.gearvmstore.GearVM.utility.JwtUtil;
-
-
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
 import javax.persistence.EntityManager;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -93,6 +87,7 @@ public class OrderService {
             }
 
             Payment payment = new Payment();
+            payment.setPaymentMethod(PaymentMethod.STRIPE);
             paymentRepository.save(payment);
 
             ShippingDetail shippingDetail = new ShippingDetail();
@@ -116,8 +111,7 @@ public class OrderService {
             }
 
             em.refresh(savedOrder);
-            System.out.println("123");
-            System.out.println(getOrder(savedOrder.getId()));
+
             return getOrder(savedOrder.getId());
         } catch (Exception e) {
             return null;
@@ -381,36 +375,36 @@ public class OrderService {
 
     }
 
-        public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
-            Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
-                    updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
-            int quantity = updateOrderItem.getAmount();
+    public Order updateReduceOrderItem(UpdateOrderItem updateOrderItem) {
+        Order order = orderRepository.findOrderByOrderStatusAndCustomer_NameAndCustomer_PhoneNumber(OrderStatus.DIRECT_PENDING,
+                updateOrderItem.getCustomerName(), updateOrderItem.getCustomerPhone());
+        int quantity = updateOrderItem.getAmount();
 
-            List<OrderItem> orderItems = order.getOrderItems();
+        List<OrderItem> orderItems = order.getOrderItems();
 
-            List<OrderItem> itemsToRemove = new ArrayList<>();
-            for (OrderItem orderItem : orderItems) {
-                if (orderItem.getProduct().getId().toString().equalsIgnoreCase(updateOrderItem.getProductId().toString())) {
-                    int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
-                    productService.addQuantity(orderItem.getProduct(), quantity);
-                    if (newQuantity == 0) {
-                        orderItemRepository.delete(orderItem);
-                        itemsToRemove.add(orderItem);
-                    } else {
-                        orderItem.setQuantity(newQuantity);
-                        orderItemRepository.save(orderItem);
-                    }
-                    order.setTotalPrice(order.getTotalPrice() - (orderItem.getPrice() * updateOrderItem.getAmount()));
+        List<OrderItem> itemsToRemove = new ArrayList<>();
+        for (OrderItem orderItem : orderItems) {
+            if (orderItem.getProduct().getId().toString().equalsIgnoreCase(updateOrderItem.getProductId().toString())) {
+                int newQuantity = orderItem.getQuantity() - updateOrderItem.getAmount();
+                productService.addQuantity(orderItem.getProduct(), quantity);
+                if (newQuantity == 0) {
+                    orderItemRepository.delete(orderItem);
+                    itemsToRemove.add(orderItem);
+                } else {
+                    orderItem.setQuantity(newQuantity);
+                    orderItemRepository.save(orderItem);
                 }
-            }
-            order.getOrderItems().removeAll(itemsToRemove);
-            if (order.getTotalPrice() == 0) {
-                orderRepository.delete(order);
-                return null;
-            } else {
-                return orderRepository.save(order);
+                order.setTotalPrice(order.getTotalPrice() - (orderItem.getPrice() * updateOrderItem.getAmount()));
             }
         }
+        order.getOrderItems().removeAll(itemsToRemove);
+        if (order.getTotalPrice() == 0) {
+            orderRepository.delete(order);
+            return null;
+        } else {
+            return orderRepository.save(order);
+        }
+    }
 
     public Order updateTotalPrice(Order order) {
         List<OrderItem> orderItems = order.getOrderItems();
@@ -456,9 +450,10 @@ public class OrderService {
         order.setUpdatedDate(LocalDateTime.now());
         return orderRepository.save(order);
     }
+
     public List<PrintOrderDto> getPrintOrderById(Long id) {
         System.out.println(orderRepository.findPrintOrderByOrderId_Named(id));
-        System.out.println("id"+id);
+        System.out.println("id" + id);
         return orderRepository.findPrintOrderByOrderId_Named(id);
     }
 

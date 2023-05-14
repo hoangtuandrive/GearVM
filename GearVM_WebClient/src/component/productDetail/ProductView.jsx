@@ -177,7 +177,7 @@ const ProductView = () => {
           ))}
         </div>
       </div>
-      <ListProductHome name="SẢN PHẨM Liên Quan" data={product} />
+      <ListProductHome name="Sản Phẩm Liên Quan" data={product} />
       {/* {console.log(product)} */}
       {showChat ? <ChatBox name={productDetail.name} /> : null}
     </Container>
