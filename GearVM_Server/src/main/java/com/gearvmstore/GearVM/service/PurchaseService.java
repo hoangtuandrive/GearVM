@@ -46,7 +46,7 @@ public class PurchaseService {
     }
 
     public List<GetPurchaseListResponse> getPurchases() {
-        List<Purchase> purchaseList = purchaseRepository.findAll();
+        List<Purchase> purchaseList = purchaseRepository.findAllByOrderByIdDesc();
         List<GetPurchaseListResponse> getPurchaseListResponseList = new ArrayList<>();
 
         for (Purchase purchase : purchaseList) {

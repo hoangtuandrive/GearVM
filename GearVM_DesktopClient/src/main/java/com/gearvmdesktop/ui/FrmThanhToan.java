@@ -13,8 +13,6 @@ import com.gearvmstore.GearVM.model.response.EmployeeResponseModel;
 import com.gearvmstore.GearVM.model.response.GetOrderResponse;
 import com.gearvmstore.GearVM.model.response.OrderItemResponseModel;
 import com.gearvmstore.GearVM.model.response.ProductResponseModel;
-
-
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.json.JSONException;
@@ -33,8 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FrmThanhToan extends JFrame implements ActionListener {
@@ -301,7 +300,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
             }
         }
         if (o.equals(btnProcessPayment)) {
-            if(cmbPhuongThucNhanHang.getSelectedIndex() == 2 && !validInputKhachHang()){
+            if (cmbPhuongThucNhanHang.getSelectedIndex() == 2 && !validInputKhachHang()) {
                 return;
             } else {
                 int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc không?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -331,7 +330,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
             else if (cmbPhuongThucThanhToan.getSelectedIndex() == 4)
                 new FrmQRCode(1);
         }
-        if(o.equals(btnPrintBill)){
+        if (o.equals(btnPrintBill)) {
 
             try {
                 printOrder();
@@ -351,7 +350,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
 
         List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
 
-        String path = "C:\\Users\\ASUS\\Desktop";
+        String path = "C:\\Users\\HP\\Desktop";
 
 //      List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
         //load file and compile it
@@ -368,7 +367,6 @@ public class FrmThanhToan extends JFrame implements ActionListener {
         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
 
     }
-
 
 
     public void readDatabaseToTable(GetOrderResponse getOrderResponse) throws IOException {
@@ -431,6 +429,7 @@ public class FrmThanhToan extends JFrame implements ActionListener {
 
         return OrderService.patchProcessDirectOrderPayment(processDirectOrderPayment);
     }
+
     private boolean validInputKhachHang() {
         // TODO Auto-generated method stub
 
