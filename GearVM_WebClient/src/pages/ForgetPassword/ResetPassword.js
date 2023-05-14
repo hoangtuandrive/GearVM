@@ -22,8 +22,7 @@ const ResetPassword = () => {
     messagePass: "",
   });
   const handlePasswrod = () => {
-    const regexPasswrod =
-      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+    const regexPasswrod = /^(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
     if (user.password === "") {
       setErrorMessage({
         ...errorMessage,
@@ -33,8 +32,7 @@ const ResetPassword = () => {
     } else if (!regexPasswrod.test(user.password)) {
       setErrorMessage({
         ...errorMessage,
-        messagePass:
-          "Mật khẩu nên có 8-20 ký tự và bao gồm ít nhất 1 chữ cái, 1 số!",
+        messagePass: "Mật khẩu nên có 8-20 ký tự!",
       });
       return false;
     } else {
@@ -43,8 +41,7 @@ const ResetPassword = () => {
     }
   };
   const handleRePasswrod = () => {
-    const regexPasswrod =
-      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+    const regexPasswrod = /^(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
     if (user.rePassword === "") {
       setErrorMessage({
         ...errorMessage,
@@ -54,8 +51,7 @@ const ResetPassword = () => {
     } else if (!regexPasswrod.test(user.rePassword)) {
       setErrorMessage({
         ...errorMessage,
-        messageRePass:
-          "Mật khẩu nên có 8-20 ký tự và bao gồm ít nhất 1 chữ cái, 1 số!",
+        messageRePass: "Mật khẩu nên có 8-20 ký tự!",
       });
       return false;
     } else if (user.password != user.rePassword) {
