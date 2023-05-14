@@ -6,6 +6,7 @@
 package com.gearvmdesktop.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.barchart.chart.ModelChart;
 import com.gearvmdesktop.service.ReportService;
 import com.gearvmstore.GearVM.model.response.MonthlyFinanceReportResponseModel;
@@ -61,7 +62,7 @@ public class FrmBaoCaoDoanhThu extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        FlatLightLaf.setup();
         Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
         setMaximumSize(DimMax);
         setTitle("Báo Cáo Doanh Thu");
@@ -71,8 +72,8 @@ public class FrmBaoCaoDoanhThu extends javax.swing.JFrame {
         chart = new com.gearvmdesktop.barchart.chart.Chart();
         jTextField = new javax.swing.JTextField(15);
         jButton1 = new javax.swing.JButton();
+        Box box = Box.createHorizontalBox();
 
-//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -94,14 +95,19 @@ public class FrmBaoCaoDoanhThu extends javax.swing.JFrame {
             }
         });
 
+        box.add(Box.createHorizontalStrut(1200));
+        box.add(jTextField);
+        box.add(Box.createHorizontalStrut(50));
+        box.add(jButton1);
+        box.add(Box.createHorizontalStrut(50));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jTextField)
-                                        .addComponent(jButton1)
+                                        .addComponent(box)
                                         .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, DimMax.width - 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         )
         );
@@ -111,8 +117,7 @@ public class FrmBaoCaoDoanhThu extends javax.swing.JFrame {
                                 .addContainerGap(30, Short.MAX_VALUE)
                                 .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, DimMax.height - 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField)
-                                .addComponent(jButton1)
+                                .addComponent(box)
                                 .addGap(10, 10, 10))
         );
 

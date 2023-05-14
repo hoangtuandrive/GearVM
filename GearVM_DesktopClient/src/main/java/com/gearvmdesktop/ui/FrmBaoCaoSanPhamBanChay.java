@@ -1,6 +1,7 @@
 package com.gearvmdesktop.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.gearvmdesktop.piechart.ModelPieChart;
 import com.gearvmdesktop.piechart.PieChart;
 import com.gearvmdesktop.service.ReportService;
@@ -45,10 +46,9 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
+        FlatLightLaf.setup();
         pieChart1 = new PieChart();
-
-//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
         setTitle("Báo Cáo Sản Phẩm Bán Chạy");
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N

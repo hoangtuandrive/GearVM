@@ -38,7 +38,7 @@ public class FrmThongKe extends JFrame implements ActionListener {
         btnBestSale = new JButton("Thống Kê Sản Phẩm Bán Chạy", new ImageIcon(iconTim));
         btnBestSale.setBackground(new Color(0, 148, 224));
         btnBestSale.setForeground(Color.WHITE);
-        btnBestSale.setPreferredSize(new Dimension(280, 50));
+        btnBestSale.setPreferredSize(new Dimension(450, 50));
         btnBestSale.setFont(new Font("Tahoma", Font.BOLD, 18));
 
         btnFinance = new JButton("Thống Kê Doanh Thu", new ImageIcon(iconLoad));
