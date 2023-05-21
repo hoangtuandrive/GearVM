@@ -1,6 +1,5 @@
 package com.gearvmstore.GearVM.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gearvmstore.GearVM.model.Order;
 import com.gearvmstore.GearVM.model.OrderStatus;
@@ -9,15 +8,12 @@ import com.gearvmstore.GearVM.model.dto.order.*;
 import com.gearvmstore.GearVM.service.DiscountService;
 import com.gearvmstore.GearVM.service.OrderService;
 import com.gearvmstore.GearVM.utility.JwtUtil;
-
-//import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -25,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
-    private  final DiscountService discountService;
+    private final DiscountService discountService;
     private final JwtUtil jwtUtil;
 
     @Autowired
@@ -94,7 +90,7 @@ public class OrderController {
 
         if (jwtUtil.validateJwtToken(token))
 
-            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrder, token,placeOrder.getCode()));
+            return ResponseEntity.ok().body(orderService.placeNewOrder(placeOrder, token, placeOrder.getCode()));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 
@@ -109,7 +105,7 @@ public class OrderController {
         String token = header.substring(7);
 
         if (jwtUtil.validateJwtToken(token))
-            return ResponseEntity.ok().body(orderService.placeNewOrderAlt(placeOrderAlt, token, paymentMethod,placeOrderAlt.getCode()));
+            return ResponseEntity.ok().body(orderService.placeNewOrderAlt(placeOrderAlt, token, paymentMethod, placeOrderAlt.getCode()));
         return new ResponseEntity<>("Token expired", HttpStatus.UNAUTHORIZED);
     }
 
@@ -117,10 +113,10 @@ public class OrderController {
     public ResponseEntity<?> updateOrderStatus(@PathVariable(value = "orderId") Long id,
                                                @RequestBody UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) throws MessagingException, UnsupportedEncodingException {
 
-                    discountService.SendDiscount(id,updateOrderStatusAndEmployee);
-                if(discountService.GetIdDiscount(id) != null){
-                    discountService.UpdateisUsedDiscount(id,updateOrderStatusAndEmployee);
-                }
+        discountService.SendDiscount(id, updateOrderStatusAndEmployee);
+        if (discountService.GetIdDiscount(id) != null) {
+            discountService.UpdateisUsedDiscount(id, updateOrderStatusAndEmployee);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatusAndEmployee(id, updateOrderStatusAndEmployee));
     }
 
@@ -152,6 +148,7 @@ public class OrderController {
     public ResponseEntity<?> processDirectOrderPayment(@RequestBody ProcessDirectOrderPayment processDirectOrderPayment) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.processDirectOrderPayment(processDirectOrderPayment));
     }
+
     @GetMapping("/print-order/{id}")
     public ResponseEntity<List<PrintOrderDto>> getChiTietHoaDonById(@PathVariable Long id) {
         List<PrintOrderDto> chiTietHoaDons = orderService.getPrintOrderById(id);
@@ -160,6 +157,4 @@ public class OrderController {
         }
         return new ResponseEntity<>(chiTietHoaDons, HttpStatus.OK);
     }
-
-
 }
