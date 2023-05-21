@@ -137,7 +137,7 @@ public class CustomerController {
     @PostMapping("/forgot-password")
     public ResponseEntity<String> processForgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
         Customer customer = customerService.getEmailResetPassWord(email);
-        System.out.println(email);
+
         if (customer == null) {
             return ResponseEntity.badRequest().body("Email này không tồn tại");
         }
@@ -167,8 +167,7 @@ public class CustomerController {
     public ResponseEntity<?> updateCustomer(@PathVariable(value = "token") String token, @RequestBody String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         Customer customer = customerService.getByResetPasswordToken(token);
-        System.out.println(token);
-        System.out.println("asd" + password);
+
         if (customer == null) {
             return ResponseEntity.badRequest().body("OTP của bạn đã hết hạn hoặc bạn đã nhập sai");
         } else {

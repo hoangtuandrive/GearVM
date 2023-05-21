@@ -134,6 +134,8 @@ const CatalogProduct = () => {
   const brand = query.get("brand");
   const min = query.get("min");
   const max = query.get("max");
+  const price_gte = query.get("price_gte");
+  const price_lte = query.get("price_lte");
 
   const [productList, setProductList] = useState([]);
   const [products, setProducts] = useState(productList);
@@ -152,101 +154,101 @@ const CatalogProduct = () => {
 
   const [filter, setFilter] = useState(initFilter);
 
-  const filterSelect = (type, checked, item) => {
-    console.log(checked);
-    if (checked) {
-      switch (type) {
-        case "COLOR":
-          setFilter({ ...filter, color: [...filter.color, item.color] });
-          break;
-        case "BRAND":
-          setFilter({ ...filter, brand: [...filter.brand, item.brand] });
-          break;
-        default:
-      }
-    } else {
-      switch (type) {
-        case "COLOR":
-          const newColor = filter.color.filter((e) => e !== item.color);
-          setFilter({ ...filter, color: newColor });
-          break;
-        case "BRAND":
-          const newBrand = filter.brand.filter((e) => e !== item.brand);
-          setFilter({ ...filter, brand: newBrand });
-          break;
-        default:
-      }
-    }
-  };
-  const handleGia = (e) => {
-    const temp = [];
-    switch (e.target.value) {
-      case "tren10":
-        setFilter({ ...filter, price: e.target.value });
-        products.map((item) => {
-          if (item.price > 10000000) {
-            temp.push(item);
-          }
-        });
-        setData(temp);
+  // const filterSelect = (type, checked, item) => {
+  //   console.log(checked);
+  //   if (checked) {
+  //     switch (type) {
+  //       case "COLOR":
+  //         setFilter({ ...filter, color: [...filter.color, item.color] });
+  //         break;
+  //       case "BRAND":
+  //         setFilter({ ...filter, brand: [...filter.brand, item.brand] });
+  //         break;
+  //       default:
+  //     }
+  //   } else {
+  //     switch (type) {
+  //       case "COLOR":
+  //         const newColor = filter.color.filter((e) => e !== item.color);
+  //         setFilter({ ...filter, color: newColor });
+  //         break;
+  //       case "BRAND":
+  //         const newBrand = filter.brand.filter((e) => e !== item.brand);
+  //         setFilter({ ...filter, brand: newBrand });
+  //         break;
+  //       default:
+  //     }
+  //   }
+  // };
+  // const handleGia = (e) => {
+  //   const temp = [];
+  //   switch (e.target.value) {
+  //     case "tren10":
+  //       setFilter({ ...filter, price: e.target.value });
+  //       products.map((item) => {
+  //         if (item.price > 10000000) {
+  //           temp.push(item);
+  //         }
+  //       });
+  //       setData(temp);
 
-        break;
-      case "15-20":
-        setFilter({ ...filter, price: e.target.value });
+  //       break;
+  //     case "15-20":
+  //       setFilter({ ...filter, price: e.target.value });
 
-        products.map((item) => {
-          if (item.price >= 15000000 && item.price <= 20000000) {
-            temp.push(item);
-          }
-        });
-        setData(temp);
+  //       products.map((item) => {
+  //         if (item.price >= 15000000 && item.price <= 20000000) {
+  //           temp.push(item);
+  //         }
+  //       });
+  //       setData(temp);
 
-        break;
-      case "20-25":
-        setFilter({ ...filter, price: e.target.value });
+  //       break;
+  //     case "20-25":
+  //       setFilter({ ...filter, price: e.target.value });
 
-        products.map((item) => {
-          if (item.price >= 20000000 && item.price <= 25000000) {
-            temp.push(item);
-          }
-        });
-        setData(temp);
+  //       products.map((item) => {
+  //         if (item.price >= 20000000 && item.price <= 25000000) {
+  //           temp.push(item);
+  //         }
+  //       });
+  //       setData(temp);
 
-        break;
-      case "25-30":
-        setFilter({ ...filter, price: e.target.value });
+  //       break;
+  //     case "25-30":
+  //       setFilter({ ...filter, price: e.target.value });
 
-        products.map((item) => {
-          if (item.price >= 25000000 && item.price <= 30000000) {
-            temp.push(item);
-          }
-        });
-        setData(temp);
+  //       products.map((item) => {
+  //         if (item.price >= 25000000 && item.price <= 30000000) {
+  //           temp.push(item);
+  //         }
+  //       });
+  //       setData(temp);
 
-        break;
-      case "tren30":
-        setFilter({ ...filter, price: e.target.value });
+  //       break;
+  //     case "tren30":
+  //       setFilter({ ...filter, price: e.target.value });
 
-        products.map((item) => {
-          if (item.price > 30000000) {
-            temp.push(item);
-          }
-        });
-        setData(temp);
+  //       products.map((item) => {
+  //         if (item.price > 30000000) {
+  //           temp.push(item);
+  //         }
+  //       });
+  //       setData(temp);
 
-        break;
-      default:
-        break;
-    }
+  //       break;
+  //     default:
+  //       break;
+  //   }
 
-    console.log(e.target.value);
-  };
+  //   console.log(e.target.value);
+  // };
 
   const handleChangePrice = (e) => {
     set_minValue(e[0]);
     set_maxValue(e[1]);
     if (brand) {
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}&min=${
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=5&brand=${brand}&type=${type}&min=${
         e[0] * 1000000
       }&max=${e[1] * 1000000}`;
       fetchProduct(productUrl);
@@ -274,7 +276,9 @@ const CatalogProduct = () => {
       }
     }
   };
-
+  console.log(maxValue);
+  console.log(minValue);
+  console.log(max ? max : 100);
   const updateProducts = useCallback(() => {
     let temp = productList;
     if (filter.color.length > 0) {
@@ -308,21 +312,49 @@ const CatalogProduct = () => {
     }
   };
   useEffect(() => {
-    set_maxValue(max ? max : 100);
-    set_minValue(min ? min : 0);
-    console.log(brand, page);
+    if (price_gte || price_lte) {
+      set_maxValue(price_lte);
+      set_minValue(price_gte ? price_gte : 0);
+    } else {
+      set_maxValue(max ? max : 100);
+      set_minValue(min ? min : 0);
+      console.log(brand, page);
+    }
+
     if (page && brand) {
       const productUrl = `${url}/products/filter-search-price?pageNumber=${
         page - 1
-      }&pageSize=5&brand=${brand}&type=${type}`;
+      }&pageSize=5&brand=${brand}&type=${type}&min=${minValue * 1000000}&max=${
+        maxValue * 1000000
+      }`;
       // console.log(type, brand, page);
       // console.log("chay");
       fetchProduct(productUrl);
     } else if (page && filed) {
-      const productUrl = `${url}/products/search-bar?pageNumber=${
-        page - 1
-      }&pageSize=24&filter=${filed}`;
-      fetchProduct(productUrl);
+      // const productUrl = `${url}/products/search-bar?pageNumber=${
+      //   page - 1
+      // }&pageSize=24&filter=${filed}`;
+      // fetchProduct(productUrl);
+      const CheckFiled = (value) => {
+        return dataNavModal.map((item) => {
+          return item.name === value;
+        });
+      };
+      if (CheckFiled(filed)) {
+        const productUrl = `${url}/products/filter-search-price?pageNumber=${
+          page - 1
+        }&pageSize=24&type=${filed}&min=${minValue * 1000000}&max=${
+          maxValue * 1000000
+        }`;
+        fetchProduct(productUrl);
+      } else {
+        const productUrl = `${url}/products/filter-search-price?pageNumber=${
+          page - 1
+        }&pageSize=24&brand=${filed}&min=${minValue * 1000000}&max=${
+          maxValue * 1000000
+        }`;
+        fetchProduct(productUrl);
+      }
     } else if (page && max) {
       const productUrl = `${url}/products/filter-search-price?pageNumber=${
         page - 1
@@ -341,7 +373,7 @@ const CatalogProduct = () => {
       fetchProduct(productUrl);
     } else if (max) {
       console.log(13);
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${type}&min=${
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=2&type=${type}&min=${
         min * 1000000
       }&max=${max * 1000000}`;
       fetchProduct(productUrl);
@@ -383,12 +415,16 @@ const CatalogProduct = () => {
   // Change page
   const paginate = (pageNumber) => {
     if (brand) {
-      navigate(`/catalog?page=${pageNumber}&brand=${brand}&type=${type}`);
+      navigate(
+        `/catalog?page=${pageNumber}&brand=${brand}&type=${type}&price_gte=${minValue}&price_lte=${maxValue}`
+      );
     } else if (filed) {
-      navigate(`/catalog?page=${pageNumber}&filed=${filed}`);
+      navigate(
+        `/catalog?page=${pageNumber}&filed=${filed}&price_gte=${minValue}&price_lte=${maxValue}`
+      );
     } else if (max) {
       navigate(
-        `/catalog?page=${pageNumber}&type=${type}&min=${min}&max=${max}`
+        `/catalog?page=${pageNumber}&type=${type}&min=${min}&max=${max}&price_gte=${minValue}&price_lte=${maxValue}`
       );
     }
     // const fetchProduct = async () => {
@@ -471,13 +507,19 @@ const CatalogProduct = () => {
                 </p>
               </div>
             </div>
+
             <Slider
               autoAdjustOverflow={true}
+              autoFocus={true}
               tooltip={{ open: false }}
               range
               min={parseFloat(min ? min : 0)}
               max={parseFloat(max ? max : 100)}
-              defaultValue={[minValue, max ? max : 100]}
+              // defaultValue={[
+              //   parseInt(min ? min : 0),
+              //   parseInt(max ? max : 100),
+              // ]}
+              defaultValue={[0, 100]}
               onChange={handleChangePrice}
               className={cx("changePrice")}
             />

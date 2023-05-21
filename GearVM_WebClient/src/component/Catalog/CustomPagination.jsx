@@ -12,6 +12,9 @@ const CustomPagination = ({
   const page = query.get("page");
   const [current, setCurrent] = useState(page ? parseInt(page) : 1);
 
+  useEffect(() => {
+    setCurrent(page ? parseInt(page) : 1);
+  }, [page]);
   return (
     <nav>
       <ul className="pagination">

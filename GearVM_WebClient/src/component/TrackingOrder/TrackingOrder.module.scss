@@ -169,3 +169,25 @@ p {
   font-size: 18px;
   font-weight: bold;
 }
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.btn-warning {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: #ee5435;
+  border-color: #ee5435;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+.btn-warning:hover {
+  color: #ffffff;
+  background-color: #ff2b00;
+  border-color: #ff2b00;
+  border-radius: 5px;
+}

@@ -69,7 +69,7 @@ const BankingPage = () => {
       orderItems,
       method: "BANK",
       shippingDetailDto: user,
-      code: discount,
+      code: percentDiscount.discountCode,
     };
 
     dispatch(OrderMethod(cartOrder));

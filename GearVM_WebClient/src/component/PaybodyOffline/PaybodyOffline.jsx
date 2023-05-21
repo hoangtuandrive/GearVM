@@ -100,7 +100,7 @@ const PaybodyOffline = ({ name }) => {
       totalPrice: totalPrice,
       shippingDetailDto: user,
       orderItems,
-      code: discount,
+      code: percentDiscount.discountCode,
       method: "COD",
     };
 
