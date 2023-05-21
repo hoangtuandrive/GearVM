@@ -54,7 +54,7 @@ const MoMoPage = () => {
       orderItems,
       method: "MOMO",
       shippingDetailDto: user,
-      code: discount,
+      code: percentDiscount.discountCode,
     };
 
     dispatch(OrderMethod(cartOrder));

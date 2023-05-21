@@ -60,24 +60,27 @@ const PayBody = () => {
 
   // const [discout, setDiscount] = useState("");
   const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
-  console.log(cart.cartTotalAmount);
+  const [totalTemp, setTotalTemp] = useState(cart.cartTotalAmount);
+
   const handleDiscount = () => {
     dispatch(DiscountCode(discount));
   };
 
   useEffect(() => {
     FilterCartTrue();
-    if (percentDiscount.percentDiscount > 0) {
+    if (percentDiscount.discountStatus === "success") {
       const totalPriceTinh =
         totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
       setTotalPrice(totalPriceTinh);
+    } else {
+      setTotalPrice(cart.cartTotalAmount);
     }
-  }, [percentDiscount.percentDiscount]);
+  }, [percentDiscount.discountStatus]);
 
   const handlePayOffline = () => {
     navigate("/payOffline", { replace: true });
   };
-
+  console.log(percentDiscount);
   const handlePay = (e) => {
     dispatch(currentCustomer());
     let orderItems = [];
@@ -95,11 +98,12 @@ const PayBody = () => {
       // console.log(oderItem);
     });
     // let totalPrice =;
-    var code = "";
-    if (percentDiscount.percentDiscount > 0) {
-      code = discount;
-    }
 
+    var code = "";
+    if (percentDiscount.discountStatus === "success") {
+      code = percentDiscount.discountCode;
+    }
+    console.log(code);
     const cartOrder = {
       // totalPrice: cart.cartTotalAmount,
       totalPrice: totalPrice,
@@ -178,17 +182,31 @@ const PayBody = () => {
               <span>{percentDiscount.discountError}</span>
             ) : null}
           </div>
-          <div className={cx("wrapPayBody_right_Sumpay_content")}>
-            <span className={cx("wrapPayBody_right_Sumpay_text")}>
-              Tổng tiền:
-            </span>
-            <span className={cx("wrapPayBody_right_Sumpay_text_red")}>
-              {new Intl.NumberFormat("de-DE", {
-                style: "currency",
-                currency: "VND",
-              }).format(totalPrice)}
-            </span>
+          <div>
+            <div className={cx("wrapPayBody_right_Sumpay_content")}>
+              <span className={cx("wrapPayBody_right_Sumpay_text")}>
+                Tổng tiền tạm tính :
+              </span>
+              <span className={cx("wrapPayBody_right_Sumpay_text_red")}>
+                {new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(totalTemp)}
+              </span>
+            </div>
+            <div className={cx("wrapPayBody_right_Sumpay_content")}>
+              <span className={cx("wrapPayBody_right_Sumpay_text")}>
+                Tổng tiền:
+              </span>
+              <span className={cx("wrapPayBody_right_Sumpay_text_red")}>
+                {new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(totalPrice)}
+              </span>
+            </div>
           </div>
+
           <div className={cx("wrapPayBody_right_metodpay")}>
             <h5 className={cx("Paytxt")}>Phương thức thanh toán</h5>
             <div className={cx("wrapPayBody_right_metodpay_wrapbtn")}>

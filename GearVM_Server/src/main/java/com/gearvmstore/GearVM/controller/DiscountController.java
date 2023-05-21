@@ -17,7 +17,7 @@ public class DiscountController {
     @GetMapping(value = "/discount-code/{code}")
     public ResponseEntity<?> GetDiscountByCode(@PathVariable(value = "code")String code) {
 
-        if(discountService.GetPercentDiscount(code) !=0){
+        if(discountService.GetPercentDiscount(code) !=null){
             return ResponseEntity.ok().body(discountService.GetPercentDiscount(code));
         }
         return ResponseEntity.badRequest().body("Mã giảm giá đã hết hạn");

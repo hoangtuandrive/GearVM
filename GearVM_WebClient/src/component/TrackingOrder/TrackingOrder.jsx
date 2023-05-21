@@ -137,6 +137,11 @@ const TrackingOrder = ({ data }) => {
         {/* <header className={cx("card-header")}> My Orders / Tracking </header> */}
         <div className={cx("card-pad")}>
           <h6 className={cx("card-txt")}>Mã đơn hàng: {data?.id}</h6>
+          {/* <div className={cx("title")}>
+            {data?.orderStatus === "REJECTED" ? null : (
+              <div className={cx("btn", "btn-warning")}>Hủy đơn hàng</div>
+            )}
+          </div> */}
           <article className={cx("card")}>
             <Row className={cx("card-body")}>
               <Col>

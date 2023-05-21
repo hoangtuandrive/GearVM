@@ -73,16 +73,15 @@ public class DiscountService {
             discountRepository.save(discount);
         }
     }
-
-    public double GetPercentDiscount(String code) {
-        Discount discount = discountRepository.findByCode(code);
-        if (discount != null) {
-            double percent = discount.getPercentageDiscount();
-            if (discount.getExpirationDate().compareTo(LocalDateTime.now()) > 0 && discount.isUsed() == false) {
-                return percent;
-            }
-        }
-        return 0;
+    public Discount GetPercentDiscount(String code){
+       Discount discount= discountRepository.findByCode(code);
+       if(discount != null ){
+           double percent= discount.getPercentageDiscount();
+           if(discount.getExpirationDate().compareTo(LocalDateTime.now())>0 && discount.isUsed()==false){
+               return  discount;
+           }
+       }
+       return null;
     }
 
     public Discount UpdateisUsedDiscount(Long orderId, UpdateOrderStatusAndEmployee updateOrderStatusAndEmployee) {

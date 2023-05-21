@@ -25,6 +25,7 @@ const initialState = {
   user: [],
   userLoaded: false,
 };
+
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (values, { rejectWithValue }) => {
@@ -195,6 +196,7 @@ const authSlice = createSlice({
         ...state,
         registerStatus: "succes",
       };
+
       // return { ...state, userLoaded: true };
     });
     builder.addCase(registerUser.rejected, (state, action) => {
@@ -220,6 +222,7 @@ const authSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
+
         return {
           ...state,
           token: action.payload,
