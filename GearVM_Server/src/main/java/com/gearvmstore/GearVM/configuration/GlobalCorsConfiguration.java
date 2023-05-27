@@ -20,7 +20,7 @@ public class GlobalCorsConfiguration {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins((List.of("http://localhost:3000")));
+        config.setAllowedOrigins((List.of("http://localhost:3000", "https://gear-vm-tuan.vercel.app")));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("*"));
         source.registerCorsConfiguration("/**", config);
