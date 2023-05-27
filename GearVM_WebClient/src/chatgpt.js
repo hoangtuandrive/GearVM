@@ -1,1 +1,1 @@
-export const chatgpt = process.env.chatgpt;
+export const chatgpt = process.env.OPENAI_API_KEY;
