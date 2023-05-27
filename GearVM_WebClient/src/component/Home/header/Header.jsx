@@ -26,15 +26,15 @@ import SearchProducts from "../search/SearchProducts";
 const { Search } = Input;
 const cx = classNames.bind(styles);
 const Header = () => {
-  document.addEventListener("scroll", () => {
-    const top = document.documentElement.scrollTop;
-    if (top != 0) {
-      document.querySelector(".wrapnav_about").classList.add("sticky");
-      // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
-    } else {
-      document.querySelector(".wrapnav_about").classList.remove("sticky");
-    }
-  });
+  // document.addEventListener("scroll", () => {
+  //   const top = document.documentElement.scrollTop;
+  //   if (top != 0) {
+  //     document.querySelector(".wrapnav_about").classList.add("sticky");
+  //     // document.querySelector('.wrapnav_about').setAttribute('class','sticky')
+  //   } else {
+  //     document.querySelector(".wrapnav_about").classList.remove("sticky");
+  //   }
+  // });
   const navigate = useNavigate();
   const { openMenu, setOpenMenu } = useContext(AppContext);
 

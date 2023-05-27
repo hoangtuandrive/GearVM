@@ -256,7 +256,6 @@ public class OrderService {
         return getOrderListResponseList;
     }
 
-
     public List<GetOrderListResponse> getOrderListByOrderStatus(OrderStatus orderStatus) {
         List<Order> orderList = orderRepository.findAllByOrderStatusOrderByCreatedDateDesc(orderStatus);
         List<GetOrderListResponse> getOrderListResponseList = new ArrayList<>();

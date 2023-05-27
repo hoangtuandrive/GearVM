@@ -115,6 +115,7 @@ const ChatBox = ({ name }) => {
       ],
     };
 
+    console.log("ChatGPt", chatgpt);
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {

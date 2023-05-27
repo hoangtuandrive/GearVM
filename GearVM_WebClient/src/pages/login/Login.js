@@ -55,8 +55,9 @@ const Login = () => {
 
   // console.log(errorMessage);
   const handlePasswrod = () => {
-    const regexPasswrod =
-      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+    // const regexPasswrod =
+    //   /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+    const regexPasswrod = /^(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
     if (user.password === "") {
       setErrorMessage({
         ...errorMessage,
