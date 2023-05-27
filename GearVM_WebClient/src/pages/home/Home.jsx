@@ -13,6 +13,7 @@ import ChatBox from "../../component/chatBox/ChatBox";
 import { useContext } from "react";
 import { AppContext } from "../../component/context/AppProvider";
 import axios from "axios";
+import HeaderHome from "../../component/Home/headerhome/HeaderHome";
 
 const cx = classNames.bind(styles);
 const Home = () => {
@@ -35,7 +36,8 @@ const Home = () => {
   console.log(product.productList);
   return (
     <div className={cx("wrapHome")}>
-      <Header></Header>
+      {/* <Header></Header> */}
+      <HeaderHome></HeaderHome>
       {/* <NavModal/> */}
       <SlideShow />
       <Content></Content>

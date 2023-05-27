@@ -248,7 +248,7 @@ const CatalogProduct = () => {
     set_minValue(e[0]);
     set_maxValue(e[1]);
     if (brand) {
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=5&brand=${brand}&type=${type}&min=${
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}&min=${
         e[0] * 1000000
       }&max=${e[1] * 1000000}`;
       fetchProduct(productUrl);
@@ -324,7 +324,7 @@ const CatalogProduct = () => {
     if (page && brand) {
       const productUrl = `${url}/products/filter-search-price?pageNumber=${
         page - 1
-      }&pageSize=5&brand=${brand}&type=${type}&min=${minValue * 1000000}&max=${
+      }&pageSize=24&brand=${brand}&type=${type}&min=${minValue * 1000000}&max=${
         maxValue * 1000000
       }`;
       // console.log(type, brand, page);
@@ -369,11 +369,11 @@ const CatalogProduct = () => {
 
       fetchProduct(productUrl);
     } else if (brand) {
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=5&brand=${brand}&type=${type}`;
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&brand=${brand}&type=${type}`;
       fetchProduct(productUrl);
     } else if (max) {
       console.log(13);
-      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=2&type=${type}&min=${
+      const productUrl = `${url}/products/filter-search-price?pageNumber=0&pageSize=24&type=${type}&min=${
         min * 1000000
       }&max=${max * 1000000}`;
       fetchProduct(productUrl);
