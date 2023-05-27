@@ -38,6 +38,10 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         UIManager.put("TabbedPane.selected", new Color(50, 190, 255));
         add(createTabbedPane(e));
         setExtendedState(MAXIMIZED_BOTH);
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
     }
 
     public static void main(String args[]) {
@@ -108,7 +112,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         FrmSanPham frmHangHoa = new FrmSanPham();
         FrmDonHang frmDonHang = new FrmDonHang();
         FrmKhoHang frmKhoHang = new FrmKhoHang();
-        FrmThongKe frmThongKe=new FrmThongKe();
+        FrmThongKe frmThongKe = new FrmThongKe();
 
         /* create JPanel, which is content of tabs */
         JPanel pnlTrangChu = createPanelTrangChu(e);
@@ -119,7 +123,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         JPanel pnlHangHoa = frmHangHoa.createPanelSanPham();
         JPanel pnlKhoHang = frmKhoHang.createPanelKhoHang();
         JPanel pnlDonHang = frmDonHang.createPanelDonHang();
-        JPanel pnlThongKe= frmThongKe.createPanelThongKe();
+        JPanel pnlThongKe = frmThongKe.createPanelThongKe();
 
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -131,7 +135,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         URL iconHangHoa = classLoader.getResource("assets/hanghoa.png");
         URL iconKhoHang = classLoader.getResource("assets/khohang.png");
         URL iconDonHang = classLoader.getResource("assets/donhang.png");
-        URL iconThongKe=classLoader.getResource("assets/thongke.png");
+        URL iconThongKe = classLoader.getResource("assets/thongke.png");
 
 
         /* add tab with JPanel */
@@ -143,7 +147,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
 //        tabbedPane.addTab("SẢN PHẨM", new ImageIcon(iconHangHoa), pnlHangHoa, "SẢN PHẨM");
 //        tabbedPane.addTab("KHO HÀNG", new ImageIcon(iconKhoHang), pnlKhoHang, "KHO HÀNG");
         tabbedPane.addTab("HÓA ĐƠN", new ImageIcon(iconDonHang), pnlHoaDon, "HÓA ĐƠN");
-        tabbedPane.addTab("THỐNG KÊ", new ImageIcon(iconThongKe),pnlThongKe, "THỐNG KÊ");
+        tabbedPane.addTab("THỐNG KÊ", new ImageIcon(iconThongKe), pnlThongKe, "THỐNG KÊ");
         return tabbedPane;
     }
 

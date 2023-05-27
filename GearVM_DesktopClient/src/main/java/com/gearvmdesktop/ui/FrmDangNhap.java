@@ -36,6 +36,11 @@ public class FrmDangNhap extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(true);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         JPanel p = new JPanel(new BorderLayout());
         this.add(p);
 
@@ -72,7 +77,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
         pcenter.add(b);
 
         p.add(pcenter, BorderLayout.CENTER);
-        ClassLoader classLoader = getClass().getClassLoader();
         URL iconDangNhap = classLoader.getResource("assets/login.png");
         URL iconThoat = classLoader.getResource("assets/out.png");
 

@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class FrmBaoCaoDoanhThu extends javax.swing.JFrame {
      * Creates new form Main
      */
     public FrmBaoCaoDoanhThu() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         initComponents();
         getContentPane().setBackground(new Color(250, 250, 250));
         chart.addLegend("Doanh Thu", new Color(245, 189, 135));

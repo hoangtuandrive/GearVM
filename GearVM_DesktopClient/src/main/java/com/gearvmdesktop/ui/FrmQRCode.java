@@ -17,6 +17,11 @@ public class FrmQRCode extends JFrame {
         setTitle("Mã QR Code " + method);
         setResizable(false);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         FlatLightLaf.setup();
         setSize(600, 600);
 
@@ -25,7 +30,6 @@ public class FrmQRCode extends JFrame {
         String url = null;
         if (i == 0) url = "bank";
         else if (i == 1) url = "momo";
-        ClassLoader classLoader = getClass().getClassLoader();
         URL resourceUrl = classLoader.getResource("assets/" + url + ".jpg");
         ImageIcon imageIcon = null;
         if (resourceUrl != null) {

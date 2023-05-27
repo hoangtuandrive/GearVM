@@ -93,6 +93,11 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         setMaximumSize(DimMax);
         setExtendedState(MAXIMIZED_BOTH);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         Box b = Box.createHorizontalBox();
         Box b1 = Box.createVerticalBox();
         Box b2 = Box.createHorizontalBox();
@@ -248,7 +253,6 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         Box b15 = Box.createHorizontalBox();
         Box b16 = Box.createHorizontalBox();
 
-        ClassLoader classLoader = getClass().getClassLoader();
         URL iconXacNhan = classLoader.getResource("assets/xacNhanGiaoHang.png");
 
         b14.add(btnXacNhan = new JButton("XÁC NHẬN GIAO HÀNG", new ImageIcon(iconXacNhan)));

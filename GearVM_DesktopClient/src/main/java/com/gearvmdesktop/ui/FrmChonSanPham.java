@@ -69,6 +69,11 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
         setMaximumSize(DimMax);
         setExtendedState(MAXIMIZED_BOTH);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         pntblHangHoa = new JScrollPane();
         tableSanPham = new JTable();
         pnlTimKiem = new JPanel();
@@ -226,8 +231,7 @@ public class FrmChonSanPham extends JFrame implements ActionListener, MouseListe
 
         pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng:"));
         pnExcel.setBorder(BorderFactory.createTitledBorder("Xử lý excel:"));
-
-        ClassLoader classLoader = getClass().getClassLoader();
+        
         URL iconThem = classLoader.getResource("assets/them.png");
         URL iconSua = classLoader.getResource("assets/capnhat.png");
         URL iconXoa = classLoader.getResource("assets/xoa.png");

@@ -38,6 +38,10 @@ public class GUI_NhanVien extends JFrame implements ActionListener, MouseListene
         UIManager.put("TabbedPane.selected", new Color(50, 190, 255));
         add(createTabbedPane(e));
         setExtendedState(MAXIMIZED_BOTH);
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
     }
 
     public static void main(String args[]) {

@@ -49,29 +49,32 @@ public class FrmChiTietSanPham extends JFrame implements ActionListener {
         setLayout(null);
 
         ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
 
         URL iconChonAnh = classLoader.getResource("assets/chonanh.png");
 
-        browseButton = new JButton("Chọn ảnh",new ImageIcon(iconChonAnh));
-        browseButton .setBackground(new Color(0, 148, 224));
-        browseButton .setForeground(Color.WHITE);
-        browseButton .setFocusPainted(false);
+        browseButton = new JButton("Chọn ảnh", new ImageIcon(iconChonAnh));
+        browseButton.setBackground(new Color(0, 148, 224));
+        browseButton.setForeground(Color.WHITE);
+        browseButton.setFocusPainted(false);
         browseButton.setBounds(200, 480, 150, 40);
 
         URL iconLuu = classLoader.getResource("assets/luu.png");
 
-        saveButton = new JButton("Lưu",new ImageIcon(iconLuu));
-        saveButton .setBackground(new Color(0, 148, 224));
-        saveButton .setForeground(Color.WHITE);
-        saveButton .setFocusPainted(false);
+        saveButton = new JButton("Lưu", new ImageIcon(iconLuu));
+        saveButton.setBackground(new Color(0, 148, 224));
+        saveButton.setForeground(Color.WHITE);
+        saveButton.setFocusPainted(false);
         saveButton.setBounds(400, 480, 100, 40);
 
         URL iconHuy = classLoader.getResource("assets/huy.png");
 
-        cancelButton = new JButton("Hủy",new ImageIcon(iconHuy));
-        cancelButton .setBackground(new Color(0, 148, 224));
-        cancelButton .setForeground(Color.WHITE);
-        cancelButton .setFocusPainted(false);
+        cancelButton = new JButton("Hủy", new ImageIcon(iconHuy));
+        cancelButton.setBackground(new Color(0, 148, 224));
+        cancelButton.setForeground(Color.WHITE);
+        cancelButton.setFocusPainted(false);
         cancelButton.setBounds(520, 480, 100, 40);
         imageLbl = new JLabel();
         imageLbl.setBounds(10, 10, 600, 450);

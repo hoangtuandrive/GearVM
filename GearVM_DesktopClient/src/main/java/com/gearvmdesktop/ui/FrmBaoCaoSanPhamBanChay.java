@@ -7,9 +7,11 @@ import com.gearvmdesktop.piechart.PieChart;
 import com.gearvmdesktop.service.ReportService;
 import com.gearvmstore.GearVM.model.response.MostSoldProductResponseModel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +38,12 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
 
             pieChart1.addData(new ModelPieChart(product.getProductName(), product.getTotalSold(), color));
         }
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
+        ImageIcon icon = new ImageIcon(iconTrangChu);
+        setIconImage(icon.getImage());
+
         setVisible(true);
     }
 

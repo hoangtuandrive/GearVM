@@ -20,6 +20,7 @@ import org.springframework.util.ResourceUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -350,22 +351,40 @@ public class FrmThanhToan extends JFrame implements ActionListener {
 
         List<PrintOrderDto> printOrderDto = List.of(mapper.readValue(rd, PrintOrderDto[].class));
 
-        String path = "C:\\Users\\HP\\Desktop";
+//        String path = "C:\\Users\\HP\\Desktop";
 
-//      List<OrderItemResponseModel>  listOrderItem = getOrder(id).getOrderItems();
-        //load file and compile it
-        File file = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(printOrderDto);
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        //filter the files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF(.pdf)", ".pdf");
+        fileDialog.setAcceptAllFileFilterUsed(false);
+        fileDialog.addChoosableFileFilter(filter);
+        int result = fileDialog.showSaveDialog(null);
+        //if the user click on save in Jfilechooser
+        if (result == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileDialog.getSelectedFile();
+            String filePath = file.getAbsolutePath();
+            if (!(filePath.endsWith(".pdf"))) {
+                filePath += ".pdf";
+            }
+            try {
+                //load file and compile it
+                File jasperFile = ResourceUtils.getFile("classpath:InHoaDon.jrxml");
+                JasperReport jasperReport = JasperCompileManager.compileReport(jasperFile.getAbsolutePath());
+                JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(printOrderDto);
 
-//      JasperReport report = JasperCompileManager.compileReport("src/main/resources/InHoaDon.jrxml");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("orderId", txtMaDonHang.getText().toString());
-//      System.out.println(listOrder);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+                Map<String, Object> parameters = new HashMap<>();
+                parameters.put("orderId", txtMaDonHang.getText().toString());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
-        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\test.pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
 
+                JOptionPane.showMessageDialog(null, "Ghi file thành công!!", "Thành công",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ghi file thất bại!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
 
