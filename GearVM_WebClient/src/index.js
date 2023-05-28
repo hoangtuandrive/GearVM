@@ -9,9 +9,10 @@ import App from "./App";
 import store, { persistor } from "./redux/stores/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { CheckQuantity } from "./redux/slices/CartSlices";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
+store.dispatch(CheckQuantity());
 root.render(
   <React.StrictMode>
     <Provider store={store}>

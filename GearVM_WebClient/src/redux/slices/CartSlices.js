@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { s3 } from "../../aws";
+import axios from "axios";
+import { url } from "../../API/api";
+import { useNavigate } from "react-router-dom";
 const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
@@ -8,6 +11,9 @@ const initialState = {
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
   ImgAnh: [],
+  cartQuantityChecked: [],
+  statusCheck: "",
+  errorCheck: "",
 };
 
 export const ChangeImg = createAsyncThunk(
@@ -27,6 +33,34 @@ export const ChangeImg = createAsyncThunk(
       return imageSrc;
     } catch (error) {
       // console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const CheckQuantity = createAsyncThunk(
+  "Cart/CheckQuantity",
+  async (values, { rejectWithValue }) => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("cartItems"));
+      const cartTemp = cart.map((item) => ({
+        id: item.id,
+        cartQuantity: item.cartQuantity,
+      }));
+
+      const CheckQuantity = await axios.post(
+        `${url}/products/check-cart-quantity`,
+        cartTemp,
+        // { data: cartTemp },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return CheckQuantity.data;
+    } catch (error) {
+      console.log(error);
+      // console.log(rejectWithValue(error));
       return rejectWithValue(error.response.data);
     }
   }
@@ -118,6 +152,7 @@ const CartSlice = createSlice({
             (item) => item.id !== cartItem.id
           );
           state.cartItems = nextCartItems;
+          // toast.error("Will close after 15s", { autoClose: 15000 });
           toast.error("Đã xóa sản phẩm khỏi giỏ hàng", {
             position: "top-right",
           });
@@ -185,62 +220,54 @@ const CartSlice = createSlice({
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
-    ChangeImgUri(state, action) {
-      let cartTemp = [];
-
-      // async function getImage(item) {
-      //   try {
-      //     const response = await s3
-      //       .getObject({
-      //         Bucket: "gearvm",
-      //         Key: item.imageUri,
-      //       })
-      //       .promise();
-      //     const imageSrc = `data:image/jpeg;base64,${response.Body.toString(
-      //       "base64"
-      //     )}`;
-
-      //     return imageSrc;
-      //   } catch (error) {
-      //     // console.log(error);
-      //     return error;
-      //   }
-      // }
-
-      // state.cartItems.map((item) => {
-      //   getImage(item)
-      //     .then((data) => {
-      //       console.log(item);
-      //       let ChangeImg = {
-      //         // ...item,
-      //         imageUri: data,
-      //       };
-      //       return ChangeImg;
-      //     })
-      //     .then((ChangeImg) => {
-      //       cartTemp.push(ChangeImg);
-      //     });
-      // });
-      // console.log(cartTemp);
-      // localStorage.setItem("cartItems", ChangeImg);
-    },
   },
   extraReducers: (builder) => {
-    builder.addCase(ChangeImg.fulfilled, (state, action) => {
-      state.ImgAnh = action.payload;
-      // console.log(action.payload);
-      // state.cartItems = [
-      //   ...state.cartItems,
-      //   {
-      //     imageUri: action.payload,
-      //   },
-      //   //
-      // ];
-      // return {
-      //   // ...state,
-      //   // ImgAnh: action.payload,
-      //   // ImgAnh: [...state.ImgAnh, action.payload],
-      // };
+    builder.addCase(CheckQuantity.pending, (state, action) => {
+      console.log(action.payload);
+      return {
+        ...state,
+        statusCheck: "pending",
+      };
+    });
+    builder.addCase(CheckQuantity.rejected, (state, action) => {
+      return {
+        ...state,
+        statusCheck: "rejected",
+        errorCheck: action.payload,
+      };
+    });
+    builder.addCase(CheckQuantity.fulfilled, (state, action) => {
+      // const navigate = useNavigate();
+      const cart = JSON.parse(localStorage.getItem("cartItems"));
+      const cartChecked = cart.filter(
+        (item) => !action.payload.includes(item.id)
+      );
+      const aString = cart.map(JSON.stringify);
+      const bString = cartChecked.map(JSON.stringify);
+
+      const isEqual =
+        aString.length === bString.length &&
+        aString.every((value, index) => value === bString[index]);
+      console.log(cartChecked);
+      console.log(isEqual);
+      if (!isEqual) {
+        toast.error("Xóa 1 số sản phẩm đã hết hàng", { autoClose: 15000 });
+        localStorage.setItem("cartItems", JSON.stringify(cartChecked));
+        return {
+          ...state,
+          statusCheck: "fulfilled",
+          cartItems: cartChecked,
+          cartQuantityChecked: action.payload,
+        };
+      } else {
+        // navigate("/pay");
+        return {
+          ...state,
+          statusCheck: "fulfilled",
+          cartQuantityChecked: action.payload,
+        };
+      }
+      // if (cartChecked) console.log(cartChecked);
     });
   },
 });

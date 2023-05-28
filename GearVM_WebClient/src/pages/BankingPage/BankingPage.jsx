@@ -49,7 +49,7 @@ const BankingPage = () => {
     // }
   }, [percentDiscount.percentDiscount, order.methodStatus]);
 
-  const handleComplete = (e) => {
+  const handleComplete = async (e) => {
     dispatch(currentCustomer());
     let orderItems = [];
 
@@ -72,14 +72,15 @@ const BankingPage = () => {
       code: percentDiscount.discountCode,
     };
 
-    dispatch(OrderMethod(cartOrder));
+    const response = await dispatch(OrderMethod(cartOrder));
 
     cartItems.map((item) => {
       if (item.checkCart === true) {
         dispatch(CartSlice.actions.removeCartPay(item));
       }
     });
-
+    console.log(response.payload);
+    // if(response.payload)
     navigate("/payment-success");
     setDiscount("");
     e.preventDefault();

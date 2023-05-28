@@ -26,8 +26,9 @@ const PaybodyOffline = ({ name }) => {
 
   const dispatch = useDispatch();
 
-  const { setShow, discount, setDiscount } = useContext(AppContext);
-
+  const { setShow, discount, setDiscount, errorMessage } =
+    useContext(AppContext);
+  console.log(errorMessage);
   const [cartFilter, setCartFilter] = useState([]);
 
   const cart = useSelector((state) => state.todoCart);
@@ -72,50 +73,71 @@ const PaybodyOffline = ({ name }) => {
   // };
   // console.log(cartFilter);
   const handlePay = (e) => {
-    navigate("/moMopage", { replace: true });
+    if (
+      errorMessage.messageAddress === "" &&
+      errorMessage.messageEmail === "" &&
+      errorMessage.messageName === "" &&
+      errorMessage.messagePhone === ""
+    ) {
+      navigate("/moMopage", { replace: true });
+    }
   };
 
   const handleBanking = () => {
-    navigate("/bankingPage", { replace: true });
+    if (
+      errorMessage.messageAddress === "" &&
+      errorMessage.messageEmail === "" &&
+      errorMessage.messageName === "" &&
+      errorMessage.messagePhone === ""
+    ) {
+      navigate("/bankingPage", { replace: true });
+    }
   };
 
   const { user } = useContext(AppContext);
 
   const handleCash = (e) => {
-    dispatch(currentCustomer());
-    let orderItems = [];
+    if (
+      errorMessage.messageAddress === "" &&
+      errorMessage.messageEmail === "" &&
+      errorMessage.messageName === "" &&
+      errorMessage.messagePhone === ""
+    ) {
+      dispatch(currentCustomer());
+      let orderItems = [];
 
-    cartItems.map((item) => {
-      if (item.checkCart === true) {
-        let price = item.price;
-        let quantity = item.cartQuantity;
-        let productId = item.id;
-        let orderItemTemp = { price, quantity, productId };
-        orderItems.push(orderItemTemp);
-      }
-      // console.log(oderItem);
-    });
-    // let totalPrice =;
-    const cartOrder = {
-      totalPrice: totalPrice,
-      shippingDetailDto: user,
-      orderItems,
-      code: percentDiscount.discountCode,
-      method: "COD",
-    };
+      cartItems.map((item) => {
+        if (item.checkCart === true) {
+          let price = item.price;
+          let quantity = item.cartQuantity;
+          let productId = item.id;
+          let orderItemTemp = { price, quantity, productId };
+          orderItems.push(orderItemTemp);
+        }
+        // console.log(oderItem);
+      });
+      // let totalPrice =;
+      const cartOrder = {
+        totalPrice: totalPrice,
+        shippingDetailDto: user,
+        orderItems,
+        code: percentDiscount.discountCode,
+        method: "COD",
+      };
 
-    dispatch(OrderMethod(cartOrder));
+      dispatch(OrderMethod(cartOrder));
 
-    cartItems.map((item) => {
-      if (item.checkCart === true) {
-        dispatch(CartSlice.actions.removeCartPay(item));
-      }
-    });
+      cartItems.map((item) => {
+        if (item.checkCart === true) {
+          dispatch(CartSlice.actions.removeCartPay(item));
+        }
+      });
 
-    navigate("/cashPage", { replace: true });
-    setDiscount("");
+      navigate("/cashPage", { replace: true });
+      setDiscount("");
 
-    e.preventDefault();
+      e.preventDefault();
+    }
   };
 
   return (

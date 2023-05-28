@@ -113,7 +113,7 @@ public class ProductController {
         return productService.getProductType(type, id);
     }
 
-    @GetMapping(value = "/check-cart-quantity")
+    @PostMapping(value = "/check-cart-quantity")
     public ResponseEntity<?> checkCartQuantity(@RequestBody List<CheckCartQuantityDto> checkCartQuantityDtos) {
         return ResponseEntity.ok().body(productService.checkCartQuantity(checkCartQuantityDtos));
     }

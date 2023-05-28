@@ -144,6 +144,7 @@ public class ProductService {
 
     public List<Long> checkCartQuantity(List<CheckCartQuantityDto> checkCartQuantityDtos) {
         // List of products out of inventory
+        System.out.println(checkCartQuantityDtos);
         List<Long> productList = new ArrayList<>();
 
         for (CheckCartQuantityDto cartProduct : checkCartQuantityDtos) {

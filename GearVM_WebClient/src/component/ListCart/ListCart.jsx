@@ -3,7 +3,10 @@ import styles from "./ListCart.module.scss";
 import classNames from "classnames/bind";
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
-import CartSlice, { ChangeImg } from "../../redux/slices/CartSlices";
+import CartSlice, {
+  ChangeImg,
+  CheckQuantity,
+} from "../../redux/slices/CartSlices";
 import { useState } from "react";
 import { useEffect } from "react";
 import ToggleCheckbox from "./ToggleCheckbox";
@@ -25,6 +28,7 @@ const ListCart = () => {
   const cart = useSelector((state) => state.todoCart);
 
   const auth = useSelector((state) => state.auth);
+
   const token = localStorage.getItem("token");
   // console.log(cart);
 
@@ -37,8 +41,12 @@ const ListCart = () => {
     }
   }, [cart, dispatch]);
 
-  const handleSubmitToCart = (e) => {
-    navigate("/pay", { replace: true });
+  const handleSubmitToCart = async (e) => {
+    const response = await dispatch(CheckQuantity());
+
+    if (response.payload.length === 0) {
+      navigate("/pay", { replace: true });
+    }
   };
   const handleLogin = () => {
     navigate("/login", { replace: true });

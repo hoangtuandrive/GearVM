@@ -9,15 +9,16 @@ import { AppContext } from "../context/AppProvider";
 const cx = classNames.bind(styles);
 
 const InfoCustomer = () => {
-  const { user, setUser } = useContext(AppContext);
+  const { user, setUser, errorMessage, setErrorMessage } =
+    useContext(AppContext);
   const CurrentUser = useSelector((state) => state.auth.user);
 
-  const [errorMessage, setErrorMessage] = useState({
-    messageName: "",
-    messageAddress: "",
-    messagePhone: "",
-    messageEmail: "",
-  });
+  // const [errorMessage, setErrorMessage] = useState({
+  //   messageName: "",
+  //   messageAddress: "",
+  //   messagePhone: "",
+  //   messageEmail: "",
+  // });
 
   const handlePhone = () => {
     const regexPhone = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;

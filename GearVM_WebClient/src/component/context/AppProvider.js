@@ -13,6 +13,12 @@ function AppProvider({ children }) {
     phone: "",
     email: "",
   });
+  const [errorMessage, setErrorMessage] = useState({
+    messageName: "",
+    messageAddress: "",
+    messagePhone: "",
+    messageEmail: "",
+  });
   const [messages, setMessages] = useState([
     {
       message: "Hello, I'm ChatGPT! Ask me anything!",
@@ -29,6 +35,7 @@ function AppProvider({ children }) {
     setUser();
     setShowFilter(false);
     setDiscount("");
+    setErrorMessage();
   };
   return (
     <AppContext.Provider
@@ -50,6 +57,8 @@ function AppProvider({ children }) {
         showFilter,
         discount,
         setDiscount,
+        errorMessage,
+        setErrorMessage,
       }}
     >
       {children}

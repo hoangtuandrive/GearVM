@@ -31,7 +31,7 @@ const Pay = () => {
     if (token && CarTrue) {
       setUser({
         name: CurrentUser.name,
-        address: CurrentUser.address,
+        address: "",
         phone: CurrentUser.phoneNumber,
         email: CurrentUser.email,
       });
