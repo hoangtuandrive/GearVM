@@ -1,6 +1,7 @@
 package com.gearvmstore.GearVM.service;
 
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.cart.CheckCartQuantityDto;
 import com.gearvmstore.GearVM.model.response.GetProductPagination;
 import com.gearvmstore.GearVM.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -135,11 +137,22 @@ public class ProductService {
         p.setQuantity(p.getQuantity() - quantityToReduce);
         return productRepository.save(p);
     }
-    public List<Product> getProductType(String type,Long id) {
 
-        return productRepository.findByTypeAndIdNot(type,id);
-
+    public List<Product> getProductType(String type, Long id) {
+        return productRepository.findByTypeAndIdNot(type, id);
     }
 
+    public List<Long> checkCartQuantity(List<CheckCartQuantityDto> checkCartQuantityDtos) {
+        // List of products out of inventory
+        List<Long> productList = new ArrayList<>();
 
+        for (CheckCartQuantityDto cartProduct : checkCartQuantityDtos) {
+            Product p = productRepository.findById(cartProduct.getId()).get();
+            if (cartProduct.getCartQuantity() > p.getQuantity() || p.getQuantity() <= 0) {
+                productList.add(cartProduct.getId());
+            }
+        }
+
+        return productList;
+    }
 }

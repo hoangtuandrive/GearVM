@@ -1,11 +1,12 @@
 package com.gearvmstore.GearVM.controller;
 
 import com.gearvmstore.GearVM.model.Product;
+import com.gearvmstore.GearVM.model.dto.cart.CheckCartQuantityDto;
 import com.gearvmstore.GearVM.model.response.GetProductPagination;
 import com.gearvmstore.GearVM.repository.ProductRepository;
 import com.gearvmstore.GearVM.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -106,10 +107,14 @@ public class ProductController {
     }
 
     @GetMapping(value = "Relative")
-    public List<Product> GetRelative (
-                                                    @RequestParam(defaultValue = "") String  type,
-                                                    @RequestParam(defaultValue = "1L") Long id)
-                          {
-        return productService.getProductType(type,id);
+    public List<Product> GetRelative(
+            @RequestParam(defaultValue = "") String type,
+            @RequestParam(defaultValue = "1L") Long id) {
+        return productService.getProductType(type, id);
+    }
+
+    @GetMapping(value = "/check-cart-quantity")
+    public ResponseEntity<?> checkCartQuantity(@RequestBody List<CheckCartQuantityDto> checkCartQuantityDtos) {
+        return ResponseEntity.ok().body(productService.checkCartQuantity(checkCartQuantityDtos));
     }
 }
