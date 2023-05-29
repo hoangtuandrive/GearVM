@@ -64,14 +64,20 @@ public class FrmThongKe extends JFrame implements ActionListener {
         Object o = e.getSource();
         if (o.equals(btnBestSale)) {
             try {
-                new FrmBaoCaoSanPhamBanChay();
+//                new FrmBaoCaoSanPhamBanChay();
+                JFrame mainframe= new FrmThongKe();
+                FrmBaoCaoSanPhamBanChay reportDialog = new FrmBaoCaoSanPhamBanChay(mainframe);
+                reportDialog.setVisible(true);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
         if (o.equals(btnFinance)) {
             try {
-                new FrmBaoCaoDoanhThu().setVisible(true);
+                JFrame mainframe= new FrmThongKe();
+                FrmBaoCaoDoanhThu reportDialog = new FrmBaoCaoDoanhThu(mainframe);
+                reportDialog.setVisible(true);
+//                new FrmBaoCaoDoanhThu().setVisible(true);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

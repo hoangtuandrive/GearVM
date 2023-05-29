@@ -9,20 +9,33 @@ import com.gearvmstore.GearVM.model.response.MostSoldProductResponseModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
+public class FrmBaoCaoSanPhamBanChay extends JDialog {
     private PieChart pieChart1;
 
-    public FrmBaoCaoSanPhamBanChay() throws IOException {
+    public  FrmBaoCaoSanPhamBanChay(JFrame parentFrame) throws IOException {
+        setUndecorated(true);
 
         initComponents();
+
+        WindowAdapter windowAdapter = new WindowAdapter() {
+            public void windowDeactivated(WindowEvent e) {
+                dispose(); // đóng JDialog
+            }
+        };
+        addWindowListener(windowAdapter);
+
         getContentPane().setBackground(new Color(255, 255, 255));
         pieChart1.setChartType(PieChart.PeiChartType.DEFAULT);
+
+
 
         Color[] colors = {new Color(23, 126, 238), new Color(221, 65, 65),
                 new Color(47, 157, 64), new Color(196, 151, 58),
@@ -44,6 +57,9 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(iconTrangChu);
         setIconImage(icon.getImage());
 
+//        setSize(1000, 800);
+        setBounds(210, 30, 1350, 790);
+        setTitle("Báo Cáo Sản Phẩm Bán Chạy");
         setVisible(true);
     }
 
@@ -56,10 +72,20 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
     private void initComponents() {
         FlatLightLaf.setup();
         pieChart1 = new PieChart();
-        setExtendedState(MAXIMIZED_BOTH);
-        setTitle("Báo Cáo Sản Phẩm Bán Chạy");
+//        setExtendedState(MAXIMIZED_BOTH);
+//        setTitle("Báo Cáo Sản Phẩm Bán Chạy");
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+
+        JLabel  jLabel=new JLabel("Thông kê sản phẩm bán chạy");
+        JButton jButton = new JButton("Quay lại");
+        Box box = Box.createHorizontalBox();
+        jLabel.setFont(new java.awt.Font("sansserif", 1, 20));
+        box.add(Box.createHorizontalStrut(600));
+        box.add(jLabel);
+        box.add(Box.createHorizontalStrut(50));
+        box.add(jButton);
+        box.add(Box.createHorizontalStrut(50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,7 +93,7 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -78,45 +104,46 @@ public class FrmBaoCaoSanPhamBanChay extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
+
         pack();
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
     }
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new FrmBaoCaoSanPhamBanChay().setVisible(true);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(FrmBaoCaoSanPhamBanChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new FrmBaoCaoSanPhamBanChay().setVisible(true);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//    }
 
     private List<MostSoldProductResponseModel> getMostSoldProducts() throws IOException {
         ObjectMapper mapper = new ObjectMapper();

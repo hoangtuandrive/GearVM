@@ -8,10 +8,7 @@ import sun.misc.Unsafe;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -114,6 +111,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         FrmKhoHang frmKhoHang = new FrmKhoHang();
         FrmThongKe frmThongKe = new FrmThongKe();
 
+
         /* create JPanel, which is content of tabs */
         JPanel pnlTrangChu = createPanelTrangChu(e);
         JPanel pnlHoaDon = frmHoaDon.createPanelHoaDon();
@@ -124,6 +122,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         JPanel pnlKhoHang = frmKhoHang.createPanelKhoHang();
         JPanel pnlDonHang = frmDonHang.createPanelDonHang();
         JPanel pnlThongKe = frmThongKe.createPanelThongKe();
+
 
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -137,6 +136,9 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         URL iconDonHang = classLoader.getResource("assets/donhang.png");
         URL iconThongKe = classLoader.getResource("assets/thongke.png");
 
+        JFrame mainframe= new FrmThongKe();
+        FrmBaoCaoSanPhamBanChay reportDialogBanChay = new FrmBaoCaoSanPhamBanChay(mainframe);
+        FrmBaoCaoDoanhThu reportDialogDoanhThu = new FrmBaoCaoDoanhThu(mainframe);
 
         /* add tab with JPanel */
         tabbedPane.addTab("TRANG CHỦ", new ImageIcon(iconTrangChu), pnlTrangChu, "TRANG CHỦ");
@@ -147,7 +149,34 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
 //        tabbedPane.addTab("SẢN PHẨM", new ImageIcon(iconHangHoa), pnlHangHoa, "SẢN PHẨM");
 //        tabbedPane.addTab("KHO HÀNG", new ImageIcon(iconKhoHang), pnlKhoHang, "KHO HÀNG");
         tabbedPane.addTab("HÓA ĐƠN", new ImageIcon(iconDonHang), pnlHoaDon, "HÓA ĐƠN");
-        tabbedPane.addTab("THỐNG KÊ", new ImageIcon(iconThongKe), pnlThongKe, "THỐNG KÊ");
+//        tabbedPane.addTab("THỐNG KÊ", new ImageIcon(iconThongKe), pnlThongKe, "THỐNG KÊ");
+
+
+
+        // create a new JPanel to contain the reportDialog
+        JPanel pnlReportBanChay = new JPanel();
+        JPanel pnlReportDoanhThu = new JPanel();
+
+
+        // create a new tab using the addTab() method of the JTabbedPane
+        tabbedPane.addTab("Bán Chạy", new ImageIcon(iconThongKe), pnlReportBanChay, "Bán Chạy");
+        tabbedPane.addTab("Doanh Thu", new ImageIcon(iconThongKe), pnlReportDoanhThu, "Doanh Thu");
+        // add an action listener to the newly created tab using the addMouseListener() method
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // check if the Report tab was clicked
+                if (tabbedPane.getSelectedIndex() == tabbedPane.indexOfTab("Bán Chạy")) {
+                    // show the reportDialog
+                    reportDialogBanChay.setVisible(true);
+                }
+                if (tabbedPane.getSelectedIndex() == tabbedPane.indexOfTab("Doanh Thu")) {
+                    // show the reportDialog
+                    reportDialogDoanhThu.setVisible(true);
+                }
+            }
+        });
+
         return tabbedPane;
     }
 
