@@ -34,4 +34,9 @@ public class PromptService {
         Prompt prompt = promptRepository.getPromptByQuestionContainingIgnoreCase(promptQuestion);
         return prompt != null ? prompt.getAnswer() : null;
     }
+
+    public void deletePrompt(String question) {
+        Prompt prompt = promptRepository.getPromptByQuestionContainingIgnoreCase(question);
+        promptRepository.delete(prompt);
+    }
 }

@@ -3,6 +3,8 @@ package com.gearvmstore.GearVM.controller;
 import com.gearvmstore.GearVM.model.Prompt;
 import com.gearvmstore.GearVM.service.PromptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,5 +37,11 @@ public class PromptController {
     @PutMapping
     public Prompt updatePrompt(@RequestBody Prompt prompt) {
         return promptService.updatePrompt(prompt.getQuestion(), prompt.getAnswer());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deletePrompt(@RequestParam String question) {
+        promptService.deletePrompt(question);
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 }

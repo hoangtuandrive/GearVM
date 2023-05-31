@@ -110,6 +110,7 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         FrmDonHang frmDonHang = new FrmDonHang();
         FrmKhoHang frmKhoHang = new FrmKhoHang();
         FrmThongKe frmThongKe = new FrmThongKe();
+        FrmTuKhoa frmTuKhoa = new FrmTuKhoa();
 
 
         /* create JPanel, which is content of tabs */
@@ -122,21 +123,17 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
         JPanel pnlKhoHang = frmKhoHang.createPanelKhoHang();
         JPanel pnlDonHang = frmDonHang.createPanelDonHang();
         JPanel pnlThongKe = frmThongKe.createPanelThongKe();
-
+        JPanel pnlTuKhoa = frmTuKhoa.createPanelTuKhoa();
 
 
         ClassLoader classLoader = getClass().getClassLoader();
         URL iconTrangChu = classLoader.getResource("assets/trangchu.png");
-        URL iconHoaDon = classLoader.getResource("assets/hoadon.png");
-        URL iconBanHang = classLoader.getResource("assets/banhang.png");
+        URL iconTuKhoa = classLoader.getResource("assets/hoadon.png");
         URL iconNhanVien = classLoader.getResource("assets/nhanvien.png");
-        URL iconKhachHang = classLoader.getResource("assets/khachhang.png");
-        URL iconHangHoa = classLoader.getResource("assets/hanghoa.png");
-        URL iconKhoHang = classLoader.getResource("assets/khohang.png");
         URL iconDonHang = classLoader.getResource("assets/donhang.png");
         URL iconThongKe = classLoader.getResource("assets/thongke.png");
 
-        JFrame mainframe= new FrmThongKe();
+        JFrame mainframe = new FrmThongKe();
         FrmBaoCaoSanPhamBanChay reportDialogBanChay = new FrmBaoCaoSanPhamBanChay(mainframe);
         FrmBaoCaoDoanhThu reportDialogDoanhThu = new FrmBaoCaoDoanhThu(mainframe);
 
@@ -150,7 +147,6 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
 //        tabbedPane.addTab("KHO HÀNG", new ImageIcon(iconKhoHang), pnlKhoHang, "KHO HÀNG");
         tabbedPane.addTab("HÓA ĐƠN", new ImageIcon(iconDonHang), pnlHoaDon, "HÓA ĐƠN");
 //        tabbedPane.addTab("THỐNG KÊ", new ImageIcon(iconThongKe), pnlThongKe, "THỐNG KÊ");
-
 
 
         // create a new JPanel to contain the reportDialog
@@ -176,6 +172,8 @@ public class GUI_QuanLy extends JFrame implements ActionListener, MouseListener 
                 }
             }
         });
+
+        tabbedPane.addTab("Từ Khóa", new ImageIcon(iconTuKhoa), pnlTuKhoa, "Từ Khóa");
 
         return tabbedPane;
     }
