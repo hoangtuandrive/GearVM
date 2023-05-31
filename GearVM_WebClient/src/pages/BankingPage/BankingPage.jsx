@@ -16,6 +16,7 @@ import { currentCustomer } from "../../redux/slices/AuthSlices";
 import { OrderMethod } from "../../redux/slices/OrderSlices";
 import CartSlice from "../../redux/slices/CartSlices";
 import { AppContext } from "../../component/context/AppProvider";
+import { DiscountCode } from "../../redux/slices/DiscountSlices";
 
 const cx = classNames.bind(styles);
 
@@ -35,13 +36,23 @@ const BankingPage = () => {
   const cartItems = JSON.parse(JcartItems);
 
   const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+  const [totalPriceDb, setTotalPriceDb] = useState(cart.cartTotalAmount);
   const percentDiscount = useSelector((state) => state.discount);
   const order = useSelector((state) => state.order);
   useEffect(() => {
     if (percentDiscount.percentDiscount > 0) {
       const totalPriceTinh =
-        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+        totalPrice -
+        (totalPrice * percentDiscount.percentDiscount) / 100 +
+        user.shippingCost;
       setTotalPrice(totalPriceTinh);
+
+      const totalPriceTinhDb =
+        totalPriceDb - (totalPriceDb * percentDiscount.percentDiscount) / 100;
+
+      setTotalPriceDb(totalPriceTinhDb);
+    } else {
+      setTotalPrice(totalPrice + user.shippingCost);
     }
     // if (order.methodStatus == "fulfilled") {
     //   navigate("/payment-success");
@@ -65,7 +76,7 @@ const BankingPage = () => {
     });
     // let totalPrice =;
     const cartOrder = {
-      totalPrice: totalPrice,
+      totalPrice: totalPriceDb,
       orderItems,
       method: "BANK",
       shippingDetailDto: user,
@@ -73,7 +84,7 @@ const BankingPage = () => {
     };
 
     const response = await dispatch(OrderMethod(cartOrder));
-
+    dispatch(DiscountCode("a"));
     cartItems.map((item) => {
       if (item.checkCart === true) {
         dispatch(CartSlice.actions.removeCartPay(item));

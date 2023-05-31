@@ -12,6 +12,7 @@ function AppProvider({ children }) {
     address: "",
     phone: "",
     email: "",
+    shippingCost: 50000,
   });
   const [errorMessage, setErrorMessage] = useState({
     messageName: "",

@@ -20,7 +20,7 @@ export const DiscountCode = createAsyncThunk(
 
       return discount.data;
     } catch (error) {
-      // console.log(error);
+      console.log(error.response);
       return rejectWithValue(error.response.data);
     }
   }
@@ -38,16 +38,27 @@ const discountSlices = createSlice({
       };
     });
     builder.addCase(DiscountCode.rejected, (state, action) => {
-      toast.warning("Bạn nhập sai mã hoặc mã của bạn đã hết hạn", {
-        position: "top-right",
-      });
-      return {
-        ...state,
-        discountStatus: "rejected",
-        discountError: action.payload,
-        discountCode: "",
-        percentDiscount: 0,
-      };
+      console.log(action.payload);
+      if (action.payload === "a") {
+        return {
+          ...state,
+          discountStatus: "rejected",
+          discountError: "Mã giảm giá đã hết hạn",
+          discountCode: "",
+          percentDiscount: 0,
+        };
+      } else {
+        toast.warning("Bạn nhập sai mã hoặc mã của bạn đã hết hạn", {
+          position: "top-right",
+        });
+        return {
+          ...state,
+          discountStatus: "rejected",
+          discountError: "Mã giảm giá đã hết hạn",
+          discountCode: "",
+          percentDiscount: 0,
+        };
+      }
     });
     builder.addCase(DiscountCode.fulfilled, (state, action) => {
       if (action.payload) {

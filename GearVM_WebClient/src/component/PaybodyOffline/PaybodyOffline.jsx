@@ -19,6 +19,7 @@ import Table from "react-bootstrap/Table";
 import CustomButon from "../Custom/CustomButon/CustomButon";
 import { Button } from "antd";
 import { OrderMethod } from "../../redux/slices/OrderSlices";
+import { DiscountCode } from "../../redux/slices/DiscountSlices";
 
 const cx = classNames.bind(styles);
 const PaybodyOffline = ({ name }) => {
@@ -28,7 +29,7 @@ const PaybodyOffline = ({ name }) => {
 
   const { setShow, discount, setDiscount, errorMessage } =
     useContext(AppContext);
-  console.log(errorMessage);
+  // console.log(errorMessage);
   const [cartFilter, setCartFilter] = useState([]);
 
   const cart = useSelector((state) => state.todoCart);
@@ -38,6 +39,7 @@ const PaybodyOffline = ({ name }) => {
 
   const order = useSelector((state) => state.order);
   const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+  const [totalPriceDb, setTotalPriceDb] = useState(cart.cartTotalAmount);
   const percentDiscount = useSelector((state) => state.discount);
 
   const FilterCartTrue = () => {
@@ -53,11 +55,21 @@ const PaybodyOffline = ({ name }) => {
 
   useEffect(() => {
     FilterCartTrue();
+
     if (percentDiscount.percentDiscount > 0) {
       const totalPriceTinh =
-        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+        totalPrice -
+        (totalPrice * percentDiscount.percentDiscount) / 100 +
+        user.shippingCost;
       setTotalPrice(totalPriceTinh);
+
+      const totalPriceTinhDb =
+        totalPriceDb - (totalPriceDb * percentDiscount.percentDiscount) / 100;
+      setTotalPriceDb(totalPriceTinhDb);
+    } else {
+      setTotalPrice(totalPrice + user.shippingCost);
     }
+
     // if (order.methodStatus == "fulfilled") {
     //   navigate("/cashPage", { replace: true });
     //   setDiscount("");
@@ -94,7 +106,7 @@ const PaybodyOffline = ({ name }) => {
     }
   };
 
-  const { user } = useContext(AppContext);
+  const { user, setUser } = useContext(AppContext);
 
   const handleCash = (e) => {
     if (
@@ -118,7 +130,7 @@ const PaybodyOffline = ({ name }) => {
       });
       // let totalPrice =;
       const cartOrder = {
-        totalPrice: totalPrice,
+        totalPrice: totalPriceDb,
         shippingDetailDto: user,
         orderItems,
         code: percentDiscount.discountCode,
@@ -126,7 +138,7 @@ const PaybodyOffline = ({ name }) => {
       };
 
       dispatch(OrderMethod(cartOrder));
-
+      dispatch(DiscountCode("a"));
       cartItems.map((item) => {
         if (item.checkCart === true) {
           dispatch(CartSlice.actions.removeCartPay(item));
@@ -139,11 +151,56 @@ const PaybodyOffline = ({ name }) => {
       e.preventDefault();
     }
   };
-
+  console.log(user);
   return (
     <Container>
       {/* <div className={cx("wrapPayBody")}> */}
       <div className={cx("wrapPayBody_right")}>
+        <div className={cx("wrapPayBody_right_Sumpay_content_ship")}>
+          <div className={cx("form-check-group")}>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="costshipping"
+                id="50"
+                checked={user.shippingCost === 50000 ? true : false}
+                onChange={(e) => {
+                  setUser({ ...user, shippingCost: 50000 });
+                  setTotalPrice(
+                    totalPrice +
+                      50000 -
+                      (user.shippingCost === 100000 ? 100000 : 0)
+                  );
+                }}
+              />
+              <label className="form-check-label" htmlFor="50">
+                Giao hàng từ 2-6 ngày: 50.000 đ
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="costshipping"
+                id="100"
+                checked={user.shippingCost === 100000 ? true : false}
+                onChange={(e) => {
+                  setUser({ ...user, shippingCost: 100000 });
+
+                  setTotalPrice(
+                    totalPrice +
+                      100000 -
+                      (user.shippingCost === 50000 ? 50000 : 0)
+                  );
+                }}
+              />
+              <label className="form-check-label" htmlFor="100">
+                Giao hàng hỏa tốc: 100.000 đ
+              </label>
+            </div>
+          </div>
+        </div>
         <div className={cx("wrapPayBody_right_Sumpay_content")}>
           <span className={cx("wrapPayBody_right_Sumpay_text")}>
             Tổng tiền:

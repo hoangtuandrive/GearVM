@@ -63,7 +63,11 @@ const PayBody = () => {
   const [totalTemp, setTotalTemp] = useState(cart.cartTotalAmount);
 
   const handleDiscount = () => {
-    dispatch(DiscountCode(discount));
+    if (discount === "") {
+      dispatch(DiscountCode("a"));
+    } else {
+      dispatch(DiscountCode(discount));
+    }
   };
 
   useEffect(() => {
@@ -110,11 +114,11 @@ const PayBody = () => {
       orderItems,
       code: code,
     };
-
     dispatch(OrderCart(cartOrder));
     window.addEventListener("unload", function () {
       cartItems.map((item) => {
         if (item.checkCart === true) {
+          dispatch(DiscountCode("a"));
           dispatch(CartSlice.actions.removeCart(item));
         }
       });
@@ -178,9 +182,6 @@ const PayBody = () => {
                 Áp Dụng
               </div>
             </div>
-            {percentDiscount.discountError ? (
-              <span>{percentDiscount.discountError}</span>
-            ) : null}
           </div>
           <div>
             <div className={cx("wrapPayBody_right_Sumpay_content")}>

@@ -11,6 +11,7 @@ import { currentCustomer } from "../../redux/slices/AuthSlices";
 import { OrderMethod } from "../../redux/slices/OrderSlices";
 import CartSlice from "../../redux/slices/CartSlices";
 import { AppContext } from "../../component/context/AppProvider";
+import { DiscountCode } from "../../redux/slices/DiscountSlices";
 const cx = classNames.bind(styles);
 
 const MoMoPage = () => {
@@ -23,17 +24,29 @@ const MoMoPage = () => {
   const cartItems = JSON.parse(JcartItems);
 
   const [totalPrice, setTotalPrice] = useState(cart.cartTotalAmount);
+
+  const [totalPriceDb, setTotalPriceDb] = useState(cart.cartTotalAmount);
+
   const percentDiscount = useSelector((state) => state.discount);
   const order = useSelector((state) => state.order);
 
   useEffect(() => {
     if (percentDiscount.percentDiscount > 0) {
       const totalPriceTinh =
-        totalPrice - (totalPrice * percentDiscount.percentDiscount) / 100;
+        totalPrice -
+        (totalPrice * percentDiscount.percentDiscount) / 100 +
+        user.shippingCost;
       setTotalPrice(totalPriceTinh);
+
+      const totalPriceTinhDb =
+        totalPriceDb - (totalPriceDb * percentDiscount.percentDiscount) / 100;
+
+      setTotalPriceDb(totalPriceTinhDb);
+    } else {
+      setTotalPrice(totalPrice + user.shippingCost);
     }
   }, [percentDiscount.percentDiscount, order.methodStatus]);
-
+  console.log(totalPrice);
   const handleComplete = (e) => {
     dispatch(currentCustomer());
     let orderItems = [];
@@ -50,7 +63,7 @@ const MoMoPage = () => {
     });
     // let totalPrice =;
     const cartOrder = {
-      totalPrice: totalPrice,
+      totalPrice: totalPriceDb,
       orderItems,
       method: "MOMO",
       shippingDetailDto: user,
@@ -58,7 +71,7 @@ const MoMoPage = () => {
     };
 
     dispatch(OrderMethod(cartOrder));
-
+    dispatch(DiscountCode("a"));
     cartItems.map((item) => {
       if (item.checkCart === true) {
         dispatch(CartSlice.actions.removeCartPay(item));
@@ -102,7 +115,7 @@ const MoMoPage = () => {
                     {new Intl.NumberFormat("de-DE", {
                       style: "currency",
                       currency: "VND",
-                    }).format(cart.cartTotalAmount)}
+                    }).format(totalPrice)}
                   </h4>
                 </div>
               </div>

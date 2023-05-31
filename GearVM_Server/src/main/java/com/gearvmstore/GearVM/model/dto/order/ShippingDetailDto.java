@@ -8,4 +8,5 @@ public class ShippingDetailDto {
     private String address;
     private String phoneNumber;
     private String email;
+    private double shippingCost;
 }

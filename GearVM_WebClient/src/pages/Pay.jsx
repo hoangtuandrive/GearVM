@@ -34,6 +34,7 @@ const Pay = () => {
         address: "",
         phone: CurrentUser.phoneNumber,
         email: CurrentUser.email,
+        shippingCost: 50000,
       });
     } else {
       navigate("/", { replace: true });

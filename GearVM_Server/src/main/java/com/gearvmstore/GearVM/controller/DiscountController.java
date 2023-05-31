@@ -20,6 +20,6 @@ public class DiscountController {
         if(discountService.GetPercentDiscount(code) !=null){
             return ResponseEntity.ok().body(discountService.GetPercentDiscount(code));
         }
-        return ResponseEntity.badRequest().body("Mã giảm giá đã hết hạn");
+        return ResponseEntity.badRequest().body(code);
     }
 }

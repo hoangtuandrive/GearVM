@@ -70,6 +70,12 @@
   flex-direction: row;
   justify-content: space-around;
 }
+.wrapPayBody_right_Sumpay_content_ship {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 .wrapPayBody_right_Sumpay_btn {
   background-color: blue;
   border-radius: 5px;
@@ -167,6 +173,11 @@
   flex-direction: row;
   justify-content: center;
   margin-right: 10px;
+}
+.form-check-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 @media screen and (max-width: 768px) {
   .wrapPayBody {

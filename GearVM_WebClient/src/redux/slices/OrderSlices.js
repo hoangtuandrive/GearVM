@@ -110,6 +110,7 @@ export const OrderMethod = createAsyncThunk(
             address: values.shippingDetailDto.address,
             phoneNumber: values.shippingDetailDto.phone,
             email: values.shippingDetailDto.email,
+            shippingCost: values.shippingDetailDto.shippingCost,
           },
           // shippingDetailDto: values.shippingDetailDto,
           orderItemDtos: values.orderItems,

@@ -153,6 +153,7 @@ public class OrderService {
             shippingDetail.setName(placeOrderDto.getShippingDetailDto().getName());
             shippingDetail.setAddress(placeOrderDto.getShippingDetailDto().getAddress());
             shippingDetail.setEmail(placeOrderDto.getShippingDetailDto().getEmail());
+            shippingDetail.setShippingCost(placeOrderDto.getShippingDetailDto().getShippingCost());
             shippingDetailRepository.save(shippingDetail);
 
 
