@@ -54,11 +54,13 @@ public class OrderService {
         this.discountRepository = discountRepository;
     }
 
-    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName, String address, String email, String phoneNumber) {
+    public void updateOrderAfterPaymentInvoiceSucceeded(Long orderId, String paymentDescription, String customerName,
+                                                        String address, String email, String phoneNumber, double shippingCost) {
         Order order = orderRepository.findById(orderId).get();
 
         Payment payment = paymentService.updateOnlinePayment(order.getPayment(), paymentDescription);
-        ShippingDetail shippingDetail = shippingDetailService.updateOnlineShippingDetail(order.getShippingDetail(), customerName, address, email, phoneNumber);
+        ShippingDetail shippingDetail = shippingDetailService.updateOnlineShippingDetail(order.getShippingDetail(),
+                customerName, address, email, phoneNumber, shippingCost);
 
         order.setPayment(payment);
         order.setShippingDetail(shippingDetail);

@@ -98,6 +98,9 @@ public class StripeController {
                 String customerPhoneNumber = jsonObjectInvoice.getString("customer_phone")
                         .replaceAll("^\\+84", "0");
 
+                JSONObject shippingCostObject = jsonObjectInvoice.getJSONObject("shipping_cost");
+                double shippingCost = shippingCostObject.getDouble("amount_total");
+
                 JSONObject shippingDetailObject = jsonObjectInvoice.getJSONObject("customer_shipping");
                 JSONObject addressObject = shippingDetailObject.getJSONObject("address");
                 String line1 = addressObject.getString("line1");
@@ -111,7 +114,9 @@ public class StripeController {
                 int index = description.indexOf("#");
                 if (index != -1) {
                     String orderId = description.substring(index + 1);
-                    orderService.updateOrderAfterPaymentInvoiceSucceeded(Long.parseLong(orderId), paymentDescription, customerName, sb.toString(), customerEmail, customerPhoneNumber);
+                    orderService.updateOrderAfterPaymentInvoiceSucceeded(Long.parseLong(orderId), paymentDescription,
+                            customerName, sb.toString(), customerEmail, customerPhoneNumber,
+                            shippingCost);
                 }
 
                 break;

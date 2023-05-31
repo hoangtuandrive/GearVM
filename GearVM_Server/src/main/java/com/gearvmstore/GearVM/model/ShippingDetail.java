@@ -20,6 +20,7 @@ public class ShippingDetail {
     private String address;
     private String phoneNumber;
     private String email;
+    private double shippingCost;
     @OneToOne(mappedBy = "shippingDetail")
     @JsonIgnore
     private Order order;
