@@ -20,6 +20,8 @@ import java.util.Map;
 
 @Service
 public class StripeService {
+    // http://localhost:3000
+    // https://gear-vm-tuan.vercel.app
     private final static String DOMAIN = "http://localhost:3000";
 
     @Value("${STRIPE_SECRET_KEY}")
@@ -81,6 +83,16 @@ public class StripeService {
                                         .addAllowedCountry(
                                                 PaymentLinkCreateParams.ShippingAddressCollection.AllowedCountry.SG
                                         )
+                                        .build()
+                        )
+                        .addShippingOption(
+                                PaymentLinkCreateParams.ShippingOption.builder()
+                                        .setShippingRate("shr_1NDc3WJZOhhkwf3dKXvoAqTY")
+                                        .build()
+                        )
+                        .addShippingOption(
+                                PaymentLinkCreateParams.ShippingOption.builder()
+                                        .setShippingRate("shr_1NDc44JZOhhkwf3dHz5K7jrG")
                                         .build()
                         )
                         .setPhoneNumberCollection(

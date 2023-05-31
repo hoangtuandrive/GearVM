@@ -84,6 +84,10 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
     private final JTextField txtMaKhuyenMai;
     private final JLabel lblPhanTramKhuyenMai;
     private final JTextField txtPhanTramKhuyenMai;
+    private final JLabel lblPhiGiaoHang;
+    private final JTextField txtPhiGiaoHang;
+    private final JLabel lblHinhThucGiaoHang;
+    private final JTextField txtHinhThucGiaoHang;
 
     public FrmChiTietDonHang(GetOrderResponse getOrderResponse) throws IOException {
         super("Chi Tiết Đơn Hàng");
@@ -138,7 +142,25 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         tblscroll.setBorder(BorderFactory.createTitledBorder("GIỎ HÀNG: "));
         b1.add(Box.createVerticalStrut(10));
         b1.add(tblscroll);
-        b1.add(Box.createVerticalStrut(20));
+
+        Box boxShippingCost = Box.createHorizontalBox();
+
+        boxShippingCost.add(lblHinhThucGiaoHang = new JLabel("Hình Thức Giao Hàng:"));
+        boxShippingCost.add(Box.createHorizontalStrut(10));
+        boxShippingCost.add(txtHinhThucGiaoHang = new JTextField());
+
+        boxShippingCost.add(Box.createHorizontalStrut(50));
+
+        boxShippingCost.add(lblPhiGiaoHang = new JLabel("Phí Giao Hàng:"));
+        boxShippingCost.add(Box.createHorizontalStrut(10));
+        boxShippingCost.add(txtPhiGiaoHang = new JTextField());
+
+        txtHinhThucGiaoHang.setPreferredSize(new Dimension(200, 30));
+        txtPhiGiaoHang.setPreferredSize(new Dimension(150, 30));
+        txtHinhThucGiaoHang.setMaximumSize(new Dimension(txtHinhThucGiaoHang.getPreferredSize().width, 30));
+        txtPhiGiaoHang.setMaximumSize(new Dimension(txtHinhThucGiaoHang.getPreferredSize().width, 30));
+
+        b1.add(boxShippingCost);
 
         Box b3 = Box.createVerticalBox();
         Box b4 = Box.createHorizontalBox();
@@ -316,21 +338,22 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         b.setSize(1400, 400);
         add(b);
 
-        lblMaDonHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblTrangThai.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblNgayLapDonHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblMaNhanVien.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblNgaySuaDonHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblMaThanhToan.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblTenKhachHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblTongTien.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblSdtKhachHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblDiaChi.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblEmail.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblPhuongThucThanhToan.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblHinhThucMuaHang.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblMaKhuyenMai.setPreferredSize(lblTenNhanVien.getPreferredSize());
-        lblPhanTramKhuyenMai.setPreferredSize(lblTenNhanVien.getPreferredSize());
+        lblMaDonHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblTrangThai.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblNgayLapDonHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblMaNhanVien.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblNgaySuaDonHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblMaThanhToan.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblTenKhachHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblTongTien.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblSdtKhachHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblDiaChi.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblEmail.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblTenNhanVien.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblHinhThucMuaHang.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblMaKhuyenMai.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblPhanTramKhuyenMai.setPreferredSize(lblPhuongThucThanhToan.getPreferredSize());
+        lblPhiGiaoHang.setPreferredSize(lblHinhThucGiaoHang.getPreferredSize());
 
         b4.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
         b5.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
@@ -379,6 +402,8 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
         txtHinhThucMuaHang.setEditable(false);
         txtMaKhuyenMai.setEditable(false);
         txtPhanTramKhuyenMai.setEditable(false);
+        txtPhiGiaoHang.setEditable(false);
+        txtHinhThucGiaoHang.setEditable(false);
 
         btnThanhCong.addActionListener(this);
         btnThatBai.addActionListener(this);
@@ -608,6 +633,13 @@ public class FrmChiTietDonHang extends JFrame implements ActionListener {
                 txtSdtKhachHang.setText(order.getShippingDetail().getPhoneNumber());
                 txtDiaChi.setText(order.getShippingDetail().getAddress());
                 txtEmail.setText(order.getShippingDetail().getEmail());
+
+                if (order.getShippingDetail().getShippingCost() > 0.0) {
+                    txtPhiGiaoHang.setText(df.format(order.getShippingDetail().getShippingCost()));
+                    String phuongThucGiaoHang = order.getShippingDetail().getShippingCost() > 51000.0
+                            ? "Giao Hàng Hỏa Tốc" : "Giao Hàng Tiêu Chuẩn";
+                    txtHinhThucGiaoHang.setText(phuongThucGiaoHang);
+                }
 
             } else {
                 txtTenKhachHang.setText(order.getCustomer().getName());
