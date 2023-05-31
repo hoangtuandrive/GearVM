@@ -77,31 +77,54 @@ public class FrmBaoCaoSanPhamBanChay extends JDialog {
 
         pieChart1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
 
-        JLabel  jLabel=new JLabel("Thông kê sản phẩm bán chạy");
-        JButton jButton = new JButton("Quay lại");
+        JLabel  jLabel=new JLabel("Những sản phẩm bán chạy nhất");
+//        JButton jButton = new JButton("Quay lại");
         Box box = Box.createHorizontalBox();
         jLabel.setFont(new java.awt.Font("sansserif", 1, 20));
-        box.add(Box.createHorizontalStrut(600));
-        box.add(jLabel);
-        box.add(Box.createHorizontalStrut(50));
-        box.add(jButton);
-        box.add(Box.createHorizontalStrut(50));
+//        box.add(Box.createHorizontalStrut(600));
+//        box.add(jLabel);
+//        box.add(Box.createHorizontalStrut(50));
+//        box.add(jButton);
+//        box.add(Box.createHorizontalStrut(50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+//
+//                                .addComponent(jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+//                                .addContainerGap())
+//        );
+//        layout.setVerticalGroup(
+//                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+//                                .addComponent(jLabel)
+//                                .addContainerGap())
+//        );
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                                 .addContainerGap())
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(530, 530, 530)
+                                .addComponent(jLabel)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel)
+                                .addGap(20, 20, 20))
         );
 
 

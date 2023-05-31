@@ -30,6 +30,8 @@ import { AppContext } from "../context/AppProvider";
 import { useState } from "react";
 import { chatgpt } from "../../chatgpt";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { GetPrompt } from "../../redux/slices/Prompt";
 
 const cx = classNames.bind(styles);
 
@@ -55,12 +57,16 @@ const ChatBox = ({ name }) => {
   sessionStorage.setItem("chatBox", JSON.stringify(messages));
 
   const chatMessage = JSON.parse(sessionStorage.getItem("chatBox"));
-  console.log(chatMessage);
-  console.log(name);
+  // console.log(chatMessage);
+  // console.log(name);
   const review = name ? `Hãy mô tả chi tiết cho tôi sản phẩm ${name}` : null;
   // useEffect(() => {}, []);
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState(review);
+
+  const prompt = useSelector((state) => state.prompt);
+
+  const dispatch = useDispatch();
 
   const handleMessage = async (message) => {
     const newMessage = {
@@ -78,13 +84,44 @@ const ChatBox = ({ name }) => {
 
     setValue("");
     setIsTyping(true);
-    // console.log(chatgpt);
-    await processMessageToChatGPT(newMessages);
-  };
 
+    const response = await dispatch(GetPrompt(newMessage));
+    // console.log(response);
+    if (response.payload.length != 0) {
+      await processServerToChatGPt(response.payload, newMessages);
+      // console.log(chatMessage);
+    } else {
+      console.log(newMessage);
+      await processMessageToChatGPT(newMessages);
+    }
+
+    // console.log(chatgpt);
+  };
+  // console.log(chatMessage);
   const handleHidenChat = () => {
     setShowChat(false);
   };
+
+  async function processServerToChatGPt(data, chatMessages) {
+    setMessages([
+      ...chatMessages,
+      {
+        message: data,
+        sender: "ChatGPT",
+      },
+    ]);
+    setIsTyping(false);
+    sessionStorage.setItem(
+      "chatBox",
+      JSON.stringify([
+        ...chatMessages,
+        {
+          message: data,
+          sender: "ChatGPT",
+        },
+      ])
+    );
+  }
 
   async function processMessageToChatGPT(chatMessages) {
     // messages is an array of messages
@@ -101,8 +138,8 @@ const ChatBox = ({ name }) => {
       }
       return { role: role, content: messageObject.message };
     });
-    console.log(chatMessages);
-    console.log(apiMessages);
+    // console.log(chatMessages);
+    // console.log(apiMessages);
 
     // Get the request body set up with the model we plan to use
     // and the messages which we formatted above. We add a system message in the front to'

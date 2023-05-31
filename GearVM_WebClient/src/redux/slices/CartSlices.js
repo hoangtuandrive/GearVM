@@ -239,9 +239,17 @@ const CartSlice = createSlice({
     builder.addCase(CheckQuantity.fulfilled, (state, action) => {
       // const navigate = useNavigate();
       const cart = JSON.parse(localStorage.getItem("cartItems"));
-      const cartChecked = cart.filter(
-        (item) => !action.payload.includes(item.id)
-      );
+      const cartChecked = cart.filter((item) => {
+        if (action.payload.includes(item.id)) {
+          toast.error(`Xóa  sản phẩm ${item.name} đã hết hàng `, {
+            autoClose: 15000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          console.log(item);
+          return item;
+        }
+      });
       const aString = cart.map(JSON.stringify);
       const bString = cartChecked.map(JSON.stringify);
 
@@ -251,13 +259,6 @@ const CartSlice = createSlice({
       console.log(cartChecked);
       console.log(isEqual);
       if (!isEqual) {
-        toast.error(
-          "Xóa 1 số sản phẩm đã hết hàng",
-          { autoClose: 15000 },
-          {
-            position: "top-center",
-          }
-        );
         localStorage.setItem("cartItems", JSON.stringify(cartChecked));
         return {
           ...state,

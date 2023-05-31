@@ -4,6 +4,7 @@ import authSlice from "../slices/AuthSlices";
 import CartSlice from "../slices/CartSlices";
 import orderSlices from "../slices/OrderSlices";
 import discountSlices from "../slices/DiscountSlices";
+import promptSlice from "../slices/Prompt";
 
 // const persistConfig = {
 //   key: "root",
@@ -21,6 +22,7 @@ const store = configureStore({
     auth: authSlice.reducer,
     order: orderSlices.reducer,
     discount: discountSlices.reducer,
+    prompt: promptSlice.reducer,
   },
 });
 
