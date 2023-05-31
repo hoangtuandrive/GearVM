@@ -251,7 +251,13 @@ const CartSlice = createSlice({
       console.log(cartChecked);
       console.log(isEqual);
       if (!isEqual) {
-        toast.error("Xóa 1 số sản phẩm đã hết hàng", { autoClose: 15000 });
+        toast.error(
+          "Xóa 1 số sản phẩm đã hết hàng",
+          { autoClose: 15000 },
+          {
+            position: "top-center",
+          }
+        );
         localStorage.setItem("cartItems", JSON.stringify(cartChecked));
         return {
           ...state,
